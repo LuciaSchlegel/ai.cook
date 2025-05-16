@@ -6,7 +6,7 @@ export async function getUserByIdService(uid: string) {
     if (!user) {
         throw new Error("User not found");
     }
-    return user;
+    return user;    
 }
 
 export async function createUserService(userData: User) {

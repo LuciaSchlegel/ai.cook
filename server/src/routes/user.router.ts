@@ -20,7 +20,7 @@ userRouter.get('/:uid', async (req: Request, res: Response) => {
 });
 
 userRouter.delete('/:uid', async (req: Request, res: Response) => {
-    // Handle user sodeletion
+    // Handle user soft deletion
     await softDeleteUserController(req, res);
 });
 

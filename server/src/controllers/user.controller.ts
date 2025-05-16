@@ -8,8 +8,9 @@ export async function getUserByIdController(req: Request, res: Response) {
     }
     try {
     const user = await getUserByIdService(uid);
-    return user;
+    return res.status(200).json(user);
     } catch (error) {
+        console.error(error);
         return res.status(500).json({ message: "Error getting user" });
     }
 }
@@ -23,6 +24,7 @@ export async function createUserController(req: Request, res: Response) {
         const newUser = await createUserService(userData);
         return res.status(201).json(newUser);
     } catch (error) {
+        console.error(error);
         return res.status(500).json({ message: "Error creating user" });
     }
 }
@@ -36,6 +38,7 @@ export async function updateUserController(req: Request, res: Response) {
         const updatedUser = await updateUserService(uid, userData);
         return res.status(200).json(updatedUser);
     } catch (error) {
+        console.error(error);
         return res.status(500).json({ message: "Error updating user" });
     }
 }
@@ -48,6 +51,7 @@ export async function softDeleteUserController(req: Request, res: Response) {
         const updatedUser = await softDeleteUserService(uid);
         return res.status(200).json(updatedUser);
     } catch (error) {
+        console.error(error);
         return res.status(500).json({ message: "Error soft deleting user" });
     }
 }
