@@ -5,6 +5,7 @@ import { Attribute } from './Attribute';
 import { UserIngredient } from './UserIngredient';
 import { Recipe } from './Recipe';
 import { Event } from './Event';
+import { CustomIngredient } from './CustomIngredient';
 
 enum UserRole {
     USER = 'user',
@@ -57,6 +58,9 @@ export class User {
 
     @OneToMany(() => UserIngredient, userIngredient => userIngredient.user)
     userIngredients!: UserIngredient[];
+
+    @OneToMany(() => CustomIngredient, customIngredient => customIngredient.createdBy)
+    customIngredients!: CustomIngredient[];
 
     @OneToMany(() => Recipe, recipe => recipe.creator)
     recipes!: Recipe[];
