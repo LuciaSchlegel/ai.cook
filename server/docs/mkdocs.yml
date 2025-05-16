@@ -1,0 +1,15 @@
+site_name: AI Cook Backend
+site_description: Documentación del servicio Node.js + Express
+
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - API:
+      - Generate Recipe: api/generate-recipe.md
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true

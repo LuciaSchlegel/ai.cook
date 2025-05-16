@@ -1,0 +1,18 @@
+📁 routes/
+├── index.ts
+├── user.router.ts
+├── admin.router.ts
+├── analytics.router.ts
+├── attributes.router.ts
+├── calendar.router.ts
+├── food.router.ts
+└── recipes.router.ts
+
+API Routes Structure:
+- /user
+- /admin
+- /analytics
+- /attributes
+- /calendar
+- /food
+- /recipes
