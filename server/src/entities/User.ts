@@ -1,6 +1,10 @@
+//User.ts
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, OneToMany } from 'typeorm';
 import { Subscription } from './Subscription';
 import { Attribute } from './Attribute';
+import { UserIngredient } from './UserIngredient';
+import { Recipe } from './Recipe';
+import { Event } from './Event';
 
 enum UserRole {
     USER = 'user',
@@ -50,4 +54,13 @@ export class User {
 
     @OneToMany(() => Attribute, attribute => attribute.user)
     attributes!: Attribute[];
+
+    @OneToMany(() => UserIngredient, userIngredient => userIngredient.user)
+    userIngredients!: UserIngredient[];
+
+    @OneToMany(() => Recipe, recipe => recipe.creator)
+    recipes!: Recipe[];
+
+    @OneToMany(() => Event, event => event.user)
+    events!: Event[];
 }
