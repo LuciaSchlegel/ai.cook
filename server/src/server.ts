@@ -2,6 +2,7 @@ import { AppDataSource } from "./config/data_source"
 import express from "express";
 import cors from "cors";
 import router from "./routes";
+import { errorHandler } from "./utils/errorHandler";
 
 const app = express();
 
@@ -17,6 +18,9 @@ const initializeDatabase = async () => {
         console.error("Error establishing database connection:", error);
     }
 };
+
+// Middleware for handling errors
+app.use(errorHandler);
 
 export { initializeDatabase };
 export default app;
