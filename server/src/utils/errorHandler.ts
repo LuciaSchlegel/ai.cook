@@ -1,24 +1,27 @@
-import { Request, Response, NextFunction } from 'express';
+import { ErrorRequestHandler } from 'express';
+import { AppError } from '../types/AppError';
 
-export function errorHandler(
-  err: any,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  // Set default status and message
-  const status = err.status || 500;
-  const message = err.message || 'Internal Server Error';
+export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  // Si es un error de negocio que extendiste de AppError:
+  if (err instanceof AppError) {
+    if (process.env.NODE_ENV !== 'test') {
+      console.error(err);
+    }
+    res.status(err.statusCode).json({
+      success: false,
+      error: err.message,
+      ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
+    });
+    return;
+  }
 
-  // Log the error (puedes mejorarlo para logging avanzado)
+  // Si es cualquier otro error no manejado:
   if (process.env.NODE_ENV !== 'test') {
     console.error(err);
   }
-
-  res.status(status).json({
+  res.status(500).json({
     success: false,
-    error: message,
-    // Opcional: incluye detalles solo en desarrollo
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
+    error: 'Internal Server Error',
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack, details: err.message }),
   });
-}
+};
