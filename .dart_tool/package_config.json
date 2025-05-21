@@ -110,6 +110,42 @@
       "languageVersion": "3.7"
     },
     {
+      "name": "google_identity_services_web",
+      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/google_identity_services_web-0.3.3+1",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "google_sign_in",
+      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/google_sign_in-6.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "google_sign_in_android",
+      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/google_sign_in_android-6.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "google_sign_in_ios",
+      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/google_sign_in_ios-5.9.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "google_sign_in_platform_interface",
+      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/google_sign_in_platform_interface-2.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "google_sign_in_web",
+      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/google_sign_in_web-0.12.4+4",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
       "name": "http",
       "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/http-1.4.0",
       "packageUri": "lib/",
@@ -188,6 +224,24 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "sign_in_with_apple",
+      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/sign_in_with_apple-7.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "sign_in_with_apple_platform_interface",
+      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/sign_in_with_apple_platform_interface-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "sign_in_with_apple_web",
+      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/sign_in_with_apple_web-3.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
       "name": "sky_engine",
       "rootUri": "file:///opt/homebrew/Caskroom/flutter/3.29.3/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
@@ -260,7 +314,7 @@
       "languageVersion": "3.7"
     }
   ],
-  "generated": "2025-05-21T13:01:06.549374Z",
+  "generated": "2025-05-21T13:26:44.506720Z",
   "generator": "pub",
   "generatorVersion": "3.7.2",
   "flutterRoot": "file:///opt/homebrew/Caskroom/flutter/3.29.3/flutter",
