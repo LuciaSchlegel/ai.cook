@@ -26,6 +26,9 @@ export class Subscription {
   @Column({ type: 'timestamp', nullable: true })
   endDate?: Date;
 
+  @Column({ type: 'boolean', default: false })
+  isActive!: boolean;
+
   @CreateDateColumn()
   createdAt!: Date;
 

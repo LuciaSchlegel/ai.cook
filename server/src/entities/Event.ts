@@ -15,7 +15,7 @@ export class Event {
   eventDate!: Date;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  title?: string;
+  title!: string;
 
   @ManyToMany(() => Recipe, { cascade: true })
   @JoinTable()
