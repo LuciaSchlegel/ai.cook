@@ -51,7 +51,7 @@ class _SignupScreenState extends State<SignupScreen> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('Registrarse'),
+        title: const Text('Sign up'),
         centerTitle: true,
         elevation: 0,
       ),

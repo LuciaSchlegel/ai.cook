@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>466421311982-jo9v94ot9mqbl2cd0tkns7uldjcjrqum.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.466421311982-jo9v94ot9mqbl2cd0tkns7uldjcjrqum</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCujFX_SoEjBZ0-0Me6g-_9LBJ40eBqt4Y</string>
 	<key>GCM_SENDER_ID</key>
@@ -9,21 +13,21 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.aiCookProject</string>
+	<string>com.luciaguarino.aiCookProject</string>
 	<key>PROJECT_ID</key>
 	<string>ai-cook-11ab9</string>
 	<key>STORAGE_BUCKET</key>
 	<string>ai-cook-11ab9.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:466421311982:ios:40b2e04313c7564170c6ff</string>
 </dict>

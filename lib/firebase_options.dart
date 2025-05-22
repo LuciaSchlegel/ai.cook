@@ -62,7 +62,7 @@ class DefaultFirebaseOptions {
     appId: '1:466421311982:ios:40b2e04313c7564170c6ff',
     messagingSenderId: '466421311982',
     projectId: 'ai-cook-11ab9',
-    storageBucket: 'ai-cook-11ab9.firebasestorage.app',
+    storageBucket: 'ai-cook-11ab9.appspot.com',
     iosBundleId: 'com.example.aiCookProject',
   );
 }

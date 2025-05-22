@@ -1,5 +1,8 @@
+import 'package:ai_cook_project/providers/auth_provider.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onAiButtonPressed() {
-    // Implement AI button action here
     showDialog(
       context: context,
       builder:
@@ -46,56 +48,97 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: _pages[_currentIndex],
-      floatingActionButton: FloatingActionButton(
-        onPressed: _onAiButtonPressed,
-        backgroundColor: AppColors.orange,
-        shape: const CircleBorder(),
-        child: const Text('ai', style: TextStyle(fontSize: 18)),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        color: AppColors.white,
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 8.0,
-        child: SizedBox(
-          height: 64,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildTabItem(
-                icon: Icons.list_alt,
-                label: 'Ingredients',
-                index: 0,
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenPaddingBottom = MediaQuery.of(context).padding.bottom;
+    final buttonSize = screenWidth < 400 ? 64.0 : 72.0;
+
+    return Stack(
+      children: [
+        Scaffold(
+          backgroundColor: AppColors.background,
+          appBar: AppBar(
+            title: const Text('Home'),
+            centerTitle: true,
+            backgroundColor: AppColors.background,
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.logout, color: AppColors.white),
+                onPressed: () {
+                  Provider.of<FBAuthProvider>(context, listen: false).signOut();
+                },
               ),
-              _buildTabItem(
-                icon: Icons.restaurant_menu,
-                label: 'Recipes',
-                index: 1,
-              ),
-              const SizedBox(width: 48), // espacio para el botón central
-              _buildTabItem(
-                icon: Icons.calendar_month,
-                label: 'Calendar',
-                index: 2,
-              ),
-              _buildTabItem(icon: Icons.settings, label: 'Settings', index: 3),
             ],
           ),
+          body: _pages[_currentIndex],
+          bottomNavigationBar: BottomAppBar(
+            color: AppColors.white,
+            elevation: 8,
+            child: SizedBox(
+              height: 72,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildTabItem(
+                    assetPath: 'assets/icons/recipe.svg',
+                    label: 'Ingredients',
+                    index: 0,
+                  ),
+                  _buildTabItem(
+                    assetPath: 'assets/icons/chef.svg',
+                    label: 'Recipes',
+                    index: 1,
+                  ),
+                  const SizedBox(width: 48), // Espacio central para AI
+                  _buildTabItem(
+                    assetPath: 'assets/icons/calendar.svg',
+                    label: 'Calendar',
+                    index: 2,
+                  ),
+                  _buildTabItem(
+                    assetPath: 'assets/icons/settings.svg',
+                    label: 'Settings',
+                    index: 3,
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
-      ),
-      appBar: AppBar(title: const Text('Home'), centerTitle: true),
+        // AI Button flotante y responsive
+        Positioned(
+          bottom: screenPaddingBottom + 24,
+          left: screenWidth / 2 - (buttonSize / 2),
+          child: SizedBox(
+            height: buttonSize,
+            width: buttonSize,
+            child: FloatingActionButton(
+              onPressed: _onAiButtonPressed,
+              backgroundColor: AppColors.orange,
+              elevation: 5,
+              shape: const CircleBorder(),
+              child: const Text(
+                'ai',
+                style: TextStyle(
+                  fontFamily: 'Casta',
+                  fontSize: 50,
+                  color: AppColors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
   Widget _buildTabItem({
-    required IconData icon,
+    required String assetPath,
     required String label,
     required int index,
   }) {
     final isActive = _currentIndex == index;
+    final color = isActive ? AppColors.orange : AppColors.black;
+
     return InkWell(
       onTap: () => _onTabTapped(index),
       child: SizedBox(
@@ -103,13 +146,17 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: isActive ? AppColors.orange : AppColors.black),
+            SvgPicture.asset(
+              assetPath,
+              height: 24,
+              colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+            ),
+            const SizedBox(height: 4),
             Text(
               label,
-              style: TextStyle(
-                color: isActive ? AppColors.orange : AppColors.black,
-                fontSize: 12,
-              ),
+              style: TextStyle(color: color, fontSize: 12),
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
             ),
           ],
         ),

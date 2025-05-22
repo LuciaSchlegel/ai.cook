@@ -22,8 +22,8 @@ class FirstScreen extends StatelessWidget {
               const Text(
                 'ai.cook',
                 style: TextStyle(
-                  fontSize: 48,
-                  fontFamily: 'Canela',
+                  fontSize: 85,
+                  fontFamily: 'Casta',
                   color: AppColors.white,
                 ),
               ),
@@ -38,16 +38,16 @@ class FirstScreen extends StatelessWidget {
                   height: 50,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: AppColors.black,
+                    color: AppColors.button,
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.apple, color: AppColors.white),
-                        SizedBox(width: 8),
-                        Text(
+                        Image.asset('assets/icons/apple-logo.png', height: 24),
+                        const SizedBox(width: 8),
+                        const Text(
                           "Continue with Apple",
                           style: TextStyle(color: AppColors.white),
                         ),
@@ -74,7 +74,7 @@ class FirstScreen extends StatelessWidget {
                         ),
                         child: Center(
                           child: Image.asset(
-                            'assets/icons/google_logo.png',
+                            'assets/icons/google-logo.png',
                             height: 24,
                           ),
                         ),
@@ -106,7 +106,7 @@ class FirstScreen extends StatelessWidget {
               // Sign Up
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/signup');
+                  Navigator.pushNamed(context, '/sign_up');
                 },
                 child: const Text(
                   'Sign up',
