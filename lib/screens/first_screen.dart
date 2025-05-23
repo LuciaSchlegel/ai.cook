@@ -49,7 +49,11 @@ class FirstScreen extends StatelessWidget {
                         const SizedBox(width: 8),
                         const Text(
                           "Continue with Apple",
-                          style: TextStyle(color: AppColors.white),
+                          style: TextStyle(
+                            color: AppColors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ],
                     ),
@@ -95,7 +99,13 @@ class FirstScreen extends StatelessWidget {
                         ),
                         minimumSize: const Size.fromHeight(50),
                       ),
-                      child: const Text("Sign in"),
+                      child: const Text(
+                        "Sign in",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -111,7 +121,13 @@ class FirstScreen extends StatelessWidget {
                 child: const Text(
                   'Sign up',
                   style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    height: 2.5,
                     decoration: TextDecoration.underline,
+                    decorationColor: AppColors.white,
+                    decorationStyle: TextDecorationStyle.solid,
+                    decorationThickness: 1,
                     color: AppColors.white,
                   ),
                 ),

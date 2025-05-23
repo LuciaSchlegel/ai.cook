@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:ai_cook_project/providers/auth_provider.dart';
 import 'package:ai_cook_project/theme.dart';
 
@@ -55,37 +56,92 @@ class _SignupScreenState extends State<SignupScreen> {
         centerTitle: true,
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              if (errorMessage != null)
-                Text(errorMessage!, style: const TextStyle(color: Colors.red)),
-
-              TextFormField(
-                controller: _emailController,
-                style: const TextStyle(color: AppColors.white),
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: _validateEmail,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: FadeInUp(
+            delay: const Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 800),
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(32),
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _passwordController,
-                style: const TextStyle(color: AppColors.white),
-                obscureText: true,
-                decoration: const InputDecoration(labelText: 'Contraseña'),
-                validator: _validatePassword,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (errorMessage != null)
+                      Text(
+                        errorMessage!,
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    const Text(
+                      "Email",
+                      style: TextStyle(fontSize: 17, color: AppColors.black),
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _emailController,
+                      validator: _validateEmail,
+                      style: const TextStyle(color: AppColors.black),
+                      decoration: _inputDecoration(),
+                    ),
+                    const SizedBox(height: 24),
+                    const Text(
+                      "Password",
+                      style: TextStyle(fontSize: 17, color: AppColors.black),
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _passwordController,
+                      validator: _validatePassword,
+                      obscureText: true,
+                      style: const TextStyle(color: AppColors.black),
+                      decoration: _inputDecoration(),
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _register,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.orange,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                        ),
+                        child: const Text('Crear cuenta'),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: _register,
-                child: const Text('Crear cuenta'),
-              ),
-            ],
+            ),
           ),
         ),
+      ),
+    );
+  }
+
+  InputDecoration _inputDecoration() {
+    return InputDecoration(
+      filled: true,
+      fillColor: Colors.white,
+      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(20),
+        borderSide: const BorderSide(color: Colors.grey),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(20),
+        borderSide: BorderSide(color: AppColors.orange, width: 2),
       ),
     );
   }

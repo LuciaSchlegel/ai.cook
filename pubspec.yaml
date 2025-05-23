@@ -38,6 +38,9 @@ dependencies:
   firebase_core: ^3.13.1
   firebase_auth: ^5.5.4
   flutter_svg: ^2.1.0
+  video_player: ^2.9.5
+  animated_text_kit: ^4.2.3
+  animate_do: ^4.2.0
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +72,9 @@ flutter:
     - assets/icons/chef.svg
     - assets/icons/recipe.svg
     - assets/icons/settings.svg
+    - assets/icons/main_logo.png
+    - assets/animations/login_animation.mp4
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
