@@ -30,8 +30,8 @@ class FBAuthProvider with ChangeNotifier {
 
     try {
       await _auth.signInWithCredential(credential);
-    } catch (e) {
-      throw ("Error signing in with Google: $e");
+    } on FirebaseAuthException catch (e) {
+      throw e;
     }
   }
 
@@ -49,8 +49,8 @@ class FBAuthProvider with ChangeNotifier {
 
     try {
       await _auth.signInWithCredential(oauthCredential);
-    } catch (e) {
-      throw ("Error signing in with Apple: $e");
+    } on FirebaseAuthException catch (e) {
+      throw e;
     }
   }
 
@@ -58,7 +58,7 @@ class FBAuthProvider with ChangeNotifier {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      throw Exception("Error signing in with email and password: ${e.message}");
+      throw e;
     }
   }
 
@@ -69,7 +69,7 @@ class FBAuthProvider with ChangeNotifier {
         password: password,
       );
     } on FirebaseAuthException catch (e) {
-      throw Exception("Error signing up with email and password: ${e.message}");
+      throw e;
     }
   }
 
@@ -77,7 +77,7 @@ class FBAuthProvider with ChangeNotifier {
     try {
       await _auth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
-      throw Exception("Error resetting password: ${e.message}");
+      throw e;
     }
   }
 

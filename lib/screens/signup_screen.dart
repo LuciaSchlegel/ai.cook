@@ -1,3 +1,7 @@
+import 'package:ai_cook_project/screens/home_screen.dart';
+import 'package:ai_cook_project/widgets/error_dialog.dart';
+import 'package:ai_cook_project/widgets/loading_spinner.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:animate_do/animate_do.dart';
@@ -15,34 +19,55 @@ class _SignupScreenState extends State<SignupScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  String? errorMessage;
 
   void _register() async {
     final auth = Provider.of<FBAuthProvider>(context, listen: false);
     if (_formKey.currentState!.validate()) {
+      showLoadingDialog(context, message: 'Signing up...');
       try {
         await auth.signUpWithEmailAndPassword(
           _emailController.text.trim(),
           _passwordController.text.trim(),
         );
+        _emailController.clear();
+        _passwordController.clear();
+        if (context.mounted) {
+          Navigator.pop(context);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
+          );
+        }
       } catch (e) {
-        setState(() {
-          errorMessage = e.toString().replaceFirst('Exception: ', '');
-        });
+        if (context.mounted) Navigator.pop(context);
+        if (e is FirebaseAuthException) {
+          String message;
+          if (e.code == 'email-already-in-use') {
+            message = 'Email already in use';
+          } else if (e.code == 'invalid-email') {
+            message = 'Invalid email address';
+          } else if (e.code == 'weak-password') {
+            message = 'Password is too weak';
+          } else {
+            message = 'An error occurred. Please try again later.';
+          }
+
+          showErrorDialog(context, message: message);
+        }
       }
     }
   }
 
   String? _validateEmail(String? value) {
-    if (value == null || value.isEmpty) return 'El email es obligatorio';
+    if (value == null || value.isEmpty) return 'Please enter your email';
     final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-    if (!emailRegex.hasMatch(value)) return 'Email inválido';
+    if (!emailRegex.hasMatch(value)) return 'Invalid email address';
     return null;
   }
 
   String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) return 'La contraseña es obligatoria';
-    if (value.length < 6) return 'Mínimo 6 caracteres';
+    if (value == null || value.isEmpty) return 'Please enter your password';
+    if (value.length < 6) return 'Minimum 6 characters';
     return null;
   }
 
@@ -74,11 +99,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (errorMessage != null)
-                      Text(
-                        errorMessage!,
-                        style: const TextStyle(color: Colors.red),
-                      ),
                     const Text(
                       "Email",
                       style: TextStyle(fontSize: 17, color: AppColors.black),
@@ -116,7 +136,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 16),
                         ),
-                        child: const Text('Crear cuenta'),
+                        child: const Text('Sign up'),
                       ),
                     ),
                   ],
