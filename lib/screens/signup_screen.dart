@@ -41,15 +41,47 @@ class _SignupScreenState extends State<SignupScreen> {
       } catch (e) {
         if (context.mounted) Navigator.pop(context);
         if (e is FirebaseAuthException) {
-          String message;
+          String message = 'An error occurred. Please try again later.';
+
           if (e.code == 'email-already-in-use') {
-            message = 'Email already in use';
+            showErrorDialog(
+              context,
+              message: 'Email already in use',
+              onResetPassword: () async {
+                final auth = Provider.of<FBAuthProvider>(
+                  context,
+                  listen: false,
+                );
+                final email = _emailController.text.trim();
+
+                showLoadingDialog(
+                  context,
+                  message: 'Sending password reset email...',
+                );
+                try {
+                  await auth.resetPassword(email);
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Password reset email sent'),
+                      ),
+                    );
+                  }
+                } catch (_) {
+                  if (context.mounted) Navigator.pop(context);
+                  showErrorDialog(
+                    context,
+                    message: 'Failed to send reset email.',
+                  );
+                }
+              },
+            );
+            return; // Add return to prevent showing error dialog twice
           } else if (e.code == 'invalid-email') {
             message = 'Invalid email address';
           } else if (e.code == 'weak-password') {
             message = 'Password is too weak';
-          } else {
-            message = 'An error occurred. Please try again later.';
           }
 
           showErrorDialog(context, message: message);

@@ -31,7 +31,7 @@ class FBAuthProvider with ChangeNotifier {
     try {
       await _auth.signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -50,7 +50,7 @@ class FBAuthProvider with ChangeNotifier {
     try {
       await _auth.signInWithCredential(oauthCredential);
     } on FirebaseAuthException catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -58,7 +58,7 @@ class FBAuthProvider with ChangeNotifier {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -69,7 +69,7 @@ class FBAuthProvider with ChangeNotifier {
         password: password,
       );
     } on FirebaseAuthException catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -77,7 +77,7 @@ class FBAuthProvider with ChangeNotifier {
     try {
       await _auth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
-      throw e;
+      rethrow;
     }
   }
 

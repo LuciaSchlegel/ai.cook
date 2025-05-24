@@ -35,11 +35,52 @@ class ErrorDialog extends StatelessWidget {
   }
 }
 
-void showErrorDialog(BuildContext context, {required String message}) {
+void showErrorDialog(
+  BuildContext context, {
+  required String message,
+  VoidCallback? onResetPassword, // <- botón opcional
+}) {
   showDialog(
     context: context,
-    barrierDismissible: true,
-    barrierColor: const Color.fromRGBO(0, 0, 0, 0.4),
-    builder: (_) => ErrorDialog(message: message),
+    builder:
+        (_) => AlertDialog(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.error_outline,
+                color: AppColors.orange,
+                size: 40,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                message,
+                style: const TextStyle(color: AppColors.black, fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+              if (onResetPassword != null) ...[
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    onResetPassword();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.orange,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: const Text("Reset password"),
+                ),
+              ],
+            ],
+          ),
+        ),
   );
 }
