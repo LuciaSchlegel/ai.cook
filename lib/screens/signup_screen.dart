@@ -1,6 +1,7 @@
 import 'package:ai_cook_project/screens/home_screen.dart';
 import 'package:ai_cook_project/widgets/error_dialog.dart';
 import 'package:ai_cook_project/widgets/loading_spinner.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,8 +20,18 @@ class _SignupScreenState extends State<SignupScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _acceptedTerms = false;
+  bool _acceptedNewsletter = false;
 
   void _register() async {
+    if (!_acceptedTerms) {
+      showErrorDialog(
+        context,
+        message: 'Please accept the terms and conditions to continue',
+      );
+      return;
+    }
+
     final auth = Provider.of<FBAuthProvider>(context, listen: false);
     if (_formKey.currentState!.validate()) {
       showLoadingDialog(context, message: 'Signing up...');
@@ -107,75 +118,189 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: const Text('Sign up'),
-        centerTitle: true,
-        elevation: 0,
-      ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: FadeInUp(
-            delay: const Duration(milliseconds: 300),
-            duration: const Duration(milliseconds: 800),
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(32),
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Email",
-                      style: TextStyle(fontSize: 17, color: AppColors.black),
-                    ),
-                    const SizedBox(height: 8),
-                    TextFormField(
-                      controller: _emailController,
-                      validator: _validateEmail,
-                      style: const TextStyle(color: AppColors.black),
-                      decoration: _inputDecoration(),
-                    ),
-                    const SizedBox(height: 24),
-                    const Text(
-                      "Password",
-                      style: TextStyle(fontSize: 17, color: AppColors.black),
-                    ),
-                    const SizedBox(height: 8),
-                    TextFormField(
-                      controller: _passwordController,
-                      validator: _validatePassword,
-                      obscureText: true,
-                      style: const TextStyle(color: AppColors.black),
-                      decoration: _inputDecoration(),
-                    ),
-                    const SizedBox(height: 24),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: _register,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.orange,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final screenHeight = constraints.maxHeight;
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: screenHeight),
+                child: IntrinsicHeight(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 48),
+                        SizedBox(
+                          height: 120,
+                          child: Center(
+                            child: DefaultTextStyle(
+                              style: const TextStyle(
+                                fontSize: 40.0,
+                                fontFamily: 'Casta',
+                                color: Colors.white,
+                              ),
+                              child: AnimatedTextKit(
+                                totalRepeatCount: 1,
+                                animatedTexts: [
+                                  TypewriterAnimatedText(
+                                    'ready to become a(i) cooker?',
+                                    speed: const Duration(milliseconds: 125),
+                                    cursor: '|',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
                         ),
-                        child: const Text('Sign up'),
-                      ),
+                        const SizedBox(height: 32),
+                        FadeInUp(
+                          delay: const Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 800),
+                          child: Container(
+                            padding: const EdgeInsets.all(24),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(32),
+                            ),
+                            child: Form(
+                              key: _formKey,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Email",
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      color: AppColors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  TextFormField(
+                                    controller: _emailController,
+                                    validator: _validateEmail,
+                                    style: const TextStyle(
+                                      color: AppColors.black,
+                                    ),
+                                    decoration: _inputDecoration(),
+                                  ),
+                                  const SizedBox(height: 24),
+                                  const Text(
+                                    "Password",
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      color: AppColors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  TextFormField(
+                                    controller: _passwordController,
+                                    validator: _validatePassword,
+                                    obscureText: true,
+                                    style: const TextStyle(
+                                      color: AppColors.black,
+                                    ),
+                                    decoration: _inputDecoration(),
+                                  ),
+                                  const SizedBox(height: 12),
+                                  Row(
+                                    children: [
+                                      Checkbox(
+                                        value: _acceptedTerms,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _acceptedTerms = value ?? false;
+                                          });
+                                        },
+                                        activeColor: AppColors.orange,
+                                      ),
+                                      Expanded(
+                                        child: RichText(
+                                          text: TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text:
+                                                    'I accept the terms and conditions ',
+                                                style: TextStyle(
+                                                  color: AppColors.black,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: '*',
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 0,
+                                  ), // Cambiado de 4 a 0
+                                  Row(
+                                    children: [
+                                      Checkbox(
+                                        value: _acceptedNewsletter,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _acceptedNewsletter =
+                                                value ?? false;
+                                          });
+                                        },
+                                        activeColor: AppColors.orange,
+                                      ),
+                                      Expanded(
+                                        child: RichText(
+                                          text: TextSpan(
+                                            text: 'Subscribe to our newsletter',
+                                            style: TextStyle(
+                                              color: AppColors.black,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 24,
+                                  ), // Espacio antes del botón
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: ElevatedButton(
+                                      onPressed: _register,
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: AppColors.orange,
+                                        foregroundColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            30,
+                                          ),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 16,
+                                        ),
+                                      ),
+                                      child: const Text('Sign up'),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );

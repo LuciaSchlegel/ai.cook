@@ -1,10 +1,13 @@
 import 'package:ai_cook_project/providers/auth_provider.dart';
 import 'package:ai_cook_project/screens/home_screen.dart';
+import 'package:ai_cook_project/screens/signup_screen.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/widgets/auth_button.dart';
+import 'package:ai_cook_project/widgets/custom_text_field.dart';
 import 'package:ai_cook_project/widgets/error_dialog.dart';
 import 'package:ai_cook_project/widgets/loading_spinner.dart';
+import 'package:ai_cook_project/widgets/navigation_text_link.dart';
 import 'package:animate_do/animate_do.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -76,6 +79,13 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       }
     }
+  }
+
+  void _register() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const SignupScreen()),
+    );
   }
 
   void _forgotPassword() async {
@@ -150,132 +160,94 @@ class _LoginScreenState extends State<LoginScreen> {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final screenHeight = constraints.maxHeight;
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: screenHeight),
-                child: IntrinsicHeight(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 48),
-                        SizedBox(
-                          height: 120,
-                          child: Center(
-                            child: DefaultTextStyle(
-                              style: const TextStyle(
-                                fontSize: 40.0,
-                                fontFamily: 'Casta',
+            final screenWidth = constraints.maxWidth;
+
+            // Ajustamos las proporciones del formulario
+            final formWidth =
+                screenWidth > 600
+                    ? 550.0
+                    : screenWidth > 400
+                    ? screenWidth * 0.95
+                    : screenWidth * 0.98;
+
+            return Center(
+              child: SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: screenHeight,
+                    maxWidth: formWidth,
+                  ),
+                  child: IntrinsicHeight(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: screenWidth > 600 ? 48 : 16,
+                        vertical: 24,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 32),
+                          FadeInUp(
+                            delay: const Duration(milliseconds: 300),
+                            duration: const Duration(milliseconds: 800),
+                            child: Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: screenWidth > 600 ? 48 : 24,
+                                vertical: 32,
+                              ),
+                              decoration: BoxDecoration(
                                 color: Colors.white,
-                              ),
-                              child: AnimatedTextKit(
-                                totalRepeatCount: 1,
-                                animatedTexts: [
-                                  TypewriterAnimatedText(
-                                    'ready to become a(i) cooker?',
-                                    speed: const Duration(milliseconds: 125),
-                                    cursor: '|',
-                                    textAlign: TextAlign.center,
+                                borderRadius: BorderRadius.circular(32),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.15),
+                                    blurRadius: 15,
+                                    spreadRadius: 1,
+                                    offset: const Offset(0, 8),
                                   ),
                                 ],
                               ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 32),
-                        // animated login form
-                        FadeInUp(
-                          delay: const Duration(milliseconds: 600),
-                          duration: const Duration(milliseconds: 800),
-                          child: Container(
-                            padding: const EdgeInsets.all(24),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(32),
-                            ),
-                            child: Form(
-                              key: _formKey,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Email",
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      color: AppColors.black,
+                              child: Form(
+                                key: _formKey,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomTextField(
+                                      controller: _emailController,
+                                      label: 'Email',
+                                      validator: _validateEmail,
                                     ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  TextFormField(
-                                    controller: _emailController,
-                                    validator: _validateEmail,
-                                    style: const TextStyle(
-                                      color: AppColors.black,
+                                    const SizedBox(height: 24),
+                                    CustomTextField(
+                                      controller: _passwordController,
+                                      label: 'Password',
+                                      validator: _validatePassword,
+                                      obscureText: true,
                                     ),
-                                    decoration: _inputDecoration(),
-                                  ),
-                                  const SizedBox(height: 24),
-                                  const Text(
-                                    "Password",
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      color: AppColors.black,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  TextFormField(
-                                    controller: _passwordController,
-                                    validator: _validatePassword,
-                                    obscureText: true,
-                                    style: const TextStyle(
-                                      color: AppColors.black,
-                                    ),
-                                    decoration: _inputDecoration(),
-                                  ),
-                                  const SizedBox(height: 24),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: ElevatedButton(
+                                    const SizedBox(height: 24),
+                                    AuthButton(
+                                      label: 'Sign in',
                                       onPressed: _login,
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: AppColors.orange,
-                                        foregroundColor: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            30,
-                                          ),
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 16,
-                                        ),
-                                      ),
-                                      child: const Text("Sign in"),
                                     ),
-                                  ),
-                                  const SizedBox(height: 16),
-                                  Center(
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        _forgotPassword();
-                                      },
-                                      child: const Text(
-                                        'Forgot password?',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500,
-                                          decoration: TextDecoration.underline,
-                                          color: Colors.black,
-                                        ),
-                                      ),
+                                    const SizedBox(height: 16),
+                                    NavigationTextLink(
+                                      label: 'Forgot your password ?',
+                                      onTap: _forgotPassword,
                                     ),
-                                  ),
-                                ],
+                                    const SizedBox(height: 16),
+                                    NavigationTextLink(
+                                      label: 'Don\'t have an account? Sign up',
+                                      onTap: _register,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 24),
-                      ],
+                          const SizedBox(height: 32),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -283,23 +255,6 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           },
         ),
-      ),
-    );
-  }
-
-  InputDecoration _inputDecoration() {
-    return InputDecoration(
-      filled: true,
-      fillColor: Colors.white,
-      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20),
-        borderSide: const BorderSide(color: Colors.grey),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20),
-        borderSide: BorderSide(color: AppColors.orange, width: 2),
       ),
     );
   }
