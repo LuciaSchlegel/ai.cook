@@ -1,4 +1,4 @@
-import 'package:ai_cook_project/screens/home_screen.dart';
+import 'package:ai_cook_project/screens/main_screen.dart';
 import 'package:ai_cook_project/widgets/error_dialog.dart';
 import 'package:ai_cook_project/widgets/loading_spinner.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -46,7 +46,7 @@ class _SignupScreenState extends State<SignupScreen> {
           Navigator.pop(context);
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
+            MaterialPageRoute(builder: (context) => const MainScreen()),
           );
         }
       } catch (e) {

@@ -1,5 +1,5 @@
 import 'package:ai_cook_project/providers/auth_provider.dart';
-import 'package:ai_cook_project/screens/home_screen.dart';
+import 'package:ai_cook_project/screens/main_screen.dart';
 import 'package:ai_cook_project/screens/signup_screen.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/widgets/auth_button.dart';
@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pop(context);
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => const HomeScreen()),
+            MaterialPageRoute(builder: (_) => const MainScreen()),
           );
         }
       } catch (e) {

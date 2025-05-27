@@ -1,5 +1,5 @@
-import 'package:ai_cook_project/screens/home_screen.dart';
 import 'package:ai_cook_project/screens/login_screen.dart';
+import 'package:ai_cook_project/screens/main_screen.dart';
 import 'package:ai_cook_project/screens/signup_screen.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           if (auth.user == null) {
             return const FirstScreen(); // usuario no autenticado
           } else {
-            return const HomeScreen(); // usuario autenticado
+            return const MainScreen(); // usuario autenticado
           }
         },
       ),
@@ -46,5 +46,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-    
