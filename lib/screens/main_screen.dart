@@ -166,9 +166,11 @@ class _MainScreenState extends State<MainScreen> {
           color: AppColors.white,
           elevation: 8,
           notchMargin: 8,
+          padding: EdgeInsets.zero,
+          height: 40 + MediaQuery.of(context).padding.bottom,
           shape: const CircularNotchedRectangle(),
           child: SizedBox(
-            height: 56,
+            height: 40,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -211,7 +213,7 @@ class _MainScreenState extends State<MainScreen> {
     required int index,
   }) {
     final isActive = _currentIndex == index;
-    final color = isActive ? AppColors.orange : AppColors.black;
+    final color = isActive ? AppColors.orange : AppColors.button;
 
     return InkWell(
       onTap: () => _onTabTapped(index),
@@ -230,7 +232,7 @@ class _MainScreenState extends State<MainScreen> {
             style: TextStyle(
               color: color,
               fontSize: 11,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w400,
             ),
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,

@@ -144,7 +144,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 totalRepeatCount: 1,
                                 animatedTexts: [
                                   TypewriterAnimatedText(
-                                    'ready to become a(i) cooker?',
+                                    'ready to become a(i) chef?',
                                     speed: const Duration(milliseconds: 125),
                                     cursor: '|',
                                     textAlign: TextAlign.center,

@@ -21,7 +21,7 @@ class AiButton extends StatelessWidget {
           'ai',
           style: TextStyle(
             fontFamily: 'Casta',
-            fontSize: 42,
+            fontSize: 48,
             color: AppColors.white,
           ),
         ),
