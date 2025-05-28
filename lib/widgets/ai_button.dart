@@ -2,7 +2,10 @@ import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/material.dart';
 
 class AiButton extends StatelessWidget {
-  const AiButton({super.key});
+  final VoidCallback onPressed;
+  final bool isActive;
+
+  const AiButton({super.key, required this.onPressed, required this.isActive});
 
   @override
   Widget build(BuildContext context) {
@@ -13,16 +16,19 @@ class AiButton extends StatelessWidget {
       width: buttonSize,
       height: buttonSize,
       child: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: AppColors.orange,
-        elevation: 4,
+        onPressed: onPressed,
+        backgroundColor:
+            isActive
+                ? const Color.fromARGB(255, 125, 68, 30)
+                : AppColors.orange,
+        elevation: isActive ? 2 : 6,
         shape: const CircleBorder(),
-        child: const Text(
+        child: Text(
           'ai',
           style: TextStyle(
             fontFamily: 'Casta',
-            fontSize: 48,
-            color: AppColors.white,
+            fontSize: 52,
+            color: Colors.grey[200],
           ),
         ),
       ),

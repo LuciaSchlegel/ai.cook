@@ -133,7 +133,7 @@ class _MainFloatingButtonState extends State<MainFloatingButton>
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: Text(
-                                      'Lucia Guarino',
+                                      'Lucia Schlegel',
                                       style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,

@@ -5,7 +5,7 @@ import { Attribute } from './Attribute';
 import { UserIngredient } from './UserIngredient';
 import { Recipe } from './Recipe';
 import { Event } from './Event';
-import { CustomIngredient } from './CustomIngredient';
+import { CustomIngredient } from './Custom_Ingredient';
 
 enum UserRole {
     USER = 'user',

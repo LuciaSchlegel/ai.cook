@@ -1,5 +1,5 @@
 import { Ingredient } from "../entities/Ingredient";
-import { CustomIngredient } from "../entities/CustomIngredient";
+import { CustomIngredient } from "../entities/Custom_Ingredient";
 import { BadRequestError, ConflictError } from "../types/AppError";
 import { IngredientRepository } from "../repositories/ingredient.repository";
 import { CustomIngredientRepository } from "../repositories/custom_ingredient.repository";

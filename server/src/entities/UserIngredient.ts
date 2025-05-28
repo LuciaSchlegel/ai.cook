@@ -2,7 +2,7 @@
 import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from 'typeorm';
 import { User } from './User';
 import { Ingredient } from './Ingredient';
-import { CustomIngredient } from './CustomIngredient';
+import { CustomIngredient } from './Custom_Ingredient';
 
 @Entity({ name: 'user_ingredients' })
 export class UserIngredient {

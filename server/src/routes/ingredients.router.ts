@@ -5,7 +5,6 @@ import {
     suggestGlobalIngredientsController,
     listCustomIngredientsController,
     createCustomIngredientController,
-    suggestCustomIngredientsController,
     getIngredientByIdController,
 } from "../controllers/ingredient.controller";
 

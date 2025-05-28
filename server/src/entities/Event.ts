@@ -1,7 +1,7 @@
 //Event.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable, CreateDateColumn } from 'typeorm';
-import { User } from './User';
-import { Recipe } from './Recipe';
+import { User } from './user';
+import { Recipe } from './recipe';
 
 @Entity({ name: 'events' })
 export class Event {

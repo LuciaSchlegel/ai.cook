@@ -1,4 +1,5 @@
 //home_screen.dart
+import 'package:ai_cook_project/widgets/ingredients_card.dart';
 import 'package:ai_cook_project/widgets/social_widget.dart';
 import 'package:ai_cook_project/widgets/weekly_card.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,8 @@ class HomeScreen extends StatelessWidget {
               ),
               SizedBox(height: size.height * 0.04),
               const SocialCarousel(),
+              SizedBox(height: size.height * 0.04),
+              const IngredientsCard(),
               SizedBox(height: size.height * 0.04),
             ],
           ),

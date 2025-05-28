@@ -159,8 +159,18 @@ class InnerCard extends StatelessWidget {
                 color: AppColors.black,
               ),
             ),
-            SizedBox(height: size.height * 0.01),
-            Divider(color: Colors.black, thickness: 1),
+            Container(
+              width: size.width * 0.8, // Width of the divider
+              height: 1,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromARGB(255, 21, 20, 20).withOpacity(0.5),
+                    Color.fromARGB(255, 21, 20, 20).withOpacity(0.5),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

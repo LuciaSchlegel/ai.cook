@@ -1,12 +1,12 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import { User } from '../entities/User';
-import { Subscription } from '../entities/Subscription';
+import { Subscription } from '../entities/subscription';
 import { Attribute } from '../entities/Attribute';
 import { UserIngredient } from '../entities/UserIngredient';
-import { Recipe } from '../entities/Recipe';
+import { Recipe } from '../entities/recipe';
 import { Event } from '../entities/Event';
 import { Ingredient } from '../entities/Ingredient';
+import { User } from '../entities/user';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',

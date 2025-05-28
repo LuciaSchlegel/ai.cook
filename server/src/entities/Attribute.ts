@@ -1,6 +1,6 @@
 //Attribute.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { User } from './User';
+import { User } from './user';
 
 @Entity({ name: 'attributes' })
 export class Attribute {

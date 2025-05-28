@@ -66,18 +66,33 @@ class _SocialCarouselState extends State<SocialCarousel> {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-          child: Text(
-            'my cooking\ncommunity',
-            style: TextStyle(
-              fontFamily: 'Casta',
-              fontSize: 32,
-              color: Colors.white,
-              height: 1.2,
-              letterSpacing: 0.5,
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'my',
+                style: TextStyle(
+                  fontFamily: 'Casta',
+                  fontSize: 42,
+                  color: Colors.white,
+                  height: 0.9,
+                  letterSpacing: 0.8,
+                ),
+              ),
+              Text(
+                'cooking community',
+                style: TextStyle(
+                  fontFamily: 'Casta',
+                  fontSize: 42,
+                  color: Colors.white,
+                  height: 0.9,
+                  letterSpacing: 0.8,
+                ),
+              ),
+            ],
           ),
         ),
-        SizedBox(height: 16),
+        SizedBox(height: 24),
         SizedBox(
           height: 220,
           child: PageView.builder(
@@ -138,7 +153,8 @@ class _SocialCarouselState extends State<SocialCarousel> {
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 24,
-                                      fontWeight: FontWeight.w600,
+                                      fontFamily: 'Times New Roman',
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                   Text(
@@ -146,6 +162,8 @@ class _SocialCarouselState extends State<SocialCarousel> {
                                     style: TextStyle(
                                       color: Colors.white.withOpacity(0.8),
                                       fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: 'Times New Roman',
                                     ),
                                   ),
                                 ],

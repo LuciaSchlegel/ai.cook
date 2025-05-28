@@ -8,14 +8,18 @@ import 'firebase_options.dart'; // generado por el CLI de Firebase
 import 'package:ai_cook_project/screens/first_screen.dart';
 import 'package:ai_cook_project/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:ai_cook_project/providers/search_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => FBAuthProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => FBAuthProvider()),
+        ChangeNotifierProvider(create: (_) => SearchProvider()),
+      ],
       child: const MyApp(),
     ),
   );
