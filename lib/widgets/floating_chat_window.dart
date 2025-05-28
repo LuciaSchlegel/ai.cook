@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/widgets/chat_widget.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
 
 class FloatingChatWindow extends StatefulWidget {
   final VoidCallback onClose;
@@ -31,6 +34,9 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
   static const double _minWindowHeight = 450.0;
   static const double _maxWindowHeight = 700.0;
   static const double _aspectRatio = 0.75; // height = width * 1.5
+
+  final GlobalKey<ChatWidgetState> _chatWidgetKey =
+      GlobalKey<ChatWidgetState>();
 
   @override
   void initState() {
@@ -73,9 +79,51 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
     super.dispose();
   }
 
-  void _handleSendMessage(String message) {
-    // TODO: Implement AI service integration
-    print('Message sent: $message');
+  void _handleSendMessage(String message) async {
+    try {
+      print('Attempting to send message to server: $message');
+      final response = await http
+          .post(
+            Uri.parse('http://172.20.10.14:3000/llm/talk'),
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode({'prompt': message}),
+          )
+          .timeout(
+            const Duration(seconds: 10),
+            onTimeout: () {
+              throw TimeoutException('Request timed out after 10 seconds');
+            },
+          );
+
+      print('Server response status code: ${response.statusCode}');
+      print('Server response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        final aiResponse = responseData['response'] as String;
+        if (_chatWidgetKey.currentState != null) {
+          _chatWidgetKey.currentState!.receiveMessage(aiResponse);
+        }
+      } else {
+        print('Failed to send message. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+        if (_chatWidgetKey.currentState != null) {
+          _chatWidgetKey.currentState!.receiveMessage(
+            'Sorry, I encountered an error while processing your message. Please try again.',
+          );
+        }
+      }
+    } catch (error) {
+      print('Error sending message: $error');
+      if (error is TimeoutException) {
+        print('Request timed out. Server might be unresponsive.');
+      }
+      if (_chatWidgetKey.currentState != null) {
+        _chatWidgetKey.currentState!.receiveMessage(
+          'Sorry, I encountered an error while processing your message. Please try again.',
+        );
+      }
+    }
   }
 
   Size _calculateWindowSize(BoxConstraints constraints) {
@@ -193,6 +241,7 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
                               _buildHeader(),
                               Expanded(
                                 child: ChatWidget(
+                                  key: _chatWidgetKey,
                                   onSendMessage: _handleSendMessage,
                                 ),
                               ),

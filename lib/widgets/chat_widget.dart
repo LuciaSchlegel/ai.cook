@@ -8,10 +8,10 @@ class ChatWidget extends StatefulWidget {
   const ChatWidget({super.key, required this.onSendMessage});
 
   @override
-  State<ChatWidget> createState() => _ChatWidgetState();
+  ChatWidgetState createState() => ChatWidgetState();
 }
 
-class _ChatWidgetState extends State<ChatWidget> {
+class ChatWidgetState extends State<ChatWidget> {
   final TextEditingController _controller = TextEditingController();
   final List<ChatMessage> _messages = [];
   final ScrollController _scrollController = ScrollController();
@@ -52,6 +52,24 @@ class _ChatWidgetState extends State<ChatWidget> {
     }
   }
 
+  void receiveMessage(String message) {
+    if (mounted) {
+      setState(() {
+        _isTyping = false;
+        _messages.add(ChatMessage(text: message, type: MessageType.bot));
+      });
+
+      // Scroll to bottom after receiving message
+      Future.delayed(const Duration(milliseconds: 50), () {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      });
+    }
+  }
+
   void _handleSubmitted(String text) {
     if (text.trim().isEmpty) return;
 
@@ -72,29 +90,6 @@ class _ChatWidgetState extends State<ChatWidget> {
 
     // Call the callback
     widget.onSendMessage(text);
-
-    // Simulate bot typing (remove this when integrating with real AI)
-    Future.delayed(const Duration(seconds: 1), () {
-      if (mounted) {
-        setState(() {
-          _isTyping = false;
-          _messages.add(
-            ChatMessage(
-              text: "This is a sample response. Replace with AI response.",
-              type: MessageType.bot,
-            ),
-          );
-        });
-        // Scroll to bottom again after bot response
-        Future.delayed(const Duration(milliseconds: 50), () {
-          _scrollController.animateTo(
-            _scrollController.position.maxScrollExtent,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
-          );
-        });
-      }
-    });
   }
 
   @override
