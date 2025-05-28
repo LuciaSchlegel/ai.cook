@@ -14,6 +14,8 @@ const initializeDatabase = async () => {
     try {
         await AppDataSource.initialize();
         console.log("Database connection established successfully.");
+        console.log("Registered Entities:", AppDataSource.options.entities);
+
     } catch (error) {
         console.error("Error establishing database connection:", error);
     }

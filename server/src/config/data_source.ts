@@ -7,15 +7,20 @@ import { UserIngredient } from '../entities/UserIngredient';
 import { Recipe } from '../entities/Recipe';
 import { Event } from '../entities/Event';
 import { Ingredient } from '../entities/Ingredient';
+import dotenv from 'dotenv';
+import { RecipeDennis } from '../entities/RecipeDennis';
+
+dotenv.config();
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
   host: 'localhost',
   port: 5432,
-  username: 'luciaschlegel',
-  password: '152509',
+  username: 'postgres',
+  password: process.env.DB_PASSWORD,
   database: 'aicook',
-  entities: [User, Subscription, Attribute, UserIngredient, Recipe, Event, Ingredient],
+  entities: [ RecipeDennis],
+  //User, Subscription, Attribute, UserIngredient, Recipe, Event, Ingredient,
   synchronize: true, // True solo para desarrollo (genera tablas automáticamente)
   logging: false,
 });
