@@ -16,7 +16,7 @@ export const AppDataSource = new DataSource({
   type: 'postgres',
   host: 'localhost',
   port: 5432,
-  username: 'postgres',
+  username: 'luciaschlegel',
   password: process.env.DB_PASSWORD,
   database: 'aicook',
   entities: [ RecipeDennis],
