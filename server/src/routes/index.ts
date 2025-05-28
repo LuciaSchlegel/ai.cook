@@ -6,6 +6,7 @@ import attributesRouter from "./attributes.router";
 import calendarRouter from "./calendar.router";
 import recipesRouter from "./recipes.router";
 import ingredientsRouter from "./ingredients.router";
+import llmRouter from "./llm.router"; 
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use("/attributes", attributesRouter);
 router.use("/calendar", calendarRouter);
 router.use("/ingredients", ingredientsRouter);
 router.use("/recipes", recipesRouter);
+router.use("/llm", llmRouter); // Assuming llm.router exports a default router
 
 export default router;
