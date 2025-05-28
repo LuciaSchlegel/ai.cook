@@ -1,6 +1,6 @@
 //Ingredient.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
-import { Recipe } from './recipe';
+import { Recipe } from './Recipe';
 
 
 @Entity({ name: 'ingredients' })

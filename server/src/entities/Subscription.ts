@@ -1,6 +1,6 @@
 //Subscription.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from 'typeorm';
-import { User } from './user';
+import { User } from './User';
 
 enum SubscriptionType {
     FREE = 'free',
