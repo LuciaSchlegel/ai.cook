@@ -1,10 +1,15 @@
 Got you bro 💥 Straight to the point. Here’s your ultra-clean doc:
 
 ⸻
+INGREDIENTS 
+	- GET "ingredients/initialize"
+		initializes basic ingredients from themealdb.com
+		HAS TO BE CALLED ONE AT APP STARTUP IF DB IS STILL IN SYNCHRONE MODE
+	- GET "ingredients/global"
+		returns a JSON of all ingredients
 
 
 # 🧠 LLM API
-
 ## POST /llm/talk
 - **Payload:**
 ```json
@@ -13,8 +18,6 @@ Got you bro 💥 Straight to the point. Here’s your ultra-clean doc:
 	•	Response:
 
 { "response": "Ein gutes veganes Rezept ist..." }
-
-
 ⸻
 
 ## POST /llm/generate
@@ -25,7 +28,3 @@ Got you bro 💥 Straight to the point. Here’s your ultra-clean doc:
 	•	Response:
 
 { "recipes": ["Vegane Suppe", "Tofu-Pfanne", "Kichererbsen-Salat"] }
-
----
-
-✅ That’s it. Routes, payloads, responses. No fluff.

@@ -15,7 +15,7 @@ export async function talk_to_llm(req: Request, res: Response) {
     const response = await talk_to_llm_service(prompt);
     res.json({ response });
   } catch (error) {
-    console.error("Fehler beim LLM-Call:", error);
+    console.error("Controller llm.controller Fehler beim LLM-Call:", error);
     res.status(500).json({ error: "Fehler beim LLM-Dienst." });
   }
 } 

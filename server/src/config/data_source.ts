@@ -10,15 +10,17 @@ import dotenv from 'dotenv';
 import { RecipeDennis } from '../entities/RecipeDennis';
 
 dotenv.config();
+console.log('DB_HOST:', process.env.DB_HOST);
+
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
-  host: 'localhost',
+  host: process.env.DB_HOST || 'localhost',
   port: 5432,
-  username: 'luciaschlegel',
-  password: process.env.DB_PASSWORD,
+  username: process.env.DB_USERNAME || 'postgres',
+  password: process.env.DB_PASSWORD ,
   database: 'aicook',
-  entities: [ RecipeDennis],
+  entities: [ RecipeDennis, Ingredient],
   //User, Subscription, Attribute, UserIngredient, Recipe, Event, Ingredient,
   synchronize: true, // True solo para desarrollo (genera tablas automáticamente)
   logging: false,
