@@ -14,7 +14,7 @@ import path from 'path';
 
 // Hauptfunktion
 export async function loadIngredientsFromLocalFile() {
-  const filePath = path.join(__dirname, '../../data/enriched_ingredients_from_meals.json');
+  const filePath = path.join(__dirname, '../../src/data/enriched_ingredients_from_meals.json');
 
   let raw;
   try {

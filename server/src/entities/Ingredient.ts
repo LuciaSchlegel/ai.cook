@@ -1,6 +1,7 @@
 //Ingredient.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
-import { Recipe } from './Recipe';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, ManyToOne } from 'typeorm';
+import { Tag } from './Tag';
+import { Category } from './Category';
 
 
 @Entity({ name: 'ingredients' })
@@ -11,14 +12,11 @@ export class Ingredient {
   @Column({ type: 'varchar', length: 255, unique: true })
   name!: string;
 
-  @Column({nullable: true, type: 'text'})
-  description?: string; // Descripción del ingrediente
+  @ManyToOne(() => Category, { nullable: true })
+  category?: Category;
 
-  @Column({ type: 'varchar', length: 100, nullable: true })
-  category?: string; // ej: 'verdura', 'carne', 'cereal'
-
-  @Column({ type: 'simple-array', nullable: true })
-  tags?: string[]; // ej: ['vegan', 'sin gluten', 'sin lactosa']
+  @ManyToMany(() => Tag, { nullable: true })
+  tags?: Tag[]; // ej: ['vegan', 'sin gluten', 'sin lactosa']
 
   @Column({nullable: true})
   isVegan?: boolean; // Indica si es apto para veganos
@@ -32,10 +30,26 @@ export class Ingredient {
   @Column({nullable: true})
   isLactoseFree?: boolean; // Indica si es apto para intolerantes a la lactosa
 
-  // Relación inversa: en qué recetas aparece este ingrediente
-  //@ManyToMany(() => Recipe, recipe => recipe.ingredients)
-  //recipes!: Recipe[];
-
   @Column({nullable: true})
   image?: string;
 }
+
+// Ingredient {
+//   title: string;
+//   category: Category;
+//   tags: Tag[];
+//   isVegan: boolean;
+//   isVegetarian: boolean;
+//   isGlutenFree: boolean;
+//   isLactoseFree: boolean;
+// }
+
+// Ingredient {
+//   title: potatoe;
+//   category: Vegetables;
+//   tags: ['healthy', 'carbs', 'low-calorie'];
+//   isVegan: true;
+//   isVegetarian: true;
+//   isGlutenFree: true;
+//   isLactoseFree: true;
+// }
