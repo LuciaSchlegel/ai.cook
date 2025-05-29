@@ -24,4 +24,5 @@ export const AppDataSource = new DataSource({
   //User, Subscription, Attribute, UserIngredient, Recipe, Event, Ingredient,
   synchronize: true, // True solo para desarrollo (genera tablas automáticamente)
   logging: false,
+  //dropSchema: true,  if you want to reset the db content 
 });

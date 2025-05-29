@@ -9,36 +9,8 @@ import {
     loadIngredientsFromLocalFile,
 } from "../services/ingredient.service";
 
-import { IngredientEnrichmentService } from "../services/enrich_ingredients_service";
 import { BadRequestError } from "../types/AppError";
 
-export async function enrichIngredientsController(req: Request, res: Response, next: NextFunction) {
-    try {
-        // Aquí podrías implementar la lógica para enriquecer ingredientes
-        // Por ejemplo, llamar a un servicio externo o procesar datos
-        IngredientEnrichmentService.enrichMissingIngredientInfo();
-
-        res.status(200).json({ message: "Ingredients enriched successfully." });
-    } catch (error) {
-        next(error);
-    }
-}
-
-export async function initializeIngredientsController(req: Request, res: Response, next: NextFunction) {
-    try {
-        const response = await loadIngredientsFromLocalFile();
-        res.status(200).json({
-            message: "Global ingredients initialized successfully.",
-        });
-    }
-    catch (error) {
-        if (error instanceof BadRequestError) {
-            res.status(400).json({ error: error.message });
-        } else {
-            next(error);
-        }
-    }
-}
 
 export async function listGlobalIngredientsController(req: Request, res: Response, next: NextFunction) {
     try {

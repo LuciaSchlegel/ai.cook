@@ -4,6 +4,7 @@ import cors from "cors";
 import router from "./routes";
 import { errorHandler } from "./utils/errorhandler";
 import { spawn } from "child_process"; // ✅ nur dieser
+import { loadIngredientsFromLocalFile } from "./services/ingredient.service";
 
 const app = express();
 
@@ -20,6 +21,15 @@ const initializeDatabase = async () => {
     console.error("Error establishing database connection:", error);
   }
 };
+
+const initializeIngredients = async () => {
+  try {
+    await loadIngredientsFromLocalFile();
+    console.log("Ingredients loaded from local file successfully.");
+  } catch (error) {
+    console.error("Error loading ingredients from local file:", error);
+  }
+}
 
 const initializeLLMmicroservice = async () => {
   const pythonProcess = spawn(
@@ -44,5 +54,5 @@ const initializeLLMmicroservice = async () => {
 
 app.use(errorHandler);
 
-export { initializeDatabase, initializeLLMmicroservice };
+export { initializeDatabase, initializeLLMmicroservice , initializeIngredients};
 export default app;
