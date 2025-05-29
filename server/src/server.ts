@@ -1,3 +1,4 @@
+// server.ts defines the server functionality 
 import { AppDataSource } from "./config/data_source";
 import express from "express";
 import cors from "cors";
@@ -6,11 +7,19 @@ import { errorHandler } from "./utils/errorhandler";
 import { spawn } from "child_process"; // ✅ nur dieser
 import { loadIngredientsFromLocalFile } from "./services/ingredient.service";
 
+
+// set up server
 const app = express();
 
+//allow cross-origin requests
 app.use(cors());
+// parse incoming requests with JSON payloads
 app.use(express.json());
+// include routes // offer routes to frontend 
 app.use(router);
+// error handling middleware
+app.use(errorHandler);
+
 
 const initializeDatabase = async () => {
   try {
@@ -51,8 +60,6 @@ const initializeLLMmicroservice = async () => {
     console.log(`[Python closed with code]: ${code}`);
   });
 };
-
-app.use(errorHandler);
 
 export { initializeDatabase, initializeLLMmicroservice , initializeIngredients};
 export default app;
