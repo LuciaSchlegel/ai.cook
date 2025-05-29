@@ -1,9 +1,12 @@
+import 'package:ai_cook_project/models/custom_ing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
+import 'package:ai_cook_project/models/unit.dart';
 import 'package:ai_cook_project/widgets/ingredient_form_dialog.dart';
 import 'package:ai_cook_project/providers/search_provider.dart';
+import 'package:ai_cook_project/widgets/dropdown_selector.dart';
 import 'package:provider/provider.dart';
 
 class CupboardScreen extends StatefulWidget {
@@ -15,59 +18,135 @@ class CupboardScreen extends StatefulWidget {
 
 class _CupboardScreenState extends State<CupboardScreen> {
   String _selectedCategory = 'All';
+  String _selectedProperty = 'All';
   final TextEditingController _searchController = TextEditingController();
 
-  // Hardcoded categories for now
-  final List<String> _categories = [
+  // Main categories for dropdown
+  final List<String> _mainCategories = [
     'All',
-    'Vegetables',
-    'Fruits',
+    'Fruits & Vegetables',
     'Meat',
-    'Dairy',
+    'Dairies',
     'Grains',
     'Spices',
     'Others',
   ];
 
+  // Properties for filter chips
+  final List<String> _properties = [
+    'All',
+    'Vegan',
+    'Non-dairy',
+    'Gluten-free',
+    'High-protein',
+    'Low-carb',
+    'Low-fat',
+  ];
+
   // Hardcoded ingredients for now
-  final List<Ingredient> _ingredients = [
-    Ingredient(
+  final List<UserIng> _ingredients = [
+    UserIng(
       id: 1,
-      name: 'Tomato',
-      category: 'Vegetables',
-      tags: ['red', 'fresh'],
-      recipes: [],
+      userId: 1,
+      ingredient: Ingredient(
+        id: 1,
+        name: 'Tomatoes',
+        category: 'Fruits & Vegetables',
+        tags: ['vegan', 'low-carb'],
+      ),
+      quantity: 1,
+      unit: Unit.kg,
     ),
-    Ingredient(
+    UserIng(
       id: 2,
-      name: 'Apple',
-      category: 'Fruits',
-      tags: ['fresh', 'sweet'],
-      recipes: [],
+      userId: 1,
+      ingredient: Ingredient(
+        id: 2,
+        name: 'Chicken',
+        category: 'Meat',
+        tags: ['low-fat', 'high-protein'],
+      ),
+      quantity: 1,
+      unit: Unit.kg,
     ),
-    Ingredient(
+    UserIng(
       id: 3,
-      name: 'Chicken Breast',
-      category: 'Meat',
-      tags: ['protein', 'lean'],
-      recipes: [],
+      userId: 1,
+      customIngredient: CustomIngredient(
+        id: 1,
+        name: 'Onions',
+        category: 'Fruits & Vegetables',
+        tags: ['healthy'],
+      ),
+      quantity: 500,
+      unit: Unit.g,
     ),
-    // Add more ingredients as needed
+    UserIng(
+      id: 4,
+      userId: 1,
+      ingredient: Ingredient(
+        id: 4,
+        name: 'Milk',
+        category: 'Dairies',
+        tags: ['healthy'],
+      ),
+      quantity: 500,
+      unit: Unit.ml,
+    ),
+    UserIng(
+      id: 5,
+      userId: 1,
+      ingredient: Ingredient(
+        id: 5,
+        name: 'Eggs',
+        category: 'Dairies',
+        tags: ['high-protein'],
+      ),
+      quantity: 12,
+      unit: Unit.unit,
+    ),
+    UserIng(
+      id: 6,
+      userId: 1,
+      ingredient: Ingredient(
+        id: 6,
+        name: 'Whole-grain Rice',
+        category: 'Grains',
+        tags: ['gluten-free', 'low-carb'],
+      ),
+      quantity: 1,
+      unit: Unit.unit,
+    ),
+    UserIng(
+      id: 7,
+      userId: 1,
+      ingredient: Ingredient(
+        id: 7,
+        name: 'Ginger',
+        category: 'Spices',
+        tags: ['healthy'],
+      ),
+      quantity: 100,
+      unit: Unit.g,
+    ),
   ];
 
   // User's ingredients with quantities
   final Map<int, UserIng> _userIngredients = {};
 
-  List<Ingredient> get _filteredIngredients {
+  List<UserIng> get _filteredIngredients {
     final searchProvider = Provider.of<SearchProvider>(context);
     return _ingredients.where((ingredient) {
       final matchesCategory =
           _selectedCategory == 'All' ||
           ingredient.category == _selectedCategory;
+      final matchesProperty =
+          _selectedProperty == 'All' ||
+          (ingredient.tags?.contains(_selectedProperty.toLowerCase()) ?? false);
       final matchesSearch = ingredient.name.toLowerCase().contains(
         searchProvider.searchController.text.toLowerCase(),
       );
-      return matchesCategory && matchesSearch;
+      return matchesCategory && matchesProperty && matchesSearch;
     }).toList();
   }
 
@@ -77,20 +156,22 @@ class _CupboardScreenState extends State<CupboardScreen> {
     super.dispose();
   }
 
-  void _showIngredientDialog([Ingredient? ingredient]) {
+  void _showIngredientDialog([UserIng? userIng]) {
     showModalBottomSheet(
       context: context,
+      backgroundColor: AppColors.background,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
       builder:
           (context) => IngredientFormDialog(
-            ingredient: ingredient,
-            categories: _categories,
+            ingredient: userIng?.ingredient,
+            customIngredient: userIng?.customIngredient,
+            quantity: userIng?.quantity ?? 0,
+            unit: userIng?.unit,
+            categories: _mainCategories,
             onSave: (name, category, tags, quantity, unit) {
               // For now, we'll just update the UI state
-              // In a real app, this would be handled by a state management solution
               setState(() {
-                if (ingredient == null) {
+                if (userIng == null) {
                   // Add new ingredient
                   final newId = _ingredients.length + 1;
                   final newIngredient = Ingredient(
@@ -98,36 +179,55 @@ class _CupboardScreenState extends State<CupboardScreen> {
                     name: name,
                     category: category,
                     tags: tags,
-                    recipes: [],
                   );
-                  _ingredients.add(newIngredient);
-                  _userIngredients[newId] = UserIng(
+
+                  final newUserIng = UserIng(
                     id: newId,
                     userId: 1, // This would come from auth
-                    ingredientId: newId,
+                    ingredient: newIngredient,
                     quantity: quantity,
                     unit: unit,
                   );
+
+                  _ingredients.add(newUserIng);
+                  _userIngredients[newId] = newUserIng;
                 } else {
                   // Update existing ingredient
                   final index = _ingredients.indexWhere(
-                    (i) => i.id == ingredient.id,
+                    (i) => i.id == userIng.id,
                   );
                   if (index != -1) {
-                    _ingredients[index] = Ingredient(
-                      id: ingredient.id,
-                      name: name,
-                      category: category,
-                      tags: tags,
-                      recipes: ingredient.recipes,
-                    );
-                    _userIngredients[ingredient.id] = UserIng(
-                      id: ingredient.id,
-                      userId: 1, // This would come from auth
-                      ingredientId: ingredient.id,
+                    final updatedIngredient =
+                        userIng.ingredient != null
+                            ? Ingredient(
+                              id: userIng.ingredient!.id,
+                              name: name,
+                              category: category,
+                              tags: tags,
+                            )
+                            : null;
+
+                    final updatedCustomIngredient =
+                        userIng.customIngredient != null
+                            ? CustomIngredient(
+                              id: userIng.customIngredient!.id,
+                              name: name,
+                              category: category,
+                              tags: tags,
+                            )
+                            : null;
+
+                    final updatedUserIng = UserIng(
+                      id: userIng.id,
+                      userId: userIng.userId,
+                      ingredient: updatedIngredient,
+                      customIngredient: updatedCustomIngredient,
                       quantity: quantity,
                       unit: unit,
                     );
+
+                    _ingredients[index] = updatedUserIng;
+                    _userIngredients[userIng.id] = updatedUserIng;
                   }
                 }
               });
@@ -168,157 +268,140 @@ class _CupboardScreenState extends State<CupboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final horizontalPadding = screenWidth * 0.05;
+
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Column(
-            children: [
-              // Categories
-              SizedBox(
-                height: 50,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _categories.length,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.05,
-                  ),
-                  itemBuilder: (context, index) {
-                    final category = _categories[index];
-                    final isSelected = category == _selectedCategory;
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: FilterChip(
-                        label: Text(category),
-                        selected: isSelected,
-                        onSelected: (selected) {
-                          setState(() => _selectedCategory = category);
-                        },
-                        backgroundColor: AppColors.white.withOpacity(0.1),
-                        selectedColor: AppColors.orange,
-                        checkmarkColor: AppColors.white,
-                        labelStyle: TextStyle(
-                          color:
-                              isSelected
-                                  ? AppColors.white
-                                  : AppColors.white.withOpacity(0.7),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Category Dropdown
+            Padding(
+              padding: EdgeInsets.fromLTRB(
+                horizontalPadding,
+                0, // reduced top padding
+                horizontalPadding,
+                screenHeight * 0.02,
               ),
-              // Ingredients Grid
-              Expanded(
-                child: GridView.builder(
-                  padding: EdgeInsets.all(
-                    MediaQuery.of(context).size.width * 0.05,
-                  ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1.5,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                  ),
-                  itemCount: _filteredIngredients.length,
-                  itemBuilder: (context, index) {
-                    final ingredient = _filteredIngredients[index];
-                    final userIng = _userIngredients[ingredient.id];
-                    return Card(
-                      color: AppColors.white.withOpacity(0.1),
+              child: DropdownSelector(
+                value: _selectedCategory,
+                items: _mainCategories,
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() => _selectedCategory = value);
+                  }
+                },
+              ),
+            ),
+            // Property Chips
+            Container(
+              height: 50,
+              margin: EdgeInsets.only(bottom: screenHeight * 0.02),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: _properties.length,
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                itemBuilder: (context, index) {
+                  final property = _properties[index];
+                  final isSelected = property == _selectedProperty;
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: FilterChip(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                      ),
+                      label: Text(property),
+                      selected: isSelected,
+                      onSelected: (selected) {
+                        setState(() => _selectedProperty = property);
+                      },
+                      backgroundColor: AppColors.background,
+                      selectedColor: AppColors.mutedGreen,
+                      checkmarkColor: AppColors.white,
+                      labelStyle: TextStyle(
+                        color:
+                            isSelected
+                                ? AppColors.white
+                                : AppColors.white.withOpacity(0.8),
+                      ),
+                      side: BorderSide(color: AppColors.mutedGreen),
+                    ),
+                  );
+                },
+              ),
+            ),
+            // Ingredients List
+            Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                itemCount: _filteredIngredients.length,
+                itemBuilder: (context, index) {
+                  final ingredient = _filteredIngredients[index];
+                  final userIng = _userIngredients[ingredient.id];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      color: AppColors.mutedGreen.withOpacity(0.8),
                       child: InkWell(
                         onTap: () => _showIngredientDialog(ingredient),
-                        child: Stack(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(12),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    ingredient.name,
-                                    style: TextStyle(
-                                      color: AppColors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                        borderRadius: BorderRadius.circular(16),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  ingredient.name,
+                                  style: const TextStyle(
+                                    color: AppColors.white,
+                                    fontFamily: 'Times New Roman',
+                                    fontSize: 16,
+                                    letterSpacing: 0.5,
+                                    fontWeight: FontWeight.w500,
                                   ),
-                                  const SizedBox(height: 4),
-                                  if (userIng != null)
-                                    Text(
-                                      '${userIng.quantity} ${userIng.unit ?? 'units'}',
-                                      style: TextStyle(
-                                        color: AppColors.orange,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  Text(
-                                    ingredient.category ?? 'Uncategorized',
-                                    style: TextStyle(
-                                      color: AppColors.white.withOpacity(0.7),
-                                      fontSize: 12,
-                                    ),
+                                ),
+                              ),
+                              if (userIng != null) ...[
+                                const SizedBox(width: 8),
+                                Text(
+                                  '${userIng.quantity} ${userIng.unit}',
+                                  style: TextStyle(
+                                    color: AppColors.white.withOpacity(0.8),
+                                    fontFamily: 'Times New Roman',
+                                    fontSize: 14,
                                   ),
-                                  if (ingredient.tags != null &&
-                                      ingredient.tags!.isNotEmpty)
-                                    Wrap(
-                                      spacing: 4,
-                                      children:
-                                          ingredient.tags!
-                                              .map(
-                                                (tag) => Chip(
-                                                  label: Text(
-                                                    tag,
-                                                    style: const TextStyle(
-                                                      fontSize: 10,
-                                                    ),
-                                                  ),
-                                                  backgroundColor: AppColors
-                                                      .orange
-                                                      .withOpacity(0.3),
-                                                  labelStyle: TextStyle(
-                                                    color: AppColors.white,
-                                                  ),
-                                                  padding: EdgeInsets.zero,
-                                                  materialTapTargetSize:
-                                                      MaterialTapTargetSize
-                                                          .shrinkWrap,
-                                                ),
-                                              )
-                                              .toList(),
-                                    ),
-                                ],
-                              ),
-                            ),
-                            Positioned(
-                              top: 8,
-                              right: 8,
-                              child: IconButton(
-                                icon: const Icon(Icons.delete_outline),
-                                color: Colors.red.withOpacity(0.7),
-                                onPressed: () => _deleteIngredient(ingredient),
-                              ),
-                            ),
-                          ],
+                                ),
+                              ],
+                            ],
+                          ),
                         ),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
       floatingActionButton: Padding(
         padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).padding.bottom + 48,
+          bottom: MediaQuery.of(context).padding.bottom + 16,
         ),
         child: FloatingActionButton(
           onPressed: () => _showIngredientDialog(),
-          backgroundColor: AppColors.orange,
-          child: const Icon(Icons.add),
+          backgroundColor: AppColors.button.withOpacity(0.6),
+          elevation: 2,
+          shape: const CircleBorder(),
+          child: const Icon(Icons.add, color: AppColors.white),
         ),
       ),
     );

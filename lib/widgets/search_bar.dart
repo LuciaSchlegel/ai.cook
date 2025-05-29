@@ -99,7 +99,7 @@ class _CustomSearchBarState extends State<CustomSearchBar>
                 children: [
                   Icon(
                     Icons.search_rounded,
-                    color: AppColors.orange.withOpacity(0.85),
+                    color: AppColors.button.withOpacity(0.85),
                     size: isSmallScreen ? 20 : 24,
                   ),
                   const SizedBox(width: 8),

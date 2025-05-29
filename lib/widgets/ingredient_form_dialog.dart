@@ -1,22 +1,31 @@
+import 'package:ai_cook_project/models/custom_ing_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
+import 'package:ai_cook_project/models/unit.dart';
 
 class IngredientFormDialog extends StatefulWidget {
   final Ingredient? ingredient;
+  final CustomIngredient? customIngredient;
+  final int quantity;
+  final Unit? unit;
   final List<String> categories;
   final Function(
     String name,
     String category,
     List<String> tags,
     int quantity,
-    String unit,
+    Unit unit,
   )
   onSave;
 
   const IngredientFormDialog({
     super.key,
     this.ingredient,
+    this.customIngredient,
+    this.quantity = 1,
+    this.unit,
     required this.categories,
     required this.onSave,
   });
@@ -30,31 +39,29 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
   late TextEditingController _nameController;
   late TextEditingController _tagsController;
   late TextEditingController _quantityController;
-  String _selectedCategory = '';
-  String _selectedUnit = 'units';
-
-  final List<String> _units = [
-    'units',
-    'g',
-    'kg',
-    'ml',
-    'l',
-    'cups',
-    'tbsp',
-    'tsp',
-  ];
+  late String _selectedCategory;
+  late Unit _selectedUnit;
 
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(
-      text: widget.ingredient?.name ?? '',
+      text: widget.ingredient?.name ?? widget.customIngredient?.name ?? '',
     );
     _tagsController = TextEditingController(
-      text: widget.ingredient?.tags?.join(', ') ?? '',
+      text:
+          widget.ingredient?.tags?.join(', ') ??
+          widget.customIngredient?.tags?.join(', ') ??
+          '',
     );
-    _quantityController = TextEditingController(text: '1');
-    _selectedCategory = widget.ingredient?.category ?? widget.categories[1];
+    _quantityController = TextEditingController(
+      text: widget.quantity.toString(),
+    );
+    _selectedCategory =
+        widget.ingredient?.category ??
+        widget.customIngredient?.category ??
+        widget.categories.first;
+    _selectedUnit = widget.unit ?? Unit.unit;
   }
 
   @override
@@ -76,170 +83,381 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-        top: 20,
-        left: 20,
-        right: 20,
+      padding: EdgeInsets.fromLTRB(
+        16,
+        8,
+        16,
+        MediaQuery.of(context).viewInsets.bottom + 16,
       ),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              widget.ingredient == null ? 'Add Ingredient' : 'Edit Ingredient',
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
+      decoration: BoxDecoration(
+        color: CupertinoColors.systemGrey6.withOpacity(1),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: 12),
+          Text(
+            widget.ingredient == null ? 'Add Ingredient' : 'Edit Ingredient',
+            style: TextStyle(
+              fontSize: 20,
+              fontFamily: 'Times New Roman',
+              color: AppColors.black,
             ),
-            const SizedBox(height: 20),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20),
 
-            // Name field
-            TextFormField(
-              controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Name',
-                border: OutlineInputBorder(),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a name';
-                }
-                return null;
-              },
+          // Name field
+          CupertinoTextField(
+            controller: _nameController,
+            placeholder: 'Name',
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            placeholderStyle: TextStyle(
+              color: CupertinoColors.systemGrey.resolveFrom(context),
+              fontSize: 16,
             ),
-            const SizedBox(height: 16),
+            style: TextStyle(color: AppColors.black, fontSize: 16),
+            decoration: BoxDecoration(
+              color: CupertinoColors.systemBackground.resolveFrom(context),
+              border: Border.all(color: CupertinoColors.systemGrey3),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            cursorColor: AppColors.mutedGreen,
+          ),
+          const SizedBox(height: 16),
 
-            // Category dropdown
-            DropdownButtonFormField<String>(
-              value: _selectedCategory,
-              decoration: const InputDecoration(
-                labelText: 'Category',
-                border: OutlineInputBorder(),
-              ),
-              items:
-                  widget.categories
-                      .where((category) => category != 'All')
-                      .map(
-                        (category) => DropdownMenuItem(
-                          value: category,
-                          child: Text(category),
+          // Category dropdown
+          Container(
+            decoration: BoxDecoration(
+              color: CupertinoColors.systemBackground.resolveFrom(context),
+              border: Border.all(color: CupertinoColors.systemGrey3),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: CupertinoButton(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              onPressed: () {
+                showCupertinoModalPopup(
+                  context: context,
+                  builder:
+                      (BuildContext context) => Container(
+                        height: 216, // Standard iOS picker height
+                        padding: const EdgeInsets.only(top: 6.0),
+                        margin: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom,
                         ),
-                      )
-                      .toList(),
-              onChanged: (value) {
-                if (value != null) {
-                  setState(() => _selectedCategory = value);
-                }
+                        color: CupertinoColors.systemBackground.resolveFrom(
+                          context,
+                        ),
+                        child: SafeArea(
+                          top: false,
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 44,
+                                decoration: BoxDecoration(
+                                  color: CupertinoColors.systemGrey6
+                                      .resolveFrom(context),
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: CupertinoColors.systemGrey4,
+                                      width: 0.5,
+                                    ),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CupertinoButton(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 12,
+                                      ),
+                                      child: Text(
+                                        'Cancel',
+                                        style: TextStyle(
+                                          color: AppColors.mutedGreen,
+                                        ),
+                                      ),
+                                      onPressed:
+                                          () => Navigator.of(context).pop(),
+                                    ),
+                                    CupertinoButton(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 12,
+                                      ),
+                                      child: Text(
+                                        'Done',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.mutedGreen,
+                                        ),
+                                      ),
+                                      onPressed:
+                                          () => Navigator.of(context).pop(),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: CupertinoPicker(
+                                  magnification: 1.22,
+                                  squeeze: 1.2,
+                                  useMagnifier: true,
+                                  itemExtent: 32.0,
+                                  scrollController: FixedExtentScrollController(
+                                    initialItem: widget.categories.indexOf(
+                                      _selectedCategory,
+                                    ),
+                                  ),
+                                  onSelectedItemChanged: (int selectedItem) {
+                                    setState(() {
+                                      _selectedCategory =
+                                          widget.categories[selectedItem];
+                                    });
+                                  },
+                                  children:
+                                      widget.categories
+                                          .map((category) => Text(category))
+                                          .toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                );
               },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please select a category';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 16),
-
-            // Tags field
-            TextFormField(
-              controller: _tagsController,
-              decoration: const InputDecoration(
-                labelText: 'Tags (comma-separated)',
-                border: OutlineInputBorder(),
-                hintText: 'e.g. fresh, organic, spicy',
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    _selectedCategory,
+                    style: TextStyle(color: AppColors.black, fontSize: 16),
+                  ),
+                  Icon(
+                    CupertinoIcons.chevron_down,
+                    color: AppColors.black,
+                    size: 20,
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 16),
+          ),
+          const SizedBox(height: 16),
 
-            // Quantity and unit row
-            Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: TextFormField(
-                    controller: _quantityController,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Quantity',
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Required';
-                      }
-                      if (int.tryParse(value) == null) {
-                        return 'Invalid number';
-                      }
-                      return null;
-                    },
+          // Tags field
+          CupertinoTextField(
+            controller: _tagsController,
+            placeholder: 'Tags (comma-separated)',
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            placeholderStyle: TextStyle(
+              color: CupertinoColors.systemGrey.resolveFrom(context),
+              fontSize: 16,
+            ),
+            style: TextStyle(color: AppColors.black, fontSize: 16),
+            decoration: BoxDecoration(
+              color: CupertinoColors.systemBackground.resolveFrom(context),
+              border: Border.all(color: CupertinoColors.systemGrey3),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            cursorColor: AppColors.mutedGreen,
+          ),
+          const SizedBox(height: 16),
+
+          // Quantity and unit row
+          Row(
+            children: [
+              Expanded(
+                child: CupertinoTextField(
+                  controller: _quantityController,
+                  keyboardType: TextInputType.number,
+                  placeholder: 'Quantity',
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  placeholderStyle: TextStyle(
+                    color: CupertinoColors.systemGrey.resolveFrom(context),
+                    fontSize: 16,
                   ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  flex: 3,
-                  child: DropdownButtonFormField<String>(
-                    value: _selectedUnit,
-                    decoration: const InputDecoration(
-                      labelText: 'Unit',
-                      border: OutlineInputBorder(),
+                  style: TextStyle(color: AppColors.black, fontSize: 16),
+                  decoration: BoxDecoration(
+                    color: CupertinoColors.systemBackground.resolveFrom(
+                      context,
                     ),
-                    items:
-                        _units
-                            .map(
-                              (unit) => DropdownMenuItem(
-                                value: unit,
-                                child: Text(unit),
+                    border: Border.all(color: CupertinoColors.systemGrey3),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  cursorColor: AppColors.mutedGreen,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: CupertinoColors.systemBackground.resolveFrom(
+                      context,
+                    ),
+                    border: Border.all(color: CupertinoColors.systemGrey3),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: CupertinoButton(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    onPressed: () {
+                      showCupertinoModalPopup(
+                        context: context,
+                        builder:
+                            (BuildContext context) => Container(
+                              height: 216, // Standard iOS picker height
+                              padding: const EdgeInsets.only(top: 6.0),
+                              margin: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).viewInsets.bottom,
                               ),
-                            )
-                            .toList(),
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() => _selectedUnit = value);
-                      }
-                    },
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-
-            // Buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancel'),
-                ),
-                const SizedBox(width: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      widget.onSave(
-                        _nameController.text,
-                        _selectedCategory,
-                        _parseTags(_tagsController.text),
-                        int.parse(_quantityController.text),
-                        _selectedUnit,
+                              color: CupertinoColors.systemBackground
+                                  .resolveFrom(context),
+                              child: SafeArea(
+                                top: false,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: 44,
+                                      decoration: BoxDecoration(
+                                        color: CupertinoColors.systemGrey6
+                                            .resolveFrom(context),
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: CupertinoColors.systemGrey4,
+                                            width: 0.5,
+                                          ),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          CupertinoButton(
+                                            padding: EdgeInsets.zero,
+                                            child: Text(
+                                              'Cancel',
+                                              style: TextStyle(
+                                                color: AppColors.mutedGreen,
+                                              ),
+                                            ),
+                                            onPressed:
+                                                () =>
+                                                    Navigator.of(context).pop(),
+                                          ),
+                                          CupertinoButton(
+                                            padding: EdgeInsets.zero,
+                                            child: Text(
+                                              'Done',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                color: AppColors.mutedGreen,
+                                              ),
+                                            ),
+                                            onPressed:
+                                                () =>
+                                                    Navigator.of(context).pop(),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: CupertinoPicker(
+                                        magnification: 1.22,
+                                        squeeze: 1.2,
+                                        useMagnifier: true,
+                                        itemExtent: 32.0,
+                                        scrollController:
+                                            FixedExtentScrollController(
+                                              initialItem: Unit.values.indexOf(
+                                                _selectedUnit,
+                                              ),
+                                            ),
+                                        onSelectedItemChanged: (
+                                          int selectedItem,
+                                        ) {
+                                          setState(() {
+                                            _selectedUnit =
+                                                Unit.values[selectedItem];
+                                          });
+                                        },
+                                        children:
+                                            Unit.values
+                                                .map((unit) => Text(unit.label))
+                                                .toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                       );
-                      Navigator.pop(context);
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.orange,
-                  ),
-                  child: Text(
-                    widget.ingredient == null ? 'Add' : 'Save',
-                    style: const TextStyle(color: Colors.white),
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          _selectedUnit.label,
+                          style: TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Icon(
+                          CupertinoIcons.chevron_down,
+                          color: AppColors.black,
+                          size: 20,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 16),
-          ],
-        ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+
+          // Buttons
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('Cancel', style: TextStyle(color: AppColors.black)),
+              ),
+              const SizedBox(width: 16),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    widget.onSave(
+                      _nameController.text,
+                      _selectedCategory,
+                      _parseTags(_tagsController.text),
+                      int.parse(_quantityController.text),
+                      _selectedUnit,
+                    );
+                    Navigator.pop(context);
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.button,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                child: Text(
+                  widget.ingredient == null ? 'Add' : 'Save',
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+        ],
       ),
     );
   }

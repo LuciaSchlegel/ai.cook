@@ -24,7 +24,7 @@ class User {
   final Subscription subscription;
   final List<Attribute> attributes;
   final List<UserIng> userIngredients;
-  final List<CustomIng> customIngredients;
+  final List<CustomIngredient> customIngredients;
   final List<Recipe> recipes;
   final List<Event> events;
 

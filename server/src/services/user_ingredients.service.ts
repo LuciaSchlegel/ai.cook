@@ -1,4 +1,4 @@
-import { UserIngredient } from "../entities/UserIngredient";
+import { Unit, UserIngredient } from "../entities/UserIngredient";
 import { UserRepository } from "../repositories/user.repository";
 import { IngredientRepository } from "../repositories/ingredient.repository";
 import { CustomIngredientRepository } from "../repositories/custom_ingredient.repository";
@@ -49,7 +49,7 @@ export async function addUserIngredientService({
     ingredient,
     customIngredient,
     quantity: quantity || 1,
-    unit
+    unit: unit as Unit
   });
 
   return await UserIngredientRepository.save(userIngredient);

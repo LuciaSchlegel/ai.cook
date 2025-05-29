@@ -4,6 +4,14 @@ import { User } from './User';
 import { Ingredient } from './Ingredient';
 import { CustomIngredient } from './Custom_Ingredient';
 
+export enum Unit {
+  KG = 'kg',
+  G = 'g',
+  L = 'l',
+  ML = 'ml',
+  UNIT = 'unit',
+}
+
 @Entity({ name: 'user_ingredients' })
 export class UserIngredient {
   @PrimaryGeneratedColumn()
@@ -22,5 +30,5 @@ export class UserIngredient {
   quantity!: number;
 
   @Column({ nullable: true })
-  unit?: string;
+  unit?: Unit;
 }
