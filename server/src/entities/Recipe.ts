@@ -19,9 +19,9 @@ export class Recipe {
   creator?: User;
 
   // Relación: ingredientes de la receta (ManyToMany)
-  @ManyToMany(() => Ingredient, ingredient => ingredient.recipes, { cascade: true })
-  @JoinTable()
-  ingredients!: Ingredient[];
+  //@ManyToMany(() => Ingredient, ingredient => ingredient.recipes, { cascade: true })
+  //@JoinTable()
+  //ingredients!: Ingredient[];
 
   @Column('simple-array', { nullable: true })
   steps?: string[];

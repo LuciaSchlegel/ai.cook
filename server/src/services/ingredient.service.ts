@@ -3,8 +3,56 @@ import { CustomIngredient } from "../entities/Custom_Ingredient";
 import { BadRequestError, ConflictError } from "../types/AppError";
 import { IngredientRepository } from "../repositories/ingredient.repository";
 import { CustomIngredientRepository } from "../repositories/custom_ingredient.repository";
+import { MealDBIngredient } from "../types/ingredients.types";
+import fs from 'fs';
+import path from 'path';
 
 // --- INGREDIENTES GLOBALES ---
+// global ingredients - standard ingredients - here getting from an api and saving them in the db
+// the load ingredients is called on client startup -> gets basic ingredients 
+// calls parseAndSaveIngredients to parse the JSON to Objects and save them in the db
+
+// Hauptfunktion
+export async function loadIngredientsFromLocalFile() {
+  const filePath = path.join(__dirname, '../../data/enriched_ingredients_from_meals.json');
+
+  let raw;
+  try {
+    raw = fs.readFileSync(filePath, 'utf-8');
+  } catch (err) {
+    console.error('❌ Datei nicht gefunden oder lesbar:', err);
+    return;
+  }
+
+  let ingredientsJson;
+  try {
+    ingredientsJson = JSON.parse(raw);
+  } catch (err) {
+    console.error('❌ JSON-Parsing fehlgeschlagen:', err);
+    return;
+  }
+
+  const ingredients: Ingredient[] = ingredientsJson.map((item: any) => {
+    const ingredient = new Ingredient();
+    ingredient.name = item.strIngredient;
+    ingredient.description = item.strDescription || null;
+    ingredient.category = item.strType || null;
+    ingredient.image = `https://www.themealdb.com/images/ingredients/${encodeURIComponent(item.strIngredient)}.png`;
+    ingredient.isVegan = item.isVegan ?? false;
+    ingredient.isVegetarian = item.isVegetarian ?? false;
+    ingredient.isGlutenFree = item.isGlutenFree ?? false;
+    ingredient.isLactoseFree = item.isLactoseFree ?? false;
+    return ingredient;
+  });
+
+  try {
+    await IngredientRepository.save(ingredients);
+    console.log(`✅ ${ingredients.length} Zutaten wurden erfolgreich gespeichert.`);
+  } catch (err) {
+    console.error('❌ Fehler beim Speichern in die DB:', err);
+  }
+}
+
 
 export async function listGlobalIngredientsService() {
   return await IngredientRepository.find();
