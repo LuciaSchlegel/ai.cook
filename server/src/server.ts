@@ -41,12 +41,14 @@ const initializeIngredients = async () => {
 }
 
 const initializeLLMmicroservice = async () => {
-  const pythonProcess = spawn(
-    "./llm_microservice/venv/bin/python",
-    ["llm_microservice/main.py"]
-  );
+  const isWindows = process.platform === "win32";
+  const pythonPath = isWindows
+    ? "./llm_microservice/venv/Scripts/python.exe"
+    : "./llm_microservice/venv/bin/python";
 
   console.log("LLM microservice initialized.");
+
+  const pythonProcess = spawn(pythonPath, ["llm_microservice/main.py"]);
 
   pythonProcess.stdout.on("data", (data) => {
     console.log(`[Python stdout]: ${data}`);
