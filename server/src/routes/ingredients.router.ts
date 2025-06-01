@@ -6,16 +6,11 @@ import {
     listCustomIngredientsController,
     createCustomIngredientController,
     getIngredientByIdController,
-    initializeIngredientsController,
-    enrichIngredientsController,
 } from "../controllers/ingredient.controller";
 
 
 
 const ingredientsRouter = Router();
-
-ingredientsRouter.get("/initialize", initializeIngredientsController );
-ingredientsRouter.get("/enrich", enrichIngredientsController)
 
 ingredientsRouter.get("/global", listGlobalIngredientsController);
 ingredientsRouter.post("/global", createGlobalIngredientController);

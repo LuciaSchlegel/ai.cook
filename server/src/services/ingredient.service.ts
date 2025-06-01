@@ -14,6 +14,11 @@ import path from 'path';
 
 // Hauptfunktion
 export async function loadIngredientsFromLocalFile() {
+  const count = await IngredientRepository.count();
+  if (count > 0) {
+    console.log("🔁 Zutaten bereits in DB, Initialisierung übersprungen.");
+    return;
+  }
   const filePath = path.join(__dirname, '../../src/data/enriched_ingredients_from_meals.json');
 
   let raw;

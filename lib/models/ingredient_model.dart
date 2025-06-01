@@ -1,5 +1,3 @@
-import 'package:ai_cook_project/models/recipe_model.dart';
-
 class Ingredient {
   final int id;
   final String name;
