@@ -19,7 +19,7 @@ class AiButton extends StatelessWidget {
         onPressed: onPressed,
         backgroundColor:
             isActive
-                ? const Color.fromARGB(255, 125, 68, 30)
+                ? const Color.fromARGB(255, 139, 76, 33)
                 : AppColors.orange,
         elevation: isActive ? 2 : 6,
         shape: const CircleBorder(),

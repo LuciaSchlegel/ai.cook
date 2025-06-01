@@ -1,13 +1,14 @@
 import 'package:ai_cook_project/models/custom_ing_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/models/unit.dart';
-import 'package:ai_cook_project/widgets/ingredient_form_dialog.dart';
 import 'package:ai_cook_project/providers/search_provider.dart';
 import 'package:ai_cook_project/widgets/dropdown_selector.dart';
 import 'package:provider/provider.dart';
+import 'package:ai_cook_project/dialogs/ingredient_dialogs.dart';
 
 class CupboardScreen extends StatefulWidget {
   const CupboardScreen({super.key});
@@ -73,7 +74,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
       id: 3,
       userId: 1,
       customIngredient: CustomIngredient(
-        id: 1,
+        id: 3,
         name: 'Onions',
         category: 'Fruits & Vegetables',
         tags: ['healthy'],
@@ -157,112 +158,42 @@ class _CupboardScreenState extends State<CupboardScreen> {
   }
 
   void _showIngredientDialog([UserIng? userIng]) {
-    showModalBottomSheet(
+    IngredientDialogs.showIngredientDialog(
       context: context,
-      backgroundColor: AppColors.background,
-      isScrollControlled: true,
-      builder:
-          (context) => IngredientFormDialog(
-            ingredient: userIng?.ingredient,
-            customIngredient: userIng?.customIngredient,
-            quantity: userIng?.quantity ?? 0,
-            unit: userIng?.unit,
-            categories: _mainCategories,
-            onSave: (name, category, tags, quantity, unit) {
-              // For now, we'll just update the UI state
-              setState(() {
-                if (userIng == null) {
-                  // Add new ingredient
-                  final newId = _ingredients.length + 1;
-                  final newIngredient = Ingredient(
-                    id: newId,
-                    name: name,
-                    category: category,
-                    tags: tags,
-                  );
-
-                  final newUserIng = UserIng(
-                    id: newId,
-                    userId: 1, // This would come from auth
-                    ingredient: newIngredient,
-                    quantity: quantity,
-                    unit: unit,
-                  );
-
-                  _ingredients.add(newUserIng);
-                  _userIngredients[newId] = newUserIng;
-                } else {
-                  // Update existing ingredient
-                  final index = _ingredients.indexWhere(
-                    (i) => i.id == userIng.id,
-                  );
-                  if (index != -1) {
-                    final updatedIngredient =
-                        userIng.ingredient != null
-                            ? Ingredient(
-                              id: userIng.ingredient!.id,
-                              name: name,
-                              category: category,
-                              tags: tags,
-                            )
-                            : null;
-
-                    final updatedCustomIngredient =
-                        userIng.customIngredient != null
-                            ? CustomIngredient(
-                              id: userIng.customIngredient!.id,
-                              name: name,
-                              category: category,
-                              tags: tags,
-                            )
-                            : null;
-
-                    final updatedUserIng = UserIng(
-                      id: userIng.id,
-                      userId: userIng.userId,
-                      ingredient: updatedIngredient,
-                      customIngredient: updatedCustomIngredient,
-                      quantity: quantity,
-                      unit: unit,
-                    );
-
-                    _ingredients[index] = updatedUserIng;
-                    _userIngredients[userIng.id] = updatedUserIng;
-                  }
-                }
-              });
-            },
-          ),
-    );
-  }
-
-  void _deleteIngredient(Ingredient ingredient) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text('Delete Ingredient'),
-            content: Text(
-              'Are you sure you want to delete ${ingredient.name}?',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    _ingredients.removeWhere((i) => i.id == ingredient.id);
-                    _userIngredients.remove(ingredient.id);
-                  });
-                  Navigator.pop(context);
-                },
-                style: TextButton.styleFrom(foregroundColor: Colors.red),
-                child: const Text('Delete'),
-              ),
-            ],
-          ),
+      categories: _mainCategories,
+      ingredients: _ingredients,
+      userIngredients: _userIngredients,
+      userIng: userIng,
+      onDelete:
+          userIng?.ingredient != null
+              ? () {
+                final ingredient = userIng!.ingredient!;
+                IngredientDialogs.showDeleteDialog(
+                  context: context,
+                  ingredient: ingredient,
+                  onDelete: () {
+                    setState(() {
+                      _ingredients.removeWhere((i) => i.id == ingredient.id);
+                      _userIngredients.remove(ingredient.id);
+                    });
+                  },
+                );
+              }
+              : null,
+      onSave: (UserIng updatedUserIng) {
+        setState(() {
+          if (userIng == null) {
+            _ingredients.add(updatedUserIng);
+            _userIngredients[updatedUserIng.id] = updatedUserIng;
+          } else {
+            final index = _ingredients.indexWhere((i) => i.id == userIng.id);
+            if (index != -1) {
+              _ingredients[index] = updatedUserIng;
+              _userIngredients[userIng.id] = updatedUserIng;
+            }
+          }
+        });
+      },
     );
   }
 
@@ -309,24 +240,33 @@ class _CupboardScreenState extends State<CupboardScreen> {
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: FilterChip(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
                       ),
                       label: Text(property),
                       selected: isSelected,
                       onSelected: (selected) {
                         setState(() => _selectedProperty = property);
                       },
-                      backgroundColor: AppColors.background,
-                      selectedColor: AppColors.mutedGreen,
+                      backgroundColor: CupertinoColors.systemGrey6.resolveFrom(
+                        context,
+                      ),
+                      selectedColor: AppColors.orange,
                       checkmarkColor: AppColors.white,
                       labelStyle: TextStyle(
                         color:
                             isSelected
                                 ? AppColors.white
-                                : AppColors.white.withOpacity(0.8),
+                                : AppColors.black.withOpacity(0.8),
                       ),
-                      side: BorderSide(color: AppColors.mutedGreen),
+                      side: BorderSide(
+                        color:
+                            isSelected
+                                ? AppColors.orange
+                                : CupertinoColors.systemGrey6.resolveFrom(
+                                  context,
+                                ),
+                      ),
                     ),
                   );
                 },

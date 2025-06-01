@@ -40,7 +40,6 @@ export async function loadIngredientsFromLocalFile() {
   const ingredients: Ingredient[] = ingredientsJson.map((item: any) => {
     const ingredient = new Ingredient();
     ingredient.name = item.strIngredient;
-    ingredient.description = item.strDescription || null;
     ingredient.category = item.strType || null;
     ingredient.image = `https://www.themealdb.com/images/ingredients/${encodeURIComponent(item.strIngredient)}.png`;
     ingredient.isVegan = item.isVegan ?? false;

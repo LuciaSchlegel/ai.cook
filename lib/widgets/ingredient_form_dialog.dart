@@ -19,6 +19,7 @@ class IngredientFormDialog extends StatefulWidget {
     Unit unit,
   )
   onSave;
+  final Function()? onDelete;
 
   const IngredientFormDialog({
     super.key,
@@ -28,6 +29,7 @@ class IngredientFormDialog extends StatefulWidget {
     this.unit,
     required this.categories,
     required this.onSave,
+    this.onDelete,
   });
 
   @override
@@ -37,22 +39,28 @@ class IngredientFormDialog extends StatefulWidget {
 class _IngredientFormDialogState extends State<IngredientFormDialog> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
-  late TextEditingController _tagsController;
   late TextEditingController _quantityController;
   late String _selectedCategory;
   late Unit _selectedUnit;
+  final Set<String> _selectedTags = {};
+
+  // Available tags
+  final List<String> _availableTags = [
+    'vegan',
+    'vegetarian',
+    'gluten-free',
+    'dairy-free',
+    'high-protein',
+    'low-carb',
+    'low-fat',
+    'healthy',
+  ];
 
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(
       text: widget.ingredient?.name ?? widget.customIngredient?.name ?? '',
-    );
-    _tagsController = TextEditingController(
-      text:
-          widget.ingredient?.tags?.join(', ') ??
-          widget.customIngredient?.tags?.join(', ') ??
-          '',
     );
     _quantityController = TextEditingController(
       text: widget.quantity.toString(),
@@ -62,22 +70,31 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
         widget.customIngredient?.category ??
         widget.categories.first;
     _selectedUnit = widget.unit ?? Unit.unit;
+
+    // Initialize selected tags
+    if (widget.ingredient?.tags != null) {
+      _selectedTags.addAll(widget.ingredient!.tags!);
+    } else if (widget.customIngredient?.tags != null) {
+      _selectedTags.addAll(widget.customIngredient!.tags!);
+    }
   }
 
   @override
   void dispose() {
     _nameController.dispose();
-    _tagsController.dispose();
     _quantityController.dispose();
     super.dispose();
   }
 
-  List<String> _parseTags(String tagsString) {
-    return tagsString
-        .split(',')
-        .map((tag) => tag.trim())
-        .where((tag) => tag.isNotEmpty)
-        .toList();
+  bool _validateForm() {
+    if (_nameController.text.isEmpty) return false;
+    if (_selectedTags.isEmpty) return false;
+    try {
+      int.parse(_quantityController.text);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   @override
@@ -142,7 +159,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                   context: context,
                   builder:
                       (BuildContext context) => Container(
-                        height: 216, // Standard iOS picker height
+                        height: 216,
                         padding: const EdgeInsets.only(top: 6.0),
                         margin: EdgeInsets.only(
                           bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -171,10 +188,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     CupertinoButton(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                        vertical: 12,
-                                      ),
+                                      padding: EdgeInsets.zero,
                                       child: Text(
                                         'Cancel',
                                         style: TextStyle(
@@ -185,10 +199,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                                           () => Navigator.of(context).pop(),
                                     ),
                                     CupertinoButton(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                        vertical: 12,
-                                      ),
+                                      padding: EdgeInsets.zero,
                                       child: Text(
                                         'Done',
                                         style: TextStyle(
@@ -249,22 +260,71 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
           ),
           const SizedBox(height: 16),
 
-          // Tags field
-          CupertinoTextField(
-            controller: _tagsController,
-            placeholder: 'Tags (comma-separated)',
+          // Tags section
+          Container(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            placeholderStyle: TextStyle(
-              color: CupertinoColors.systemGrey.resolveFrom(context),
-              fontSize: 16,
-            ),
-            style: TextStyle(color: AppColors.black, fontSize: 16),
             decoration: BoxDecoration(
               color: CupertinoColors.systemBackground.resolveFrom(context),
-              border: Border.all(color: CupertinoColors.systemGrey3),
+              border: Border.all(
+                color:
+                    _selectedTags.isEmpty
+                        ? CupertinoColors.systemRed
+                        : CupertinoColors.systemGrey3,
+              ),
               borderRadius: BorderRadius.circular(20),
             ),
-            cursorColor: AppColors.mutedGreen,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Tags (select at least one)',
+                  style: TextStyle(
+                    color: CupertinoColors.systemGrey.resolveFrom(context),
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children:
+                      _availableTags.map((tag) {
+                        final isSelected = _selectedTags.contains(tag);
+                        return FilterChip(
+                          label: Text(tag),
+                          selected: isSelected,
+                          onSelected: (selected) {
+                            setState(() {
+                              if (selected) {
+                                _selectedTags.add(tag);
+                              } else {
+                                _selectedTags.remove(tag);
+                              }
+                            });
+                          },
+                          backgroundColor: CupertinoColors.systemGrey6,
+                          selectedColor: AppColors.mutedGreen,
+                          checkmarkColor: AppColors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          labelStyle: TextStyle(
+                            color:
+                                isSelected
+                                    ? AppColors.white
+                                    : AppColors.black.withOpacity(0.8),
+                          ),
+                          side: BorderSide(
+                            color:
+                                isSelected
+                                    ? AppColors.mutedGreen
+                                    : CupertinoColors.systemGrey6,
+                          ),
+                        );
+                      }).toList(),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 16),
 
@@ -309,7 +369,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                         context: context,
                         builder:
                             (BuildContext context) => Container(
-                              height: 216, // Standard iOS picker height
+                              height: 216,
                               padding: const EdgeInsets.only(top: 6.0),
                               margin: EdgeInsets.only(
                                 bottom:
@@ -425,24 +485,34 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              if (widget.ingredient != null ||
+                  widget.customIngredient != null) ...[
+                TextButton(
+                  onPressed: widget.onDelete,
+                  style: TextButton.styleFrom(foregroundColor: Colors.red),
+                  child: const Text('Delete'),
+                ),
+                const SizedBox(width: 16),
+              ],
               TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: Text('Cancel', style: TextStyle(color: AppColors.black)),
               ),
               const SizedBox(width: 16),
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    widget.onSave(
-                      _nameController.text,
-                      _selectedCategory,
-                      _parseTags(_tagsController.text),
-                      int.parse(_quantityController.text),
-                      _selectedUnit,
-                    );
-                    Navigator.pop(context);
-                  }
-                },
+                onPressed:
+                    _validateForm()
+                        ? () {
+                          widget.onSave(
+                            _nameController.text,
+                            _selectedCategory,
+                            _selectedTags.toList(),
+                            int.parse(_quantityController.text),
+                            _selectedUnit,
+                          );
+                          Navigator.pop(context);
+                        }
+                        : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.button,
                   shape: RoundedRectangleBorder(

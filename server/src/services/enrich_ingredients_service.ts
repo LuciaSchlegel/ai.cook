@@ -27,7 +27,6 @@ export class IngredientEnrichmentService {
         ingredient.isGlutenFree = enrichment.isGlutenFree;
         ingredient.isLactoseFree = enrichment.isLactoseFree;
         ingredient.tags = enrichment.tags;
-        ingredient.description ??= enrichment.description;
         ingredient.category ??= enrichment.category;
 
         await IngredientRepository.save(ingredient);

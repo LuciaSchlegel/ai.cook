@@ -4,8 +4,10 @@ import app, { initializeDatabase, initializeIngredients, initializeLLMmicroservi
 
 const port = process.env.PORT || 3000;
 
-Promise.all([initializeDatabase() , initializeLLMmicroservice()]).then(async () => {
-  await initializeIngredients();
+Promise.all([initializeDatabase() , 
+  // initializeLLMmicroservice()]).then(async () => {
+  // await 
+  initializeIngredients()]).then(async () => {
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
   });
