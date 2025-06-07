@@ -73,7 +73,7 @@ flutter:
     - assets/icons/recipe.svg
     - assets/icons/settings.svg
     - assets/icons/main_logo.png
-    - assets/images/
+    - assets/icons/nut_assist.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

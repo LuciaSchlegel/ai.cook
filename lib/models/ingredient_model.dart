@@ -4,7 +4,6 @@ class Ingredient {
   final String? category;
   final List<String>? tags;
   final List<dynamic> recipes;
-
   Ingredient({
     required this.id,
     required this.name,
