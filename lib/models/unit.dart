@@ -3,7 +3,7 @@ enum Unit {
   g,
   l,
   ml,
-  unit;
+  u;
 
   String get label => name.toLowerCase();
 }

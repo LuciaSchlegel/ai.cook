@@ -104,7 +104,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
         tags: ['high-protein'],
       ),
       quantity: 12,
-      unit: Unit.unit,
+      unit: Unit.u,
     ),
     UserIng(
       id: 6,
@@ -116,7 +116,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
         tags: ['gluten-free', 'low-carb'],
       ),
       quantity: 1,
-      unit: Unit.unit,
+      unit: Unit.u,
     ),
     UserIng(
       id: 7,
@@ -248,10 +248,8 @@ class _CupboardScreenState extends State<CupboardScreen> {
                       onSelected: (selected) {
                         setState(() => _selectedProperty = property);
                       },
-                      backgroundColor: CupertinoColors.systemGrey6.resolveFrom(
-                        context,
-                      ),
-                      selectedColor: AppColors.orange,
+                      backgroundColor: CupertinoColors.systemGrey6,
+                      selectedColor: AppColors.mutedGreen,
                       checkmarkColor: AppColors.white,
                       labelStyle: TextStyle(
                         color:
@@ -262,7 +260,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
                       side: BorderSide(
                         color:
                             isSelected
-                                ? AppColors.orange
+                                ? AppColors.mutedGreen
                                 : CupertinoColors.systemGrey6.resolveFrom(
                                   context,
                                 ),
@@ -285,8 +283,12 @@ class _CupboardScreenState extends State<CupboardScreen> {
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
+                        side: BorderSide(
+                          color: AppColors.mutedGreen,
+                          width: 0.5,
+                        ),
                       ),
-                      color: AppColors.mutedGreen.withOpacity(0.8),
+                      color: CupertinoColors.systemGrey6,
                       child: InkWell(
                         onTap: () => _showIngredientDialog(ingredient),
                         borderRadius: BorderRadius.circular(16),
@@ -301,7 +303,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
                                 child: Text(
                                   ingredient.name,
                                   style: const TextStyle(
-                                    color: AppColors.white,
+                                    color: AppColors.button,
                                     fontFamily: 'Times New Roman',
                                     fontSize: 16,
                                     letterSpacing: 0.5,
@@ -314,7 +316,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
                                 Text(
                                   '${userIng.quantity} ${userIng.unit}',
                                   style: TextStyle(
-                                    color: AppColors.white.withOpacity(0.8),
+                                    color: AppColors.button,
                                     fontFamily: 'Times New Roman',
                                     fontSize: 14,
                                   ),

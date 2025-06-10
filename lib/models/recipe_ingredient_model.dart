@@ -3,7 +3,7 @@ import 'package:ai_cook_project/models/unit.dart';
 
 class RecipeIngredient {
   final Ingredient ingredient;
-  final double quantity;
+  final int quantity;
   final Unit? unit;
 
   RecipeIngredient({

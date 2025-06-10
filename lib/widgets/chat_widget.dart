@@ -304,15 +304,7 @@ class ChatWidgetState extends State<ChatWidget> {
         border: Border.all(color: AppColors.white.withOpacity(0.2), width: 1),
       ),
       child: Center(
-        child: Text(
-          'ai',
-          style: TextStyle(
-            fontFamily: 'Casta',
-            fontSize: 16,
-            color: AppColors.white,
-            height: 1,
-          ),
-        ),
+        child: Image.asset('assets/icons/ai.png', width: 20, height: 20),
       ),
     );
   }

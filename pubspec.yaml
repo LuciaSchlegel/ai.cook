@@ -41,7 +41,7 @@ dependencies:
   video_player: ^2.9.5
   animated_text_kit: ^4.2.3
   animate_do: ^4.2.0
-
+  auto_size_text: ^3.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -74,6 +74,10 @@ flutter:
     - assets/icons/settings.svg
     - assets/icons/main_logo.png
     - assets/icons/nut_assist.png
+    - assets/icons/calendaradd.png
+    - assets/icons/timer.png
+    - assets/icons/post.png
+    - assets/icons/ai.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -14,7 +14,7 @@ class Recipe {
   final String? cookingTime;
   final String? difficulty;
   final int? servings;
-
+  final List<String> tags;
   Recipe({
     required this.id,
     required this.name,
@@ -28,6 +28,7 @@ class Recipe {
     this.cookingTime,
     this.difficulty,
     this.servings,
+    required this.tags,
   });
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
@@ -47,6 +48,7 @@ class Recipe {
       cookingTime: json['cooking_time'] as String?,
       difficulty: json['difficulty'] as String?,
       servings: json['servings'] as int?,
+      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
     );
   }
 
@@ -64,6 +66,7 @@ class Recipe {
       'cooking_time': cookingTime,
       'difficulty': difficulty,
       'servings': servings,
+      'tags': tags,
     };
   }
 

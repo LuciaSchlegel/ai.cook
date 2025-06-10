@@ -45,9 +45,44 @@ class _RecipesScreenState extends State<RecipesScreen> {
             unit: Unit.g,
           ),
           RecipeIngredient(
-            ingredient: Ingredient(id: 3, name: 'Parmesan'),
+            ingredient: Ingredient(id: 3, name: 'Onion'),
+            quantity: 1,
+            unit: Unit.u,
+          ),
+          RecipeIngredient(
+            ingredient: Ingredient(id: 7, name: 'Celery'),
+            quantity: 1,
+            unit: Unit.u,
+          ),
+          RecipeIngredient(
+            ingredient: Ingredient(id: 8, name: 'Carrot'),
+            quantity: 2,
+            unit: Unit.u,
+          ),
+          RecipeIngredient(
+            ingredient: Ingredient(id: 9, name: 'Garlic Clove'),
+            quantity: 2,
+            unit: Unit.u,
+          ),
+          RecipeIngredient(
+            ingredient: Ingredient(id: 4, name: 'Chicken Broth'),
+            quantity: 850,
+            unit: Unit.u,
+          ),
+          RecipeIngredient(
+            ingredient: Ingredient(id: 5, name: 'Butter'),
             quantity: 100,
             unit: Unit.g,
+          ),
+          RecipeIngredient(
+            ingredient: Ingredient(id: 6, name: 'Parmesan Cheese'),
+            quantity: 120,
+            unit: Unit.g,
+          ),
+          RecipeIngredient(
+            ingredient: Ingredient(id: 10, name: 'Salt & Pepper'),
+            quantity: 1,
+            unit: Unit.u,
           ),
         ],
         steps: [
@@ -57,26 +92,28 @@ class _RecipesScreenState extends State<RecipesScreen> {
         ],
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
-        imageUrl: 'https://example.com/pumpkin-risotto.jpg',
+        imageUrl:
+            'https://i.pinimg.com/736x/f7/53/06/f753068c0737f8b60a8d82c8d97adf9b.jpg',
         cookingTime: '40min',
         difficulty: 'easy',
         servings: 2,
+        tags: ['Italian', 'Risotto', 'Pumpkin'],
       ),
       Recipe(
         id: 2,
-        name: 'mediterranean salad',
+        name: 'Mediterranean Salad',
         description: 'A fresh and healthy mediterranean salad',
         createdByUserId: 1,
         ingredients: [
           RecipeIngredient(
             ingredient: Ingredient(id: 4, name: 'tomato'),
             quantity: 2,
-            unit: Unit.unit,
+            unit: Unit.u,
           ),
           RecipeIngredient(
             ingredient: Ingredient(id: 5, name: 'cucumber'),
             quantity: 1,
-            unit: Unit.unit,
+            unit: Unit.u,
           ),
           RecipeIngredient(
             ingredient: Ingredient(id: 6, name: 'olive oil'),
@@ -91,10 +128,12 @@ class _RecipesScreenState extends State<RecipesScreen> {
         ],
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
-        imageUrl: 'https://example.com/mediterranean-salad.jpg',
+        imageUrl:
+            'https://i.pinimg.com/736x/2f/d6/4c/2fd64c07b9860c72bac8a8002fe80d69.jpg',
         cookingTime: '15min',
         difficulty: 'easy',
         servings: 4,
+        tags: ['Mediterranean', 'Salad', 'Healthy'],
       ),
       Recipe(
         id: 3,
@@ -110,7 +149,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
           RecipeIngredient(
             ingredient: Ingredient(id: 8, name: 'pie crust'),
             quantity: 1,
-            unit: Unit.unit,
+            unit: Unit.u,
           ),
           RecipeIngredient(
             ingredient: Ingredient(id: 9, name: 'cheese'),
@@ -125,10 +164,12 @@ class _RecipesScreenState extends State<RecipesScreen> {
         ],
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
-        imageUrl: 'https://example.com/chicken-pie.jpg',
+        imageUrl:
+            'https://i.pinimg.com/736x/8b/cf/74/8bcf740e981b2a6222fd9e451ec04539.jpg',
         cookingTime: '60min',
         difficulty: 'medium',
         servings: 6,
+        tags: ['American', 'Pie', 'Chicken'],
       ),
     ];
 

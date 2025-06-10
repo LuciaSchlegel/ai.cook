@@ -69,7 +69,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
         widget.ingredient?.category ??
         widget.customIngredient?.category ??
         widget.categories.first;
-    _selectedUnit = widget.unit ?? Unit.unit;
+    _selectedUnit = widget.unit ?? Unit.u;
 
     // Initialize selected tags
     if (widget.ingredient?.tags != null) {

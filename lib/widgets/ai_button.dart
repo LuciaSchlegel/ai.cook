@@ -1,4 +1,5 @@
 import 'package:ai_cook_project/theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AiButton extends StatelessWidget {
@@ -23,14 +24,15 @@ class AiButton extends StatelessWidget {
                 : AppColors.orange,
         elevation: isActive ? 2 : 6,
         shape: const CircleBorder(),
-        child: Text(
-          'ai',
-          style: TextStyle(
-            fontFamily: 'Casta',
-            fontSize: 52,
-            color: Colors.grey[200],
-          ),
-        ),
+        child: Image.asset('assets/icons/ai.png', width: 44, height: 44),
+        // Text(
+        //   'ai',
+        //   style: TextStyle(
+        //     fontFamily: 'Casta',
+        //     fontSize: 52,
+        //     color: Colors.grey[200],
+        //   ),
+        // ),
       ),
     );
   }

@@ -12,7 +12,7 @@ class NutritionCard extends StatelessWidget {
       children: [
         Container(
           width: size.width * 0.14,
-          height: size.height * 0.32,
+          height: size.height * 0.35,
           decoration: BoxDecoration(
             color: CupertinoColors.systemGrey6,
             borderRadius: BorderRadius.circular(13),
@@ -22,7 +22,7 @@ class NutritionCard extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(8),
+            padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.009),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -34,6 +34,21 @@ class NutritionCard extends StatelessWidget {
                 _buildNutritionCard('Protein', 0.5, Icons.food_bank_rounded),
                 _buildNutritionCard('Carbs', 0.5, Icons.food_bank_rounded),
                 _buildNutritionCard('Fats', 0.5, Icons.food_bank_rounded),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    // Icon(
+                    //   CupertinoIcons.chevron_down,
+                    //   size: 12,
+                    //   color: CupertinoColors.black,
+                    // ),
+                    Icon(
+                      CupertinoIcons.question_circle,
+                      size: 12,
+                      color: CupertinoColors.black,
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
