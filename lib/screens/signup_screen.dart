@@ -1,6 +1,8 @@
-import 'package:ai_cook_project/screens/main_screen.dart';
+import 'package:ai_cook_project/screens/login_screen.dart';
+import 'package:ai_cook_project/screens/user_info_screen.dart';
 import 'package:ai_cook_project/widgets/error_dialog.dart';
 import 'package:ai_cook_project/widgets/loading_spinner.dart';
+import 'package:ai_cook_project/widgets/navigation_text_link.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +48,7 @@ class _SignupScreenState extends State<SignupScreen> {
           Navigator.pop(context);
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const MainScreen()),
+            MaterialPageRoute(builder: (context) => const UserInfoScreen()),
           );
         }
       } catch (e) {
@@ -287,6 +289,23 @@ class _SignupScreenState extends State<SignupScreen> {
                                         ),
                                       ),
                                       child: const Text('Sign up'),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 12),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: NavigationTextLink(
+                                      label: 'Already have an account? Sign in',
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) =>
+                                                    const LoginScreen(),
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ),
                                 ],

@@ -62,11 +62,12 @@ class _RecipeCardContent extends StatelessWidget {
   });
 
   String _getMissingIngredientsText() {
-    final missingIngredients = recipe.getMissingIngredients(userIngredients);
-    if (missingIngredients.isEmpty) {
-      return 'All available';
-    }
-    return '${missingIngredients.length} missing';
+    // final missingIngredients = recipe.getMissingIngredients(userIngredients);
+    // if (missingIngredients.isEmpty) {
+    //   return 'All available';
+    // }
+    // return '${missingIngredients.length} missing';
+    return 'All available';
   }
 
   @override

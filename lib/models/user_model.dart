@@ -9,11 +9,10 @@ enum UserRole { admin, user }
 
 class User {
   final int id;
-  final int uid;
-  final String firstName;
-  final String lastName;
+  final String uid;
+  final String name;
   final String email;
-  final String phone;
+  final String? phone;
   final String? address;
   final String? profileImage;
   final String? bio;
@@ -21,7 +20,7 @@ class User {
   final DateTime createdAt;
   final DateTime updatedAt;
   final bool isDeleted;
-  final Subscription subscription;
+  final Subscription? subscription;
   final List<Attribute> attributes;
   final List<UserIng> userIngredients;
   final List<CustomIngredient> customIngredients;
@@ -31,10 +30,9 @@ class User {
   User({
     required this.id,
     required this.uid,
-    required this.firstName,
-    required this.lastName,
+    required this.name,
     required this.email,
-    required this.phone,
+    this.phone,
     this.address,
     this.profileImage,
     this.bio,
@@ -42,11 +40,80 @@ class User {
     required this.createdAt,
     required this.updatedAt,
     required this.isDeleted,
-    required this.subscription,
+    this.subscription,
     required this.attributes,
     required this.userIngredients,
     required this.customIngredients,
     required this.recipes,
     required this.events,
   });
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      uid: json['uid'],
+      name: json['name'],
+      email: json['email'],
+      phone: json['phone'],
+      address: json['address'],
+      profileImage: json['profileImage'],
+      bio: json['bio'],
+      role: UserRole.values.byName(json['role']),
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+      isDeleted: json['isDeleted'] ?? false,
+      subscription:
+          json['subscription'] != null
+              ? Subscription.fromJson(json['subscription'])
+              : null,
+      attributes:
+          (json['attributes'] as List<dynamic>?)
+              ?.map((e) => Attribute.fromJson(e))
+              .toList() ??
+          [],
+      userIngredients:
+          (json['userIngredients'] as List<dynamic>?)
+              ?.map((e) => UserIng.fromJson(e))
+              .toList() ??
+          [],
+      customIngredients:
+          (json['customIngredients'] as List<dynamic>?)
+              ?.map((e) => CustomIngredient.fromJson(e))
+              .toList() ??
+          [],
+      recipes:
+          (json['recipes'] as List<dynamic>?)
+              ?.map((e) => Recipe.fromJson(e))
+              .toList() ??
+          [],
+      events:
+          (json['events'] as List<dynamic>?)
+              ?.map((e) => Event.fromJson(e))
+              .toList() ??
+          [],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'uid': uid,
+      'name': name,
+      'email': email,
+      'phone': phone,
+      'address': address,
+      'profileImage': profileImage,
+      'bio': bio,
+      'role': role.name,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+      'isDeleted': isDeleted,
+      'subscription': subscription?.toJson(),
+      'attributes': attributes.map((e) => e.toJson()).toList(),
+      'userIngredients': userIngredients.map((e) => e.toJson()).toList(),
+      'customIngredients': customIngredients.map((e) => e.toJson()).toList(),
+      'recipes': recipes.map((e) => e.toJson()).toList(),
+      'events': events.map((e) => e.toJson()).toList(),
+    };
+  }
 }

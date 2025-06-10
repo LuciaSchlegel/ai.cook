@@ -1,9 +1,13 @@
+import 'package:ai_cook_project/models/recipe_model.dart';
+import 'package:ai_cook_project/models/tag_model.dart';
+import 'package:ai_cook_project/models/category_model.dart';
+
 class Ingredient {
   final int id;
   final String name;
-  final String? category;
-  final List<String>? tags;
-  final List<dynamic> recipes;
+  final Category? category;
+  final List<Tag>? tags;
+  final List<Recipe> recipes;
   Ingredient({
     required this.id,
     required this.name,
@@ -14,11 +18,19 @@ class Ingredient {
 
   factory Ingredient.fromJson(Map<String, dynamic> json) {
     return Ingredient(
-      id: json['id'],
-      name: json['name'],
-      category: json['category'],
-      tags: json['tags'] != null ? List<String>.from(json['tags']) : null,
-      recipes: json['recipes'] ?? [],
+      id: json['id'] as int,
+      name: json['name'] as String,
+      category:
+          json['category'] != null ? Category.fromJson(json['category']) : null,
+      tags:
+          (json['tags'] as List<dynamic>?)
+              ?.map((e) => Tag.fromJson(e))
+              .toList(),
+      recipes:
+          (json['recipes'] as List<dynamic>?)
+              ?.map((e) => Recipe.fromJson(e))
+              .toList() ??
+          [],
     );
   }
 
@@ -28,7 +40,7 @@ class Ingredient {
       'name': name,
       'category': category,
       'tags': tags,
-      'recipes': recipes,
+      'recipes': recipes.map((e) => e.toJson()).toList(),
     };
   }
 }

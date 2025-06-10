@@ -122,6 +122,12 @@
       "languageVersion": "3.7"
     },
     {
+      "name": "flutter_dotenv",
+      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/flutter_dotenv-5.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_lints",
       "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/flutter_lints-5.0.0",
       "packageUri": "lib/",
@@ -198,6 +204,12 @@
       "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/http_parser-4.1.2",
       "packageUri": "lib/",
       "languageVersion": "3.4"
+    },
+    {
+      "name": "intl",
+      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/intl-0.18.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "leak_tracker",
@@ -422,7 +434,7 @@
       "languageVersion": "3.7"
     }
   ],
-  "generated": "2025-06-10T07:17:56.301179Z",
+  "generated": "2025-06-10T15:19:24.846194Z",
   "generator": "pub",
   "generatorVersion": "3.7.2",
   "flutterRoot": "file:///opt/homebrew/Caskroom/flutter/3.29.3/flutter",

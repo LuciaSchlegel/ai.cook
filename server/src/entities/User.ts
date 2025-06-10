@@ -20,23 +20,20 @@ export class User {
     @Column({ unique: true })
     uid!: string;
 
-    @Column({ type: 'varchar', length: 255, nullable: false })
-    firstName!: string;
-
-    @Column({ type: 'varchar', length: 255, nullable: false })
-    lastName!: string;
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    name?: string;
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     email!: string;
 
-    @Column({ type: 'varchar', length: 255, nullable: false })
-    phone!: string;
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    phone?: string;
 
     @Column({ type: 'varchar', length: 255, nullable: false })
-    address!: string;
+    gender?: string;
 
-    @Column({ type: 'varchar', length: 255, nullable: false })
-    password!: string;
+    @Column({ type: 'date', nullable: false })
+    birthDate?: Date;
 
     @Column({ nullable: false, default: UserRole.USER })
     role!: UserRole;
@@ -62,7 +59,7 @@ export class User {
     @OneToMany(() => CustomIngredient, customIngredient => customIngredient.createdBy)
     customIngredients!: CustomIngredient[];
 
-    @OneToMany(() => Recipe, recipe => recipe.creator)
+    @OneToMany(() => Recipe, recipe => recipe.createdByUser)
     recipes!: Recipe[];
 
     @OneToMany(() => Event, event => event.user)

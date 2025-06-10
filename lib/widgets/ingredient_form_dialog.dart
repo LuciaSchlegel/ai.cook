@@ -37,7 +37,6 @@ class IngredientFormDialog extends StatefulWidget {
 }
 
 class _IngredientFormDialogState extends State<IngredientFormDialog> {
-  final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
   late TextEditingController _quantityController;
   late String _selectedCategory;
@@ -66,16 +65,18 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
       text: widget.quantity.toString(),
     );
     _selectedCategory =
-        widget.ingredient?.category ??
-        widget.customIngredient?.category ??
+        widget.ingredient?.category?.name ??
+        widget.customIngredient?.category?.name ??
         widget.categories.first;
     _selectedUnit = widget.unit ?? Unit.u;
 
     // Initialize selected tags
     if (widget.ingredient?.tags != null) {
-      _selectedTags.addAll(widget.ingredient!.tags!);
+      _selectedTags.addAll(widget.ingredient!.tags!.map((tag) => tag.name));
     } else if (widget.customIngredient?.tags != null) {
-      _selectedTags.addAll(widget.customIngredient!.tags!);
+      _selectedTags.addAll(
+        widget.customIngredient!.tags!.map((tag) => tag.name),
+      );
     }
   }
 

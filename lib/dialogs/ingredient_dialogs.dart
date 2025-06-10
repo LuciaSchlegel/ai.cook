@@ -1,5 +1,7 @@
+import 'package:ai_cook_project/models/category_model.dart';
 import 'package:ai_cook_project/models/custom_ing_model.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
+import 'package:ai_cook_project/models/tag_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/widgets/ingredient_form_dialog.dart';
@@ -34,13 +36,13 @@ class IngredientDialogs {
                 final newIngredient = Ingredient(
                   id: newId,
                   name: name,
-                  category: category,
-                  tags: tags,
+                  category: Category(id: 1, name: category),
+                  tags: tags.map((tag) => Tag(id: 1, name: tag)).toList(),
                 );
 
                 final newUserIng = UserIng(
                   id: newId,
-                  userId: 1, // This would come from auth
+                  uid: '1', // This would come from auth
                   ingredient: newIngredient,
                   quantity: quantity,
                   unit: unit,
@@ -54,8 +56,9 @@ class IngredientDialogs {
                         ? Ingredient(
                           id: userIng.ingredient!.id,
                           name: name,
-                          category: category,
-                          tags: tags,
+                          category: Category(id: 1, name: category),
+                          tags:
+                              tags.map((tag) => Tag(id: 1, name: tag)).toList(),
                         )
                         : null;
 
@@ -64,14 +67,15 @@ class IngredientDialogs {
                         ? CustomIngredient(
                           id: userIng.customIngredient!.id,
                           name: name,
-                          category: category,
-                          tags: tags,
+                          category: Category(id: 1, name: category),
+                          tags:
+                              tags.map((tag) => Tag(id: 1, name: tag)).toList(),
                         )
                         : null;
 
                 final updatedUserIng = UserIng(
                   id: userIng.id,
-                  userId: userIng.userId,
+                  uid: userIng.uid,
                   ingredient: updatedIngredient,
                   customIngredient: updatedCustomIngredient,
                   quantity: quantity,

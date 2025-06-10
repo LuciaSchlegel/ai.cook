@@ -1,4 +1,6 @@
+import 'package:ai_cook_project/models/category_model.dart';
 import 'package:ai_cook_project/models/custom_ing_model.dart';
+import 'package:ai_cook_project/models/tag_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
@@ -48,84 +50,84 @@ class _CupboardScreenState extends State<CupboardScreen> {
   final List<UserIng> _ingredients = [
     UserIng(
       id: 1,
-      userId: 1,
+      uid: '1',
       ingredient: Ingredient(
         id: 1,
         name: 'Tomatoes',
-        category: 'Fruits & Vegetables',
-        tags: ['vegan', 'low-carb'],
+        category: Category(id: 1, name: 'Fruits & Vegetables'),
+        tags: [Tag(id: 1, name: 'Vegan'), Tag(id: 2, name: 'Low-carb')],
       ),
       quantity: 1,
       unit: Unit.kg,
     ),
     UserIng(
       id: 2,
-      userId: 1,
+      uid: '1',
       ingredient: Ingredient(
         id: 2,
         name: 'Chicken',
-        category: 'Meat',
-        tags: ['low-fat', 'high-protein'],
+        category: Category(id: 2, name: 'Meat'),
+        tags: [Tag(id: 3, name: 'Low-fat'), Tag(id: 4, name: 'High-protein')],
       ),
       quantity: 1,
       unit: Unit.kg,
     ),
     UserIng(
       id: 3,
-      userId: 1,
+      uid: '1',
       customIngredient: CustomIngredient(
         id: 3,
         name: 'Onions',
-        category: 'Fruits & Vegetables',
-        tags: ['healthy'],
+        category: Category(id: 1, name: 'Fruits & Vegetables'),
+        tags: [Tag(id: 5, name: 'Healthy')],
       ),
       quantity: 500,
       unit: Unit.g,
     ),
     UserIng(
       id: 4,
-      userId: 1,
+      uid: '1',
       ingredient: Ingredient(
         id: 4,
         name: 'Milk',
-        category: 'Dairies',
-        tags: ['healthy'],
+        category: Category(id: 3, name: 'Dairies'),
+        tags: [Tag(id: 6, name: 'Healthy')],
       ),
       quantity: 500,
       unit: Unit.ml,
     ),
     UserIng(
       id: 5,
-      userId: 1,
+      uid: '1',
       ingredient: Ingredient(
         id: 5,
         name: 'Eggs',
-        category: 'Dairies',
-        tags: ['high-protein'],
+        category: Category(id: 3, name: 'Dairies'),
+        tags: [Tag(id: 7, name: 'High-protein')],
       ),
       quantity: 12,
       unit: Unit.u,
     ),
     UserIng(
       id: 6,
-      userId: 1,
+      uid: '1',
       ingredient: Ingredient(
         id: 6,
         name: 'Whole-grain Rice',
-        category: 'Grains',
-        tags: ['gluten-free', 'low-carb'],
+        category: Category(id: 4, name: 'Grains'),
+        tags: [Tag(id: 8, name: 'Gluten-free'), Tag(id: 9, name: 'Low-carb')],
       ),
       quantity: 1,
       unit: Unit.u,
     ),
     UserIng(
       id: 7,
-      userId: 1,
+      uid: '1',
       ingredient: Ingredient(
         id: 7,
         name: 'Ginger',
-        category: 'Spices',
-        tags: ['healthy'],
+        category: Category(id: 5, name: 'Spices'),
+        tags: [Tag(id: 10, name: 'Healthy')],
       ),
       quantity: 100,
       unit: Unit.g,
@@ -140,13 +142,19 @@ class _CupboardScreenState extends State<CupboardScreen> {
     return _ingredients.where((ingredient) {
       final matchesCategory =
           _selectedCategory == 'All' ||
-          ingredient.category == _selectedCategory;
+          ingredient.ingredient?.category?.name == _selectedCategory;
       final matchesProperty =
           _selectedProperty == 'All' ||
-          (ingredient.tags?.contains(_selectedProperty.toLowerCase()) ?? false);
-      final matchesSearch = ingredient.name.toLowerCase().contains(
-        searchProvider.searchController.text.toLowerCase(),
-      );
+          (ingredient.ingredient?.tags?.any(
+                (tag) =>
+                    tag.name.toLowerCase() == _selectedProperty.toLowerCase(),
+              ) ??
+              false);
+      final matchesSearch =
+          ingredient.ingredient?.name.toLowerCase().contains(
+            searchProvider.searchController.text.toLowerCase(),
+          ) ??
+          false;
       return matchesCategory && matchesProperty && matchesSearch;
     }).toList();
   }
@@ -301,7 +309,9 @@ class _CupboardScreenState extends State<CupboardScreen> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  ingredient.name,
+                                  ingredient.ingredient?.name ??
+                                      ingredient.customIngredient?.name ??
+                                      '',
                                   style: const TextStyle(
                                     color: AppColors.button,
                                     fontFamily: 'Times New Roman',

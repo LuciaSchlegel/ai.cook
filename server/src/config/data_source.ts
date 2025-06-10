@@ -7,23 +7,27 @@ import { Recipe } from '../entities/Recipe';
 import { Event } from '../entities/Event';
 import { Ingredient } from '../entities/Ingredient';
 import dotenv from 'dotenv';
-import { RecipeDennis } from '../entities/RecipeDennis';
 import { Tag } from '../entities/Tag';
+import { User } from '../entities/User';
+import { RecipeIngredient } from '../entities/RecipeIngredient';
+import { Category } from '../entities/Category';
+import { RecipeTag } from '../entities/RecipeTag';
+import { CustomIngredient } from '../entities/Custom_Ingredient';
 
 dotenv.config();
-console.log('DB_HOST:', process.env.DB_HOST);
-
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
-  port: 5432,
+  port: parseInt(process.env.DB_PORT || '5432'),
   username: process.env.DB_USERNAME || 'luciaschlegel',
   password: process.env.DB_PASSWORD ,
-  database: 'aicook',
-  entities: [ RecipeDennis, Ingredient, Tag ],
-  //User, Subscription, Attribute, UserIngredient, Recipe, Event, Ingredient,
+  database: process.env.DB_NAME,
+  entities: [ User, Ingredient, Tag, Recipe, Event, UserIngredient, Attribute, Subscription, RecipeIngredient, Category, RecipeTag, CustomIngredient ],
   synchronize: true, // True solo para desarrollo (genera tablas automáticamente)
   logging: false,
+  ssl: {
+    rejectUnauthorized: false,
+  },
   //dropSchema: true,  if you want to reset the db content 
 });

@@ -4,6 +4,8 @@ import 'package:ai_cook_project/widgets/social_widget.dart';
 import 'package:ai_cook_project/widgets/weekly_card.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -11,6 +13,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final userProvider = Provider.of<UserProvider>(context);
     return Container(
       color: AppColors.background,
       child: SafeArea(
@@ -25,7 +28,7 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: size.height * 0.02),
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -38,7 +41,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'lucia',
+                          userProvider.user?.name ?? 'User',
                           style: TextStyle(
                             fontFamily: 'Casta',
                             fontSize: 48,

@@ -1,4 +1,5 @@
 // widgets/navigation_text_link.dart
+import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/material.dart';
 
 class NavigationTextLink extends StatelessWidget {
@@ -19,10 +20,9 @@ class NavigationTextLink extends StatelessWidget {
         child: Text(
           label,
           style: const TextStyle(
-            fontSize: 15,
+            fontSize: 14,
             fontWeight: FontWeight.w500,
-            decoration: TextDecoration.underline,
-            color: Colors.black,
+            color: AppColors.button,
           ),
         ),
       ),

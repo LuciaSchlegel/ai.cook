@@ -42,6 +42,8 @@ dependencies:
   animated_text_kit: ^4.2.3
   animate_do: ^4.2.0
   auto_size_text: ^3.0.0
+  intl: ^0.18.0
+  flutter_dotenv: ^5.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -66,6 +68,7 @@ flutter:
 
   # Corrige la indentación de assets
   assets:
+    - .env
     - assets/icons/google-logo.png
     - assets/icons/apple-logo.png
     - assets/icons/calendar.svg

@@ -4,7 +4,7 @@ import 'package:ai_cook_project/models/ingredient_model.dart';
 
 class UserIng {
   final int id;
-  final int userId;
+  final String uid;
   final Ingredient? ingredient;
   final CustomIngredient? customIngredient;
   final int quantity;
@@ -12,22 +12,17 @@ class UserIng {
 
   UserIng({
     required this.id,
-    required this.userId,
+    required this.uid,
     this.ingredient,
     this.customIngredient,
     required this.quantity,
     this.unit,
   });
 
-  // Convenience getters to access ingredient properties regardless of type
-  String get name => ingredient?.name ?? customIngredient?.name ?? 'Unknown';
-  String? get category => ingredient?.category ?? customIngredient?.category;
-  List<String>? get tags => ingredient?.tags ?? customIngredient?.tags;
-
   factory UserIng.fromJson(Map<String, dynamic> json) {
     return UserIng(
-      id: json['id'],
-      userId: json['user']['id'],
+      id: json['id'] as int,
+      uid: json['uid'] as String,
       ingredient:
           json['ingredient'] != null
               ? Ingredient.fromJson(json['ingredient'])
@@ -36,7 +31,7 @@ class UserIng {
           json['customIngredient'] != null
               ? CustomIngredient.fromJson(json['customIngredient'])
               : null,
-      quantity: json['quantity'],
+      quantity: json['quantity'] as int,
       unit:
           json['unit'] != null
               ? Unit.values.byName(json['unit'].toLowerCase())
@@ -47,7 +42,7 @@ class UserIng {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'userId': userId,
+      'uid': uid,
       'ingredient': ingredient?.toJson(),
       'customIngredient': customIngredient?.toJson(),
       'quantity': quantity,

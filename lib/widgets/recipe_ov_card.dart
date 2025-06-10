@@ -103,7 +103,10 @@ class _RecipeOverviewCardState extends State<RecipeOverviewCard>
                         onClose: () => Navigator.pop(context),
                       ),
                       const SizedBox(height: 20),
-                      _RecipeTags(tags: widget.recipe.tags),
+                      _RecipeTags(
+                        tags:
+                            widget.recipe.tags.map((tag) => tag.name).toList(),
+                      ),
                       const SizedBox(height: 20),
                       _RecipeGlanceCard(recipe: widget.recipe, size: size),
                     ],

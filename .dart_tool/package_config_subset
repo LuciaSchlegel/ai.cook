@@ -74,6 +74,10 @@ firebase_core_web
 3.4
 file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/firebase_core_web-2.23.0/
 file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/firebase_core_web-2.23.0/lib/
+flutter_dotenv
+2.12
+file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/flutter_dotenv-5.2.1/
+file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/flutter_dotenv-5.2.1/lib/
 flutter_lints
 3.5
 file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/flutter_lints-5.0.0/
@@ -118,6 +122,10 @@ http_parser
 3.4
 file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/http_parser-4.1.2/
 file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/http_parser-4.1.2/lib/
+intl
+2.12
+file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/intl-0.18.1/
+file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/intl-0.18.1/lib/
 leak_tracker
 3.2
 file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/leak_tracker-10.0.8/

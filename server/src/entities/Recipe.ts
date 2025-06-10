@@ -1,7 +1,8 @@
 //Recipe.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { User } from './User';
-import { Ingredient } from './Ingredient';
+import { RecipeTag } from './RecipeTag';
+import { RecipeIngredient } from './RecipeIngredient';
 
 @Entity({ name: 'recipes' })
 export class Recipe {
@@ -16,12 +17,10 @@ export class Recipe {
 
   // Relación: El usuario que creó la receta (opcional, o puede ser 'system'/'ia')
   @ManyToOne(() => User, user => user.recipes, { nullable: true })
-  creator?: User;
+  createdByUser?: User;
 
-  // Relación: ingredientes de la receta (ManyToMany)
-  //@ManyToMany(() => Ingredient, ingredient => ingredient.recipes, { cascade: true })
-  //@JoinTable()
-  //ingredients!: Ingredient[];
+  @OneToMany(() => RecipeIngredient, recipeIngredient => recipeIngredient.recipe)
+  ingredients!: RecipeIngredient[];
 
   @Column('simple-array', { nullable: true })
   steps?: string[];
@@ -31,4 +30,19 @@ export class Recipe {
 
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  @Column({ nullable: true })
+  image?: string;
+
+  @Column({ nullable: true })
+  cookingTime?: string;
+
+  @Column({ nullable: true })
+  difficulty?: string;
+
+  @Column({ nullable: true })
+  servings?: string;
+
+  @OneToMany(() => RecipeTag, tag => tag.recipe)
+  tags!: RecipeTag[];
 }

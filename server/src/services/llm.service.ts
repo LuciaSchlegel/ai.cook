@@ -1,7 +1,7 @@
 // services/llm.service.ts
 import axios from "axios";
 import { PromptResponse } from "../types/llm.types";
-import { RecipeDennis } from "../entities/RecipeDennis";
+import { Recipe } from "../entities/Recipe";
 import { AppDataSource } from "../config/data_source";
 import { parse } from "path";
 import { talk_to_llm } from "../controllers/llm.controller";
@@ -15,7 +15,7 @@ import { talk_to_llm } from "../controllers/llm.controller";
 // has a helper function to parse the recipe data from the response
 
 //second service function is a generic function to talk to the llm service
-export async function generateRecipeFromKeywords(keywords: string[]): Promise<RecipeDennis> {
+export async function generateRecipeFromKeywords(keywords: string[]): Promise<Recipe> {
   const response = await axios.post<PromptResponse>(
     "http://localhost:8000/api/get-recepies",
     { keywords }
@@ -32,10 +32,10 @@ export async function generateRecipeFromKeywords(keywords: string[]): Promise<Re
     const recipe = parseRecepieData2(recipeData);
 
 
-  console.log("Generated recipe: title", recipe.title, "instructions", recipe.instructions);
+  console.log("Generated recipe: title", recipe.name, "instructions", recipe.description);
 
   //save
-  await AppDataSource.getRepository(RecipeDennis).save(recipe);
+    await AppDataSource.getRepository(Recipe).save(recipe);
 
   //die save response returnen oder das rezept?
 
@@ -43,21 +43,26 @@ export async function generateRecipeFromKeywords(keywords: string[]): Promise<Re
 }
 
 
-function parseRecepieData2(recipeRaw: string): RecipeDennis {
+function parseRecepieData2(recipeRaw: string): Recipe {
   // Entferne mögliche Markdown-Formatierung wie ```json ... ```
   const cleaned = recipeRaw
     .replace(/```json/, '')
     .replace(/```/, '')
     .trim();
-    const recipe = new RecipeDennis();
+    const recipe = new Recipe();
 
 try{
   const parsed = JSON.parse(cleaned); // Jetzt echtes JSON
   console.log("Parsed recipe:", parsed);
-    recipe.title = parsed.title;
+    recipe.name = parsed.name;
+  recipe.description = parsed.description;
   recipe.ingredients = parsed.ingredients;
-  recipe.instructions = parsed.instructions;
-  recipe.servingSuggestion = parsed.servingSuggestion;
+  recipe.steps = parsed.steps;
+  recipe.image = parsed.image;
+  recipe.cookingTime = parsed.cookingTime;
+  recipe.difficulty = parsed.difficulty;
+  recipe.servings = parsed.servings;
+  recipe.tags = parsed.tags;
 }catch (error) {
   console.error("Error parsing recipe data:", error);
 }

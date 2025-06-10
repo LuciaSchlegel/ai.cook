@@ -1,6 +1,9 @@
 import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class IngredientsProvider with ChangeNotifier {
   List<UserIng> _userIngredients = [];
@@ -16,16 +19,15 @@ class IngredientsProvider with ChangeNotifier {
 
   // User Ingredients Operations
   Future<void> fetchUserIngredients() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
     try {
       _setLoading(true);
       _clearError();
-
-      // TODO: Implement API call to fetch user ingredients
-      // For now, we'll just simulate an API call
-      await Future.delayed(const Duration(seconds: 1));
-
-      // After getting the data from API, update the list
-      // _userIngredients = response.data;
+      final response = await http.get(
+        Uri.parse('${dotenv.env['API_URL']}/user/$uid/ingredients'),
+      );
+      _userIngredients =
+          (response.body as List).map((e) => UserIng.fromJson(e)).toList();
 
       notifyListeners();
     } catch (e) {
@@ -36,6 +38,7 @@ class IngredientsProvider with ChangeNotifier {
   }
 
   Future<void> addUserIngredient(UserIng userIngredient) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
     try {
       _setLoading(true);
       _clearError();
@@ -50,10 +53,11 @@ class IngredientsProvider with ChangeNotifier {
         throw Exception('Ingredient already exists');
       }
 
-      // TODO: Implement API call to add user ingredient
-      // For now, we'll just add it to the local list
+      final response = await http.post(
+        Uri.parse('${dotenv.env['API_URL']}/user/$uid/ingredients'),
+        body: userIngredient.toJson(),
+      );
       _userIngredients.add(userIngredient);
-
       notifyListeners();
     } catch (e) {
       _setError('Failed to add ingredient: $e');
@@ -64,6 +68,7 @@ class IngredientsProvider with ChangeNotifier {
   }
 
   Future<void> updateUserIngredient(UserIng userIngredient) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
     try {
       _setLoading(true);
       _clearError();
@@ -81,8 +86,10 @@ class IngredientsProvider with ChangeNotifier {
         throw Exception('Ingredient not found');
       }
 
-      // TODO: Implement API call to update user ingredient
-      // For now, we'll just update the local list
+      final response = await http.put(
+        Uri.parse('${dotenv.env['API_URL']}/user/$uid/ingredients'),
+        body: userIngredient.toJson(),
+      );
       _userIngredients[index] = userIngredient;
 
       notifyListeners();
@@ -94,14 +101,17 @@ class IngredientsProvider with ChangeNotifier {
     }
   }
 
-  Future<void> removeUserIngredient(int ingredientId) async {
+  Future<void> removeUserIngredient(UserIng userIngredient) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
     try {
       _setLoading(true);
       _clearError();
 
-      // TODO: Implement API call to remove user ingredient
-      // For now, we'll just remove from the local list
-      _userIngredients.removeWhere((ing) => ing.id == ingredientId);
+      final response = await http.delete(
+        Uri.parse('${dotenv.env['API_URL']}/user/$uid/ingredients'),
+        body: {'id': userIngredient.id},
+      );
+      _userIngredients.removeWhere((ing) => ing.id == userIngredient.id);
 
       notifyListeners();
     } catch (e) {
@@ -118,12 +128,11 @@ class IngredientsProvider with ChangeNotifier {
       _setLoading(true);
       _clearError();
 
-      // TODO: Implement API call to fetch ingredients
-      // For now, we'll just simulate an API call
-      await Future.delayed(const Duration(seconds: 1));
-
-      // After getting the data from API, update the list
-      // _ingredients = response.data;
+      final response = await http.get(
+        Uri.parse('${dotenv.env['API_URL']}/ingredients/global'),
+      );
+      _ingredients =
+          (response.body as List).map((e) => Ingredient.fromJson(e)).toList();
 
       notifyListeners();
     } catch (e) {
@@ -151,13 +160,21 @@ class IngredientsProvider with ChangeNotifier {
   // Filter methods
   List<UserIng> filterUserIngredientsByCategory(String category) {
     if (category == 'All') return userIngredients;
-    return userIngredients.where((ing) => ing.category == category).toList();
+    return userIngredients
+        .where((ing) => ing.ingredient?.category?.name == category)
+        .toList();
   }
 
   List<UserIng> searchUserIngredients(String query) {
     if (query.isEmpty) return userIngredients;
     return userIngredients
-        .where((ing) => ing.name.toLowerCase().contains(query.toLowerCase()))
+        .where(
+          (ing) =>
+              ing.ingredient?.name.toLowerCase().contains(
+                query.toLowerCase(),
+              ) ??
+              false,
+        )
         .toList();
   }
 

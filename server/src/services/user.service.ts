@@ -18,8 +18,8 @@ export async function getUserByIdService(uid: string) {
 
 export async function createUserService(userData: User) {
   // Validación básica, agregá más según tu modelo
-  if (!userData.email || !userData.password) {
-    throw new BadRequestError("Email and password are required.");
+  if (!userData.email) {
+    throw new BadRequestError("Email is required.");
   }
   // Evitar usuarios duplicados (email/uid)
   const existing = await UserRepository.findOne({

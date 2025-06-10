@@ -1,3 +1,4 @@
+import 'package:ai_cook_project/models/recipe_tag_model.dart';
 import 'package:ai_cook_project/widgets/recipe_card.dart';
 import 'package:flutter/material.dart';
 import '../models/recipe_model.dart';
@@ -32,7 +33,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
         id: 1,
         name: 'Pumpkin Risotto',
         description: 'A creamy and delicious pumpkin risotto',
-        createdByUserId: 1,
+        createdByUid: '1',
         ingredients: [
           RecipeIngredient(
             ingredient: Ingredient(id: 1, name: 'Pumpkin'),
@@ -97,13 +98,17 @@ class _RecipesScreenState extends State<RecipesScreen> {
         cookingTime: '40min',
         difficulty: 'easy',
         servings: 2,
-        tags: ['Italian', 'Risotto', 'Pumpkin'],
+        tags: [
+          RecipeTag(id: 1, name: 'Italian'),
+          RecipeTag(id: 2, name: 'Risotto'),
+          RecipeTag(id: 3, name: 'Pumpkin'),
+        ],
       ),
       Recipe(
         id: 2,
         name: 'Mediterranean Salad',
         description: 'A fresh and healthy mediterranean salad',
-        createdByUserId: 1,
+        createdByUid: '1',
         ingredients: [
           RecipeIngredient(
             ingredient: Ingredient(id: 4, name: 'tomato'),
@@ -133,13 +138,17 @@ class _RecipesScreenState extends State<RecipesScreen> {
         cookingTime: '15min',
         difficulty: 'easy',
         servings: 4,
-        tags: ['Mediterranean', 'Salad', 'Healthy'],
+        tags: [
+          RecipeTag(id: 4, name: 'Mediterranean'),
+          RecipeTag(id: 5, name: 'Salad'),
+          RecipeTag(id: 6, name: 'Healthy'),
+        ],
       ),
       Recipe(
         id: 3,
         name: 'Chicken Pie',
         description: 'A delicious chicken pie',
-        createdByUserId: 1,
+        createdByUid: '1',
         ingredients: [
           RecipeIngredient(
             ingredient: Ingredient(id: 7, name: 'chicken'),
@@ -169,7 +178,11 @@ class _RecipesScreenState extends State<RecipesScreen> {
         cookingTime: '60min',
         difficulty: 'medium',
         servings: 6,
-        tags: ['American', 'Pie', 'Chicken'],
+        tags: [
+          RecipeTag(id: 7, name: 'American'),
+          RecipeTag(id: 8, name: 'Pie'),
+          RecipeTag(id: 9, name: 'Chicken'),
+        ],
       ),
     ];
 

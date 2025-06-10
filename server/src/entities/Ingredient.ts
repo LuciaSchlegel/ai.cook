@@ -1,7 +1,8 @@
 //Ingredient.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, ManyToOne, OneToMany, JoinTable } from 'typeorm';
 import { Tag } from './Tag';
 import { Category } from './Category';
+import { RecipeIngredient } from './RecipeIngredient';
 
 
 @Entity({ name: 'ingredients' })
@@ -16,6 +17,11 @@ export class Ingredient {
   category?: Category;
 
   @ManyToMany(() => Tag, { nullable: true })
+  @JoinTable({
+    name: 'ingredient_tags',
+    joinColumn: { name: 'ingredient_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'tag_id', referencedColumnName: 'id' }
+  })
   tags?: Tag[]; // ej: ['vegan', 'sin gluten', 'sin lactosa']
 
   @Column({nullable: true})
@@ -32,6 +38,9 @@ export class Ingredient {
 
   @Column({nullable: true})
   image?: string;
+
+  @OneToMany(() => RecipeIngredient, recipeIngredient => recipeIngredient.ingredient)
+  recipeIngredients?: RecipeIngredient[];
 }
 
 // Ingredient {
