@@ -1,20 +1,24 @@
+import 'package:ai_cook_project/models/category_model.dart';
 import 'package:ai_cook_project/models/custom_ing_model.dart';
+import 'package:ai_cook_project/models/tag_model.dart';
+import 'package:ai_cook_project/providers/resource_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/unit.dart';
+import 'package:provider/provider.dart';
 
 class IngredientFormDialog extends StatefulWidget {
   final Ingredient? ingredient;
   final CustomIngredient? customIngredient;
   final int quantity;
   final Unit? unit;
-  final List<String> categories;
+  final List<Category> categories;
   final Function(
     String name,
-    String category,
-    List<String> tags,
+    Category category,
+    List<Tag> tags,
     int quantity,
     Unit unit,
   )
@@ -39,21 +43,9 @@ class IngredientFormDialog extends StatefulWidget {
 class _IngredientFormDialogState extends State<IngredientFormDialog> {
   late TextEditingController _nameController;
   late TextEditingController _quantityController;
-  late String _selectedCategory;
+  late Category _selectedCategory;
   late Unit _selectedUnit;
-  final Set<String> _selectedTags = {};
-
-  // Available tags
-  final List<String> _availableTags = [
-    'vegan',
-    'vegetarian',
-    'gluten-free',
-    'dairy-free',
-    'high-protein',
-    'low-carb',
-    'low-fat',
-    'healthy',
-  ];
+  final Set<Tag> _selectedTags = {};
 
   @override
   void initState() {
@@ -65,18 +57,32 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
       text: widget.quantity.toString(),
     );
     _selectedCategory =
-        widget.ingredient?.category?.name ??
-        widget.customIngredient?.category?.name ??
+        widget.ingredient?.category ??
+        widget.customIngredient?.category ??
         widget.categories.first;
-    _selectedUnit = widget.unit ?? Unit.u;
+
+    // We'll set the initial unit in didChangeDependencies
+    _selectedUnit = widget.unit ?? Unit(name: '', abbreviation: '', type: '');
 
     // Initialize selected tags
     if (widget.ingredient?.tags != null) {
-      _selectedTags.addAll(widget.ingredient!.tags!.map((tag) => tag.name));
+      _selectedTags.addAll(widget.ingredient!.tags!);
     } else if (widget.customIngredient?.tags != null) {
-      _selectedTags.addAll(
-        widget.customIngredient!.tags!.map((tag) => tag.name),
-      );
+      _selectedTags.addAll(widget.customIngredient!.tags!);
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final resourceProvider = Provider.of<ResourceProvider>(
+      context,
+      listen: false,
+    );
+    if (widget.unit == null && resourceProvider.units.isNotEmpty) {
+      setState(() {
+        _selectedUnit = resourceProvider.units.first;
+      });
     }
   }
 
@@ -100,6 +106,10 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final resourceProvider = Provider.of<ResourceProvider>(context);
+    final availableTags = resourceProvider.tags;
+    final availableUnits = resourceProvider.units;
+
     return Container(
       padding: EdgeInsets.fromLTRB(
         16,
@@ -109,7 +119,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
       ),
       decoration: BoxDecoration(
         color: CupertinoColors.systemGrey6.withOpacity(1),
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -118,7 +128,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
           const SizedBox(height: 12),
           Text(
             widget.ingredient == null ? 'Add Ingredient' : 'Edit Ingredient',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 20,
               fontFamily: 'Times New Roman',
               color: AppColors.black,
@@ -131,12 +141,12 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
           CupertinoTextField(
             controller: _nameController,
             placeholder: 'Name',
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             placeholderStyle: TextStyle(
               color: CupertinoColors.systemGrey.resolveFrom(context),
               fontSize: 16,
             ),
-            style: TextStyle(color: AppColors.black, fontSize: 16),
+            style: const TextStyle(color: AppColors.black, fontSize: 16),
             decoration: BoxDecoration(
               color: CupertinoColors.systemBackground.resolveFrom(context),
               border: Border.all(color: CupertinoColors.systemGrey3),
@@ -154,7 +164,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
               borderRadius: BorderRadius.circular(20),
             ),
             child: CupertinoButton(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               onPressed: () {
                 showCupertinoModalPopup(
                   context: context,
@@ -177,7 +187,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                                 decoration: BoxDecoration(
                                   color: CupertinoColors.systemGrey6
                                       .resolveFrom(context),
-                                  border: Border(
+                                  border: const Border(
                                     bottom: BorderSide(
                                       color: CupertinoColors.systemGrey4,
                                       width: 0.5,
@@ -190,7 +200,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                                   children: [
                                     CupertinoButton(
                                       padding: EdgeInsets.zero,
-                                      child: Text(
+                                      child: const Text(
                                         'Cancel',
                                         style: TextStyle(
                                           color: AppColors.mutedGreen,
@@ -201,7 +211,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                                     ),
                                     CupertinoButton(
                                       padding: EdgeInsets.zero,
-                                      child: Text(
+                                      child: const Text(
                                         'Done',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
@@ -233,7 +243,9 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                                   },
                                   children:
                                       widget.categories
-                                          .map((category) => Text(category))
+                                          .map(
+                                            (category) => Text(category.name),
+                                          )
                                           .toList(),
                                 ),
                               ),
@@ -247,10 +259,13 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    _selectedCategory,
-                    style: TextStyle(color: AppColors.black, fontSize: 16),
+                    _selectedCategory.name,
+                    style: const TextStyle(
+                      color: AppColors.black,
+                      fontSize: 16,
+                    ),
                   ),
-                  Icon(
+                  const Icon(
                     CupertinoIcons.chevron_down,
                     color: AppColors.black,
                     size: 20,
@@ -263,7 +278,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
 
           // Tags section
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
               color: CupertinoColors.systemBackground.resolveFrom(context),
               border: Border.all(
@@ -289,10 +304,10 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                   spacing: 8,
                   runSpacing: 8,
                   children:
-                      _availableTags.map((tag) {
+                      availableTags.map((tag) {
                         final isSelected = _selectedTags.contains(tag);
                         return FilterChip(
-                          label: Text(tag),
+                          label: Text(tag.name),
                           selected: isSelected,
                           onSelected: (selected) {
                             setState(() {
@@ -337,12 +352,15 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                   controller: _quantityController,
                   keyboardType: TextInputType.number,
                   placeholder: 'Quantity',
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   placeholderStyle: TextStyle(
                     color: CupertinoColors.systemGrey.resolveFrom(context),
                     fontSize: 16,
                   ),
-                  style: TextStyle(color: AppColors.black, fontSize: 16),
+                  style: const TextStyle(color: AppColors.black, fontSize: 16),
                   decoration: BoxDecoration(
                     color: CupertinoColors.systemBackground.resolveFrom(
                       context,
@@ -364,7 +382,10 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: CupertinoButton(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
                     onPressed: () {
                       showCupertinoModalPopup(
                         context: context,
@@ -387,7 +408,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                                       decoration: BoxDecoration(
                                         color: CupertinoColors.systemGrey6
                                             .resolveFrom(context),
-                                        border: Border(
+                                        border: const Border(
                                           bottom: BorderSide(
                                             color: CupertinoColors.systemGrey4,
                                             width: 0.5,
@@ -400,7 +421,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                                         children: [
                                           CupertinoButton(
                                             padding: EdgeInsets.zero,
-                                            child: Text(
+                                            child: const Text(
                                               'Cancel',
                                               style: TextStyle(
                                                 color: AppColors.mutedGreen,
@@ -412,7 +433,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                                           ),
                                           CupertinoButton(
                                             padding: EdgeInsets.zero,
-                                            child: Text(
+                                            child: const Text(
                                               'Done',
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
@@ -434,21 +455,20 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                                         itemExtent: 32.0,
                                         scrollController:
                                             FixedExtentScrollController(
-                                              initialItem: Unit.values.indexOf(
-                                                _selectedUnit,
-                                              ),
+                                              initialItem: availableUnits
+                                                  .indexOf(_selectedUnit),
                                             ),
                                         onSelectedItemChanged: (
                                           int selectedItem,
                                         ) {
                                           setState(() {
                                             _selectedUnit =
-                                                Unit.values[selectedItem];
+                                                availableUnits[selectedItem];
                                           });
                                         },
                                         children:
-                                            Unit.values
-                                                .map((unit) => Text(unit.label))
+                                            availableUnits
+                                                .map((unit) => Text(unit.name))
                                                 .toList(),
                                       ),
                                     ),
@@ -462,13 +482,13 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          _selectedUnit.label,
-                          style: TextStyle(
+                          _selectedUnit.name,
+                          style: const TextStyle(
                             color: AppColors.black,
                             fontSize: 16,
                           ),
                         ),
-                        Icon(
+                        const Icon(
                           CupertinoIcons.chevron_down,
                           color: AppColors.black,
                           size: 20,
@@ -497,7 +517,10 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
               ],
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text('Cancel', style: TextStyle(color: AppColors.black)),
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(color: AppColors.black),
+                ),
               ),
               const SizedBox(width: 16),
               ElevatedButton(

@@ -1,16 +1,14 @@
-import 'package:ai_cook_project/models/category_model.dart';
-import 'package:ai_cook_project/models/custom_ing_model.dart';
-import 'package:ai_cook_project/models/tag_model.dart';
+import 'package:ai_cook_project/providers/resource_provider.dart';
+import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
-import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
-import 'package:ai_cook_project/models/unit.dart';
 import 'package:ai_cook_project/providers/search_provider.dart';
 import 'package:ai_cook_project/widgets/dropdown_selector.dart';
 import 'package:provider/provider.dart';
 import 'package:ai_cook_project/dialogs/ingredient_dialogs.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class CupboardScreen extends StatefulWidget {
   const CupboardScreen({super.key});
@@ -23,138 +21,61 @@ class _CupboardScreenState extends State<CupboardScreen> {
   String _selectedCategory = 'All';
   String _selectedProperty = 'All';
   final TextEditingController _searchController = TextEditingController();
+  bool _isLoading = true;
 
-  // Main categories for dropdown
-  final List<String> _mainCategories = [
-    'All',
-    'Fruits & Vegetables',
-    'Meat',
-    'Dairies',
-    'Grains',
-    'Spices',
-    'Others',
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _loadResources();
+  }
 
-  // Properties for filter chips
-  final List<String> _properties = [
-    'All',
-    'Vegan',
-    'Non-dairy',
-    'Gluten-free',
-    'High-protein',
-    'Low-carb',
-    'Low-fat',
-  ];
+  Future<void> _loadResources() async {
+    setState(() => _isLoading = true);
+    try {
+      final resourceProvider = Provider.of<ResourceProvider>(
+        context,
+        listen: false,
+      );
+      final ingredientsProvider = Provider.of<IngredientsProvider>(
+        context,
+        listen: false,
+      );
 
-  // Hardcoded ingredients for now
-  final List<UserIng> _ingredients = [
-    UserIng(
-      id: 1,
-      uid: '1',
-      ingredient: Ingredient(
-        id: 1,
-        name: 'Tomatoes',
-        category: Category(id: 1, name: 'Fruits & Vegetables'),
-        tags: [Tag(id: 1, name: 'Vegan'), Tag(id: 2, name: 'Low-carb')],
-      ),
-      quantity: 1,
-      unit: Unit.kg,
-    ),
-    UserIng(
-      id: 2,
-      uid: '1',
-      ingredient: Ingredient(
-        id: 2,
-        name: 'Chicken',
-        category: Category(id: 2, name: 'Meat'),
-        tags: [Tag(id: 3, name: 'Low-fat'), Tag(id: 4, name: 'High-protein')],
-      ),
-      quantity: 1,
-      unit: Unit.kg,
-    ),
-    UserIng(
-      id: 3,
-      uid: '1',
-      customIngredient: CustomIngredient(
-        id: 3,
-        name: 'Onions',
-        category: Category(id: 1, name: 'Fruits & Vegetables'),
-        tags: [Tag(id: 5, name: 'Healthy')],
-      ),
-      quantity: 500,
-      unit: Unit.g,
-    ),
-    UserIng(
-      id: 4,
-      uid: '1',
-      ingredient: Ingredient(
-        id: 4,
-        name: 'Milk',
-        category: Category(id: 3, name: 'Dairies'),
-        tags: [Tag(id: 6, name: 'Healthy')],
-      ),
-      quantity: 500,
-      unit: Unit.ml,
-    ),
-    UserIng(
-      id: 5,
-      uid: '1',
-      ingredient: Ingredient(
-        id: 5,
-        name: 'Eggs',
-        category: Category(id: 3, name: 'Dairies'),
-        tags: [Tag(id: 7, name: 'High-protein')],
-      ),
-      quantity: 12,
-      unit: Unit.u,
-    ),
-    UserIng(
-      id: 6,
-      uid: '1',
-      ingredient: Ingredient(
-        id: 6,
-        name: 'Whole-grain Rice',
-        category: Category(id: 4, name: 'Grains'),
-        tags: [Tag(id: 8, name: 'Gluten-free'), Tag(id: 9, name: 'Low-carb')],
-      ),
-      quantity: 1,
-      unit: Unit.u,
-    ),
-    UserIng(
-      id: 7,
-      uid: '1',
-      ingredient: Ingredient(
-        id: 7,
-        name: 'Ginger',
-        category: Category(id: 5, name: 'Spices'),
-        tags: [Tag(id: 10, name: 'Healthy')],
-      ),
-      quantity: 100,
-      unit: Unit.g,
-    ),
-  ];
+      await Future.wait([
+        resourceProvider.getCategories(),
+        resourceProvider.getTags(),
+        resourceProvider.getUnits(),
+        ingredientsProvider.fetchUserIngredients(),
+        ingredientsProvider.fetchIngredients(),
+      ]);
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
 
-  // User's ingredients with quantities
-  final Map<int, UserIng> _userIngredients = {};
-
-  List<UserIng> get _filteredIngredients {
+  List<UserIng> _getFilteredIngredients(BuildContext context) {
+    final ingredientsProvider = Provider.of<IngredientsProvider>(context);
     final searchProvider = Provider.of<SearchProvider>(context);
-    return _ingredients.where((ingredient) {
+    final searchText = searchProvider.searchController.text.toLowerCase();
+
+    return ingredientsProvider.userIngredients.where((userIng) {
+      final ingredient = userIng.ingredient;
+      if (ingredient == null) return false;
+
       final matchesCategory =
           _selectedCategory == 'All' ||
-          ingredient.ingredient?.category?.name == _selectedCategory;
+          ingredient.category?.name == _selectedCategory;
+
       final matchesProperty =
           _selectedProperty == 'All' ||
-          (ingredient.ingredient?.tags?.any(
+          (ingredient.tags?.any(
                 (tag) =>
                     tag.name.toLowerCase() == _selectedProperty.toLowerCase(),
               ) ??
               false);
-      final matchesSearch =
-          ingredient.ingredient?.name.toLowerCase().contains(
-            searchProvider.searchController.text.toLowerCase(),
-          ) ??
-          false;
+
+      final matchesSearch = ingredient.name.toLowerCase().contains(searchText);
+
       return matchesCategory && matchesProperty && matchesSearch;
     }).toList();
   }
@@ -166,41 +87,53 @@ class _CupboardScreenState extends State<CupboardScreen> {
   }
 
   void _showIngredientDialog([UserIng? userIng]) {
+    final resourceProvider = Provider.of<ResourceProvider>(
+      context,
+      listen: false,
+    );
+    final ingredientsProvider = Provider.of<IngredientsProvider>(
+      context,
+      listen: false,
+    );
+
     IngredientDialogs.showIngredientDialog(
       context: context,
-      categories: _mainCategories,
-      ingredients: _ingredients,
-      userIngredients: _userIngredients,
+      categories:
+          resourceProvider.categories.map((category) => category.name).toList(),
+      ingredients:
+          ingredientsProvider.ingredients
+              .map(
+                (ing) => UserIng(
+                  id: ing.id,
+                  ingredient: ing,
+                  quantity: 0,
+                  unit: null,
+                  uid: FirebaseAuth.instance.currentUser?.uid ?? '',
+                ),
+              )
+              .toList(),
+      userIngredients: {
+        for (var ing in ingredientsProvider.userIngredients) ing.id: ing,
+      },
       userIng: userIng,
       onDelete:
-          userIng?.ingredient != null
+          userIng != null
               ? () {
-                final ingredient = userIng!.ingredient!;
                 IngredientDialogs.showDeleteDialog(
                   context: context,
-                  ingredient: ingredient,
-                  onDelete: () {
-                    setState(() {
-                      _ingredients.removeWhere((i) => i.id == ingredient.id);
-                      _userIngredients.remove(ingredient.id);
-                    });
+                  ingredient: userIng.ingredient!,
+                  onDelete: () async {
+                    await ingredientsProvider.removeUserIngredient(userIng);
                   },
                 );
               }
               : null,
-      onSave: (UserIng updatedUserIng) {
-        setState(() {
-          if (userIng == null) {
-            _ingredients.add(updatedUserIng);
-            _userIngredients[updatedUserIng.id] = updatedUserIng;
-          } else {
-            final index = _ingredients.indexWhere((i) => i.id == userIng.id);
-            if (index != -1) {
-              _ingredients[index] = updatedUserIng;
-              _userIngredients[userIng.id] = updatedUserIng;
-            }
-          }
-        });
+      onSave: (UserIng updatedUserIng) async {
+        if (userIng == null) {
+          await ingredientsProvider.addUserIngredient(updatedUserIng);
+        } else {
+          await ingredientsProvider.updateUserIngredient(updatedUserIng);
+        }
       },
     );
   }
@@ -210,6 +143,17 @@ class _CupboardScreenState extends State<CupboardScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final horizontalPadding = screenWidth * 0.05;
+    final resourceProvider = Provider.of<ResourceProvider>(context);
+
+    if (_isLoading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
+    final categories = [
+      'All',
+      ...resourceProvider.categories.map((c) => c.name),
+    ];
+    final tags = ['All', ...resourceProvider.tags.map((t) => t.name)];
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -220,13 +164,13 @@ class _CupboardScreenState extends State<CupboardScreen> {
             Padding(
               padding: EdgeInsets.fromLTRB(
                 horizontalPadding,
-                0, // reduced top padding
+                0,
                 horizontalPadding,
                 screenHeight * 0.02,
               ),
               child: DropdownSelector(
                 value: _selectedCategory,
-                items: _mainCategories,
+                items: categories,
                 onChanged: (value) {
                   if (value != null) {
                     setState(() => _selectedCategory = value);
@@ -240,10 +184,10 @@ class _CupboardScreenState extends State<CupboardScreen> {
               margin: EdgeInsets.only(bottom: screenHeight * 0.02),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: _properties.length,
+                itemCount: tags.length,
                 padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                 itemBuilder: (context, index) {
-                  final property = _properties[index];
+                  final property = tags[index];
                   final isSelected = property == _selectedProperty;
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
@@ -280,63 +224,68 @@ class _CupboardScreenState extends State<CupboardScreen> {
             ),
             // Ingredients List
             Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                itemCount: _filteredIngredients.length,
-                itemBuilder: (context, index) {
-                  final ingredient = _filteredIngredients[index];
-                  final userIng = _userIngredients[ingredient.id];
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        side: BorderSide(
-                          color: AppColors.mutedGreen,
-                          width: 0.5,
-                        ),
-                      ),
-                      color: CupertinoColors.systemGrey6,
-                      child: InkWell(
-                        onTap: () => _showIngredientDialog(ingredient),
-                        borderRadius: BorderRadius.circular(16),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  ingredient.ingredient?.name ??
-                                      ingredient.customIngredient?.name ??
-                                      '',
-                                  style: const TextStyle(
-                                    color: AppColors.button,
-                                    fontFamily: 'Times New Roman',
-                                    fontSize: 16,
-                                    letterSpacing: 0.5,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              if (userIng != null) ...[
-                                const SizedBox(width: 8),
-                                Text(
-                                  '${userIng.quantity} ${userIng.unit}',
-                                  style: TextStyle(
-                                    color: AppColors.button,
-                                    fontFamily: 'Times New Roman',
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ],
-                          ),
-                        ),
-                      ),
+              child: Consumer<IngredientsProvider>(
+                builder: (context, ingredientsProvider, _) {
+                  final filteredIngredients = _getFilteredIngredients(context);
+
+                  return ListView.builder(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: horizontalPadding,
                     ),
+                    itemCount: filteredIngredients.length,
+                    itemBuilder: (context, index) {
+                      final userIng = filteredIngredients[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            side: BorderSide(
+                              color: AppColors.mutedGreen,
+                              width: 0.5,
+                            ),
+                          ),
+                          color: CupertinoColors.systemGrey6,
+                          child: InkWell(
+                            onTap: () => _showIngredientDialog(userIng),
+                            borderRadius: BorderRadius.circular(16),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      userIng.ingredient?.name ??
+                                          userIng.customIngredient?.name ??
+                                          '',
+                                      style: const TextStyle(
+                                        color: AppColors.button,
+                                        fontFamily: 'Times New Roman',
+                                        fontSize: 16,
+                                        letterSpacing: 0.5,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    '${userIng.quantity} ${userIng.unit}',
+                                    style: const TextStyle(
+                                      color: AppColors.button,
+                                      fontFamily: 'Times New Roman',
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
               ),
