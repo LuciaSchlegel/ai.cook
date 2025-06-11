@@ -1,0 +1,121 @@
+[
+    {
+        "name": "Mediterranean Quinoa Bowl",
+        "description": "Nutritious bowl with quinoa, roasted vegetables, and a lemon dressing. Perfect for a healthy lunch or dinner.",
+        "steps": [
+            "Cook quinoa according to package directions",
+            "Dice tomato, cucumber, and red bell pepper",
+            "Thinly slice red onion",
+            "Whisk together lemon juice, olive oil, and minced garlic",
+            "Season with salt and pepper",
+            "Combine cooked quinoa with diced vegetables",
+            "Add arugula and toss with dressing",
+            "Top with sunflower seeds for crunch",
+            "Serve immediately"
+        ],
+        "cookingTime": "25 minutes",
+        "difficulty": "Easy",
+        "servings": "4",
+        "image": "https://example.com/images/quinoa-bowl.jpg",
+        "ingredients": [
+            { "name": "Quinoa", "quantity": 200, "unit": "g" },
+            { "name": "Tomato", "quantity": 2, "unit": "med" },
+            { "name": "Cucumber", "quantity": 1, "unit": "lg" },
+            { "name": "Red bell pepper", "quantity": 1, "unit": "pc" },
+            { "name": "Onion", "quantity": 1, "unit": "sm" },
+            { "name": "Arugula", "quantity": 3, "unit": "cup" },
+            { "name": "Lemon", "quantity": 1, "unit": "unit" },
+            { "name": "Garlic", "quantity": 2, "unit": "clove" },
+            { "name": "Sunflower seeds", "quantity": 3, "unit": "tbsp" }
+        ],
+        "tags": ["Healthy", "Fresh", "Gluten-free"]
+    },
+    {
+        "name": "Grilled Salmon with Lemon and Asparagus",
+        "description": "Fresh salmon fillet grilled to perfection with seasonal asparagus and bright lemon flavors.",
+        "steps": [
+            "Preheat grill to medium-high heat",
+            "Trim asparagus spears and toss with olive oil",
+            "Season salmon with salt, pepper, and lemon juice",
+            "Grill salmon for 4-5 minutes per side",
+            "Grill asparagus for 3-4 minutes until tender-crisp",
+            "Mince garlic and mix with lemon zest",
+            "Top cooked salmon with garlic-lemon mixture",
+            "Serve salmon alongside grilled asparagus",
+            "Garnish with lemon wedges"
+        ],
+        "cookingTime": "20 minutes",
+        "difficulty": "Easy",
+        "servings": "4",
+        "image": "https://example.com/images/salmon-asparagus.jpg",
+        "ingredients": [
+            { "name": "Salmon", "quantity": 4, "unit": "unit" },
+            { "name": "Asparagus", "quantity": 454, "unit": "g" },
+            { "name": "Lemon", "quantity": 2, "unit": "unit" },
+            { "name": "Garlic", "quantity": 3, "unit": "clove" }
+        ],
+        "tags": ["Healthy", "Fresh", "Keto", "Proteic"]
+    },
+    {
+        "name": "Chicken and Vegetable Stir-Fry",
+        "description": "Colorful stir-fry with tender chicken breast and crisp vegetables over brown rice.",
+        "steps": [
+            "Cook brown rice according to package directions",
+            "Slice chicken breast into thin strips",
+            "Cut broccoli into florets and slice carrots",
+            "Dice red and green bell peppers",
+            "Heat oil in a large wok or skillet",
+            "Stir-fry chicken until cooked through, remove from pan",
+            "Add garlic and ginger, stir-fry for 30 seconds",
+            "Add vegetables and stir-fry until tender-crisp",
+            "Return chicken to pan and toss everything together",
+            "Serve over brown rice"
+        ],
+        "cookingTime": "25 minutes",
+        "difficulty": "Easy",
+        "servings": "4",
+        "image": "https://example.com/images/chicken-stir-fry.jpg",
+        "ingredients": [
+            { "name": "Chicken breast", "quantity": 454, "unit": "g" },
+            { "name": "Brown rice", "quantity": 200, "unit": "g" },
+            { "name": "Broccoli", "quantity": 2, "unit": "cup" },
+            { "name": "Carrot", "quantity": 2, "unit": "lg" },
+            { "name": "Red bell pepper", "quantity": 1, "unit": "pc" },
+            { "name": "Green bell pepper", "quantity": 1, "unit": "pc" },
+            { "name": "Garlic", "quantity": 3, "unit": "clove" },
+            { "name": "Onion", "quantity": 1, "unit": "med" }
+        ],
+        "tags": ["Healthy", "Asiatic", "Proteic"]
+    },
+    {
+        "name": "Roasted Vegetable and Lentil Salad",
+        "description": "Hearty salad with roasted root vegetables, protein-rich lentils, and fresh herbs.",
+        "steps": [
+            "Preheat oven to 425°F",
+            "Dice sweet potato, carrot, and beetroot",
+            "Toss vegetables with olive oil, salt, and pepper",
+            "Roast for 25-30 minutes until tender",
+            "Cook green lentils until tender but firm",
+            "Slice red onion and dice cucumber",
+            "Whisk lemon juice with olive oil for dressing",
+            "Combine warm lentils with roasted vegetables",
+            "Add fresh spinach and cucumber",
+            "Toss with dressing and serve warm or at room temperature"
+        ],
+        "cookingTime": "40 minutes",
+        "difficulty": "Medium",
+        "servings": "6",
+        "image": "https://example.com/images/lentil-salad.jpg",
+        "ingredients": [
+            { "name": "Green lentils", "quantity": 200, "unit": "g" },
+            { "name": "Sweet potato", "quantity": 2, "unit": "med" },
+            { "name": "Carrot", "quantity": 3, "unit": "lg" },
+            { "name": "Beetroot", "quantity": 2, "unit": "med" },
+            { "name": "Spinach", "quantity": 4, "unit": "cup" },
+            { "name": "Cucumber", "quantity": 1, "unit": "lg" },
+            { "name": "Onion", "quantity": 1, "unit": "sm" },
+            { "name": "Lemon", "quantity": 1, "unit": "unit" }
+        ],
+        "tags": ["Healthy", "Fresh", "Gluten-free"]
+    }
+]

@@ -16,10 +16,7 @@ class RecipeIngredient {
     return RecipeIngredient(
       ingredient: Ingredient.fromJson(json['ingredient']),
       quantity: json['quantity'].toDouble(),
-      unit:
-          json['unit'] != null
-              ? Unit.values.byName(json['unit'].toLowerCase())
-              : null,
+      unit: json['unit'] != null ? Unit.fromJson(json['unit']) : null,
     );
   }
 
@@ -27,7 +24,7 @@ class RecipeIngredient {
     return {
       'ingredient': ingredient.toJson(),
       'quantity': quantity,
-      'unit': unit?.name,
+      'unit': unit?.toJson(),
     };
   }
 }

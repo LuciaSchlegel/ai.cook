@@ -7,11 +7,13 @@ import calendarRouter from "./calendar.router";
 import recipesRouter from "./recipes.router";
 import ingredientsRouter from "./ingredients.router";
 import llmRouter from "./llm.router"; 
+import resourcesRouter from "./resources.router";
 
 const router = Router();
 
 router.use("/user", userRouter);
 router.use("/admin", adminRouter);
+router.use("/resources", resourcesRouter);  
 router.use("/analytics", analyticsRouter);
 router.use("/attributes", attributesRouter);
 router.use("/calendar", calendarRouter);

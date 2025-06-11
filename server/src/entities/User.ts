@@ -7,7 +7,7 @@ import { Recipe } from './Recipe';
 import { Event } from './Event';
 import { CustomIngredient } from './Custom_Ingredient';
 
-enum UserRole {
+export enum UserRole {
     USER = 'user',
     ADMIN = 'admin',
 }

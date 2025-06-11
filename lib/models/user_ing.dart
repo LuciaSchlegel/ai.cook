@@ -32,10 +32,7 @@ class UserIng {
               ? CustomIngredient.fromJson(json['customIngredient'])
               : null,
       quantity: json['quantity'] as int,
-      unit:
-          json['unit'] != null
-              ? Unit.values.byName(json['unit'].toLowerCase())
-              : null,
+      unit: json['unit'] != null ? Unit.fromJson(json['unit']) : null,
     );
   }
 
@@ -46,7 +43,7 @@ class UserIng {
       'ingredient': ingredient?.toJson(),
       'customIngredient': customIngredient?.toJson(),
       'quantity': quantity,
-      'unit': unit?.label,
+      'unit': unit?.toJson(),
     };
   }
 }

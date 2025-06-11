@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Recipe } from './Recipe';
 import { Ingredient } from './Ingredient';
+import { Unit } from './Unit';
 
 @Entity({ name: 'recipe_ingredients' })
 export class RecipeIngredient {
@@ -16,7 +17,6 @@ export class RecipeIngredient {
   @Column({ type: 'int', default: 1 })
   quantity!: number;
 
-  @Column({ nullable: true })
-  unit?: string;
-
+  @ManyToOne(() => Unit, { nullable: true })
+  unit?: Unit;
 }

@@ -22,43 +22,21 @@ export class Ingredient {
     joinColumn: { name: 'ingredient_id', referencedColumnName: 'id' },
     inverseJoinColumn: { name: 'tag_id', referencedColumnName: 'id' }
   })
-  tags?: Tag[]; // ej: ['vegan', 'sin gluten', 'sin lactosa']
+  tags?: Tag[]; // ej: ['low-fat', 'high-protein', 'healthy']
 
   @Column({nullable: true})
-  isVegan?: boolean; // Indica si es apto para veganos
+  isVegan?: boolean; 
 
   @Column({nullable: true})
-  isVegetarian?: boolean; // Indica si es apto para vegetarianos
+  isVegetarian?: boolean;
 
   @Column({nullable: true})
-  isGlutenFree?: boolean; // Indica si es apto para celíacos
+  isGlutenFree?: boolean;
 
   @Column({nullable: true})
-  isLactoseFree?: boolean; // Indica si es apto para intolerantes a la lactosa
-
-  @Column({nullable: true})
-  image?: string;
+  isLactoseFree?: boolean;
 
   @OneToMany(() => RecipeIngredient, recipeIngredient => recipeIngredient.ingredient)
   recipeIngredients?: RecipeIngredient[];
 }
 
-// Ingredient {
-//   title: string;
-//   category: Category;
-//   tags: Tag[];
-//   isVegan: boolean;
-//   isVegetarian: boolean;
-//   isGlutenFree: boolean;
-//   isLactoseFree: boolean;
-// }
-
-// Ingredient {
-//   title: potatoe;
-//   category: Vegetables;
-//   tags: ['healthy', 'carbs', 'low-calorie'];
-//   isVegan: true;
-//   isVegetarian: true;
-//   isGlutenFree: true;
-//   isLactoseFree: true;
-// }

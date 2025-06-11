@@ -41,7 +41,6 @@ export async function loadIngredientsFromLocalFile() {
     const ingredient = new Ingredient();
     ingredient.name = item.strIngredient;
     ingredient.category = item.strType || null;
-    ingredient.image = `https://www.themealdb.com/images/ingredients/${encodeURIComponent(item.strIngredient)}.png`;
     ingredient.isVegan = item.isVegan ?? false;
     ingredient.isVegetarian = item.isVegetarian ?? false;
     ingredient.isGlutenFree = item.isGlutenFree ?? false;

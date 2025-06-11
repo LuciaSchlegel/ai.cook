@@ -1,4 +1,4 @@
 import { AppDataSource } from "../config/data_source";
 import { Category } from "../entities/Category";
 
-export const categoryRepository = AppDataSource.getRepository(Category);
+export const CategoryRepository = AppDataSource.getRepository(Category);

@@ -1,9 +1,21 @@
-enum Unit {
-  kg,
-  g,
-  l,
-  ml,
-  u;
+class Unit {
+  final String name;
+  final String abbreviation;
+  final String type;
 
-  String get label => name.toLowerCase();
+  Unit({required this.name, required this.abbreviation, required this.type});
+
+  factory Unit.fromJson(Map<String, dynamic> json) {
+    return Unit(
+      name: json['name'],
+      abbreviation: json['abbreviation'],
+      type: json['type'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'abbreviation': abbreviation,
+    'type': type,
+  };
 }

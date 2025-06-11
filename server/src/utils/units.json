@@ -1,0 +1,18 @@
+[
+    { "name": "Grams", abbreviation: "g", type: "weight" },
+    { "name": "Kilograms", abbreviation: "kg", type: "weight" },
+    { "name": "Milliliters", abbreviation: "ml", type: "volume" },
+    { "name": "Liters", abbreviation: "l", type: "volume" },
+    { "name": "Teaspoon", abbreviation: "tsp", type: "volume" },
+    { "name": "Tablespoon", abbreviation: "tbsp", type: "volume" },
+    { "name": "Cup", abbreviation: "cup", type: "volume" },
+    { "name": "Piece", abbreviation: "pc", type: "quantity" },
+    { "name": "Unit", abbreviation: "unit", type: "quantity" },
+    { "name": "Pinch", abbreviation: "pinch", type: "quantity" },
+    { "name": "Clove", abbreviation: "clove", type: "quantity" },
+    { "name": "Slice", abbreviation: "slice", type: "quantity" },
+    { "name": "Medium", abbreviation: "med", type: "size" },
+    { "name": "Large", abbreviation: "lg", type: "size" },
+    { "name": "Small", abbreviation: "sm", type: "size" }
+]
+
