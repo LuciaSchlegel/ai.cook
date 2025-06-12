@@ -44,7 +44,7 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                       )
                       .toList();
           return Dialog(
-            backgroundColor: AppColors.background,
+            backgroundColor: CupertinoColors.systemGrey6,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
@@ -60,7 +60,7 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                       const Text(
                         'Start Your Cupboard',
                         style: TextStyle(
-                          color: AppColors.white,
+                          color: AppColors.button,
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Casta',
@@ -70,7 +70,7 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                       IconButton(
                         icon: const Icon(
                           CupertinoIcons.xmark,
-                          color: AppColors.white,
+                          color: AppColors.button,
                         ),
                         onPressed: () => Navigator.pop(context),
                       ),
@@ -109,7 +109,7 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                                 color:
                                     isSelected
                                         ? AppColors.mutedGreen
-                                        : AppColors.white,
+                                        : AppColors.mutedGreen.withOpacity(0.2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Center(
@@ -120,7 +120,7 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                                     color:
                                         isSelected
                                             ? AppColors.white
-                                            : AppColors.button,
+                                            : AppColors.button.withOpacity(0.9),
                                     fontSize: 14,
                                     fontWeight:
                                         isSelected
@@ -154,23 +154,27 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                               decoration: BoxDecoration(
                                 color:
                                     selected
-                                        ? AppColors.mutedGreen.withOpacity(0.9)
-                                        : CupertinoColors.systemGrey4
-                                            .withOpacity(0.2),
+                                        ? AppColors.mutedGreen
+                                        : CupertinoColors.systemGrey5,
                                 borderRadius: BorderRadius.circular(24),
                                 border: Border.all(
                                   color:
                                       selected
                                           ? AppColors.mutedGreen
-                                          : AppColors.white.withOpacity(0.24),
+                                          : AppColors.mutedGreen.withOpacity(
+                                            0.5,
+                                          ),
                                   width: 1,
                                 ),
                               ),
                               child: ListTile(
                                 title: Text(
                                   ing.name,
-                                  style: const TextStyle(
-                                    color: AppColors.white,
+                                  style: TextStyle(
+                                    color:
+                                        selected
+                                            ? AppColors.white
+                                            : AppColors.button,
                                     fontSize: 16,
                                   ),
                                 ),
@@ -182,9 +186,7 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                                         )
                                         : Icon(
                                           CupertinoIcons.circle,
-                                          color: AppColors.white.withOpacity(
-                                            0.5,
-                                          ),
+                                          color: AppColors.mutedGreen,
                                         ),
                                 onTap: () {
                                   setState(() {
@@ -219,7 +221,7 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                   const SizedBox(height: 24),
                   CupertinoButton(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    color: AppColors.orange,
+                    color: AppColors.button,
                     borderRadius: BorderRadius.circular(18),
                     onPressed: () async {
                       for (var ing in selectedIngredients) {
