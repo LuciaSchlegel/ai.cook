@@ -13,19 +13,15 @@ class User {
   final String name;
   final String email;
   final String? phone;
-  final String? address;
-  final String? profileImage;
-  final String? bio;
+  final String gender;
+  final DateTime? birthDate;
   final UserRole role;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final bool isDeleted;
   final Subscription? subscription;
-  final List<Attribute> attributes;
-  final List<UserIng> userIngredients;
-  final List<CustomIngredient> customIngredients;
-  final List<Recipe> recipes;
-  final List<Event> events;
+  final List<Attribute>? attributes;
+  final List<UserIng>? userIngredients;
+  final List<CustomIngredient>? customIngredients;
+  final List<Recipe>? recipes;
+  final List<Event>? events;
 
   User({
     required this.id,
@@ -33,19 +29,15 @@ class User {
     required this.name,
     required this.email,
     this.phone,
-    this.address,
-    this.profileImage,
-    this.bio,
+    required this.gender,
+    this.birthDate,
     required this.role,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.isDeleted,
     this.subscription,
-    required this.attributes,
-    required this.userIngredients,
-    required this.customIngredients,
-    required this.recipes,
-    required this.events,
+    this.attributes,
+    this.userIngredients,
+    this.customIngredients,
+    this.recipes,
+    this.events,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -55,13 +47,12 @@ class User {
       name: json['name'],
       email: json['email'],
       phone: json['phone'],
-      address: json['address'],
-      profileImage: json['profileImage'],
-      bio: json['bio'],
+      gender: json['gender'],
+      birthDate:
+          json['birthDate'] != null
+              ? DateTime.tryParse(json['birthDate'])
+              : null,
       role: UserRole.values.byName(json['role']),
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
-      isDeleted: json['isDeleted'] ?? false,
       subscription:
           json['subscription'] != null
               ? Subscription.fromJson(json['subscription'])
@@ -101,19 +92,15 @@ class User {
       'name': name,
       'email': email,
       'phone': phone,
-      'address': address,
-      'profileImage': profileImage,
-      'bio': bio,
+      'gender': gender,
+      'birthDate': birthDate?.toIso8601String(),
       'role': role.name,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
-      'isDeleted': isDeleted,
       'subscription': subscription?.toJson(),
-      'attributes': attributes.map((e) => e.toJson()).toList(),
-      'userIngredients': userIngredients.map((e) => e.toJson()).toList(),
-      'customIngredients': customIngredients.map((e) => e.toJson()).toList(),
-      'recipes': recipes.map((e) => e.toJson()).toList(),
-      'events': events.map((e) => e.toJson()).toList(),
+      'attributes': attributes?.map((e) => e.toJson()).toList(),
+      'userIngredients': userIngredients?.map((e) => e.toJson()).toList(),
+      'customIngredients': customIngredients?.map((e) => e.toJson()).toList(),
+      'recipes': recipes?.map((e) => e.toJson()).toList(),
+      'events': events?.map((e) => e.toJson()).toList(),
     };
   }
 }

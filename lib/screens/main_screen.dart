@@ -262,62 +262,62 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _buildBottomNavigationBar() {
-    return Stack(
-      clipBehavior: Clip.none,
-      alignment: Alignment.topCenter,
-      children: [
-        BottomAppBar(
-          color: AppColors.white,
-          elevation: 8,
-          notchMargin: 8,
-          padding: EdgeInsets.zero,
-          height: 40 + MediaQuery.of(context).padding.bottom,
-          shape: const CircularNotchedRectangle(),
-          child: SizedBox(
-            height: 40,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                // First two items
-                ...List.generate(
-                  2,
-                  (index) => Expanded(
-                    child: _buildTabItem(
-                      icon: _pages[index].icon,
-                      label: _pages[index].title,
-                      index: index,
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+
+    return SizedBox(
+      height: 70 + bottomPadding, // Altura total reservada
+      child: Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.topCenter,
+        children: [
+          BottomAppBar(
+            color: AppColors.white,
+            elevation: 8,
+            notchMargin: 8,
+            shape: const CircularNotchedRectangle(),
+            child: SizedBox(
+              height: 50,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  // Primeros dos íconos
+                  ...List.generate(
+                    2,
+                    (index) => Expanded(
+                      child: _buildTabItem(
+                        icon: _pages[index].icon,
+                        label: _pages[index].title,
+                        index: index,
+                      ),
                     ),
                   ),
-                ),
-                // Empty space for FAB
-                const Expanded(child: SizedBox()),
-                // Last two items
-                ...List.generate(
-                  2,
-                  (index) => Expanded(
-                    child: _buildTabItem(
-                      icon: _pages[index + 2].icon,
-                      label: _pages[index + 2].title,
-                      index: index + 2,
+                  // Espacio para el FAB
+                  const Expanded(child: SizedBox()),
+                  // Últimos dos íconos
+                  ...List.generate(
+                    2,
+                    (index) => Expanded(
+                      child: _buildTabItem(
+                        icon: _pages[index + 2].icon,
+                        label: _pages[index + 2].title,
+                        index: index + 2,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-        Positioned(
-          top: -30,
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            alignment: Alignment.center,
+          // Botón AI centrado arriba del BottomAppBar
+          Positioned(
+            top: -25, // Aparece justo encima del BottomAppBar
             child: AiButton(
               onPressed: _toggleAiWindow,
               isActive: _isAiWindowOpen,
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

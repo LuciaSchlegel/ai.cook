@@ -1,3 +1,4 @@
+import 'package:ai_cook_project/dialogs/global_ing_dialog.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,15 +23,28 @@ class _CupboardScreenState extends State<CupboardScreen> {
   String _selectedProperty = 'All';
   final TextEditingController _searchController = TextEditingController();
   bool _isLoading = true;
+  bool _hasShownOnboarding = false;
 
   @override
   void initState() {
     super.initState();
-    _loadResources();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _loadResources();
+
+      final ingredientsProvider = Provider.of<IngredientsProvider>(
+        context,
+        listen: false,
+      );
+
+      if (!_hasShownOnboarding && ingredientsProvider.userIngredients.isEmpty) {
+        _hasShownOnboarding = true;
+        await showGlobalIngredientsDialog(context);
+      }
+    });
   }
 
   Future<void> _loadResources() async {
-    setState(() => _isLoading = true);
+    if (mounted) setState(() => _isLoading = true);
     try {
       final resourceProvider = Provider.of<ResourceProvider>(
         context,
@@ -49,7 +63,9 @@ class _CupboardScreenState extends State<CupboardScreen> {
         ingredientsProvider.fetchIngredients(),
       ]);
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -98,8 +114,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
 
     IngredientDialogs.showIngredientDialog(
       context: context,
-      categories:
-          resourceProvider.categories.map((category) => category.name).toList(),
+      categories: resourceProvider.categories,
       ingredients:
           ingredientsProvider.ingredients
               .map(

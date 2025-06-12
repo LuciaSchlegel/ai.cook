@@ -1,5 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import { getRecipesService } from "../services/recipe.service";
+import { RecipeDto } from "../dtos/recipe.dto";
+import { serialize } from "../helpers/serialize";
 
 type ControllerFunction = (req: Request) => Promise<any>;
 
@@ -15,5 +17,6 @@ const controllerWrapper = (handler: ControllerFunction): RequestHandler => {
 };
 
 export const getRecipesController = controllerWrapper(async (req) => {
-  return await getRecipesService();
+  const recipes = await getRecipesService();
+  return serialize(RecipeDto, recipes);
 });

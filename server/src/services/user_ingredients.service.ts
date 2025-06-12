@@ -1,9 +1,11 @@
-import { Unit, UserIngredient } from "../entities/UserIngredient";
+import { UserIngredient } from "../entities/UserIngredient";
+import { Unit } from "../entities/Unit";
 import { UserRepository } from "../repositories/user.repository";
 import { IngredientRepository } from "../repositories/ingredient.repository";
 import { CustomIngredientRepository } from "../repositories/custom_ingredient.repository";
 import { UserIngredientRepository } from "../repositories/user_ingredient.repository";
 import { BadRequestError, ConflictError, NotFoundError } from "../types/AppError";
+import { UnitRepository } from "../repositories/unit.repository";
 
 // AGREGAR INGREDIENTE A LA LISTA DEL USUARIO
 export async function addUserIngredientService({ 
@@ -44,12 +46,21 @@ export async function addUserIngredientService({
   });
   if (exists) throw new ConflictError("This ingredient is already in user's list.");
 
+  const unitEntity = unit
+    ? await UnitRepository.findOne({
+        where: [{ name: unit }, { abbreviation: unit }],
+      })
+    : undefined;
+
+  if (unit && !unitEntity) {
+    throw new NotFoundError(`Unit '${unit}' not found.`);
+  }
   const userIngredient = UserIngredientRepository.create({
     user,
     ingredient,
     customIngredient,
     quantity: quantity || 1,
-    unit: unit as Unit
+    unit: unitEntity as Unit
   });
 
   return await UserIngredientRepository.save(userIngredient);

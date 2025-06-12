@@ -1,4 +1,5 @@
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
+import 'package:ai_cook_project/providers/resource_provider.dart';
 import 'package:ai_cook_project/screens/login_screen.dart';
 import 'package:ai_cook_project/screens/main_screen.dart';
 import 'package:ai_cook_project/screens/signup_screen.dart';
@@ -12,6 +13,7 @@ import 'package:ai_cook_project/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:ai_cook_project/providers/search_provider.dart';
 import 'package:ai_cook_project/providers/user_provider.dart';
+import 'package:ai_cook_project/providers/recipes_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,10 +23,18 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => FBAuthProvider()),
-        ChangeNotifierProvider(create: (_) => SearchProvider()),
-        ChangeNotifierProvider(create: (_) => UserProvider()),
-        ChangeNotifierProvider(create: (_) => IngredientsProvider()),
+        ChangeNotifierProvider<FBAuthProvider>(create: (_) => FBAuthProvider()),
+        ChangeNotifierProvider<SearchProvider>(create: (_) => SearchProvider()),
+        ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
+        ChangeNotifierProvider<IngredientsProvider>(
+          create: (_) => IngredientsProvider(),
+        ),
+        ChangeNotifierProvider<RecipesProvider>(
+          create: (_) => RecipesProvider(),
+        ),
+        ChangeNotifierProvider<ResourceProvider>(
+          create: (_) => ResourceProvider(),
+        ),
       ],
       child: const MyApp(),
     ),

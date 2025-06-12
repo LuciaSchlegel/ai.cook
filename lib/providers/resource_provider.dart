@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:ai_cook_project/models/category_model.dart';
 import 'package:ai_cook_project/models/recipe_tag_model.dart';
 import 'package:ai_cook_project/models/tag_model.dart';
@@ -16,37 +17,60 @@ class ResourceProvider extends ChangeNotifier {
   List<Category> get categories => _categories;
   List<Tag> get tags => _tags;
   List<RecipeTag> get recipeTags => _recipeTags;
+
   Future<void> getUnits() async {
-    final response = await http.get(
-      Uri.parse('${dotenv.env['API_URL']}/resources/units'),
-    );
-    _units = (response.body as List).map((e) => Unit.fromJson(e)).toList();
-    notifyListeners();
+    try {
+      final response = await http.get(
+        Uri.parse('${dotenv.env['API_URL']}/resources/units'),
+        headers: {'Content-Type': 'application/json'},
+      );
+      final List<dynamic> decoded = json.decode(response.body);
+      _units = decoded.map((e) => Unit.fromJson(e)).toList();
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error fetching units: $e');
+    }
   }
 
   Future<void> getCategories() async {
-    final response = await http.get(
-      Uri.parse('${dotenv.env['API_URL']}/resources/categories'),
-    );
-    _categories =
-        (response.body as List).map((e) => Category.fromJson(e)).toList();
-    notifyListeners();
+    try {
+      final response = await http.get(
+        Uri.parse('${dotenv.env['API_URL']}/resources/categories'),
+        headers: {'Content-Type': 'application/json'},
+      );
+      final List<dynamic> decoded = json.decode(response.body);
+      _categories = decoded.map((e) => Category.fromJson(e)).toList();
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error fetching categories: $e');
+    }
   }
 
   Future<void> getTags() async {
-    final response = await http.get(
-      Uri.parse('${dotenv.env['API_URL']}/resources/tags'),
-    );
-    _tags = (response.body as List).map((e) => Tag.fromJson(e)).toList();
-    notifyListeners();
+    try {
+      final response = await http.get(
+        Uri.parse('${dotenv.env['API_URL']}/resources/tags'),
+        headers: {'Content-Type': 'application/json'},
+      );
+      final List<dynamic> decoded = json.decode(response.body);
+      _tags = decoded.map((e) => Tag.fromJson(e)).toList();
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error fetching tags: $e');
+    }
   }
 
   Future<void> getRecipeTags() async {
-    final response = await http.get(
-      Uri.parse('${dotenv.env['API_URL']}/resources/recipe_tags'),
-    );
-    _recipeTags =
-        (response.body as List).map((e) => RecipeTag.fromJson(e)).toList();
-    notifyListeners();
+    try {
+      final response = await http.get(
+        Uri.parse('${dotenv.env['API_URL']}/resources/recipe_tags'),
+        headers: {'Content-Type': 'application/json'},
+      );
+      final List<dynamic> decoded = json.decode(response.body);
+      _recipeTags = decoded.map((e) => RecipeTag.fromJson(e)).toList();
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error fetching recipe tags: $e');
+    }
   }
 }

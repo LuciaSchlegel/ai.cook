@@ -1,31 +1,15 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import { getCategoriesService, getRecipeTagsService, getTagsService, getUnitsService } from "../services/resources.service";
+import { controllerWrapper } from "../helpers/controllerWrapper";
+import { UnitDto } from "../dtos/unit.dto";
+import { CategoryDto } from "../dtos/category.dto";
+import { TagDto } from "../dtos/tag.dto";
+import { RecipeTagDto } from "../dtos/recipe_tag.dto";
 
-type ControllerFunction = (req: Request) => Promise<any>;
+export const getUnitsController = controllerWrapper(getUnitsService, UnitDto);
 
-const controllerWrapper = (handler: ControllerFunction): RequestHandler => {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const result = await handler(req);
-      res.status(200).json(result);
-    } catch (error) {
-      next(error);
-    }
-  };
-};
+export const getCategoriesController = controllerWrapper(getCategoriesService, CategoryDto);
 
-export const getUnitsController = controllerWrapper(async (req) => {
-  return await getUnitsService();
-});
+export const getTagsController = controllerWrapper(getTagsService, TagDto);
 
-export const getCategoriesController = controllerWrapper(async (req) => {
-  return await getCategoriesService();
-});
-
-export const getTagsController = controllerWrapper(async (req) => {
-  return await getTagsService();
-});
-
-export const getRecipeTagsController = controllerWrapper(async (req) => {
-  return await getRecipeTagsService();
-});
+export const getRecipeTagsController = controllerWrapper(getRecipeTagsService, RecipeTagDto);

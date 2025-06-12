@@ -1,16 +1,16 @@
 import 'package:ai_cook_project/models/category_model.dart';
 import 'package:ai_cook_project/models/custom_ing_model.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
-import 'package:ai_cook_project/models/tag_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/widgets/ingredient_form_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class IngredientDialogs {
   static void showIngredientDialog({
     required BuildContext context,
-    required List<String> categories,
+    required List<Category> categories,
     required List<UserIng> ingredients,
     required Map<int, UserIng> userIngredients,
     required Function(UserIng) onSave,
@@ -36,13 +36,13 @@ class IngredientDialogs {
                 final newIngredient = Ingredient(
                   id: newId,
                   name: name,
-                  category: Category(id: 1, name: category),
-                  tags: tags.map((tag) => Tag(id: 1, name: tag)).toList(),
+                  category: category,
+                  tags: tags,
                 );
 
                 final newUserIng = UserIng(
                   id: newId,
-                  uid: '1', // This would come from auth
+                  uid: FirebaseAuth.instance.currentUser!.uid,
                   ingredient: newIngredient,
                   quantity: quantity,
                   unit: unit,
@@ -56,9 +56,8 @@ class IngredientDialogs {
                         ? Ingredient(
                           id: userIng.ingredient!.id,
                           name: name,
-                          category: Category(id: 1, name: category),
-                          tags:
-                              tags.map((tag) => Tag(id: 1, name: tag)).toList(),
+                          category: category,
+                          tags: tags,
                         )
                         : null;
 
@@ -67,15 +66,14 @@ class IngredientDialogs {
                         ? CustomIngredient(
                           id: userIng.customIngredient!.id,
                           name: name,
-                          category: Category(id: 1, name: category),
-                          tags:
-                              tags.map((tag) => Tag(id: 1, name: tag)).toList(),
+                          category: category,
+                          tags: tags,
                         )
                         : null;
 
                 final updatedUserIng = UserIng(
                   id: userIng.id,
-                  uid: userIng.uid,
+                  uid: FirebaseAuth.instance.currentUser!.uid,
                   ingredient: updatedIngredient,
                   customIngredient: updatedCustomIngredient,
                   quantity: quantity,

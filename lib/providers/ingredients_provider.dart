@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,11 +24,12 @@ class IngredientsProvider with ChangeNotifier {
     try {
       _setLoading(true);
       _clearError();
+
       final response = await http.get(
         Uri.parse('${dotenv.env['API_URL']}/user/$uid/ingredients'),
       );
-      _userIngredients =
-          (response.body as List).map((e) => UserIng.fromJson(e)).toList();
+      final List<dynamic> decoded = json.decode(response.body);
+      _userIngredients = decoded.map((e) => UserIng.fromJson(e)).toList();
 
       notifyListeners();
     } catch (e) {
@@ -43,20 +45,20 @@ class IngredientsProvider with ChangeNotifier {
       _setLoading(true);
       _clearError();
 
-      // Validate the ingredient
       if (userIngredient.quantity <= 0) {
         throw Exception('Quantity must be greater than 0');
       }
 
-      // Check for duplicates
       if (_userIngredients.any((ing) => ing.id == userIngredient.id)) {
         throw Exception('Ingredient already exists');
       }
 
-      final response = await http.post(
+      await http.post(
         Uri.parse('${dotenv.env['API_URL']}/user/$uid/ingredients'),
-        body: userIngredient.toJson(),
+        body: json.encode(userIngredient.toJson()),
+        headers: {'Content-Type': 'application/json'},
       );
+
       _userIngredients.add(userIngredient);
       notifyListeners();
     } catch (e) {
@@ -73,12 +75,10 @@ class IngredientsProvider with ChangeNotifier {
       _setLoading(true);
       _clearError();
 
-      // Validate the ingredient
       if (userIngredient.quantity <= 0) {
         throw Exception('Quantity must be greater than 0');
       }
 
-      // Find the index of the ingredient to update
       final index = _userIngredients.indexWhere(
         (ing) => ing.id == userIngredient.id,
       );
@@ -86,12 +86,13 @@ class IngredientsProvider with ChangeNotifier {
         throw Exception('Ingredient not found');
       }
 
-      final response = await http.put(
+      await http.put(
         Uri.parse('${dotenv.env['API_URL']}/user/$uid/ingredients'),
-        body: userIngredient.toJson(),
+        body: json.encode(userIngredient.toJson()),
+        headers: {'Content-Type': 'application/json'},
       );
-      _userIngredients[index] = userIngredient;
 
+      _userIngredients[index] = userIngredient;
       notifyListeners();
     } catch (e) {
       _setError('Failed to update ingredient: $e');
@@ -107,12 +108,13 @@ class IngredientsProvider with ChangeNotifier {
       _setLoading(true);
       _clearError();
 
-      final response = await http.delete(
+      await http.delete(
         Uri.parse('${dotenv.env['API_URL']}/user/$uid/ingredients'),
-        body: {'id': userIngredient.id},
+        body: json.encode({'id': userIngredient.id}),
+        headers: {'Content-Type': 'application/json'},
       );
-      _userIngredients.removeWhere((ing) => ing.id == userIngredient.id);
 
+      _userIngredients.removeWhere((ing) => ing.id == userIngredient.id);
       notifyListeners();
     } catch (e) {
       _setError('Failed to remove ingredient: $e');
@@ -131,8 +133,8 @@ class IngredientsProvider with ChangeNotifier {
       final response = await http.get(
         Uri.parse('${dotenv.env['API_URL']}/ingredients/global'),
       );
-      _ingredients =
-          (response.body as List).map((e) => Ingredient.fromJson(e)).toList();
+      final List<dynamic> decoded = json.decode(response.body);
+      _ingredients = decoded.map((e) => Ingredient.fromJson(e)).toList();
 
       notifyListeners();
     } catch (e) {
@@ -142,22 +144,26 @@ class IngredientsProvider with ChangeNotifier {
     }
   }
 
-  // Helper methods for state management
+  // Helper methods
   void _setLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
+    if (_isLoading != value) {
+      _isLoading = value;
+      notifyListeners();
+    }
   }
 
   void _setError(String error) {
-    _error = error;
-    notifyListeners();
+    if (_error != error) {
+      _error = error;
+      notifyListeners();
+    }
   }
 
   void _clearError() {
     _error = null;
   }
 
-  // Filter methods
+  // Filters
   List<UserIng> filterUserIngredientsByCategory(String category) {
     if (category == 'All') return userIngredients;
     return userIngredients
@@ -178,7 +184,7 @@ class IngredientsProvider with ChangeNotifier {
         .toList();
   }
 
-  // Utility methods
+  // Utility
   void clearAll() {
     _userIngredients = [];
     _ingredients = [];

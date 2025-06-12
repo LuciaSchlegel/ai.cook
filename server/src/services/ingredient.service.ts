@@ -3,62 +3,10 @@ import { CustomIngredient } from "../entities/Custom_Ingredient";
 import { BadRequestError, ConflictError } from "../types/AppError";
 import { IngredientRepository } from "../repositories/ingredient.repository";
 import { CustomIngredientRepository } from "../repositories/custom_ingredient.repository";
-import { MealDBIngredient } from "../types/ingredients.types";
-import fs from 'fs';
-import path from 'path';
-
-// --- INGREDIENTES GLOBALES ---
-// global ingredients - standard ingredients - here getting from an api and saving them in the db
-// the load ingredients is called on client startup -> gets basic ingredients 
-// calls parseAndSaveIngredients to parse the JSON to Objects and save them in the db
-
-// Hauptfunktion
-export async function loadIngredientsFromLocalFile() {
-  const count = await IngredientRepository.count();
-  if (count > 0) {
-    console.log("🔁 Zutaten bereits in DB, Initialisierung übersprungen.");
-    return;
-  }
-  const filePath = path.join(__dirname, '../../src/data/enriched_ingredients_from_meals.json');
-
-  let raw;
-  try {
-    raw = fs.readFileSync(filePath, 'utf-8');
-  } catch (err) {
-    console.error('❌ Datei nicht gefunden oder lesbar:', err);
-    return;
-  }
-
-  let ingredientsJson;
-  try {
-    ingredientsJson = JSON.parse(raw);
-  } catch (err) {
-    console.error('❌ JSON-Parsing fehlgeschlagen:', err);
-    return;
-  }
-
-  const ingredients: Ingredient[] = ingredientsJson.map((item: any) => {
-    const ingredient = new Ingredient();
-    ingredient.name = item.strIngredient;
-    ingredient.category = item.strType || null;
-    ingredient.isVegan = item.isVegan ?? false;
-    ingredient.isVegetarian = item.isVegetarian ?? false;
-    ingredient.isGlutenFree = item.isGlutenFree ?? false;
-    ingredient.isLactoseFree = item.isLactoseFree ?? false;
-    return ingredient;
-  });
-
-  try {
-    await IngredientRepository.save(ingredients);
-    console.log(`✅ ${ingredients.length} Zutaten wurden erfolgreich gespeichert.`);
-  } catch (err) {
-    console.error('❌ Fehler beim Speichern in die DB:', err);
-  }
-}
 
 
 export async function listGlobalIngredientsService() {
-  return await IngredientRepository.find();
+  return await IngredientRepository.find({ relations: ['category', 'tags'] });
 }
 
 export async function createGlobalIngredientService(data: Partial<Ingredient>) {
@@ -82,7 +30,7 @@ export async function listCustomIngredientsService(userId?: number) {
     return await CustomIngredientRepository.find({ where: { createdBy: { id: userId } }, relations: ['createdBy'] });
   }
   // Si es admin o global, listar todos
-  return await CustomIngredientRepository.find({ relations: ['createdBy'] });
+  return await CustomIngredientRepository.find({ relations: ['createdBy', 'tags'] });
 }
 
 export async function createCustomIngredientService(data: Partial<CustomIngredient>) {

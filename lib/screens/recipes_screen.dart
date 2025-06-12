@@ -1,12 +1,9 @@
-import 'package:ai_cook_project/models/recipe_tag_model.dart';
 import 'package:ai_cook_project/widgets/recipe_card.dart';
 import 'package:flutter/material.dart';
-import '../models/recipe_model.dart';
-import '../models/ingredient_model.dart';
-import '../models/recipe_ingredient_model.dart';
+import 'package:provider/provider.dart';
 import '../models/user_ing.dart';
-import '../models/unit.dart';
 import '../widgets/dropdown_selector.dart';
+import '../providers/recipes_provider.dart';
 
 class RecipesScreen extends StatefulWidget {
   const RecipesScreen({super.key});
@@ -24,6 +21,15 @@ class _RecipesScreenState extends State<RecipesScreen> {
   ];
 
   final List<UserIng> userIngredients = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch recipes when the screen loads
+    Future.microtask(
+      () => Provider.of<RecipesProvider>(context, listen: false).getRecipes(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +52,45 @@ class _RecipesScreenState extends State<RecipesScreen> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: sampleRecipeArray.length,
-              itemBuilder: (context, index) {
-                return RecipeCard(
-                  recipe: sampleRecipeArray[index],
-                  userIngredients: userIngredients,
+            child: Consumer<RecipesProvider>(
+              builder: (context, recipesProvider, child) {
+                if (recipesProvider.error != null) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Error: ${recipesProvider.error}',
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () => recipesProvider.getRecipes(),
+                          child: const Text('Retry'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                if (recipesProvider.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                final recipes = recipesProvider.recipes;
+
+                if (recipes.isEmpty) {
+                  return const Center(child: Text('No recipes found'));
+                }
+
+                return ListView.builder(
+                  itemCount: recipes.length,
+                  itemBuilder: (context, index) {
+                    return RecipeCard(
+                      recipe: recipes[index],
+                      userIngredients: userIngredients,
+                    );
+                  },
                 );
               },
             ),

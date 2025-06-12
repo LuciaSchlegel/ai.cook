@@ -6,11 +6,7 @@ import {
     listCustomIngredientsService,
     createCustomIngredientService,
     suggestCustomIngredientsService,
-    loadIngredientsFromLocalFile,
 } from "../services/ingredient.service";
-
-import { BadRequestError } from "../types/AppError";
-
 
 export async function listGlobalIngredientsController(req: Request, res: Response, next: NextFunction) {
     try {
