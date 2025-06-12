@@ -1,5 +1,7 @@
 //main_screen.dart
 import 'package:ai_cook_project/providers/auth_provider.dart';
+import 'package:ai_cook_project/providers/ingredients_provider.dart';
+import 'package:ai_cook_project/providers/resource_provider.dart';
 import 'package:ai_cook_project/screens/calendar_screen.dart';
 import 'package:ai_cook_project/screens/home_screen.dart';
 import 'package:ai_cook_project/screens/cupboard_screen.dart';
@@ -62,9 +64,21 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _initializeData();
       _updateSearchScreen();
     });
+  }
+
+  Future<void> _initializeData() async {
+    await Provider.of<IngredientsProvider>(
+      context,
+      listen: false,
+    ).initializeIngredients();
+    await Provider.of<ResourceProvider>(
+      context,
+      listen: false,
+    ).initializeResources();
   }
 
   void _updateSearchScreen() {

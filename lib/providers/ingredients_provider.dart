@@ -7,6 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class IngredientsProvider with ChangeNotifier {
+  bool _initialized = false;
+  bool get isInitialized => _initialized;
+
   List<UserIng> _userIngredients = [];
   List<Ingredient> _ingredients = [];
   bool _isLoading = false;
@@ -17,6 +20,13 @@ class IngredientsProvider with ChangeNotifier {
   List<Ingredient> get ingredients => List.unmodifiable(_ingredients);
   bool get isLoading => _isLoading;
   String? get error => _error;
+
+  Future<void> initializeIngredients() async {
+    if (_initialized) return;
+    await Future.wait([fetchIngredients(), fetchUserIngredients()]);
+    _initialized = true;
+    notifyListeners();
+  }
 
   // User Ingredients Operations
   Future<void> fetchUserIngredients() async {

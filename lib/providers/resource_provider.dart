@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ResourceProvider extends ChangeNotifier {
+  bool _initialized = false;
+  bool get isInitialized => _initialized;
   List<Unit> _units = [];
   List<Category> _categories = [];
   List<Tag> _tags = [];
@@ -17,6 +19,18 @@ class ResourceProvider extends ChangeNotifier {
   List<Category> get categories => _categories;
   List<Tag> get tags => _tags;
   List<RecipeTag> get recipeTags => _recipeTags;
+
+  Future<void> initializeResources() async {
+    if (_initialized) return;
+    await Future.wait([
+      getUnits(),
+      getCategories(),
+      getTags(),
+      getRecipeTags(),
+    ]);
+    _initialized = true;
+    notifyListeners();
+  }
 
   Future<void> getUnits() async {
     try {

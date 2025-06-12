@@ -21,57 +21,30 @@ class CupboardScreen extends StatefulWidget {
 class _CupboardScreenState extends State<CupboardScreen> {
   String _selectedCategory = 'All';
   String _selectedProperty = 'All';
-  final TextEditingController _searchController = TextEditingController();
-  bool _isLoading = true;
   bool _hasShownOnboarding = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _loadResources();
-
       final ingredientsProvider = Provider.of<IngredientsProvider>(
         context,
         listen: false,
       );
 
-      if (!_hasShownOnboarding && ingredientsProvider.userIngredients.isEmpty) {
+      if (!_hasShownOnboarding &&
+          mounted &&
+          ingredientsProvider.userIngredients.isEmpty) {
         _hasShownOnboarding = true;
         await showGlobalIngredientsDialog(context);
       }
     });
   }
 
-  Future<void> _loadResources() async {
-    if (mounted) setState(() => _isLoading = true);
-    try {
-      final resourceProvider = Provider.of<ResourceProvider>(
-        context,
-        listen: false,
-      );
-      final ingredientsProvider = Provider.of<IngredientsProvider>(
-        context,
-        listen: false,
-      );
-
-      await Future.wait([
-        resourceProvider.getCategories(),
-        resourceProvider.getTags(),
-        resourceProvider.getUnits(),
-        ingredientsProvider.fetchUserIngredients(),
-        ingredientsProvider.fetchIngredients(),
-      ]);
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
-    }
-  }
-
-  List<UserIng> _getFilteredIngredients(BuildContext context) {
-    final ingredientsProvider = Provider.of<IngredientsProvider>(context);
-    final searchProvider = Provider.of<SearchProvider>(context);
+  List<UserIng> _getFilteredIngredients(
+    IngredientsProvider ingredientsProvider,
+    SearchProvider searchProvider,
+  ) {
     final searchText = searchProvider.searchController.text.toLowerCase();
 
     return ingredientsProvider.userIngredients.where((userIng) {
@@ -94,12 +67,6 @@ class _CupboardScreenState extends State<CupboardScreen> {
 
       return matchesCategory && matchesProperty && matchesSearch;
     }).toList();
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
   }
 
   void _showIngredientDialog([UserIng? userIng]) {
@@ -159,10 +126,6 @@ class _CupboardScreenState extends State<CupboardScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     final horizontalPadding = screenWidth * 0.05;
     final resourceProvider = Provider.of<ResourceProvider>(context);
-
-    if (_isLoading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
 
     final categories = [
       'All',
@@ -241,67 +204,84 @@ class _CupboardScreenState extends State<CupboardScreen> {
             Expanded(
               child: Consumer<IngredientsProvider>(
                 builder: (context, ingredientsProvider, _) {
-                  final filteredIngredients = _getFilteredIngredients(context);
+                  final filteredIngredients = _getFilteredIngredients(
+                    ingredientsProvider,
+                    Provider.of<SearchProvider>(context),
+                  );
 
-                  return ListView.builder(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: horizontalPadding,
-                    ),
-                    itemCount: filteredIngredients.length,
-                    itemBuilder: (context, index) {
-                      final userIng = filteredIngredients[index];
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            side: BorderSide(
-                              color: AppColors.mutedGreen,
-                              width: 0.5,
-                            ),
-                          ),
-                          color: CupertinoColors.systemGrey6,
-                          child: InkWell(
-                            onTap: () => _showIngredientDialog(userIng),
-                            borderRadius: BorderRadius.circular(16),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 12,
-                              ),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      userIng.ingredient?.name ??
-                                          userIng.customIngredient?.name ??
-                                          '',
-                                      style: const TextStyle(
-                                        color: AppColors.button,
-                                        fontFamily: 'Times New Roman',
-                                        fontSize: 16,
-                                        letterSpacing: 0.5,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    '${userIng.quantity} ${userIng.unit}',
-                                    style: const TextStyle(
-                                      color: AppColors.button,
-                                      fontFamily: 'Times New Roman',
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                  return filteredIngredients.isEmpty
+                      ? Center(
+                        child: Text(
+                          'No ingredients match your filters',
+                          style: TextStyle(
+                            color: AppColors.white,
+                            fontFamily: 'Casta',
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1,
+                            height: 1.5,
                           ),
                         ),
+                      )
+                      : ListView.builder(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: horizontalPadding,
+                        ),
+                        itemCount: filteredIngredients.length,
+                        itemBuilder: (context, index) {
+                          final userIng = filteredIngredients[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                side: BorderSide(
+                                  color: AppColors.mutedGreen,
+                                  width: 0.5,
+                                ),
+                              ),
+                              color: CupertinoColors.systemGrey6,
+                              child: InkWell(
+                                onTap: () => _showIngredientDialog(userIng),
+                                borderRadius: BorderRadius.circular(16),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 12,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          userIng.ingredient?.name ??
+                                              userIng.customIngredient?.name ??
+                                              '',
+                                          style: const TextStyle(
+                                            color: AppColors.button,
+                                            fontFamily: 'Times New Roman',
+                                            fontSize: 16,
+                                            letterSpacing: 0.5,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        '${userIng.quantity} ${userIng.unit}',
+                                        style: const TextStyle(
+                                          color: AppColors.button,
+                                          fontFamily: 'Times New Roman',
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                       );
-                    },
-                  );
                 },
               ),
             ),
