@@ -10,16 +10,16 @@ export class IngredientDto {
   name!: string;
 
   @Expose()
-  is_vegan?: boolean;
+  isVegan!: boolean;
 
   @Expose()
-  is_vegetarian?: boolean;
+  isVegetarian!: boolean;
 
   @Expose()
-  is_gluten_free?: boolean;
+  isGlutenFree!: boolean;
 
   @Expose()
-  is_lactose_free?: boolean;
+  isLactoseFree!: boolean;
 
   @Expose()
   @Type(() => CategoryDto)

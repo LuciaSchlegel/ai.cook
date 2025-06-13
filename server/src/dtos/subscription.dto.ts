@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
 export class SubscriptionDto {
   @Expose()
@@ -7,18 +7,22 @@ export class SubscriptionDto {
   @Expose()
   type!: string;
 
-  @Expose({ name: 'start_date' })
+  @Expose()
+  @Type(() => Date)
   startDate?: Date;
 
-  @Expose({ name: 'end_date' })
+  @Expose()
+  @Type(() => Date)
   endDate?: Date;
 
-  @Expose({ name: 'is_active' })
+  @Expose()
   isActive!: boolean;
 
-  @Expose({ name: 'created_at' })
+  @Expose()
+  @Type(() => Date)
   createdAt!: Date;
 
-  @Expose({ name: 'updated_at' })
+  @Expose()
+  @Type(() => Date)
   updatedAt!: Date;
 }

@@ -1,4 +1,7 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
+import { CategoryDto } from './category.dto';
+import { TagDto } from './tag.dto';
+import { UserBasicDto } from './user_basic.dto';
 
 export class CustomIngredientDto {
   @Expose()
@@ -8,17 +11,20 @@ export class CustomIngredientDto {
   name!: string;
 
   @Expose()
-  category?: string;
+  @Type(() => CategoryDto)
+  category?: CategoryDto;
 
   @Expose()
-  tags?: string[];
-
-  @Expose({ name: 'created_by_user_id' })
-  createdByUserId!: string;
+  @Type(() => TagDto)
+  tags?: TagDto[];
 
   @Expose()
-  is_deleted!: boolean;
+  @Type(() => UserBasicDto)
+  createdByUser!: UserBasicDto;
 
   @Expose()
-  is_approved!: boolean;
+  isDeleted!: boolean;
+
+  @Expose()
+  isApproved!: boolean;
 }

@@ -21,7 +21,8 @@ export class UserDto {
   @Expose()
   gender?: string;
 
-  @Expose({ name: 'birth_date' })
+  @Expose()
+  @Type(() => Date)
   birthDate?: Date;
 
   @Expose()

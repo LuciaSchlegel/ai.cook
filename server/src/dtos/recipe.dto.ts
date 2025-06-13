@@ -1,6 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 import { RecipeIngredientDto } from './recipe_ing.dto';
 import { RecipeTagDto } from './recipe_tag.dto';
+import { UserDto } from './user.dto';
 
 export class RecipeDto {
   @Expose()
@@ -12,8 +13,9 @@ export class RecipeDto {
   @Expose()
   description!: string;
 
-  @Expose({ name: 'created_by_user_id' })
-  createdByUserId?: string;
+  @Expose()
+  @Type(() => UserDto)
+  createdByUser!: UserDto;
 
   @Expose()
   @Type(() => RecipeIngredientDto)
@@ -22,16 +24,18 @@ export class RecipeDto {
   @Expose()
   steps!: string[];
 
-  @Expose({ name: 'created_at' })
+  @Expose()
+  @Type(() => Date)
   createdAt!: Date;
 
-  @Expose({ name: 'updated_at' })
+  @Expose()
+  @Type(() => Date)
   updatedAt!: Date;
 
-  @Expose({ name: 'image_url' })
+  @Expose()
   image?: string;
 
-  @Expose({ name: 'cooking_time' })
+  @Expose()
   cookingTime?: string;
 
   @Expose()

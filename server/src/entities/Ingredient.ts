@@ -24,17 +24,17 @@ export class Ingredient {
   })
   tags?: Tag[]; // ej: ['low-fat', 'high-protein', 'healthy']
 
-  @Column({nullable: true})
-  isVegan?: boolean; 
+  @Column({nullable: false, default: false})
+  isVegan!: boolean; 
 
-  @Column({nullable: true})
-  isVegetarian?: boolean;
+  @Column({nullable: false, default: false})
+  isVegetarian!: boolean;
 
-  @Column({nullable: true})
-  isGlutenFree?: boolean;
+  @Column({nullable: false, default: false})
+  isGlutenFree!: boolean;
 
-  @Column({nullable: true})
-  isLactoseFree?: boolean;
+  @Column({nullable: false, default: false})
+  isLactoseFree!: boolean;
 
   @OneToMany(() => RecipeIngredient, recipeIngredient => recipeIngredient.ingredient)
   recipeIngredients?: RecipeIngredient[];

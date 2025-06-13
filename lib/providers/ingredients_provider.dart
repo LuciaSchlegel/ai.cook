@@ -31,6 +31,11 @@ class IngredientsProvider with ChangeNotifier {
   // User Ingredients Operations
   Future<void> fetchUserIngredients() async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) {
+      print('UID is null');
+      return;
+    }
+
     try {
       _setLoading(true);
       _clearError();
@@ -38,11 +43,19 @@ class IngredientsProvider with ChangeNotifier {
       final response = await http.get(
         Uri.parse('${dotenv.env['API_URL']}/user/$uid/ingredients'),
       );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
       final List<dynamic> decoded = json.decode(response.body);
       _userIngredients = decoded.map((e) => UserIng.fromJson(e)).toList();
 
+      print('_userIngredients length: ${_userIngredients.length}');
+      print(_userIngredients);
+
       notifyListeners();
     } catch (e) {
+      print('Error al parsear: $e');
       _setError('Failed to fetch user ingredients: $e');
     } finally {
       _setLoading(false);

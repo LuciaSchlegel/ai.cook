@@ -2,24 +2,26 @@ import { Expose, Type } from 'class-transformer';
 import { IngredientDto } from './ingredient.dto';
 import { CustomIngredientDto } from './custom_ing.dto';
 import { UnitDto } from './unit.dto';
+import { UserBasicDto } from './user_basic.dto';
 
 export class UserIngredientDto {
   @Expose()
   id!: number;
 
-  @Expose({ name: 'user_id' })
-  userId!: string;
+  @Expose()
+  @Type(() => UserBasicDto)
+  user!: UserBasicDto;
 
   @Expose()
   quantity!: number;
 
   @Expose()
   @Type(() => IngredientDto)
-  ingredient?: IngredientDto;
+  ingredient!: IngredientDto;
 
   @Expose()
   @Type(() => CustomIngredientDto)
-  custom_ingredient?: CustomIngredientDto;
+  customIngredient?: CustomIngredientDto;
 
   @Expose()
   @Type(() => UnitDto)

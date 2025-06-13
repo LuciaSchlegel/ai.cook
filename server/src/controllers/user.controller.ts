@@ -8,6 +8,7 @@ import {
 import { BadRequestError } from "../types/AppError";
 import { UserDto } from "../dtos/user.dto";
 import { serialize } from "../helpers/serialize";
+import { toSnakeCaseDeep } from "../helpers/toSnakeCase";
 
 export async function getUserByIdController(req: Request, res: Response, next: NextFunction) {
   const { uid } = req.params;
@@ -16,7 +17,9 @@ export async function getUserByIdController(req: Request, res: Response, next: N
   }
   try {
     const user = await getUserByIdService(uid);
-    res.status(200).json(serialize(UserDto, user));
+    const serialized = serialize(UserDto, user);
+    const response = toSnakeCaseDeep(serialized);
+    res.status(200).json(response);
   } catch (error) {
     next(error);
   }
@@ -29,7 +32,9 @@ export async function createUserController(req: Request, res: Response, next: Ne
   }
   try {
     const newUser = await createUserService(userData);
-    res.status(201).json(serialize(UserDto, newUser)); // 201 para creación
+    const serialized = serialize(UserDto, newUser);
+    const response = toSnakeCaseDeep(serialized);
+    res.status(201).json(response); // 201 para creación
   } catch (error) {
     next(error);
   }
@@ -43,7 +48,9 @@ export async function updateUserController(req: Request, res: Response, next: Ne
   }
   try {
     const updatedUser = await updateUserService(uid, userData);
-    res.status(200).json(serialize(UserDto, updatedUser));
+    const serialized = serialize(UserDto, updatedUser);
+    const response = toSnakeCaseDeep(serialized);
+    res.status(200).json(response);
   } catch (error) {
     next(error);
   }
@@ -56,7 +63,9 @@ export async function softDeleteUserController(req: Request, res: Response, next
   }
   try {
     const updatedUser = await softDeleteUserService(uid);
-    res.status(200).json(serialize(UserDto, updatedUser));
+    const serialized = serialize(UserDto, updatedUser);
+    const response = toSnakeCaseDeep(serialized);
+    res.status(200).json(response);
   } catch (error) {
     next(error);
   }

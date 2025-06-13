@@ -1,6 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { BadRequestError } from "../types/AppError";
 import { addUserIngredientService, getUserIngredientsService, removeUserIngredientService, updateUserIngredientService } from "../services/user_ingredients.service";
+import { UserIngredientDto } from "../dtos/user_ing.dto";
+import { serialize } from "../helpers/serialize";
+import { toSnakeCaseDeep } from "../helpers/toSnakeCase";
 
 export async function getUserIngredientsController(req: Request, res: Response, next: NextFunction) {
   const { uid } = req.params;
@@ -9,37 +12,39 @@ export async function getUserIngredientsController(req: Request, res: Response, 
   }
   try {
     const ingredients = await getUserIngredientsService(uid);
-    return res.status(200).json(ingredients);
+    const serialized = serialize(UserIngredientDto, ingredients);
+    const response = toSnakeCaseDeep(serialized);
+    return res.status(200).json(response);
   } catch (error) {
     next(error);
   }
 }
-
 export async function addUserIngredientController(req: Request, res: Response, next: NextFunction) {
     try {
-        const { uid } = req.params;
-        const { ingredientId, customIngredientId, quantity, unit } = req.body;
-        if (!ingredientId && !customIngredientId) {
-            return next(new BadRequestError("Ingredient ID and custom ingredient ID are required"));
-        }
-        if (!uid) {
-            return next(new BadRequestError("User ID is required"));
-        }
-        if (!quantity) {
-            return next(new BadRequestError("Quantity is required"));
-        }
-        const userIngredient = await addUserIngredientService({
-            uid, 
-            ingredientId, 
-            customIngredientId, 
-            quantity, 
-            unit
-        });
-        return res.status(201).json(userIngredient);
+      const { uid } = req.params;
+      const { ingredient, customIngredient, quantity, unit } = req.body;
+  
+      if (!uid) return next(new BadRequestError("User ID is required"));
+      if (!ingredient?.id && !customIngredient?.id)
+        return next(new BadRequestError("Either ingredient ID or custom ingredient ID is required"));
+      if (!quantity) return next(new BadRequestError("Quantity is required"));
+  
+      const newUserIngredient = await addUserIngredientService({
+        uid,
+        ingredientId: ingredient?.id,
+        customIngredientId: customIngredient?.id,
+        quantity,
+        unit: unit?.id?.toString(),
+      });
+  
+      const serialized = serialize(UserIngredientDto, newUserIngredient);
+      const response = toSnakeCaseDeep(serialized);
+  
+      return res.status(201).json(response);
     } catch (error) {
-        next(error);
+      next(error);
     }
-}
+  }
 
 export async function updateUserIngredientController(req: Request, res: Response, next: NextFunction) {
     try {

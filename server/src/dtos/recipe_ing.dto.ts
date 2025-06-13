@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
-import { Ingredient } from '../entities/Ingredient';
-import { Unit } from '../entities/Unit';
+import { IngredientDto } from './ingredient.dto';
+import { UnitDto } from './unit.dto';
 
 export class RecipeIngredientDto {
   @Expose()
@@ -10,10 +10,10 @@ export class RecipeIngredientDto {
   quantity!: number;
 
   @Expose()
-  @Type(() => Ingredient)
-  ingredient!: Ingredient;
+  @Type(() => IngredientDto)
+  ingredient!: IngredientDto;
 
   @Expose()
-  @Type(() => Unit)
-  unit?: Unit;
+  @Type(() => UnitDto)
+  unit?: UnitDto;
 }

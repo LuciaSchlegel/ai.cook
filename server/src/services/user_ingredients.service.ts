@@ -70,9 +70,16 @@ export async function addUserIngredientService({
 export async function getUserIngredientsService(uid: string) {
   return await UserIngredientRepository.find({
     where: { user: { uid } },
-    relations: ['ingredient', 'customIngredient']
-  });
-}
+    relations: {
+      user: true,
+      ingredient: {
+        category: true,
+        tags: true
+      },
+      customIngredient: true,
+      unit: true
+    }
+  });}
 
 // ACTUALIZAR INGREDIENTE DEL USUARIO (opcional)
 export async function updateUserIngredientService(uid: string, id: number, data: Partial<UserIngredient>) {

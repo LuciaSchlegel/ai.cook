@@ -1,5 +1,5 @@
 //UserIngredient.ts
-import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, Column, JoinColumn } from 'typeorm';
 import { User } from './User';
 import { Ingredient } from './Ingredient';
 import { CustomIngredient } from './Custom_Ingredient';
@@ -11,6 +11,7 @@ export class UserIngredient {
   id!: number;
 
   @ManyToOne(() => User, user => user.userIngredients, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'uid', referencedColumnName: 'uid' })
   user!: User;
 
   @ManyToOne(() => Ingredient, { nullable: true, onDelete: 'SET NULL' })

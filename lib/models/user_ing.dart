@@ -5,7 +5,7 @@ import 'package:ai_cook_project/models/ingredient_model.dart';
 class UserIng {
   final int id;
   final String uid;
-  final Ingredient? ingredient;
+  final Ingredient ingredient;
   final CustomIngredient? customIngredient;
   final int quantity;
   final Unit? unit;
@@ -13,7 +13,7 @@ class UserIng {
   UserIng({
     required this.id,
     required this.uid,
-    this.ingredient,
+    required this.ingredient,
     this.customIngredient,
     required this.quantity,
     this.unit,
@@ -22,30 +22,24 @@ class UserIng {
   factory UserIng.fromJson(Map<String, dynamic> json) {
     return UserIng(
       id: json['id'] as int,
-      uid: json['uid'] as String,
-      ingredient:
-          json['ingredient'] != null
-              ? Ingredient.fromJson(json['ingredient'])
-              : null,
+      uid: json['user']?['uid'] ?? '', // `uid` ahora está dentro de `user`
+      ingredient: Ingredient.fromJson(json['ingredient']),
       customIngredient:
-          json['customIngredient'] != null
-              ? CustomIngredient.fromJson(json['customIngredient'])
+          json['custom_ingredient'] != null
+              ? CustomIngredient.fromJson(json['custom_ingredient'])
               : null,
       quantity: json['quantity'] as int,
       unit: json['unit'] != null ? Unit.fromJson(json['unit']) : null,
     );
   }
-
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'uid': uid,
-      'ingredient': ingredient?.toJson(),
-      'customIngredient': customIngredient?.toJson(),
+      'user': {'uid': uid}, // ahora el uid está dentro de "user"
+      'ingredient': ingredient.toJson(),
+      'custom_ingredient': customIngredient?.toJson(),
       'quantity': quantity,
       'unit': unit?.toJson(),
     };
   }
 }
-
-// You might want to create a separate file for this

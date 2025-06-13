@@ -38,6 +38,10 @@ class IngredientDialogs {
                   name: name,
                   category: category,
                   tags: tags,
+                  isVegan: false,
+                  isVegetarian: false,
+                  isGlutenFree: false,
+                  isLactoseFree: false,
                 );
 
                 final newUserIng = UserIng(
@@ -51,15 +55,16 @@ class IngredientDialogs {
                 onSave(newUserIng);
               } else {
                 // Update existing ingredient
-                final updatedIngredient =
-                    userIng.ingredient != null
-                        ? Ingredient(
-                          id: userIng.ingredient!.id,
-                          name: name,
-                          category: category,
-                          tags: tags,
-                        )
-                        : null;
+                final updatedIngredient = Ingredient(
+                  id: userIng.ingredient.id,
+                  name: name,
+                  category: category,
+                  tags: tags,
+                  isVegan: userIng.ingredient.isVegan,
+                  isVegetarian: userIng.ingredient.isVegetarian,
+                  isGlutenFree: userIng.ingredient.isGlutenFree,
+                  isLactoseFree: userIng.ingredient.isLactoseFree,
+                );
 
                 final updatedCustomIngredient =
                     userIng.customIngredient != null
