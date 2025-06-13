@@ -253,9 +253,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          userIng.ingredient?.name ??
-                                              userIng.customIngredient?.name ??
-                                              '',
+                                          userIng.ingredient.name,
                                           style: const TextStyle(
                                             color: AppColors.button,
                                             fontFamily: 'Times New Roman',
@@ -267,7 +265,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
                                       ),
                                       const SizedBox(width: 8),
                                       Text(
-                                        '${userIng.quantity} ${userIng.unit}',
+                                        '${userIng.quantity} ${userIng.unit?.abbreviation}',
                                         style: const TextStyle(
                                           color: AppColors.button,
                                           fontFamily: 'Times New Roman',

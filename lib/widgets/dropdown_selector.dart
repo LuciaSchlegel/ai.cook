@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:ai_cook_project/theme.dart';
 
 class DropdownSelector extends StatelessWidget {
   final String value;
   final List<String> items;
   final Function(String?) onChanged;
   final double? width;
+  final String? title;
 
   const DropdownSelector({
     super.key,
@@ -13,6 +14,7 @@ class DropdownSelector extends StatelessWidget {
     required this.items,
     required this.onChanged,
     this.width,
+    this.title,
   });
 
   void _showDropdownMenu(BuildContext context) {
@@ -27,39 +29,42 @@ class DropdownSelector extends StatelessWidget {
             margin: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
-            color: Colors.grey[300],
+            color: CupertinoColors.white,
             child: Column(
               children: [
                 Container(
-                  height: 40,
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  height: 44,
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    border: Border(
-                      bottom: BorderSide(color: Colors.grey[500]!, width: 1.0),
+                    color: CupertinoColors.white,
+                    border: const Border(
+                      bottom: BorderSide(
+                        color: CupertinoColors.systemGrey4,
+                        width: 0.5,
+                      ),
                     ),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Group by:',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'Inter',
+                      CupertinoButton(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(
+                            color: AppColors.mutedGreen,
+                            fontSize: 16,
+                          ),
                         ),
+                        onPressed: () => Navigator.of(context).pop(),
                       ),
                       CupertinoButton(
-                        padding: EdgeInsets.zero,
+                        padding: const EdgeInsets.only(right: 16),
                         child: const Text(
                           'Done',
                           style: TextStyle(
-                            color: CupertinoColors.activeBlue,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.mutedGreen,
                             fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: 'Inter',
                           ),
                         ),
                         onPressed: () => Navigator.of(context).pop(),
@@ -80,17 +85,19 @@ class DropdownSelector extends StatelessWidget {
                       onChanged(items[selectedItem]);
                     },
                     children:
-                        items.map((item) {
-                          return Center(
-                            child: Text(
-                              item,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
+                        items
+                            .map(
+                              (item) => Center(
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                    color: AppColors.button,
+                                    fontSize: 16,
+                                  ),
+                                ),
                               ),
-                            ),
-                          );
-                        }).toList(),
+                            )
+                            .toList(),
                   ),
                 ),
               ],
@@ -103,24 +110,24 @@ class DropdownSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 1.0),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
+        color: CupertinoColors.white,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.button.withOpacity(0.2)),
       ),
       child: CupertinoButton(
-        padding: EdgeInsets.zero,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         onPressed: () => _showDropdownMenu(context),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               value,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
+              style: TextStyle(color: AppColors.button, fontSize: 16),
             ),
             const Icon(
               CupertinoIcons.chevron_down,
-              color: Colors.white,
+              color: AppColors.button,
               size: 20,
             ),
           ],
