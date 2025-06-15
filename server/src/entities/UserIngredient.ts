@@ -24,5 +24,6 @@ export class UserIngredient {
   quantity!: number;
 
   @ManyToOne(() => Unit, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'unit_id', referencedColumnName: 'id' })
   unit?: Unit;
 }

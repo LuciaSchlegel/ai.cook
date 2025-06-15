@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:ai_cook_project/models/custom_ing_model.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
+import 'package:ai_cook_project/models/unit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -41,12 +43,47 @@ class IngredientsProvider with ChangeNotifier {
 
       final response = await http.get(
         Uri.parse('${dotenv.env['API_URL']}/user/$uid/ingredients'),
+        headers: {'Content-Type': 'application/json'},
       );
-      final List<dynamic> decoded = json.decode(response.body);
-      _userIngredients = decoded.map((e) => UserIng.fromJson(e)).toList();
 
+      if (response.statusCode != 200) {
+        throw Exception(
+          'Failed to fetch user ingredients: ${response.statusCode}',
+        );
+      }
+
+      final dynamic decoded = json.decode(response.body);
+      if (decoded == null) {
+        throw Exception('Received null response from server');
+      }
+
+      if (decoded is! List) {
+        throw Exception(
+          'Expected a list of ingredients, got ${decoded.runtimeType}',
+        );
+      }
+
+      final List<UserIng> parsedIngredients = [];
+      for (var e in decoded) {
+        if (e == null) {
+          debugPrint('Warning: Skipping null ingredient');
+          continue;
+        }
+        try {
+          final userIng = UserIng.fromJson(e as Map<String, dynamic>);
+          parsedIngredients.add(userIng);
+        } catch (e) {
+          debugPrint('Error parsing ingredient: $e');
+          debugPrint('Raw ingredient data: $e');
+          // Continue processing other ingredients instead of failing completely
+          continue;
+        }
+      }
+
+      _userIngredients = parsedIngredients;
       notifyListeners();
     } catch (e) {
+      debugPrint('Error in fetchUserIngredients: $e');
       _setError('Failed to fetch user ingredients: $e');
     } finally {
       _setLoading(false);
@@ -67,11 +104,15 @@ class IngredientsProvider with ChangeNotifier {
         throw Exception('Ingredient already exists');
       }
 
-      await http.post(
+      final response = await http.post(
         Uri.parse('${dotenv.env['API_URL']}/user/$uid/ingredients'),
         body: json.encode(userIngredient.toJson()),
         headers: {'Content-Type': 'application/json'},
       );
+
+      if (response.statusCode != 201) {
+        throw Exception('Failed to add ingredient: ${response.statusCode}');
+      }
 
       _userIngredients.add(userIngredient);
       notifyListeners();
@@ -100,11 +141,15 @@ class IngredientsProvider with ChangeNotifier {
         throw Exception('Ingredient not found');
       }
 
-      await http.put(
+      final response = await http.put(
         Uri.parse('${dotenv.env['API_URL']}/user/$uid/ingredients'),
         body: json.encode(userIngredient.toJson()),
         headers: {'Content-Type': 'application/json'},
       );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to update ingredient: ${response.statusCode}');
+      }
 
       _userIngredients[index] = userIngredient;
       notifyListeners();
@@ -132,6 +177,54 @@ class IngredientsProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _setError('Failed to remove ingredient: $e');
+      rethrow;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> addCustomIngredient(CustomIngredient customIngredient) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    try {
+      _setLoading(true);
+      _clearError();
+
+      final response = await http.post(
+        Uri.parse('${dotenv.env['API_URL']}/ingredients/custom'),
+        body: json.encode(customIngredient.toJson()),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode != 201) {
+        throw Exception(
+          'Failed to add custom ingredient: ${response.statusCode}',
+        );
+      }
+
+      final responseData = json.decode(response.body);
+
+      // Create a new UserIng with the custom ingredient
+      final newUserIng = UserIng(
+        id: responseData['id'] as int,
+        uid: uid ?? '',
+        ingredient: Ingredient(
+          id: responseData['id'] as int,
+          name: customIngredient.name,
+          isVegan: false,
+          isVegetarian: false,
+          isGlutenFree: false,
+          isLactoseFree: false,
+          category: customIngredient.category,
+          tags: customIngredient.tags,
+        ),
+        quantity: 1,
+        unit: Unit(id: -1, name: 'piece', abbreviation: 'pcs', type: 'count'),
+      );
+
+      _userIngredients.add(newUserIng);
+      notifyListeners();
+    } catch (e) {
+      _setError('Failed to add custom ingredient: $e');
       rethrow;
     } finally {
       _setLoading(false);

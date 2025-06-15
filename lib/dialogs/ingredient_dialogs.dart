@@ -2,6 +2,7 @@ import 'package:ai_cook_project/models/category_model.dart';
 import 'package:ai_cook_project/models/custom_ing_model.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
+import 'package:ai_cook_project/models/unit.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/widgets/ingredient_form_dialog.dart';
 import 'package:flutter/material.dart';
@@ -19,76 +20,99 @@ class IngredientDialogs {
   }) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.background,
+      backgroundColor: Colors.transparent,
       isScrollControlled: true,
+      enableDrag: false,
       builder:
-          (context) => IngredientFormDialog(
-            ingredient: userIng?.ingredient,
-            customIngredient: userIng?.customIngredient,
-            quantity: userIng?.quantity ?? 0,
-            unit: userIng?.unit,
-            categories: categories,
-            onDelete: userIng != null ? onDelete : null,
-            onSave: (name, category, tags, quantity, unit) {
-              if (userIng == null) {
-                // Add new ingredient
-                final newId = ingredients.length + 1;
-                final newIngredient = Ingredient(
-                  id: newId,
-                  name: name,
-                  category: category,
-                  tags: tags,
-                  isVegan: false,
-                  isVegetarian: false,
-                  isGlutenFree: false,
-                  isLactoseFree: false,
-                );
+          (context) => PopScope(
+            canPop: true,
+            child: IngredientFormDialog(
+              ingredient: userIng?.ingredient,
+              customIngredient: userIng?.customIngredient,
+              quantity: userIng?.quantity ?? 0,
+              unit:
+                  userIng?.unit ??
+                  Unit(id: -1, name: 'Select unit', abbreviation: '', type: ''),
+              categories: categories,
+              onDelete: userIng != null ? onDelete : null,
+              onSave: (name, category, tags, quantity, unit) async {
+                try {
+                  if (userIng == null) {
+                    // Add new ingredient
+                    final newId = ingredients.length + 1;
+                    final newIngredient = Ingredient(
+                      id: newId,
+                      name: name,
+                      category: category,
+                      tags: tags,
+                      isVegan: false,
+                      isVegetarian: false,
+                      isGlutenFree: false,
+                      isLactoseFree: false,
+                    );
 
-                final newUserIng = UserIng(
-                  id: newId,
-                  uid: FirebaseAuth.instance.currentUser!.uid,
-                  ingredient: newIngredient,
-                  quantity: quantity,
-                  unit: unit,
-                );
+                    final newUserIng = UserIng(
+                      id: newId,
+                      uid: FirebaseAuth.instance.currentUser!.uid,
+                      ingredient: newIngredient,
+                      quantity: quantity,
+                      unit: unit,
+                    );
 
-                onSave(newUserIng);
-              } else {
-                // Update existing ingredient
-                final updatedIngredient = Ingredient(
-                  id: userIng.ingredient.id,
-                  name: name,
-                  category: category,
-                  tags: tags,
-                  isVegan: userIng.ingredient.isVegan,
-                  isVegetarian: userIng.ingredient.isVegetarian,
-                  isGlutenFree: userIng.ingredient.isGlutenFree,
-                  isLactoseFree: userIng.ingredient.isLactoseFree,
-                );
+                    await onSave(newUserIng);
+                  } else {
+                    // Update existing ingredient
+                    final updatedIngredient = Ingredient(
+                      id: userIng.ingredient.id,
+                      name: name,
+                      category: category,
+                      tags: tags,
+                      isVegan: userIng.ingredient.isVegan,
+                      isVegetarian: userIng.ingredient.isVegetarian,
+                      isGlutenFree: userIng.ingredient.isGlutenFree,
+                      isLactoseFree: userIng.ingredient.isLactoseFree,
+                    );
 
-                final updatedCustomIngredient =
-                    userIng.customIngredient != null
-                        ? CustomIngredient(
-                          id: userIng.customIngredient!.id,
-                          name: name,
-                          category: category,
-                          tags: tags,
-                        )
-                        : null;
+                    final updatedCustomIngredient =
+                        userIng.customIngredient != null
+                            ? CustomIngredient(
+                              name: name,
+                              category: category,
+                              tags: tags,
+                              uid: FirebaseAuth.instance.currentUser!.uid,
+                            )
+                            : null;
 
-                final updatedUserIng = UserIng(
-                  id: userIng.id,
-                  uid: FirebaseAuth.instance.currentUser!.uid,
-                  ingredient: updatedIngredient,
-                  customIngredient: updatedCustomIngredient,
-                  quantity: quantity,
-                  unit: unit,
-                );
+                    final updatedUserIng = UserIng(
+                      id: userIng.id,
+                      uid: FirebaseAuth.instance.currentUser!.uid,
+                      ingredient: updatedIngredient,
+                      customIngredient: updatedCustomIngredient,
+                      quantity: quantity,
+                      unit: unit,
+                    );
 
-                onSave(updatedUserIng);
-              }
-              Navigator.pop(context);
-            },
+                    await onSave(updatedUserIng);
+                  }
+
+                  // Dismiss keyboard before popping
+                  FocusScope.of(context).unfocus();
+
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Error: ${e.toString()}'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                }
+              },
+            ),
           ),
     );
   }

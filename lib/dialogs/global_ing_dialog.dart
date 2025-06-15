@@ -140,6 +140,7 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                                       uid: '',
                                       ingredient: ing,
                                       quantity: 0,
+                                      unit: resourceProvider.units.first,
                                     ),
                               );
                               final selected = ingEntry.id != -1;
@@ -462,9 +463,11 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                           selectedIngredients.isNotEmpty
                               ? () async {
                                 for (var ing in selectedIngredients) {
+                                  print(selectedIngredients);
                                   await ingredientsProvider.addUserIngredient(
                                     ing,
                                   );
+                                  print(ing.toJson());
                                 }
                                 Navigator.pop(context);
                               }

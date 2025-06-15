@@ -1,5 +1,5 @@
 //CustomIngredient.ts
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, JoinColumn } from "typeorm";
 import { User } from "./User";
 
 @Entity({ name: 'custom_ingredients' })
@@ -17,12 +17,7 @@ export class CustomIngredient {
     tags?: string[]; // ej: ['vegan', 'sin gluten', 'sin lactosa']
 
     @ManyToOne(() => User, user => user.customIngredients, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'uid', referencedColumnName: 'id'})
     createdBy!: User;
-
-    @Column({ default: false })
-    isDeleted!: boolean;
-
-    @Column({ default: false })
-    isApproved!: boolean;
 
 }

@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 class NavigationTextLink extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
+  final TextStyle? style;
 
   const NavigationTextLink({
     required this.label,
     required this.onTap,
+    this.style,
     super.key,
   });
 
@@ -19,11 +21,13 @@ class NavigationTextLink extends StatelessWidget {
         onTap: onTap,
         child: Text(
           label,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: AppColors.button,
-          ),
+          style:
+              style ??
+              const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: AppColors.button,
+              ),
         ),
       ),
     );

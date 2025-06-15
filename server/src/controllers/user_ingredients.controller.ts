@@ -28,13 +28,14 @@ export async function addUserIngredientController(req: Request, res: Response, n
       if (!ingredient?.id && !customIngredient?.id)
         return next(new BadRequestError("Either ingredient ID or custom ingredient ID is required"));
       if (!quantity) return next(new BadRequestError("Quantity is required"));
+      if (!unit?.id) return next(new BadRequestError("Unit ID is required"));
   
       const newUserIngredient = await addUserIngredientService({
         uid,
         ingredientId: ingredient?.id,
         customIngredientId: customIngredient?.id,
         quantity,
-        unit: unit?.id?.toString(),
+        unit: unit.id,  
       });
   
       const serialized = serialize(UserIngredientDto, newUserIngredient);

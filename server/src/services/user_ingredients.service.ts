@@ -14,7 +14,7 @@ export async function addUserIngredientService({
     ingredientId?: number;
     customIngredientId?: number;
     quantity?: number;
-    unit?: string;
+    unit?: number;
 }) {
   const user = await UserRepository.findOneBy({ uid });
   if (!user) throw new NotFoundError("User not found.");
@@ -48,7 +48,7 @@ export async function addUserIngredientService({
 
   const unitEntity = unit
     ? await UnitRepository.findOne({
-        where: [{ name: unit }, { abbreviation: unit }],
+        where: { id: unit },
       })
     : undefined;
 

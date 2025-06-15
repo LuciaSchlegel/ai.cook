@@ -1,3 +1,4 @@
+import 'package:ai_cook_project/dialogs/add_global_ing_dialog.dart';
 import 'package:ai_cook_project/dialogs/global_ing_dialog.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
@@ -10,6 +11,7 @@ import 'package:ai_cook_project/widgets/dropdown_selector.dart';
 import 'package:provider/provider.dart';
 import 'package:ai_cook_project/dialogs/ingredient_dialogs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ai_cook_project/models/unit.dart';
 
 class CupboardScreen extends StatefulWidget {
   const CupboardScreen({super.key});
@@ -89,7 +91,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
                   id: ing.id,
                   ingredient: ing,
                   quantity: 0,
-                  unit: null,
+                  unit: Unit(id: -1, name: '', abbreviation: '', type: ''),
                   uid: FirebaseAuth.instance.currentUser?.uid ?? '',
                 ),
               )
@@ -105,16 +107,44 @@ class _CupboardScreenState extends State<CupboardScreen> {
                   context: context,
                   ingredient: userIng.ingredient!,
                   onDelete: () async {
-                    await ingredientsProvider.removeUserIngredient(userIng);
+                    try {
+                      await ingredientsProvider.removeUserIngredient(userIng);
+                      if (mounted) {
+                        setState(() {});
+                      }
+                    } catch (e) {
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error: ${e.toString()}'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    }
                   },
                 );
               }
               : null,
       onSave: (UserIng updatedUserIng) async {
-        if (userIng == null) {
-          await ingredientsProvider.addUserIngredient(updatedUserIng);
-        } else {
-          await ingredientsProvider.updateUserIngredient(updatedUserIng);
+        try {
+          if (userIng == null) {
+            await ingredientsProvider.addUserIngredient(updatedUserIng);
+          } else {
+            await ingredientsProvider.updateUserIngredient(updatedUserIng);
+          }
+          if (mounted) {
+            setState(() {});
+          }
+        } catch (e) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error: ${e.toString()}'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
         }
       },
     );
@@ -265,7 +295,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
                                       ),
                                       const SizedBox(width: 8),
                                       Text(
-                                        '${userIng.quantity} ${userIng.unit?.abbreviation}',
+                                        '${userIng.quantity} ${userIng.unit.abbreviation}',
                                         style: const TextStyle(
                                           color: AppColors.button,
                                           fontFamily: 'Times New Roman',
@@ -291,7 +321,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
           bottom: MediaQuery.of(context).padding.bottom + 16,
         ),
         child: FloatingActionButton(
-          onPressed: () => _showIngredientDialog(),
+          onPressed: () => addGlobalIngredientsDialog(context),
           backgroundColor: AppColors.button.withOpacity(0.6),
           elevation: 2,
           shape: const CircleBorder(),

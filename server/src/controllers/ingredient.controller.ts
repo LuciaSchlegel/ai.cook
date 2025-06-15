@@ -7,6 +7,8 @@ import {
     createCustomIngredientService,
     suggestCustomIngredientsService,
 } from "../services/ingredient.service";
+import { serialize } from "../helpers/serialize";
+import { CustomIngredientDto } from "../dtos/custom_ing.dto";
 
 export async function listGlobalIngredientsController(req: Request, res: Response, next: NextFunction) {
     try {
@@ -49,7 +51,8 @@ export async function listCustomIngredientsController(req: Request, res: Respons
 export async function createCustomIngredientController(req: Request, res: Response, next: NextFunction) {
     try {
         const ingredient = await createCustomIngredientService(req.body);
-        res.status(201).json(ingredient);
+        const serialized = serialize(CustomIngredientDto, ingredient);
+        res.status(201).json(serialized);
     } catch (error) {
         next(error);
     }

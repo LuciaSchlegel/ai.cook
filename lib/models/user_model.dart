@@ -8,7 +8,6 @@ import 'package:ai_cook_project/models/user_ing.dart';
 enum UserRole { admin, user }
 
 class User {
-  final int id;
   final String uid;
   final String name;
   final String email;
@@ -24,7 +23,6 @@ class User {
   final List<Event>? events;
 
   User({
-    required this.id,
     required this.uid,
     required this.name,
     required this.email,
@@ -42,7 +40,6 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'],
       uid: json['uid'],
       name: json['name'],
       email: json['email'],
@@ -87,7 +84,6 @@ class User {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'uid': uid,
       'name': name,
       'email': email,

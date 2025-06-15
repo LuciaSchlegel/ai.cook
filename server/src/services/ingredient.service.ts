@@ -48,7 +48,6 @@ export async function createCustomIngredientService(data: Partial<CustomIngredie
 export async function suggestCustomIngredientsService(search: string, userId?: number) {
   const qb = CustomIngredientRepository.createQueryBuilder('ingredient')
     .where('LOWER(ingredient.name) LIKE :search', { search: `%${search.toLowerCase()}%` })
-    .andWhere('ingredient.isApproved = :isApproved', { isApproved: true });
   if (userId) qb.andWhere('ingredient.createdById = :userId', { userId });
   return await qb.getMany();
 }

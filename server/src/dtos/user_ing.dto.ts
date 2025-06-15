@@ -25,5 +25,5 @@ export class UserIngredientDto {
 
   @Expose()
   @Type(() => UnitDto)
-  unit?: UnitDto;
+  unit!: UnitDto;
 }
