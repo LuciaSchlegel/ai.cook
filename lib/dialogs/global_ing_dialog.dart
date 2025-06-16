@@ -133,7 +133,7 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                             itemBuilder: (context, index) {
                               final ing = filteredIngredients[index];
                               final ingEntry = selectedIngredients.firstWhere(
-                                (ui) => ui.ingredient.id == ing.id,
+                                (ui) => ui.ingredient?.id == ing.id,
                                 orElse:
                                     () => UserIng(
                                       id: -1,
@@ -191,7 +191,7 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                                                       BorderRadius.circular(12),
                                                 ),
                                                 child: Text(
-                                                  '${ingEntry.quantity} ${ingEntry.unit?.abbreviation ?? ingEntry.unit?.name ?? ""}',
+                                                  '${ingEntry.quantity} ${ingEntry.unit!.abbreviation ?? ingEntry.unit!.name ?? ""}',
                                                   style: const TextStyle(
                                                     color:
                                                         CupertinoColors.white,
@@ -439,7 +439,7 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                                     } else {
                                       setState(() {
                                         selectedIngredients.removeWhere(
-                                          (ui) => ui.ingredient.id == ing.id,
+                                          (ui) => ui.ingredient?.id == ing.id,
                                         );
                                       });
                                     }

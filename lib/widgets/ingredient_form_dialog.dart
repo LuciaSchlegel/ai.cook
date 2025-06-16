@@ -113,7 +113,6 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
   @override
   Widget build(BuildContext context) {
     final resourceProvider = Provider.of<ResourceProvider>(context);
-    final availableTags = resourceProvider.tags;
     final availableUnits = resourceProvider.units;
 
     return GestureDetector(
@@ -164,231 +163,22 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
               // Name field
               Container(
                 decoration: BoxDecoration(
-                  color: CupertinoColors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.button.withOpacity(0.2)),
-                ),
-                child: CupertinoTextField(
-                  controller: _nameController,
-                  placeholder: 'Name',
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  placeholderStyle: TextStyle(
-                    color: AppColors.button.withOpacity(0.5),
-                    fontSize: 16,
-                  ),
-                  style: const TextStyle(color: AppColors.button, fontSize: 16),
-                  decoration: null,
-                  cursorColor: AppColors.mutedGreen,
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Category dropdown
-              Container(
-                decoration: BoxDecoration(
-                  color: CupertinoColors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.button.withOpacity(0.2)),
-                ),
-                child: CupertinoButton(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  onPressed: () {
-                    showCupertinoModalPopup(
-                      context: context,
-                      builder:
-                          (BuildContext context) => Container(
-                            height: 216,
-                            padding: const EdgeInsets.only(top: 6.0),
-                            margin: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom,
-                            ),
-                            color: CupertinoColors.systemBackground.resolveFrom(
-                              context,
-                            ),
-                            child: SafeArea(
-                              top: false,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 44,
-                                    decoration: BoxDecoration(
-                                      color: CupertinoColors.white,
-                                      border: const Border(
-                                        bottom: BorderSide(
-                                          color: CupertinoColors.systemGrey4,
-                                          width: 0.5,
-                                        ),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        CupertinoButton(
-                                          padding: EdgeInsets.only(left: 16),
-                                          child: const Text(
-                                            'Cancel',
-                                            style: TextStyle(
-                                              color: AppColors.mutedGreen,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                          onPressed:
-                                              () => Navigator.of(context).pop(),
-                                        ),
-                                        CupertinoButton(
-                                          padding: EdgeInsets.only(right: 16),
-                                          child: const Text(
-                                            'Done',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              color: AppColors.mutedGreen,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                          onPressed:
-                                              () => Navigator.of(context).pop(),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: CupertinoPicker(
-                                      magnification: 1.22,
-                                      squeeze: 1.2,
-                                      useMagnifier: true,
-                                      itemExtent: 32.0,
-                                      scrollController:
-                                          FixedExtentScrollController(
-                                            initialItem: widget.categories
-                                                .indexOf(_selectedCategory),
-                                          ),
-                                      onSelectedItemChanged: (
-                                        int selectedItem,
-                                      ) {
-                                        setState(() {
-                                          _selectedCategory =
-                                              widget.categories[selectedItem];
-                                        });
-                                      },
-                                      children:
-                                          widget.categories
-                                              .map(
-                                                (category) => Center(
-                                                  child: Text(
-                                                    category.name,
-                                                    style: const TextStyle(
-                                                      color: AppColors.button,
-                                                      fontSize: 16,
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
-                                              .toList(),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                    );
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        _selectedCategory.name,
-                        style: const TextStyle(
-                          color: AppColors.button,
-                          fontSize: 16,
-                        ),
-                      ),
-                      const Icon(
-                        CupertinoIcons.chevron_down,
-                        color: AppColors.button,
-                        size: 20,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Tags section
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                decoration: BoxDecoration(
-                  color: CupertinoColors.white,
+                  color: CupertinoColors.systemGrey6,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color:
-                        _selectedTags.isEmpty
-                            ? CupertinoColors.systemRed
-                            : AppColors.button.withOpacity(0.2),
+                    color: AppColors.mutedGreen.withOpacity(0.6),
+                    width: 2,
                   ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Tags (select at least one)',
-                      style: TextStyle(
-                        color: AppColors.button.withOpacity(0.7),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children:
-                          availableTags.map((tag) {
-                            final isSelected = _selectedTags.contains(tag);
-                            return FilterChip(
-                              label: Text(tag.name),
-                              selected: isSelected,
-                              onSelected: (selected) {
-                                setState(() {
-                                  if (selected) {
-                                    _selectedTags.add(tag);
-                                  } else {
-                                    _selectedTags.remove(tag);
-                                  }
-                                });
-                              },
-                              backgroundColor: CupertinoColors.systemGrey6,
-                              selectedColor: AppColors.mutedGreen,
-                              checkmarkColor: AppColors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              labelStyle: TextStyle(
-                                color:
-                                    isSelected
-                                        ? AppColors.white
-                                        : AppColors.button.withOpacity(0.8),
-                                fontSize: 14,
-                              ),
-                              side: BorderSide(
-                                color:
-                                    isSelected
-                                        ? AppColors.mutedGreen
-                                        : AppColors.button.withOpacity(0.2),
-                              ),
-                            );
-                          }).toList(),
-                    ),
-                  ],
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  child: Text(
+                    widget.ingredient?.name ?? '',
+                    style: TextStyle(color: AppColors.button),
+                  ),
                 ),
               ),
               const SizedBox(height: 16),

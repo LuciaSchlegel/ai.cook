@@ -6,30 +6,21 @@ import 'package:flutter/foundation.dart';
 class UserIng {
   final int id;
   final String uid;
-  final Ingredient ingredient;
+  final Ingredient? ingredient;
   final CustomIngredient? customIngredient;
   final int quantity;
-  final Unit unit;
+  final Unit? unit;
 
   UserIng({
     required this.id,
     required this.uid,
-    required this.ingredient,
+    this.ingredient,
     this.customIngredient,
     required this.quantity,
-    required this.unit,
+    this.unit,
   });
 
   factory UserIng.fromJson(Map<String, dynamic> json) {
-    if (json == null) {
-      throw Exception('Invalid JSON data: null');
-    }
-
-    // Validate required fields
-    if (json['ingredient'] == null) {
-      throw Exception('Ingredient data is required');
-    }
-
     try {
       // Create a default unit if none is provided
       final unit =
@@ -38,11 +29,14 @@ class UserIng {
               : Unit(id: -1, name: 'piece', abbreviation: 'pcs', type: 'count');
 
       return UserIng(
-        id: json['id'] as int? ?? -1,
+        id: json['id'] as int,
         uid: json['user']?['uid'] as String? ?? '',
-        ingredient: Ingredient.fromJson(
-          json['ingredient'] as Map<String, dynamic>,
-        ),
+        ingredient:
+            json['ingredient'] != null
+                ? Ingredient.fromJson(
+                  json['ingredient'] as Map<String, dynamic>,
+                )
+                : null,
         customIngredient:
             json['custom_ingredient'] != null
                 ? CustomIngredient.fromJson(
@@ -62,10 +56,11 @@ class UserIng {
     return {
       'id': id,
       'user': {'uid': uid},
-      'ingredient': ingredient.toJson(),
-      'custom_ingredient': customIngredient?.toJson(),
+      'ingredient': ingredient?.toJson(),
+      'custom_ingredient':
+          customIngredient != null ? {'id': customIngredient!.id} : null,
       'quantity': quantity,
-      'unit': unit.toJson(),
+      'unit': unit?.id != null ? {'id': unit!.id} : null,
     };
   }
 }

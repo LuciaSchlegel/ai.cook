@@ -23,7 +23,7 @@ export class UserIngredient {
   @Column({ type: 'int', default: 1 })
   quantity!: number;
 
-  @ManyToOne(() => Unit, { nullable: true, onDelete: 'SET NULL' })
+  @ManyToOne(() => Unit, { nullable: true })
   @JoinColumn({ name: 'unit_id', referencedColumnName: 'id' })
   unit?: Unit;
 }

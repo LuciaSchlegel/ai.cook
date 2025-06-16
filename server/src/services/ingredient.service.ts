@@ -3,6 +3,9 @@ import { CustomIngredient } from "../entities/Custom_Ingredient";
 import { BadRequestError, ConflictError } from "../types/AppError";
 import { IngredientRepository } from "../repositories/ingredient.repository";
 import { CustomIngredientRepository } from "../repositories/custom_ingredient.repository";
+import { User } from "../entities/User";
+import { UserRepository } from "../repositories/user.repository";
+import { CustomIngredientDto } from "../dtos/custom_ing.dto";
 
 
 export async function listGlobalIngredientsService() {
@@ -33,17 +36,60 @@ export async function listCustomIngredientsService(userId?: number) {
   return await CustomIngredientRepository.find({ relations: ['createdBy', 'tags'] });
 }
 
-export async function createCustomIngredientService(data: Partial<CustomIngredient>) {
-  if (!data.name || !data.createdBy) throw new BadRequestError('Name and createdBy (user) required.');
-  // Evitar duplicados en el mismo user (opcional: check global también)
-  const exists = await CustomIngredientRepository.findOne({
-    where: { name: data.name, createdBy: { id: (data.createdBy as any).id } },
-    relations: ['createdBy']
-  });
-  if (exists) throw new ConflictError('Custom ingredient already exists for this user.');
-  const customIngredient = CustomIngredientRepository.create(data);
-  return await CustomIngredientRepository.save(customIngredient);
-}
+export const createCustomIngredientService = async (
+  customIngredientData: CustomIngredientDto,
+  uid: string
+): Promise<CustomIngredient> => {
+  try {
+    // Validate required fields
+    if (!customIngredientData.name) {
+      throw new BadRequestError('Name is required');
+    }
+
+    // Find the user
+    const user = await UserRepository.findOne({
+      where: { uid }
+    });
+
+    if (!user) {
+      throw new BadRequestError('User not found');
+    }
+
+    console.log('Creating custom ingredient with data:', customIngredientData);
+
+    // Create the custom ingredient with the user reference
+    const customIngredient = CustomIngredientRepository.create({
+      name: customIngredientData.name,
+      category: customIngredientData.category,
+      tags: customIngredientData.tags,
+      createdBy: user
+    });
+
+    console.log('Created custom ingredient object:', customIngredient);
+
+    // Save the custom ingredient
+    const savedCustomIngredient = await CustomIngredientRepository.save(customIngredient);
+
+    console.log('Saved custom ingredient:', savedCustomIngredient);
+
+    // Reload the custom ingredient with all relations
+    const reloadedCustomIngredient = await CustomIngredientRepository.findOne({
+      where: { id: savedCustomIngredient.id },
+      relations: ['category', 'tags', 'createdBy']
+    });
+
+    if (!reloadedCustomIngredient) {
+      throw new Error('Failed to reload custom ingredient after save');
+    }
+
+    console.log('Reloaded custom ingredient:', reloadedCustomIngredient);
+
+    return reloadedCustomIngredient;
+  } catch (error) {
+    console.error('Error in createCustomIngredientService:', error);
+    throw error;
+  }
+};
 
 export async function suggestCustomIngredientsService(search: string, userId?: number) {
   const qb = CustomIngredientRepository.createQueryBuilder('ingredient')

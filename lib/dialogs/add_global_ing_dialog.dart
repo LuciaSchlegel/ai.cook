@@ -29,7 +29,7 @@ Future<void> addGlobalIngredientsDialog(BuildContext context) async {
   final searchController = TextEditingController();
   final uid = FirebaseAuth.instance.currentUser!.uid;
 
-  void _showCustomIngredientDialog() {
+  void showCustomIngredientDialog() {
     IngredientDialogs.showIngredientDialog(
       context: context,
       categories: resourceProvider.categories,
@@ -48,33 +48,37 @@ Future<void> addGlobalIngredientsDialog(BuildContext context) async {
       userIngredients: {},
       userIng: null,
       onSave: (userIng) async {
-        // Create a CustomIngredient from the user input
-        final customIng = CustomIngredient(
-          name: userIng.ingredient.name,
-          category: userIng.ingredient.category,
-          tags: userIng.ingredient.tags,
-          uid: uid,
-        );
-
         try {
-          await ingredientsProvider.addCustomIngredient(customIng);
-          Navigator.pop(context);
-        } catch (e) {
-          // Show error dialog
-          showDialog(
-            context: context,
-            builder:
-                (context) => AlertDialog(
-                  title: const Text('Error'),
-                  content: Text('Failed to add custom ingredient: $e'),
-                  actions: [
-                    CupertinoButton(
-                      child: const Text('OK'),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ],
-                ),
+          debugPrint(
+            'Creating custom ingredient from UserIng: ${userIng.toJson()}',
           );
+
+          // Create a CustomIngredient from the user input
+          final customIng = CustomIngredient(
+            id: -1,
+            name: userIng.customIngredient?.name ?? '',
+            category: userIng.customIngredient?.category,
+            tags: userIng.customIngredient?.tags,
+            uid: FirebaseAuth.instance.currentUser?.uid ?? '',
+          );
+
+          debugPrint('Created CustomIngredient: ${customIng.toJson()}');
+
+          await ingredientsProvider.addCustomIngredient(customIng);
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
+        } catch (e, stackTrace) {
+          debugPrint('Error creating custom ingredient: $e');
+          debugPrint('Stack trace: $stackTrace');
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error: ${e.toString()}'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
         }
       },
       onDelete: () {},
@@ -234,7 +238,7 @@ Future<void> addGlobalIngredientsDialog(BuildContext context) async {
                             itemBuilder: (context, index) {
                               final ing = searchFilteredIngredients[index];
                               final ingEntry = selectedIngredients.firstWhere(
-                                (ui) => ui.ingredient.id == ing.id,
+                                (ui) => ui.ingredient?.id == ing.id,
                                 orElse:
                                     () => UserIng(
                                       id: -1,
@@ -292,7 +296,7 @@ Future<void> addGlobalIngredientsDialog(BuildContext context) async {
                                                       BorderRadius.circular(12),
                                                 ),
                                                 child: Text(
-                                                  '${ingEntry.quantity} ${ingEntry.unit?.abbreviation ?? ingEntry.unit?.name ?? ""}',
+                                                  '${ingEntry.quantity} ${ingEntry.unit!.abbreviation ?? ingEntry.unit!.name ?? ""}',
                                                   style: const TextStyle(
                                                     color:
                                                         CupertinoColors.white,
@@ -540,7 +544,7 @@ Future<void> addGlobalIngredientsDialog(BuildContext context) async {
                                     } else {
                                       setState(() {
                                         selectedIngredients.removeWhere(
-                                          (ui) => ui.ingredient.id == ing.id,
+                                          (ui) => ui.ingredient?.id == ing.id,
                                         );
                                       });
                                     }
@@ -585,7 +589,7 @@ Future<void> addGlobalIngredientsDialog(BuildContext context) async {
                     const SizedBox(height: 24),
                     NavigationTextLink(
                       label: 'Add a custom ingredient',
-                      onTap: () => _showCustomIngredientDialog(),
+                      onTap: () => showCustomIngredientDialog(),
                       style: const TextStyle(
                         color: CupertinoColors.systemBlue,
                         fontSize: 14,

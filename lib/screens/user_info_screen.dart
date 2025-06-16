@@ -355,7 +355,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              ...errors.map((error) => _buildValidationItem(error)).toList(),
+              ...errors.map((error) => _buildValidationItem(error)),
             ],
           ),
           actions: [

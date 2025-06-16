@@ -4,6 +4,7 @@ import { addUserIngredientService, getUserIngredientsService, removeUserIngredie
 import { UserIngredientDto } from "../dtos/user_ing.dto";
 import { serialize } from "../helpers/serialize";
 import { toSnakeCaseDeep } from "../helpers/toSnakeCase";
+import { toCamelCaseDeep } from "../helpers/toCamelCase";
 
 export async function getUserIngredientsController(req: Request, res: Response, next: NextFunction) {
   const { uid } = req.params;
@@ -19,14 +20,26 @@ export async function getUserIngredientsController(req: Request, res: Response, 
     next(error);
   }
 }
+
 export async function addUserIngredientController(req: Request, res: Response, next: NextFunction) {
     try {
+      console.log('Request body:', JSON.stringify(req.body, null, 2));
       const { uid } = req.params;
-      const { ingredient, customIngredient, quantity, unit } = req.body;
+      const camelBody = toCamelCaseDeep(req.body);
+      const { ingredient, customIngredient, quantity, unit } = camelBody;
+  
+      console.log('Destructured values:', {
+        ingredient,
+        customIngredient,
+        quantity,
+        unit
+      });
   
       if (!uid) return next(new BadRequestError("User ID is required"));
-      if (!ingredient?.id && !customIngredient?.id)
+      if (!ingredient?.id && !customIngredient?.id) {
+        console.log('Missing ingredient IDs:', { ingredientId: ingredient?.id, customIngredientId: customIngredient?.id });
         return next(new BadRequestError("Either ingredient ID or custom ingredient ID is required"));
+      }
       if (!quantity) return next(new BadRequestError("Quantity is required"));
       if (!unit?.id) return next(new BadRequestError("Unit ID is required"));
   

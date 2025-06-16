@@ -1,5 +1,4 @@
 import 'package:ai_cook_project/theme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AiButton extends StatelessWidget {

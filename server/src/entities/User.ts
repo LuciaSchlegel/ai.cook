@@ -57,7 +57,7 @@ export class User {
     userIngredients!: UserIngredient[];
 
     @OneToMany(() => CustomIngredient, customIngredient => customIngredient.createdBy)
-    customIngredients!: CustomIngredient[];
+    customIngredients?: CustomIngredient[];
 
     @OneToMany(() => Recipe, recipe => recipe.createdByUser)
     recipes!: Recipe[];

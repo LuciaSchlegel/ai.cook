@@ -50,7 +50,11 @@ export async function listCustomIngredientsController(req: Request, res: Respons
 
 export async function createCustomIngredientController(req: Request, res: Response, next: NextFunction) {
     try {
-        const ingredient = await createCustomIngredientService(req.body);
+        console.log('Creating custom ingredient with body:', req.body);
+        const customIng : CustomIngredientDto = req.body;
+        const { uid } = req.body;
+        const ingredient = await createCustomIngredientService(customIng, uid);
+        console.log('Created custom ingredient:', ingredient);
         const serialized = serialize(CustomIngredientDto, ingredient);
         res.status(201).json(serialized);
     } catch (error) {

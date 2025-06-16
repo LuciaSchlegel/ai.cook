@@ -50,22 +50,27 @@ class _CupboardScreenState extends State<CupboardScreen> {
     final searchText = searchProvider.searchController.text.toLowerCase();
 
     return ingredientsProvider.userIngredients.where((userIng) {
-      final ingredient = userIng.ingredient;
-      if (ingredient == null) return false;
+      final ingredientName =
+          userIng.ingredient?.name ?? userIng.customIngredient?.name;
+      final ingredientCategory =
+          userIng.ingredient?.category?.name ??
+          userIng.customIngredient?.category?.name;
+      final ingredientTags =
+          userIng.ingredient?.tags ?? userIng.customIngredient?.tags;
 
       final matchesCategory =
-          _selectedCategory == 'All' ||
-          ingredient.category?.name == _selectedCategory;
+          _selectedCategory == 'All' || ingredientCategory == _selectedCategory;
 
       final matchesProperty =
           _selectedProperty == 'All' ||
-          (ingredient.tags?.any(
+          (ingredientTags?.any(
                 (tag) =>
                     tag.name.toLowerCase() == _selectedProperty.toLowerCase(),
               ) ??
               false);
 
-      final matchesSearch = ingredient.name.toLowerCase().contains(searchText);
+      final matchesSearch =
+          ingredientName?.toLowerCase().contains(searchText) ?? false;
 
       return matchesCategory && matchesProperty && matchesSearch;
     }).toList();
@@ -166,8 +171,10 @@ class _CupboardScreenState extends State<CupboardScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
+        top: false,
         child: Column(
           children: [
+            SizedBox(height: 16),
             // Category Dropdown
             Padding(
               padding: EdgeInsets.fromLTRB(
@@ -283,7 +290,9 @@ class _CupboardScreenState extends State<CupboardScreen> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          userIng.ingredient.name,
+                                          userIng.ingredient?.name ??
+                                              userIng.customIngredient?.name ??
+                                              '',
                                           style: const TextStyle(
                                             color: AppColors.button,
                                             fontFamily: 'Times New Roman',
@@ -295,7 +304,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
                                       ),
                                       const SizedBox(width: 8),
                                       Text(
-                                        '${userIng.quantity} ${userIng.unit.abbreviation}',
+                                        '${userIng.quantity} ${userIng.unit!.abbreviation}',
                                         style: const TextStyle(
                                           color: AppColors.button,
                                           fontFamily: 'Times New Roman',
@@ -322,7 +331,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
         ),
         child: FloatingActionButton(
           onPressed: () => addGlobalIngredientsDialog(context),
-          backgroundColor: AppColors.button.withOpacity(0.6),
+          backgroundColor: AppColors.button.withOpacity(0.9),
           elevation: 2,
           shape: const CircleBorder(),
           child: const Icon(Icons.add, color: AppColors.white),

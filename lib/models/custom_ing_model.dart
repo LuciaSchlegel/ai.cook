@@ -2,12 +2,14 @@ import 'package:ai_cook_project/models/category_model.dart';
 import 'package:ai_cook_project/models/tag_model.dart';
 
 class CustomIngredient {
+  final int id;
   final String name;
   final Category? category;
   final List<Tag>? tags;
   final String uid;
 
   CustomIngredient({
+    required this.id,
     required this.name,
     this.category,
     this.tags,
@@ -15,24 +17,39 @@ class CustomIngredient {
   });
 
   factory CustomIngredient.fromJson(Map<String, dynamic> json) {
-    return CustomIngredient(
-      name: json['name'] as String,
-      category:
-          json['category'] != null ? Category.fromJson(json['category']) : null,
-      tags:
-          (json['tags'] as List<dynamic>?)
-              ?.map((e) => Tag.fromJson(e))
-              .toList(),
-      uid: json['user']?['uid'] as String? ?? '',
-    );
+    try {
+      return CustomIngredient(
+        id: json['id'] as int,
+        name: json['name'] as String,
+        category:
+            json['category'] != null
+                ? Category.fromJson(json['category'] as Map<String, dynamic>)
+                : null,
+        tags:
+            json['tags'] != null
+                ? (json['tags'] as List)
+                    .map((tag) => Tag.fromJson(tag as Map<String, dynamic>))
+                    .toList()
+                : null,
+        uid:
+            json['uid'] as String? ??
+            json['createdBy']?['uid'] as String? ??
+            '',
+      );
+    } catch (e) {
+      print('Error parsing CustomIngredient: $e');
+      print('JSON data: $json');
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'name': name,
       'category': category?.toJson(),
-      'tags': tags?.map((e) => e.toJson()).toList(),
-      'user': {'uid': uid},
+      'tags': tags?.map((tag) => tag.toJson()).toList(),
+      'uid': uid,
     };
   }
 }

@@ -76,10 +76,14 @@ export async function getUserIngredientsService(uid: string) {
         category: true,
         tags: true
       },
-      customIngredient: true,
+      customIngredient: {
+        category: true,
+        tags: true
+      },
       unit: true
     }
-  });}
+  });
+}
 
 // ACTUALIZAR INGREDIENTE DEL USUARIO (opcional)
 export async function updateUserIngredientService(uid: string, id: number, data: Partial<UserIngredient>) {
