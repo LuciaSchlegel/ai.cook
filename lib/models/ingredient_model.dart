@@ -10,6 +10,7 @@ class Ingredient {
   final bool isLactoseFree;
   final Category? category;
   final List<Tag>? tags;
+
   Ingredient({
     required this.id,
     required this.name,
@@ -21,21 +22,23 @@ class Ingredient {
     this.tags,
   });
 
-  factory Ingredient.fromJson(Map<String, dynamic> json) => Ingredient(
-    id: json['id'],
-    name: json['name'],
-    isVegan: json['is_vegan'] ?? false,
-    isVegetarian: json['is_vegetarian'] ?? false,
-    isGlutenFree: json['is_gluten_free'] ?? false,
-    isLactoseFree: json['is_lactose_free'] ?? false,
-    category:
-        json['category'] != null ? Category.fromJson(json['category']) : null,
-    tags:
-        json['tags'] != null
-            ? List<Tag>.from(json['tags'].map((x) => Tag.fromJson(x)))
-            : [],
-  );
-
+  factory Ingredient.fromJson(Map<String, dynamic> json) {
+    return Ingredient(
+      id: json['id'] as int,
+      name: json['name']?.toString() ?? '',
+      isVegan: json['is_vegan'] ?? json['isVegan'] ?? false,
+      isVegetarian: json['is_vegetarian'] ?? json['isVegetarian'] ?? false,
+      isGlutenFree: json['is_gluten_free'] ?? json['isGlutenFree'] ?? false,
+      isLactoseFree: json['is_lactose_free'] ?? json['isLactoseFree'] ?? false,
+      category:
+          json['category'] != null ? Category.fromJson(json['category']) : null,
+      tags:
+          (json['tags'] as List<dynamic>?)
+              ?.map((e) => Tag.fromJson(e))
+              .toList() ??
+          [],
+    );
+  }
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -44,8 +47,8 @@ class Ingredient {
       'is_vegetarian': isVegetarian,
       'is_gluten_free': isGlutenFree,
       'is_lactose_free': isLactoseFree,
-      'category': category,
-      'tags': tags,
+      'category': category?.toJson(),
+      'tags': tags?.map((tag) => tag.toJson()).toList(),
     };
   }
 }

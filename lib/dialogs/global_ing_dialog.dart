@@ -18,6 +18,11 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
     listen: false,
   );
 
+  // Wait for resources to be loaded
+  if (resourceProvider.units.isEmpty) {
+    await resourceProvider.initializeResources();
+  }
+
   final globalIngredients = ingredientsProvider.ingredients;
   final selectedIngredients = <UserIng>[];
   final categories = resourceProvider.categories;
@@ -140,7 +145,15 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                                       uid: '',
                                       ingredient: ing,
                                       quantity: 0,
-                                      unit: resourceProvider.units.first,
+                                      unit:
+                                          resourceProvider.units.isNotEmpty
+                                              ? resourceProvider.units.first
+                                              : Unit(
+                                                id: -1,
+                                                name: 'unit',
+                                                abbreviation: 'u',
+                                                type: 'general',
+                                              ),
                                     ),
                               );
                               final selected = ingEntry.id != -1;
@@ -217,7 +230,14 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                                     if (!selected) {
                                       String quantityInput = '1';
                                       Unit selectedUnit =
-                                          resourceProvider.units.first;
+                                          resourceProvider.units.isNotEmpty
+                                              ? resourceProvider.units.first
+                                              : Unit(
+                                                id: -1,
+                                                name: 'unit',
+                                                abbreviation: 'u',
+                                                type: 'general',
+                                              );
 
                                       await showModalBottomSheet(
                                         backgroundColor:

@@ -20,20 +20,18 @@ class CustomIngredient {
     try {
       return CustomIngredient(
         id: json['id'] as int,
-        name: json['name'] as String,
+        name: json['name']?.toString() ?? '',
         category:
             json['category'] != null
                 ? Category.fromJson(json['category'] as Map<String, dynamic>)
                 : null,
         tags:
-            json['tags'] != null
-                ? (json['tags'] as List)
-                    .map((tag) => Tag.fromJson(tag as Map<String, dynamic>))
-                    .toList()
-                : null,
+            (json['tags'] as List<dynamic>?)
+                ?.map((tag) => Tag.fromJson(tag as Map<String, dynamic>))
+                .toList(),
         uid:
-            json['uid'] as String? ??
-            json['createdBy']?['uid'] as String? ??
+            json['uid']?.toString() ??
+            json['createdBy']?['uid']?.toString() ??
             '',
       );
     } catch (e) {

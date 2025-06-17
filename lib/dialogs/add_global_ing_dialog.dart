@@ -1,7 +1,6 @@
 import 'package:ai_cook_project/dialogs/ingredient_dialogs.dart';
 import 'package:ai_cook_project/models/custom_ing_model.dart';
 import 'package:ai_cook_project/models/unit.dart';
-import 'package:ai_cook_project/models/user_basic_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
@@ -588,7 +587,7 @@ Future<void> addGlobalIngredientsDialog(BuildContext context) async {
                     ),
                     const SizedBox(height: 24),
                     NavigationTextLink(
-                      label: 'Add a custom ingredient',
+                      label: 'Add custom ingredient',
                       onTap: () => showCustomIngredientDialog(),
                       style: const TextStyle(
                         color: CupertinoColors.systemBlue,

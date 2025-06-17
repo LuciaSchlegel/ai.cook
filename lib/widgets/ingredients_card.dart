@@ -48,7 +48,6 @@ class IngredientsCard extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(24.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -78,7 +77,6 @@ class IngredientsCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 24),
                   Container(
                     constraints: BoxConstraints(maxHeight: size.height * 0.4),
                     child: ListView.separated(

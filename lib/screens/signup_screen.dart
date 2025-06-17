@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:ai_cook_project/providers/auth_provider.dart';
+import 'package:ai_cook_project/providers/user_provider.dart';
 import 'package:ai_cook_project/theme.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -46,6 +47,7 @@ class _SignupScreenState extends State<SignupScreen> {
         _passwordController.clear();
         if (context.mounted) {
           Navigator.pop(context);
+          await Provider.of<UserProvider>(context, listen: false).getUser();
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const UserInfoScreen()),

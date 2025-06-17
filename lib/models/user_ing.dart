@@ -28,9 +28,11 @@ class UserIng {
               ? Unit.fromJson(json['unit'] as Map<String, dynamic>)
               : Unit(id: -1, name: 'piece', abbreviation: 'pcs', type: 'count');
 
+      final String uid =
+          (json['user']?['uid'] ?? json['uid'])?.toString() ?? '';
       return UserIng(
         id: json['id'] as int,
-        uid: json['user']?['uid'] as String? ?? '',
+        uid: uid,
         ingredient:
             json['ingredient'] != null
                 ? Ingredient.fromJson(

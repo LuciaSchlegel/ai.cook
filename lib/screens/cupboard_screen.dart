@@ -8,6 +8,7 @@ import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/providers/search_provider.dart';
 import 'package:ai_cook_project/widgets/dropdown_selector.dart';
+import 'package:ai_cook_project/widgets/loading_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:ai_cook_project/dialogs/ingredient_dialogs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,6 +34,20 @@ class _CupboardScreenState extends State<CupboardScreen> {
         context,
         listen: false,
       );
+      final resourceProvider = Provider.of<ResourceProvider>(
+        context,
+        listen: false,
+      );
+
+      // Ensure resources are loaded
+      if (resourceProvider.units.isEmpty) {
+        await resourceProvider.initializeResources();
+      }
+
+      // Ensure ingredients are loaded
+      if (!ingredientsProvider.isInitialized) {
+        await ingredientsProvider.initializeIngredients();
+      }
 
       if (!_hasShownOnboarding &&
           mounted &&
@@ -47,6 +62,11 @@ class _CupboardScreenState extends State<CupboardScreen> {
     IngredientsProvider ingredientsProvider,
     SearchProvider searchProvider,
   ) {
+    // If ingredients are not yet initialized, return empty list
+    if (!ingredientsProvider.isInitialized) {
+      return [];
+    }
+
     final searchText = searchProvider.searchController.text.toLowerCase();
 
     return ingredientsProvider.userIngredients.where((userIng) {
@@ -241,6 +261,13 @@ class _CupboardScreenState extends State<CupboardScreen> {
             Expanded(
               child: Consumer<IngredientsProvider>(
                 builder: (context, ingredientsProvider, _) {
+                  if (!ingredientsProvider.isInitialized) {
+                    return const LoadingIndicator(
+                      size: 24.0,
+                      message: 'Loading ingredients...',
+                    );
+                  }
+
                   final filteredIngredients = _getFilteredIngredients(
                     ingredientsProvider,
                     Provider.of<SearchProvider>(context),

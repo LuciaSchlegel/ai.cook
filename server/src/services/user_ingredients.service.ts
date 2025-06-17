@@ -86,13 +86,43 @@ export async function getUserIngredientsService(uid: string) {
 }
 
 // ACTUALIZAR INGREDIENTE DEL USUARIO (opcional)
-export async function updateUserIngredientService(uid: string, id: number, data: Partial<UserIngredient>) {
+export async function updateUserIngredientService(
+  uid: string,
+  id: number,
+  data: Partial<UserIngredient>
+) {
+  const userIngUnit = data.unit;
+
+  const unitEntity = userIngUnit
+    ? await UnitRepository.findOne({
+        where: { id: userIngUnit.id },
+      })
+    : undefined;
+
+  if (userIngUnit && !unitEntity) {
+    throw new NotFoundError(`Unit '${userIngUnit.id}' not found.`);
+  }
+
   const userIngredient = await UserIngredientRepository.findOne({
     where: { id, user: { uid } },
-    relations: ['ingredient', 'customIngredient']
-});
-  if (!userIngredient) throw new NotFoundError("UserIngredient not found.");
+    relations: {
+      ingredient: { category: true, tags: true },
+      customIngredient: { category: true, tags: true },
+      unit: true, // 👈 esto ahora asegura que la respuesta tenga unit completa
+    },
+  });
+
+  if (!userIngredient) {
+    throw new NotFoundError("UserIngredient not found.");
+  }
+
   Object.assign(userIngredient, data);
+
+  // ✅ Aseguramos que unitEntity se asigne si vino por `data.unit`
+  if (unitEntity) {
+    userIngredient.unit = unitEntity;
+  }
+
   return await UserIngredientRepository.save(userIngredient);
 }
 
