@@ -16,6 +16,12 @@ class FirebaseErrorHandler {
           return 'This user has been disabled. Please contact support.';
         case 'network-request-failed':
           return 'Network error. Please check your internet connection.';
+        case 'email-already-in-use':
+          return 'The email address is already in use by another account.';
+        case 'weak-password':
+          return 'The password provided is too weak. Please choose a stronger password.';
+        case 'invalid-email':
+          return 'The email address is not valid. Please enter a valid email address.';
         default:
           return 'An unknown error occurred. Please try again later.';
       }

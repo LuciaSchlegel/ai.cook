@@ -1,7 +1,8 @@
-import 'package:ai_cook_project/screens/auth/logic/login_form.dart';
+import 'package:ai_cook_project/screens/auth/0_login/widgets/login_form.dart';
+import 'package:ai_cook_project/screens/auth/logic/reset_pass.dart';
 import 'package:ai_cook_project/screens/auth/services/auth_services.dart';
 import 'package:ai_cook_project/screens/main_screen.dart';
-import 'package:ai_cook_project/screens/signup_screen.dart';
+import 'package:ai_cook_project/screens/auth/0_signup/signup_screen.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/utils/responsive_container.dart';
 import 'package:ai_cook_project/widgets/error_dialog.dart';
@@ -38,7 +39,14 @@ class _LoginScreenState extends State<LoginScreen> {
           MaterialPageRoute(builder: (_) => const MainScreen()),
         );
       },
-      onError: (msg) {
+      onError: (msg, {exception}) async {
+        if (exception?.code == 'user-not-found') {
+          await handleExistingEmail(
+            context: context,
+            email: _emailController.text.trim(),
+          );
+          return;
+        }
         showErrorDialog(context, message: msg);
       },
     );
@@ -67,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
           const SnackBar(content: Text('Password reset email sent')),
         );
       },
-      onError: (msg) {
+      onError: (msg, {exception}) {
         showErrorDialog(context, message: msg);
       },
     );
