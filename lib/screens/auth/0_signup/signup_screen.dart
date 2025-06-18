@@ -1,4 +1,4 @@
-import 'package:ai_cook_project/screens/auth/0_login/widgets/welcome_message.dart';
+import 'package:ai_cook_project/screens/auth/0_signup/widgets/welcome_message.dart';
 import 'package:ai_cook_project/screens/auth/0_signup/widgets/sign_up_form.dart';
 import 'package:ai_cook_project/screens/auth/logic/sign_up_controller.dart';
 import 'package:flutter/material.dart';
