@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 
 class IngredientDialogs {
-  static void showIngredientDialog({
+  Future<void> showIngredientDialog({
     required BuildContext context,
     required List<Category> categories,
     required List<UserIng> ingredients,
@@ -27,7 +27,7 @@ class IngredientDialogs {
       listen: false,
     );
 
-    showModalBottomSheet(
+    return showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
@@ -131,9 +131,9 @@ class IngredientDialogs {
                       },
                     )
                     : IngredientFormDialog(
-                      ingredient: userIng?.ingredient,
-                      customIngredient: userIng?.customIngredient,
-                      quantity: userIng?.quantity ?? 0,
+                      ingredient: userIng.ingredient,
+                      customIngredient: userIng.customIngredient,
+                      quantity: userIng.quantity ?? 0,
                       unit:
                           userIng.unit ??
                           Unit(
@@ -146,54 +146,28 @@ class IngredientDialogs {
                       onDelete: userIng != null ? onDelete : null,
                       onSave: (name, category, tags, quantity, unit) async {
                         try {
-                          if (userIng == null) {
-                            // Add new ingredient
-                            final newId = ingredients.length + 1;
-                            final newIngredient = Ingredient(
-                              id: newId,
-                              name: name,
-                              category: category,
-                              tags: tags,
-                              isVegan: false,
-                              isVegetarian: false,
-                              isGlutenFree: false,
-                              isLactoseFree: false,
-                            );
+                          // Update existing ingredient
+                          final updatedIngredient = Ingredient(
+                            id: userIng.ingredient!.id,
+                            name: name,
+                            category: category,
+                            tags: tags,
+                            isVegan: userIng.ingredient!.isVegan,
+                            isVegetarian: userIng.ingredient!.isVegetarian,
+                            isGlutenFree: userIng.ingredient!.isGlutenFree,
+                            isLactoseFree: userIng.ingredient!.isLactoseFree,
+                          );
 
-                            final newUserIng = UserIng(
-                              id: newId,
-                              uid: FirebaseAuth.instance.currentUser!.uid,
-                              ingredient: newIngredient,
-                              customIngredient: null,
-                              quantity: quantity,
-                              unit: unit,
-                            );
+                          final updatedUserIng = UserIng(
+                            id: userIng.id,
+                            uid: FirebaseAuth.instance.currentUser!.uid,
+                            ingredient: updatedIngredient,
+                            customIngredient: null,
+                            quantity: quantity,
+                            unit: unit,
+                          );
 
-                            await onSave(newUserIng);
-                          } else {
-                            // Update existing ingredient
-                            final updatedIngredient = Ingredient(
-                              id: userIng.ingredient!.id,
-                              name: name,
-                              category: category,
-                              tags: tags,
-                              isVegan: userIng.ingredient!.isVegan,
-                              isVegetarian: userIng.ingredient!.isVegetarian,
-                              isGlutenFree: userIng.ingredient!.isGlutenFree,
-                              isLactoseFree: userIng.ingredient!.isLactoseFree,
-                            );
-
-                            final updatedUserIng = UserIng(
-                              id: userIng.id,
-                              uid: FirebaseAuth.instance.currentUser!.uid,
-                              ingredient: updatedIngredient,
-                              customIngredient: null,
-                              quantity: quantity,
-                              unit: unit,
-                            );
-
-                            await onSave(updatedUserIng);
-                          }
+                          await onSave(updatedUserIng);
 
                           FocusScope.of(context).unfocus();
                         } catch (e) {

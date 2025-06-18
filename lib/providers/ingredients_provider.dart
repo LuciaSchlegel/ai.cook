@@ -226,7 +226,7 @@ class IngredientsProvider with ChangeNotifier {
       }
 
       debugPrint(
-        'API call successful, replacing temporary ingredient with: ${responseData}',
+        'API call successful, replacing temporary ingredient with: $responseData',
       );
 
       // Replace the temporary ingredient with the real one

@@ -29,7 +29,7 @@ Future<void> addGlobalIngredientsDialog(BuildContext context) async {
   final uid = FirebaseAuth.instance.currentUser!.uid;
 
   void showCustomIngredientDialog() {
-    IngredientDialogs.showIngredientDialog(
+    IngredientDialogs().showIngredientDialog(
       context: context,
       categories: resourceProvider.categories,
       ingredients:
