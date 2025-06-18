@@ -1,7 +1,7 @@
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
 import 'package:ai_cook_project/screens/auth/0_login/login_screen.dart';
-import 'package:ai_cook_project/screens/main_screen.dart';
+import 'package:ai_cook_project/screens/main/main_screen.dart';
 import 'package:ai_cook_project/screens/auth/0_signup/signup_screen.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:firebase_core/firebase_core.dart';

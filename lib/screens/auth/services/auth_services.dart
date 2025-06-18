@@ -82,4 +82,8 @@ class AuthService {
       hideLoading?.call();
     }
   }
+
+  static Future<void> logout({required BuildContext context}) async {
+    await Provider.of<FBAuthProvider>(context, listen: false).signOut();
+  }
 }

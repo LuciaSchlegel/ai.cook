@@ -6,6 +6,7 @@ import 'package:ai_cook_project/screens/cupboard/logic/ingredients_filter.dart';
 import 'package:ai_cook_project/screens/cupboard/services/onboarding.dart';
 import 'package:ai_cook_project/screens/cupboard/widgets/empty_ing_list.dart';
 import 'package:ai_cook_project/screens/cupboard/widgets/ing_list.dart';
+import 'package:ai_cook_project/widgets/floating_add_button.dart';
 import 'package:ai_cook_project/widgets/grey_card_chips.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
@@ -59,6 +60,9 @@ class _CupboardScreenState extends State<CupboardScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     final horizontalPadding = screenWidth * 0.05;
     final resourceProvider = Provider.of<ResourceProvider>(context);
+    void _openAddIngredientDialog() {
+      addGlobalIngredientsDialog(context);
+    }
 
     final categories = [
       'All',
@@ -136,17 +140,8 @@ class _CupboardScreenState extends State<CupboardScreen> {
           ],
         ),
       ),
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).padding.bottom + 16,
-        ),
-        child: FloatingActionButton(
-          onPressed: () => addGlobalIngredientsDialog(context),
-          backgroundColor: AppColors.button.withOpacity(0.9),
-          elevation: 2,
-          shape: const CircleBorder(),
-          child: const Icon(Icons.add, color: AppColors.white),
-        ),
+      floatingActionButton: FloatingAddButton(
+        onPressed: _openAddIngredientDialog,
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:ai_cook_project/screens/main_screen.dart';
+import 'package:ai_cook_project/screens/main/main_screen.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;

@@ -1,7 +1,7 @@
 import 'package:ai_cook_project/screens/auth/0_login/widgets/login_form.dart';
 import 'package:ai_cook_project/screens/auth/logic/reset_pass.dart';
 import 'package:ai_cook_project/screens/auth/services/auth_services.dart';
-import 'package:ai_cook_project/screens/main_screen.dart';
+import 'package:ai_cook_project/screens/main/main_screen.dart';
 import 'package:ai_cook_project/screens/auth/0_signup/signup_screen.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/utils/responsive_container.dart';
