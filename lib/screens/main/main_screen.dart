@@ -1,9 +1,9 @@
 import 'package:ai_cook_project/screens/auth/services/auth_services.dart';
-import 'package:ai_cook_project/screens/home_screen.dart';
+import 'package:ai_cook_project/screens/home/home_screen.dart';
 import 'package:ai_cook_project/screens/main/helpers/tabs.dart';
 import 'package:ai_cook_project/screens/main/services/initializer.dart';
 import 'package:ai_cook_project/screens/main/widgets/bottom_app_bar.dart';
-import 'package:ai_cook_project/screens/profile_screen.dart';
+import 'package:ai_cook_project/screens/profile/profile_screen.dart';
 import 'package:ai_cook_project/screens/first_screen.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/widgets/search_bar.dart';

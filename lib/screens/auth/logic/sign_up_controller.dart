@@ -1,6 +1,6 @@
 import 'package:ai_cook_project/screens/auth/logic/reset_pass.dart';
 import 'package:ai_cook_project/screens/auth/services/auth_services.dart';
-import 'package:ai_cook_project/screens/user_info_screen.dart';
+import 'package:ai_cook_project/screens/userInfo/user_info_screen.dart';
 import 'package:ai_cook_project/widgets/error_dialog.dart';
 import 'package:ai_cook_project/widgets/loading_spinner.dart';
 import 'package:firebase_auth/firebase_auth.dart';

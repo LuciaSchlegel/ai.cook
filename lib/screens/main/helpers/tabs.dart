@@ -1,7 +1,7 @@
-import 'package:ai_cook_project/screens/calendar_screen.dart';
+import 'package:ai_cook_project/screens/calendar/calendar_screen.dart';
 import 'package:ai_cook_project/screens/cupboard/cupboard_screen.dart';
-import 'package:ai_cook_project/screens/recipes_screen.dart';
-import 'package:ai_cook_project/screens/settings_screen.dart';
+import 'package:ai_cook_project/screens/recipes/recipes_screen.dart';
+import 'package:ai_cook_project/screens/settings/settings_screen.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/material.dart';
 
