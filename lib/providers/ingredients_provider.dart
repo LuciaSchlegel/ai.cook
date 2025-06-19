@@ -177,9 +177,9 @@ class IngredientsProvider with ChangeNotifier {
         return;
       }
 
-      // Create a temporary UserIng for optimistic update
+      final tempId = DateTime.now().millisecondsSinceEpoch * -1;
       final tempUserIng = UserIng(
-        id: -1, // Temporary ID
+        id: tempId,
         uid: uid!,
         ingredient: userIngredient.ingredient,
         customIngredient: null,
@@ -215,7 +215,7 @@ class IngredientsProvider with ChangeNotifier {
       if (response.statusCode != 201) {
         debugPrint('API call failed, removing temporary ingredient');
         // Remove the temporary ingredient on failure
-        _userIngredients.removeWhere((ing) => ing.id == -1);
+        _userIngredients.removeWhere((ing) => ing.id == tempId);
         notifyListeners();
         throw Exception('Failed to add ingredient: ${response.statusCode}');
       }
@@ -231,7 +231,7 @@ class IngredientsProvider with ChangeNotifier {
 
       // Replace the temporary ingredient with the real one
       final savedUserIng = UserIng.fromJson(responseData);
-      final index = _userIngredients.indexWhere((ing) => ing.id == -1);
+      final index = _userIngredients.indexWhere((ing) => ing.id == tempId);
       if (index != -1) {
         _userIngredients[index] = savedUserIng;
         debugPrint(
@@ -280,9 +280,9 @@ class IngredientsProvider with ChangeNotifier {
       final originalIngredient = _userIngredients[tempIndex];
       debugPrint('Original ingredient: ${originalIngredient.toJson()}');
 
-      // Create a temporary UserIng for optimistic update
+      final tempId = DateTime.now().millisecondsSinceEpoch * -1;
       final tempUserIng = UserIng(
-        id: tempIndex,
+        id: tempId,
         uid: uid!,
         ingredient: userIngredient.ingredient,
         customIngredient: null,
@@ -416,8 +416,9 @@ class IngredientsProvider with ChangeNotifier {
       _clearError();
 
       // Create a temporary UserIng for optimistic update
+      final tempId = DateTime.now().millisecondsSinceEpoch * -1;
       final tempUserIng = UserIng(
-        id: -1,
+        id: tempId,
         uid: uid,
         ingredient: null,
         customIngredient: CustomIngredient(
@@ -469,7 +470,7 @@ class IngredientsProvider with ChangeNotifier {
           'Custom ingredient API call failed, removing temporary ingredient',
         );
         // Remove the temporary ingredient on failure
-        _userIngredients.removeWhere((ing) => ing.id == -1);
+        _userIngredients.removeWhere((ing) => ing.id == tempId);
         notifyListeners();
         throw Exception(
           'Failed to add custom ingredient: ${response.statusCode} - ${response.body}',
@@ -513,7 +514,7 @@ class IngredientsProvider with ChangeNotifier {
           'User ingredient API call failed, removing temporary ingredient',
         );
         // Remove the temporary ingredient on failure
-        _userIngredients.removeWhere((ing) => ing.id == -1);
+        _userIngredients.removeWhere((ing) => ing.id == tempId);
         notifyListeners();
         throw Exception(
           'Failed to add user ingredient: ${userIngResponse.statusCode} - ${userIngResponse.body}',
@@ -553,7 +554,7 @@ class IngredientsProvider with ChangeNotifier {
           unit: savedUserIng.unit,
         );
 
-        final index = _userIngredients.indexWhere((ing) => ing.id == -1);
+        final index = _userIngredients.indexWhere((ing) => ing.id == tempId);
         if (index != -1) {
           _userIngredients[index] = updatedUserIng;
           debugPrint(

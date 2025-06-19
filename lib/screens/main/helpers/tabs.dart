@@ -37,35 +37,57 @@ class _PageData {
   });
 }
 
-final _iconStyling = IconProperties(
-  icon: Icons.kitchen_rounded,
-  size: 24,
-  activeSize: 25,
-  activeColor: AppColors.orange,
-  inactiveColor: const Color.fromARGB(255, 123, 123, 123),
-  activeShadowRadius: 8,
-  activeShadowColor: AppColors.orange.withOpacity(0.1),
-);
-
 final List<_PageData> pages = [
   _PageData(
     title: 'Cupboard',
-    icon: _iconStyling,
+    icon: IconProperties(
+      icon: Icons.kitchen_rounded,
+      size: 24,
+      activeSize: 28,
+      activeColor: AppColors.orange,
+      inactiveColor: const Color.fromARGB(255, 123, 123, 123),
+      activeShadowRadius: 8,
+      activeShadowColor: AppColors.orange.withOpacity(0.1),
+    ),
     widget: const CupboardScreen(),
   ),
   _PageData(
     title: 'Recipes',
-    icon: _iconStyling,
+    icon: IconProperties(
+      icon: Icons.restaurant_menu_rounded,
+      size: 24,
+      activeSize: 28,
+      activeColor: AppColors.orange,
+      inactiveColor: const Color.fromARGB(255, 123, 123, 123),
+      activeShadowRadius: 8,
+      activeShadowColor: AppColors.orange.withOpacity(0.1),
+    ),
     widget: const RecipesScreen(),
   ),
   _PageData(
     title: 'Calendar',
-    icon: _iconStyling,
+    icon: IconProperties(
+      icon: Icons.calendar_month_rounded,
+      size: 24,
+      activeSize: 28,
+      activeColor: AppColors.orange,
+      inactiveColor: const Color.fromARGB(255, 123, 123, 123),
+      activeShadowRadius: 8,
+      activeShadowColor: AppColors.orange.withOpacity(0.1),
+    ),
     widget: const CalendarScreen(),
   ),
   _PageData(
     title: 'Settings',
-    icon: _iconStyling,
+    icon: IconProperties(
+      icon: Icons.settings_rounded,
+      size: 24,
+      activeSize: 28,
+      activeColor: AppColors.orange,
+      inactiveColor: const Color.fromARGB(255, 123, 123, 123),
+      activeShadowRadius: 8,
+      activeShadowColor: AppColors.orange.withOpacity(0.1),
+    ),
     widget: const SettingsScreen(),
   ),
 ];

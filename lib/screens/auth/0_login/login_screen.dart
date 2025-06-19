@@ -43,9 +43,6 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       },
       onError: (msg, {exception}) async {
-        if (Navigator.of(context, rootNavigator: true).canPop()) {
-          Navigator.of(context, rootNavigator: true).pop();
-        }
         await Future.delayed(const Duration(milliseconds: 100));
         if (mounted && exception?.code == 'user-not-found') {
           await handleExistingEmail(

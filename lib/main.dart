@@ -50,19 +50,34 @@ class MyApp extends StatelessWidget {
       title: 'ai.Cook',
       theme: appTheme,
       debugShowCheckedModeBanner: false,
-      home: Consumer<FBAuthProvider>(
-        builder: (context, auth, _) {
-          if (auth.user == null) {
-            return const FirstScreen();
-          } else {
-            return const MainScreen();
-          }
-        },
-      ),
+      home: const AuthWrapper(),
       routes: {
+        '/first': (context) => const FirstScreen(),
+        '/main': (context) => const MainScreen(),
         '/login': (context) => const LoginScreen(),
         '/sign_up': (context) => const SignupScreen(),
       },
     );
+  }
+}
+
+class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final auth = Provider.of<FBAuthProvider>(context);
+    if (auth.user == null) {
+      // Solo al inicio, navega a FirstScreen
+      Future.microtask(() {
+        Navigator.pushReplacementNamed(context, '/first');
+      });
+      return const SizedBox.shrink();
+    } else {
+      Future.microtask(() {
+        Navigator.pushReplacementNamed(context, '/main');
+      });
+      return const SizedBox.shrink();
+    }
   }
 }

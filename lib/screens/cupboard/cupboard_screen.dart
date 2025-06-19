@@ -48,9 +48,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
     await showIngredientDialog(
       context: context,
       userIng: userIng,
-      onChanged: () {
-        if (mounted) setState(() {});
-      },
+      onChanged: () {},
     );
   }
 

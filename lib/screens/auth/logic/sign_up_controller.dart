@@ -21,7 +21,6 @@ Future<void> handleRegister({
     );
     return;
   }
-
   await AuthService.register(
     context: context,
     email: email,
@@ -44,10 +43,6 @@ Future<void> handleRegister({
       );
     },
     onError: (msg, {exception}) async {
-      if (Navigator.of(context, rootNavigator: true).canPop()) {
-        Navigator.of(context, rootNavigator: true).pop();
-      }
-
       if (exception != null && exception.code == 'email-already-in-use') {
         if (context.mounted) {
           debugPrint('Mostrando diálogo de email ya en uso');
