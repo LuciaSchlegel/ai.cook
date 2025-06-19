@@ -32,8 +32,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       nameController: _nameController,
       birthDate: _birthDate,
       selectedGender: _selectedGender,
-      email: _email!,
-      uid: _uid!,
+      email: _email,
+      uid: _uid,
     );
 
     final result = await service.submitUserInfo();
@@ -41,6 +41,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     if (!mounted) return;
 
     if (result.success) {
+      debugPrint('User info submitted successfully');
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const MainScreen()),
       );
@@ -67,8 +68,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                   nameController: _nameController,
                   birthDate: _birthDate,
                   selectedGender: _selectedGender,
-                  email: _email!,
-                  uid: _uid!,
+                  email: _email,
+                  uid: _uid,
                   showValidationErrors: _showValidationErrors,
                   onBirthDateChanged:
                       (newDate) => setState(() => _birthDate = newDate),

@@ -1,4 +1,4 @@
-import 'package:ai_cook_project/dialogs/add_global_ing_dialog.dart';
+import 'package:ai_cook_project/dialogs/add_global_ing/add_global_ing_dialog.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/screens/cupboard/logic/ingredient_dialog.dart';

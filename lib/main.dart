@@ -53,9 +53,9 @@ class MyApp extends StatelessWidget {
       home: Consumer<FBAuthProvider>(
         builder: (context, auth, _) {
           if (auth.user == null) {
-            return const FirstScreen(); // usuario no autenticado
+            return const FirstScreen();
           } else {
-            return const MainScreen(); // usuario autenticado
+            return const MainScreen();
           }
         },
       ),

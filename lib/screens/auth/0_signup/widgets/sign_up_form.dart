@@ -1,6 +1,7 @@
 import 'package:ai_cook_project/screens/auth/0_login/login_screen.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/utils/field_validator.dart';
+import 'package:ai_cook_project/widgets/custom_text_field.dart';
 import 'package:ai_cook_project/widgets/navigation_text_link.dart';
 import 'package:flutter/material.dart';
 
@@ -40,27 +41,18 @@ class SignUpForm extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Email",
-              style: TextStyle(fontSize: 17, color: AppColors.black),
-            ),
             const SizedBox(height: 8),
-            TextFormField(
+            CustomTextField(
+              label: "Email",
               controller: emailController,
               validator: FieldValidator.validateEmail,
-              style: const TextStyle(color: AppColors.black),
             ),
             const SizedBox(height: 24),
-            const Text(
-              "Password",
-              style: TextStyle(fontSize: 17, color: AppColors.black),
-            ),
-            const SizedBox(height: 8),
-            TextFormField(
+            CustomTextField(
+              label: "Password",
               controller: passwordController,
               validator: FieldValidator.validatePassword,
               obscureText: true,
-              style: const TextStyle(color: AppColors.black),
             ),
             const SizedBox(height: 12),
             Row(

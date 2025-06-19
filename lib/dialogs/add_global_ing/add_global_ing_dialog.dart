@@ -9,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 Future<void> addGlobalIngredientsDialog(BuildContext context) async {
   final ingredientsProvider = Provider.of<IngredientsProvider>(
@@ -51,8 +51,6 @@ Future<void> addGlobalIngredientsDialog(BuildContext context) async {
           debugPrint(
             'Creating custom ingredient from UserIng: ${userIng.toJson()}',
           );
-
-          // Create a CustomIngredient from the user input
           final customIng = CustomIngredient(
             id: -1,
             name: userIng.customIngredient?.name ?? '',

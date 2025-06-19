@@ -29,7 +29,10 @@ class _LoginScreenState extends State<LoginScreen> {
       formKey: _formKey,
       showLoading: () => showLoadingDialog(context, message: 'Logging in...'),
       hideLoading: () {
-        if (context.mounted) Navigator.pop(context);
+        // Intenta cerrar el diálogo de loading si está abierto
+        if (Navigator.of(context, rootNavigator: true).canPop()) {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
       },
       onSuccess: () {
         _emailController.clear();
@@ -40,14 +43,19 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       },
       onError: (msg, {exception}) async {
-        if (exception?.code == 'user-not-found') {
+        if (Navigator.of(context, rootNavigator: true).canPop()) {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+        await Future.delayed(const Duration(milliseconds: 100));
+        if (mounted && exception?.code == 'user-not-found') {
           await handleExistingEmail(
             context: context,
             email: _emailController.text.trim(),
           );
           return;
+        } else if (mounted) {
+          showErrorDialog(context, message: msg);
         }
-        showErrorDialog(context, message: msg);
       },
     );
   }
@@ -101,6 +109,12 @@ class _LoginScreenState extends State<LoginScreen> {
           onForgotPassword: _forgotPassword,
           onRegister: _register,
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showErrorDialog(context, message: "Esto es un error de prueba");
+        },
+        child: const Icon(Icons.error),
       ),
     );
   }

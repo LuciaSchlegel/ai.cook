@@ -16,17 +16,19 @@ class AuthService {
     VoidCallback? hideLoading,
   }) async {
     final auth = Provider.of<FBAuthProvider>(context, listen: false);
-    if (formKey.currentState!.validate()) {
-      showLoading?.call();
-      try {
-        await auth.signInWithEmailAndPassword(email.trim(), password.trim());
-        formKey.currentState!.reset();
-        onSuccess?.call();
-      } catch (e) {
-        onError?.call(FirebaseErrorHandler.handleError(e));
-      } finally {
-        hideLoading?.call();
-      }
+
+    if (!formKey.currentState!.validate()) return;
+
+    showLoading?.call();
+
+    try {
+      await auth.signInWithEmailAndPassword(email.trim(), password.trim());
+      formKey.currentState!.reset();
+      onSuccess?.call();
+    } on FirebaseAuthException catch (e) {
+      onError?.call(FirebaseErrorHandler.handleError(e), exception: e);
+    } finally {
+      hideLoading?.call();
     }
   }
 
@@ -48,13 +50,13 @@ class AuthService {
     try {
       await auth.signUpWithEmailAndPassword(email.trim(), password.trim());
       formKey.currentState!.reset();
-      onSuccess?.call();
+      onSuccess?.call(); // <--- solo se llama si no hubo error
     } on FirebaseAuthException catch (e) {
       onError?.call(FirebaseErrorHandler.handleError(e), exception: e);
     } catch (e) {
-      onError?.call('An unexpected error occurred.');
+      onError?.call(FirebaseErrorHandler.handleError(e));
     } finally {
-      hideLoading?.call();
+      hideLoading?.call(); // <--- siempre se llama
     }
   }
 

@@ -10,8 +10,8 @@ class UserInfoForm extends StatelessWidget {
   final TextEditingController nameController;
   final DateTime? birthDate;
   final String? selectedGender;
-  final String email;
-  final String uid;
+  final String? email;
+  final String? uid;
   final bool showValidationErrors;
   final void Function(DateTime) onBirthDateChanged;
   final void Function(String) onGenderChanged;
@@ -22,8 +22,8 @@ class UserInfoForm extends StatelessWidget {
     required this.nameController,
     required this.birthDate,
     required this.selectedGender,
-    required this.email,
-    required this.uid,
+    this.email,
+    this.uid,
     required this.showValidationErrors,
     required this.onBirthDateChanged,
     required this.onGenderChanged,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 void showErrorDialog(BuildContext context, String message) {
   showDialog(
     context: context,
+    useRootNavigator: true,
     builder: (BuildContext context) {
       return AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -48,6 +49,7 @@ void showErrorDialog(BuildContext context, String message) {
 void showValidationErrorDialog(BuildContext context, List<String> errors) {
   showDialog(
     context: context,
+    useRootNavigator: true,
     builder: (BuildContext context) {
       return AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

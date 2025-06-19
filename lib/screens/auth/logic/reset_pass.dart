@@ -8,6 +8,8 @@ Future<void> handleExistingEmail({
   required BuildContext context,
   required String email,
 }) async {
+  if (!context.mounted) return;
+  await Future.delayed(const Duration(milliseconds: 100));
   showErrorDialog(
     context,
     message: 'Email already in use',

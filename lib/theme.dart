@@ -28,14 +28,6 @@ final ThemeData appTheme = ThemeData(
     fillColor: Colors.white,
     contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
     border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(20),
-      borderSide: const BorderSide(color: Colors.grey),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(20),
-      borderSide: BorderSide(color: AppColors.orange, width: 2),
-    ),
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(20),
       borderSide: const BorderSide(color: Colors.red, width: 2),

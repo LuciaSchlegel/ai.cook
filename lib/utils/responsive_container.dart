@@ -12,18 +12,25 @@ class ResponsiveContainer extends StatelessWidget {
         final screenHeight = constraints.maxHeight;
         final screenWidth = constraints.maxWidth;
         final formWidth =
-            screenWidth > 600
-                ? 550.0
-                : screenWidth > 400
-                ? screenWidth * 0.95
-                : screenWidth * 0.98;
+            screenWidth > 800
+                ? 600.0
+                : screenWidth > 600
+                ? screenWidth * 0.85
+                : screenWidth * 0.95;
 
+        final formHeight =
+            screenHeight > 700
+                ? screenHeight * 0.5
+                : screenHeight > 500
+                ? screenHeight * 0.85
+                : screenHeight * 0.95;
         return Center(
           child: SingleChildScrollView(
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                minHeight: screenHeight,
+                minHeight: formHeight,
                 maxWidth: formWidth,
+                maxHeight: screenHeight * 0.95,
               ),
               child: IntrinsicHeight(
                 child: Padding(

@@ -25,8 +25,8 @@ class UserInfoService {
   final TextEditingController nameController;
   final DateTime? birthDate;
   final String? selectedGender;
-  final String email;
-  final String uid;
+  final String? email;
+  final String? uid;
 
   UserInfoService({
     required this.formKey,
@@ -53,6 +53,13 @@ class UserInfoService {
 
     if (validationErrors.isNotEmpty) {
       return UserInfoResult.validation(validationErrors);
+    }
+
+    if (email == null || email!.isEmpty) {
+      validationErrors.add('Email is required');
+    }
+    if (uid == null || uid!.isEmpty) {
+      validationErrors.add('User ID is missing. Please sign in again.');
     }
 
     try {
