@@ -63,6 +63,7 @@ class NavBarBuilder extends StatelessWidget {
   final bool isAiWindowOpen;
 
   const NavBarBuilder({
+    super.key,
     required this.currentIndex,
     required this.onTabTapped,
     required this.toggleAiWindow,

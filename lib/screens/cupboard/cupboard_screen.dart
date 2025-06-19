@@ -60,7 +60,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     final horizontalPadding = screenWidth * 0.05;
     final resourceProvider = Provider.of<ResourceProvider>(context);
-    void _openAddIngredientDialog() {
+    void openAddIngredientDialog() {
       addGlobalIngredientsDialog(context);
     }
 
@@ -141,7 +141,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
         ),
       ),
       floatingActionButton: FloatingAddButton(
-        onPressed: _openAddIngredientDialog,
+        onPressed: openAddIngredientDialog,
       ),
     );
   }
