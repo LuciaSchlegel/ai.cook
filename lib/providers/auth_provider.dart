@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:ai_cook_project/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class FBAuthProvider with ChangeNotifier {
@@ -81,7 +83,8 @@ class FBAuthProvider with ChangeNotifier {
     }
   }
 
-  Future<void> signOut() async {
+  Future<void> signOut(BuildContext context) async {
     await _auth.signOut();
+    Provider.of<UserProvider>(context, listen: false).clearUser();
   }
 }

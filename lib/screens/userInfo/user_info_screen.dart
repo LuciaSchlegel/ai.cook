@@ -41,7 +41,6 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     if (!mounted) return;
 
     if (result.success) {
-      debugPrint('User info submitted successfully');
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const MainScreen()),
       );

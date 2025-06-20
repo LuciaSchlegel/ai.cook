@@ -68,9 +68,7 @@ void showErrorDialog(
                   onPressed: () async {
                     Navigator.of(context, rootNavigator: true).pop();
                     await Future.delayed(const Duration(milliseconds: 100));
-                    if (onResetPassword != null) {
-                      onResetPassword();
-                    }
+                    onResetPassword();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.orange,

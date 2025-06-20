@@ -29,18 +29,17 @@ class _LoginScreenState extends State<LoginScreen> {
       formKey: _formKey,
       showLoading: () => showLoadingDialog(context, message: 'Logging in...'),
       hideLoading: () {
-        // Intenta cerrar el diálogo de loading si está abierto
         if (Navigator.of(context, rootNavigator: true).canPop()) {
           Navigator.of(context, rootNavigator: true).pop();
         }
       },
       onSuccess: () {
-        _emailController.clear();
-        _passwordController.clear();
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const MainScreen()),
-        );
+        Future.microtask(() {
+          if (!mounted) return;
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const MainScreen()),
+          );
+        });
       },
       onError: (msg, {exception}) async {
         await Future.delayed(const Duration(milliseconds: 100));

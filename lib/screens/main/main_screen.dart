@@ -33,6 +33,7 @@ class _MainScreenState extends State<MainScreen> {
         context: context,
         currentIndex: _currentIndex,
       );
+      if (!mounted) return;
     });
   }
 

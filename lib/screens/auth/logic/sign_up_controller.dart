@@ -4,8 +4,6 @@ import 'package:ai_cook_project/screens/userInfo/user_info_screen.dart';
 import 'package:ai_cook_project/widgets/error_dialog.dart';
 import 'package:ai_cook_project/widgets/loading_spinner.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:ai_cook_project/providers/user_provider.dart';
 
 Future<void> handleRegister({
   required BuildContext context,
@@ -34,13 +32,22 @@ Future<void> handleRegister({
       }
     },
     onSuccess: () async {
+      debugPrint('Registration successful, fetching user info');
       if (!context.mounted) return;
 
-      await Provider.of<UserProvider>(context, listen: false).getUser();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const UserInfoScreen()),
-      );
+      // Cierra el loading si está abierto
+      if (Navigator.of(context, rootNavigator: true).canPop()) {
+        Navigator.of(context, rootNavigator: true).pop();
+      }
+
+      // Espera un microtick para evitar conflictos de navegación
+      Future.microtask(() {
+        if (context.mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const UserInfoScreen()),
+          );
+        }
+      });
     },
     onError: (msg, {exception}) async {
       if (exception != null && exception.code == 'email-already-in-use') {

@@ -50,13 +50,13 @@ class AuthService {
     try {
       await auth.signUpWithEmailAndPassword(email.trim(), password.trim());
       formKey.currentState!.reset();
-      onSuccess?.call(); // <--- solo se llama si no hubo error
+      onSuccess?.call();
     } on FirebaseAuthException catch (e) {
       onError?.call(FirebaseErrorHandler.handleError(e), exception: e);
     } catch (e) {
       onError?.call(FirebaseErrorHandler.handleError(e));
     } finally {
-      hideLoading?.call(); // <--- siempre se llama
+      hideLoading?.call();
     }
   }
 
@@ -86,6 +86,6 @@ class AuthService {
   }
 
   static Future<void> logout({required BuildContext context}) async {
-    await Provider.of<FBAuthProvider>(context, listen: false).signOut();
+    await Provider.of<FBAuthProvider>(context, listen: false).signOut(context);
   }
 }
