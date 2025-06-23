@@ -5,7 +5,7 @@ import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/unit.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
-import 'package:ai_cook_project/dialogs/ingredients/ingredient_form_dialog.dart';
+import 'package:ai_cook_project/dialogs/ingredients/form/ingredient_form_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
