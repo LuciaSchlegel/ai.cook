@@ -5,7 +5,7 @@ import 'package:ai_cook_project/models/unit.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
-import 'package:ai_cook_project/dialogs/ingredient_dialogs.dart';
+import 'package:ai_cook_project/dialogs/ingredients/ingredient_dialogs.dart';
 
 Future<void> showIngredientDialog({
   required BuildContext context,

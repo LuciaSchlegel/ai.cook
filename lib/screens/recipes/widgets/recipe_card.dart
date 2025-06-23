@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../models/recipe_model.dart';
-import '../models/user_ing.dart';
+import '../../../models/recipe_model.dart';
+import '../../../models/user_ing.dart';
 import 'recipe_ov_card.dart';
 
 class RecipeCard extends StatefulWidget {

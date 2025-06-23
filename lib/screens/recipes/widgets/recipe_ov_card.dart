@@ -3,8 +3,8 @@ import 'package:ai_cook_project/models/recipe_ingredient_model.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import '../models/recipe_model.dart';
-import 'nutrition_card.dart';
+import '../../../models/recipe_model.dart';
+import '../../../widgets/nutrition_card.dart';
 
 class RecipeOverviewCard extends StatefulWidget {
   final Recipe recipe;

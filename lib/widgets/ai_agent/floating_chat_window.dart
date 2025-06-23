@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:ai_cook_project/widgets/chat_widget.dart';
+import 'package:ai_cook_project/widgets/ai_agent/chat_widget.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';

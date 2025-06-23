@@ -1,5 +1,6 @@
-import 'package:ai_cook_project/dialogs/add_global_ing/widgets/add_button.dart';
-import 'package:ai_cook_project/dialogs/add_global_ing/widgets/ing_selection_tile.dart';
+import 'package:ai_cook_project/dialogs/ingredients/global_ing/add/logic/filter.dart';
+import 'package:ai_cook_project/dialogs/ingredients/global_ing/add/widgets/add_button.dart';
+import 'package:ai_cook_project/dialogs/ingredients/global_ing/widgets/ing_selection_tile.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
@@ -7,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import '../../theme.dart';
+import '../../../../theme.dart';
 
 class AddGlobalIngDialog extends StatefulWidget {
   const AddGlobalIngDialog({super.key});
@@ -35,28 +36,13 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
     final globalIngredients = ingredientsProvider.ingredients;
     final categories = resourceProvider.categories;
     final units = resourceProvider.units;
+    final searchText = searchController.text.toLowerCase();
+    final searchFilteredIngredients = filterIngredients(
+      globalIngredients: globalIngredients,
+      selectedCategory: selectedCategory,
+      searchText: searchText,
+    );
 
-    final filteredIngredients =
-        selectedCategory == 'All'
-            ? globalIngredients
-            : globalIngredients
-                .where(
-                  (ing) =>
-                      ing.category!.name.toLowerCase() ==
-                      selectedCategory.toLowerCase(),
-                )
-                .toList();
-
-    final searchFilteredIngredients =
-        searchController.text.isEmpty
-            ? filteredIngredients
-            : filteredIngredients
-                .where(
-                  (ing) => ing.name.toLowerCase().contains(
-                    searchController.text.toLowerCase(),
-                  ),
-                )
-                .toList();
     return Dialog(
       backgroundColor: CupertinoColors.systemGrey6,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),

@@ -11,7 +11,7 @@ import 'package:ai_cook_project/screens/first_screen.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/widgets/search_bar.dart';
 import 'package:ai_cook_project/widgets/main_floating_button.dart';
-import 'package:ai_cook_project/widgets/floating_chat_window.dart';
+import 'package:ai_cook_project/widgets/ai_agent/floating_chat_window.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ai_cook_project/providers/search_provider.dart';

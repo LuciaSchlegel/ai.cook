@@ -1,5 +1,5 @@
 // 📁 ingredient_selection_tile.dart
-import 'package:ai_cook_project/dialogs/add_global_ing/widgets/picker.dart';
+import 'package:ai_cook_project/dialogs/ingredients/global_ing/add/widgets/picker.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/unit.dart';
 import 'package:ai_cook_project/theme.dart';

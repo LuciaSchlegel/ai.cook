@@ -1,4 +1,4 @@
-import 'package:ai_cook_project/widgets/recipe_card.dart';
+import 'package:ai_cook_project/screens/recipes/widgets/recipe_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/user_ing.dart';

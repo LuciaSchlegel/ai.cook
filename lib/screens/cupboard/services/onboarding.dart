@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ai_cook_project/dialogs/global_ing_dialog.dart';
+import 'package:ai_cook_project/dialogs/ingredients/global_ing/global_ing_dialog.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
 

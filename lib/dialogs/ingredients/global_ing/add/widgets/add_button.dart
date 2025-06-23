@@ -1,5 +1,5 @@
 // 📁 add_custom_ingredient_button.dart
-import 'package:ai_cook_project/dialogs/ingredient_dialogs.dart';
+import 'package:ai_cook_project/dialogs/ingredients/ingredient_dialogs.dart';
 import 'package:ai_cook_project/models/custom_ing_model.dart';
 import 'package:ai_cook_project/models/unit.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
