@@ -150,17 +150,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
-              Container(
-                decoration: BoxDecoration(
-                  color: CupertinoColors.systemGrey6,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: AppColors.mutedGreen.withOpacity(0.6),
-                    width: 2,
-                  ),
-                ),
-                child: IngredientNameField(name: _nameController.text),
-              ),
+              IngredientNameField(name: _nameController.text),
               const SizedBox(height: 16),
               Row(
                 children: [

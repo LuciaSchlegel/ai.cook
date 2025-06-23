@@ -48,3 +48,32 @@ class IngredientNameField extends StatelessWidget {
     );
   }
 }
+
+class ControlledIngNameField extends StatelessWidget {
+  final TextEditingController controller;
+
+  const ControlledIngNameField({super.key, required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: CupertinoColors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.button.withOpacity(0.2)),
+      ),
+      child: CupertinoTextField(
+        controller: controller,
+        placeholder: 'Ingredient Name',
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        placeholderStyle: TextStyle(
+          color: AppColors.button.withOpacity(0.5),
+          fontSize: 16,
+        ),
+        style: const TextStyle(color: AppColors.button, fontSize: 16),
+        decoration: null,
+        cursorColor: AppColors.mutedGreen,
+      ),
+    );
+  }
+}

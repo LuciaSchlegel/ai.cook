@@ -2,7 +2,7 @@ import 'package:ai_cook_project/models/unit.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/cupertino.dart';
 
-class UnitPickerModal extends StatelessWidget {
+class UnitPickerModal extends StatefulWidget {
   final Unit selectedUnit;
   final List<Unit> units;
   final void Function(Unit) onSelected;
@@ -15,13 +15,25 @@ class UnitPickerModal extends StatelessWidget {
   });
 
   @override
+  State<UnitPickerModal> createState() => _UnitPickerModalState();
+}
+
+class _UnitPickerModalState extends State<UnitPickerModal> {
+  late Unit _tempSelected;
+
+  @override
+  void initState() {
+    super.initState();
+    _tempSelected = widget.selectedUnit;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      height: 216,
+      height: 260,
       color: CupertinoColors.systemBackground.resolveFrom(context),
       child: Column(
         children: [
-          // toolbar
           Container(
             height: 44,
             decoration: BoxDecoration(
@@ -51,23 +63,29 @@ class UnitPickerModal extends StatelessWidget {
                       color: AppColors.mutedGreen,
                     ),
                   ),
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    widget.onSelected(_tempSelected);
+                    Navigator.pop(context);
+                  },
                 ),
               ],
             ),
           ),
-          // picker
           Expanded(
             child: CupertinoPicker(
               itemExtent: 32.0,
               scrollController: FixedExtentScrollController(
-                initialItem: units.indexWhere((u) => u.id == selectedUnit.id),
+                initialItem: widget.units.indexWhere(
+                  (u) => u.id == widget.selectedUnit.id,
+                ),
               ),
               onSelectedItemChanged: (index) {
-                onSelected(units[index]);
+                _tempSelected = widget.units[index];
               },
               children:
-                  units.map((unit) => Center(child: Text(unit.name))).toList(),
+                  widget.units
+                      .map((unit) => Center(child: Text(unit.name)))
+                      .toList(),
             ),
           ),
         ],
