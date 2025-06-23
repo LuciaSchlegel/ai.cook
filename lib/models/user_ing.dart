@@ -22,7 +22,6 @@ class UserIng {
 
   factory UserIng.fromJson(Map<String, dynamic> json) {
     try {
-      // Create a default unit if none is provided
       final unit =
           json['unit'] != null
               ? Unit.fromJson(json['unit'] as Map<String, dynamic>)
@@ -30,6 +29,7 @@ class UserIng {
 
       final String uid =
           (json['user']?['uid'] ?? json['uid'])?.toString() ?? '';
+
       return UserIng(
         id: json['id'] as int,
         uid: uid,
@@ -54,6 +54,7 @@ class UserIng {
       rethrow;
     }
   }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -64,5 +65,23 @@ class UserIng {
       'quantity': quantity,
       'unit': unit?.id != null ? {'id': unit!.id} : null,
     };
+  }
+
+  UserIng copyWith({
+    int? id,
+    String? uid,
+    Ingredient? ingredient,
+    CustomIngredient? customIngredient,
+    int? quantity,
+    Unit? unit,
+  }) {
+    return UserIng(
+      id: id ?? this.id,
+      uid: uid ?? this.uid,
+      ingredient: ingredient ?? this.ingredient,
+      customIngredient: customIngredient ?? this.customIngredient,
+      quantity: quantity ?? this.quantity,
+      unit: unit ?? this.unit,
+    );
   }
 }

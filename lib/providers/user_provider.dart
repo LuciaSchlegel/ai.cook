@@ -19,15 +19,13 @@ class UserProvider with ChangeNotifier {
   static const _userKey = 'cached_user';
 
   Future<void> getUser() async {
-    if (_hasFetched) return; // ya fue llamado en esta sesión
+    if (_hasFetched) return;
     _hasFetched = true;
 
     _setLoading(true);
     _clearError();
 
     final prefs = await SharedPreferences.getInstance();
-
-    // 1. Intentá cargar usuario del cache
     if (prefs.containsKey(_userKey)) {
       try {
         final cachedJson = prefs.getString(_userKey);
@@ -40,8 +38,6 @@ class UserProvider with ChangeNotifier {
         debugPrint('Error reading user from cache: $e');
       }
     }
-
-    // 2. Luego hacé el fetch "por si acaso" para asegurar datos frescos
     try {
       final String? uid = FirebaseAuth.instance.currentUser?.uid;
       if (uid == null) {
@@ -57,8 +53,6 @@ class UserProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         final decoded = json.decode(response.body);
         _user = user_model.User.fromJson(decoded);
-
-        // Cachear
         await prefs.setString(_userKey, json.encode(decoded));
 
         notifyListeners();

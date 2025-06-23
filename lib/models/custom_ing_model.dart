@@ -50,4 +50,20 @@ class CustomIngredient {
       'uid': uid,
     };
   }
+
+  CustomIngredient copyWith({
+    int? id,
+    String? name,
+    Category? category,
+    List<Tag>? tags,
+    String? uid,
+  }) {
+    return CustomIngredient(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      category: category ?? this.category,
+      tags: tags ?? this.tags,
+      uid: uid ?? this.uid,
+    );
+  }
 }

@@ -3,11 +3,13 @@ import 'package:ai_cook_project/models/custom_ing_model.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/models/unit.dart';
+import 'package:ai_cook_project/utils/custom_ing_repo.dart';
+import 'package:ai_cook_project/utils/ingredients_cache.dart';
+import 'package:ai_cook_project/utils/ingredients_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class IngredientsProvider with ChangeNotifier {
   static const String _userIngredientsKey = 'user_ingredients';
@@ -37,7 +39,12 @@ class IngredientsProvider with ChangeNotifier {
 
     try {
       // Load cached data first
-      await _loadCachedData();
+      await loadCachedData(
+        userIngredientsKey: _userIngredientsKey,
+        userIngredients: _userIngredients,
+        globalIngredientsKey: _globalIngredientsKey,
+        ingredients: _ingredients,
+      );
 
       // Then fetch fresh data if cache is stale
       if (isStale) {
@@ -51,105 +58,37 @@ class IngredientsProvider with ChangeNotifier {
     }
   }
 
-  Future<void> _loadCachedData() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-
-      final userIngredientsJson = prefs.getString(_userIngredientsKey);
-      if (userIngredientsJson != null) {
-        final List<dynamic> decoded = json.decode(userIngredientsJson);
-        _userIngredients = decoded.map((e) => UserIng.fromJson(e)).toList();
-      }
-
-      final globalIngredientsJson = prefs.getString(_globalIngredientsKey);
-      if (globalIngredientsJson != null) {
-        final List<dynamic> decoded = json.decode(globalIngredientsJson);
-        _ingredients = decoded.map((e) => Ingredient.fromJson(e)).toList();
-      }
-    } catch (e) {
-      debugPrint('Error loading cached data: $e');
-    }
-  }
-
-  Future<void> _saveCachedData() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-
-      await prefs.setString(
-        _userIngredientsKey,
-        json.encode(_userIngredients.map((e) => e.toJson()).toList()),
-      );
-
-      await prefs.setString(
-        _globalIngredientsKey,
-        json.encode(_ingredients.map((e) => e.toJson()).toList()),
-      );
-    } catch (e) {
-      debugPrint('Error saving cached data: $e');
-    }
-  }
-
   // User Ingredients Operations
   Future<void> fetchUserIngredients() async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return;
 
-    try {
-      _setLoading(true);
-      _clearError();
+    final ingredients = await IngredientsRepo.fetchUserIngredients(
+      uid: uid,
+      setLoading: _setLoading,
+      setError: _setError,
+      clearError: _clearError,
+    );
 
-      final response = await http.get(
-        Uri.parse('${dotenv.env['API_URL']}/user/$uid/ingredients'),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode != 200) {
-        throw Exception(
-          'Failed to fetch user ingredients: ${response.statusCode}',
-        );
-      }
-
-      final dynamic decoded = json.decode(response.body);
-      if (decoded == null) {
-        throw Exception('Received null response from server');
-      }
-
-      if (decoded is! List) {
-        throw Exception(
-          'Expected a list of ingredients, got ${decoded.runtimeType}',
-        );
-      }
-
-      final List<UserIng> parsedIngredients = [];
-      for (var e in decoded) {
-        if (e == null) {
-          continue;
-        }
-        try {
-          final userIng = UserIng.fromJson(e as Map<String, dynamic>);
-          parsedIngredients.add(userIng);
-        } catch (e) {
-          continue;
-        }
-      }
-
-      _userIngredients = parsedIngredients;
-      _lastFetchTime = DateTime.now();
-      await _saveCachedData();
-      notifyListeners();
-    } catch (e) {
-      _setError('Failed to fetch user ingredients: $e');
-    } finally {
-      _setLoading(false);
-    }
+    _userIngredients = ingredients;
+    _lastFetchTime = DateTime.now();
+    await saveCachedData(
+      userIngredientsKey: _userIngredientsKey,
+      userIngredients: _userIngredients,
+      globalIngredientsKey: _globalIngredientsKey,
+      ingredients: _ingredients,
+    );
+    notifyListeners();
   }
 
   Future<void> addUserIngredient(UserIng userIngredient) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
-    try {
-      _setLoading(true);
-      _clearError();
+    if (uid == null) {
+      _setError('User not authenticated');
+      return;
+    }
 
+    try {
       if (userIngredient.quantity <= 0) {
         throw Exception('Quantity must be greater than 0');
       }
@@ -158,76 +97,53 @@ class IngredientsProvider with ChangeNotifier {
         throw Exception('Ingredient already exists');
       }
 
-      // If this is a custom ingredient, create it first
-      if (userIngredient.customIngredient != null) {
-        await addCustomIngredient(
-          userIngredient.customIngredient!,
-          quantity: userIngredient.quantity,
-          unit: userIngredient.unit,
-        );
-        return;
-      }
-
       final tempId = DateTime.now().millisecondsSinceEpoch * -1;
-      final tempUserIng = UserIng(
-        id: tempId,
-        uid: uid!,
-        ingredient: userIngredient.ingredient,
-        customIngredient: null,
-        quantity: userIngredient.quantity,
-        unit: userIngredient.unit,
+      final tempUserIng = userIngredient.copyWith(id: tempId, uid: uid);
+
+      _userIngredients.add(tempUserIng);
+      notifyListeners();
+
+      final savedUserIng = await IngredientsRepo.addUserIngredient(
+        uid: uid,
+        userIngredient: userIngredient,
+        setLoading: _setLoading,
+        setError: _setError,
+        clearError: _clearError,
       );
 
-      // Optimistically add to the list with error handling
-      try {
-        _userIngredients.add(tempUserIng);
+      if (savedUserIng != null) {
+        final index = _userIngredients.indexWhere((ing) => ing.id == tempId);
+        if (index != -1) {
+          _userIngredients[index] = savedUserIng;
+        } else {
+          debugPrint('Warning: Could not find temporary ingredient to replace');
+        }
+
+        _lastFetchTime = DateTime.now();
+        await saveCachedData(
+          userIngredientsKey: _userIngredientsKey,
+          userIngredients: _userIngredients,
+          globalIngredientsKey: _globalIngredientsKey,
+          ingredients: _ingredients,
+        );
         notifyListeners();
-      } catch (e) {
-        debugPrint('Error during optimistic update: $e');
-        // Don't rethrow here, continue with the API call
-      }
-
-      final response = await http.post(
-        Uri.parse('${dotenv.env['API_URL']}/user/$uid/ingredients'),
-        body: json.encode(userIngredient.toJson()),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode != 201) {
-        // Remove the temporary ingredient on failure
+        await fetchUserIngredients();
+      } else {
         _userIngredients.removeWhere((ing) => ing.id == tempId);
         notifyListeners();
-        throw Exception('Failed to add ingredient: ${response.statusCode}');
       }
-
-      final responseData = json.decode(response.body);
-      if (responseData == null) {
-        throw Exception('Received null response from server');
-      }
-
-      // Replace the temporary ingredient with the real one
-      final savedUserIng = UserIng.fromJson(responseData);
-      final index = _userIngredients.indexWhere((ing) => ing.id == tempId);
-      if (index != -1) {
-        _userIngredients[index] = savedUserIng;
-      } else {
-        debugPrint('Warning: Could not find temporary ingredient to replace');
-      }
-
-      _lastFetchTime = DateTime.now();
-      await _saveCachedData();
-      notifyListeners();
-      await fetchUserIngredients();
     } catch (e) {
-      _setError('Failed to add ingredient: $e');
+      _setError('Failed to add user ingredient: $e');
       rethrow;
-    } finally {
-      _setLoading(false);
     }
   }
 
   Future<void> updateUserIngredient(UserIng userIngredient) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) throw Exception('User not authenticated');
+
+    UserIng? originalIngredient;
+
     try {
       _setLoading(true);
       _clearError();
@@ -239,74 +155,45 @@ class IngredientsProvider with ChangeNotifier {
       final tempIndex = _userIngredients.indexWhere(
         (ing) => ing.id == userIngredient.id,
       );
-
       if (tempIndex == -1) {
         throw Exception('Ingredient not found');
       }
 
-      final originalIngredient = _userIngredients[tempIndex];
+      originalIngredient = _userIngredients[tempIndex];
 
-      final tempId = DateTime.now().millisecondsSinceEpoch * -1;
-      final tempUserIng = UserIng(
-        id: tempId,
-        uid: uid!,
-        ingredient: userIngredient.ingredient,
-        customIngredient: null,
-        quantity: userIngredient.quantity,
-        unit: userIngredient.unit,
+      // 🔄 Optimistic update usando copyWith para cambiar el ID temporalmente
+      final tempUserIng = userIngredient.copyWith(
+        id: DateTime.now().millisecondsSinceEpoch * -1,
       );
 
-      // Optimistically update the list
-      try {
-        _userIngredients[tempIndex] = tempUserIng;
-        notifyListeners();
-      } catch (e) {
-        // Restore original ingredient
-        _userIngredients[tempIndex] = originalIngredient;
-        notifyListeners();
-        throw Exception('Failed to update ingredient: $e');
-      }
+      _userIngredients[tempIndex] = tempUserIng;
+      notifyListeners();
 
-      final response = await http.put(
-        Uri.parse('${dotenv.env['API_URL']}/user/$uid/ingredients'),
-        body: json.encode(userIngredient.toJson()),
-        headers: {'Content-Type': 'application/json'},
+      // ✅ Actualización real vía API
+      final savedUserIng = await IngredientsRepo.updateUserIngredient(
+        uid: uid,
+        userIng: userIngredient,
       );
 
-      if (response.statusCode != 200 && response.statusCode != 201) {
-        // Restore original ingredient on failure
-        _userIngredients[tempIndex] = originalIngredient;
-        notifyListeners();
-        throw Exception(
-          'Failed to update ingredient: ${response.statusCode} - ${response.body}',
-        );
-      }
-
-      final responseData = json.decode(response.body);
-      if (responseData == null) {
-        throw Exception('Received null response from server');
-      }
-
-      // Add the uid to the response data if it's missing
-      if (responseData['user'] == null) {
-        responseData['user'] = {'uid': uid};
-      }
-
-      // Update with the response data
-      try {
-        final savedUserIng = UserIng.fromJson(responseData);
-        _userIngredients[tempIndex] = savedUserIng;
-      } catch (e) {
-        // Restore original ingredient on parse error
-        _userIngredients[tempIndex] = originalIngredient;
-        notifyListeners();
-        throw Exception('Failed to parse server response: $e');
-      }
+      _userIngredients[tempIndex] = savedUserIng;
 
       _lastFetchTime = DateTime.now();
-      await _saveCachedData();
+      await saveCachedData(
+        userIngredientsKey: _userIngredientsKey,
+        userIngredients: _userIngredients,
+        globalIngredientsKey: _globalIngredientsKey,
+        ingredients: _ingredients,
+      );
       notifyListeners();
     } catch (e) {
+      final index = _userIngredients.indexWhere(
+        (ing) => ing.id == userIngredient.id || ing.id < 0,
+      );
+      if (index != -1 && originalIngredient != null) {
+        _userIngredients[index] = originalIngredient;
+      }
+      notifyListeners();
+
       _setError('Failed to update ingredient: $e');
       rethrow;
     } finally {
@@ -317,15 +204,13 @@ class IngredientsProvider with ChangeNotifier {
   Future<void> removeUserIngredient(UserIng userIngredient) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     try {
-      _setLoading(true);
-      _clearError();
-
-      await http.delete(
-        Uri.parse('${dotenv.env['API_URL']}/user/$uid/ingredients'),
-        body: json.encode({'id': userIngredient.id}),
-        headers: {'Content-Type': 'application/json'},
+      await IngredientsRepo.deleteUserIngredient(
+        uid: uid ?? '',
+        ingredientId: userIngredient.id,
+        setLoading: _setLoading,
+        setError: _setError,
+        clearError: _clearError,
       );
-
       _userIngredients.removeWhere((ing) => ing.id == userIngredient.id);
       notifyListeners();
     } catch (e) {
@@ -342,137 +227,88 @@ class IngredientsProvider with ChangeNotifier {
     Unit? unit,
   }) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) {
-      throw Exception('User not authenticated');
-    }
+    if (uid == null) throw Exception('User not authenticated');
+    if (unit == null) throw Exception('Unit is required');
 
-    if (unit == null) {
-      throw Exception('Unit is required');
-    }
+    final tempId = DateTime.now().millisecondsSinceEpoch * -1;
+    UserIng? originalTempUserIng;
 
     try {
       _setLoading(true);
       _clearError();
 
-      // Create a temporary UserIng for optimistic update
-      final tempId = DateTime.now().millisecondsSinceEpoch * -1;
+      // 🔹 Ingrediente temporal (optimistic update)
       final tempUserIng = UserIng(
         id: tempId,
         uid: uid,
         ingredient: null,
-        customIngredient: CustomIngredient(
-          id: -1,
-          name: customIngredient.name,
-          category: customIngredient.category,
-          tags: customIngredient.tags,
-          uid: uid,
-        ),
+        customIngredient: customIngredient.copyWith(id: -1, uid: uid),
         quantity: quantity,
         unit: unit,
       );
 
-      // Optimistically add to the list with error handling
-      try {
-        _userIngredients.add(tempUserIng);
-        notifyListeners();
-      } catch (e) {
-        debugPrint('Error during optimistic update: $e');
-        // Don't rethrow here, continue with the API call
-      }
+      originalTempUserIng = tempUserIng;
+      _userIngredients.add(tempUserIng);
+      notifyListeners();
 
-      // Create the custom ingredient
-      final response = await http.post(
-        Uri.parse('${dotenv.env['API_URL']}/ingredients/custom'),
-        body: json.encode({
-          'name': customIngredient.name,
-          'category': customIngredient.category?.toJson(),
-          'tags': customIngredient.tags?.map((tag) => tag.toJson()).toList(),
-          'uid': uid,
-        }),
-        headers: {'Content-Type': 'application/json'},
+      // 🔹 Paso 1: Crear el CustomIngredient en el backend
+      final savedCustomIng = await CustomIngredientRepo.createCustomIngredient(
+        customIngredient: customIngredient,
+        uid: uid,
       );
 
-      if (response.statusCode != 201) {
-        // Remove the temporary ingredient on failure
-        _userIngredients.removeWhere((ing) => ing.id == tempId);
-        notifyListeners();
-        throw Exception(
-          'Failed to add custom ingredient: ${response.statusCode} - ${response.body}',
-        );
-      }
-
-      final responseData = json.decode(response.body);
-      if (responseData == null) {
-        throw Exception('Received null response from server');
-      }
-
-      final customIngId = responseData['id'] as int;
-      // Create the user ingredient
-      final requestBody = {
-        'ingredient': null,
-        'custom_ingredient': {'id': customIngId},
-        'quantity': quantity,
-        'unit': {'id': unit.id},
-      };
-
-      final userIngResponse = await http.post(
-        Uri.parse('${dotenv.env['API_URL']}/user/$uid/ingredients'),
-        body: json.encode(requestBody),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (userIngResponse.statusCode != 201) {
-        // Remove the temporary ingredient on failure
-        _userIngredients.removeWhere((ing) => ing.id == tempId);
-        notifyListeners();
-        throw Exception(
-          'Failed to add user ingredient: ${userIngResponse.statusCode} - ${userIngResponse.body}',
-        );
-      }
-
-      final userIngData = json.decode(userIngResponse.body);
-      if (userIngData == null) {
-        throw Exception(
-          'Received null response from server for user ingredient',
-        );
-      }
-
-      // Replace the temporary ingredient with the real one
-      final savedUserIng = UserIng.fromJson(userIngData);
-
-      // Create a new CustomIngredient with the tags from the original request
-      if (savedUserIng.customIngredient != null) {
-        final updatedCustomIng = CustomIngredient(
-          id: savedUserIng.customIngredient!.id,
-          name: savedUserIng.customIngredient!.name,
-          category: savedUserIng.customIngredient!.category,
-          tags: customIngredient.tags,
-          uid: savedUserIng.customIngredient!.uid,
-        );
-
-        // Create a new UserIng with the updated CustomIngredient
-        final updatedUserIng = UserIng(
-          id: savedUserIng.id,
-          uid: savedUserIng.uid,
+      // 🔹 Paso 2: Crear el UserIngredient asociado
+      final savedUserIng = await IngredientsRepo.addUserIngredient(
+        setError: _setError,
+        setLoading: _setLoading,
+        clearError: _clearError,
+        uid: uid,
+        userIngredient: UserIng(
+          id: 0,
+          uid: uid,
           ingredient: null,
-          customIngredient: updatedCustomIng,
-          quantity: savedUserIng.quantity,
-          unit: savedUserIng.unit,
-        );
+          customIngredient: savedCustomIng,
+          quantity: quantity,
+          unit: unit,
+        ),
+      );
 
-        final index = _userIngredients.indexWhere((ing) => ing.id == tempId);
-        if (index != -1) {
-          _userIngredients[index] = updatedUserIng;
-        } else {
-          debugPrint('Warning: Could not find temporary ingredient to replace');
-        }
+      // 🔹 Paso 3: Mezclar los tags del formulario con el customIngredient del backend
+      if (savedUserIng == null) {
+        throw Exception('Error saving user ingredient');
+      }
+
+      final mergedUserIng = savedUserIng.copyWith(
+        customIngredient: savedUserIng.customIngredient?.copyWith(
+          tags: customIngredient.tags,
+        ),
+      );
+
+      // 🔹 Reemplazar temporal por real
+      final index = _userIngredients.indexWhere((ing) => ing.id == tempId);
+      if (index != -1) {
+        _userIngredients[index] = mergedUserIng;
+      } else {
+        debugPrint('⚠ No se encontró el ingrediente temporal para reemplazar');
       }
 
       _lastFetchTime = DateTime.now();
-      await _saveCachedData();
+      await saveCachedData(
+        userIngredientsKey: _userIngredientsKey,
+        userIngredients: _userIngredients,
+        globalIngredientsKey: _globalIngredientsKey,
+        ingredients: _ingredients,
+      );
       notifyListeners();
+
+      // 🔁 Refrescamos la lista completa como fallback de seguridad
       await fetchUserIngredients();
     } catch (e) {
+      // 🔄 Rollback
+      if (originalTempUserIng != null) {
+        _userIngredients.removeWhere((ing) => ing.id == tempId);
+        notifyListeners();
+      }
       _setError('Failed to add custom ingredient: $e');
       rethrow;
     } finally {

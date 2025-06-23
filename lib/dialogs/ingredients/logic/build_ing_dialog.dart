@@ -42,14 +42,6 @@ Widget buildIngredientDialog({
               tags: tags,
               uid: FirebaseAuth.instance.currentUser?.uid ?? '',
             );
-            final newUserIng = UserIng(
-              id: -1,
-              uid: FirebaseAuth.instance.currentUser?.uid ?? '',
-              ingredient: null,
-              customIngredient: customIng,
-              quantity: quantity,
-              unit: unit,
-            );
             await ingredientsProvider.addCustomIngredient(
               customIng,
               quantity: quantity,
@@ -91,7 +83,7 @@ Widget buildIngredientDialog({
     return IngredientFormDialog(
       ingredient: userIng.ingredient!,
       customIngredient: userIng.customIngredient,
-      quantity: userIng.quantity ?? 0,
+      quantity: userIng.quantity,
       unit: userIng.unit ?? unitFallback,
       categories: categories,
       onDelete: onDelete,
