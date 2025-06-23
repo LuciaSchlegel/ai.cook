@@ -51,7 +51,7 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
   late TextEditingController _quantityController;
   late Category _selectedCategory;
   late Unit _selectedUnit;
-  final Set<Tag> _selectedTags = {};
+  late Set<Tag> _selectedTags = {};
 
   @override
   void initState() {
@@ -66,6 +66,11 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
         widget.customIngredient?.category ?? widget.categories.first;
     _selectedUnit = widget.unit!;
 
+    _selectedTags = widget.customIngredient?.tags?.toSet() ?? {};
+
+    debugPrint(
+      'CustomIngFormDialog: Initializing with category: ${_selectedCategory.name}, unit: ${_selectedUnit.name}, tags: ${_selectedTags.map((tag) => tag.name).join(', ')}',
+    );
     if (widget.customIngredient?.tags != null) {
       _selectedTags.addAll(widget.customIngredient!.tags!);
     }

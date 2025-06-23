@@ -35,7 +35,8 @@ class _UnitPickerModalState extends State<UnitPickerModal> {
       child: Column(
         children: [
           Container(
-            height: 44,
+            height: 52,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             decoration: BoxDecoration(
               color: CupertinoColors.white,
               border: const Border(
@@ -49,28 +50,40 @@ class _UnitPickerModalState extends State<UnitPickerModal> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CupertinoButton(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 6,
+                  ),
+                  minSize: 0,
+                  onPressed: () => Navigator.pop(context),
                   child: const Text(
                     'Cancel',
-                    style: TextStyle(color: AppColors.mutedGreen),
+                    style: TextStyle(color: AppColors.mutedGreen, fontSize: 16),
                   ),
-                  onPressed: () => Navigator.pop(context),
                 ),
                 CupertinoButton(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 6,
+                  ),
+                  minSize: 0,
+                  onPressed: () {
+                    widget.onSelected(_tempSelected);
+                    Navigator.pop(context);
+                  },
                   child: const Text(
                     'Done',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: AppColors.mutedGreen,
+                      fontSize: 16,
                     ),
                   ),
-                  onPressed: () {
-                    widget.onSelected(_tempSelected);
-                    Navigator.pop(context);
-                  },
                 ),
               ],
             ),
           ),
+
           Expanded(
             child: CupertinoPicker(
               itemExtent: 32.0,

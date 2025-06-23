@@ -138,7 +138,7 @@ class IngredientsProvider with ChangeNotifier {
     }
   }
 
-  Future<void> updateUserIngredient(UserIng userIngredient) async {
+  Future<UserIng> updateUserIngredient(UserIng userIngredient) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) throw Exception('User not authenticated');
 
@@ -161,7 +161,7 @@ class IngredientsProvider with ChangeNotifier {
 
       originalIngredient = _userIngredients[tempIndex];
 
-      // 🔄 Optimistic update usando copyWith para cambiar el ID temporalmente
+      // 🔄 Optimistic update
       final tempUserIng = userIngredient.copyWith(
         id: DateTime.now().millisecondsSinceEpoch * -1,
       );
@@ -175,7 +175,15 @@ class IngredientsProvider with ChangeNotifier {
         userIng: userIngredient,
       );
 
-      _userIngredients[tempIndex] = savedUserIng;
+      // ✅ Aplicar las tags actualizadas (del formulario)
+      final fullUpdatedUserIng = savedUserIng.copyWith(
+        customIngredient: savedUserIng.customIngredient?.copyWith(
+          tags: userIngredient.customIngredient?.tags,
+        ),
+      );
+
+      // 🧠 Guardar versión final
+      _userIngredients[tempIndex] = fullUpdatedUserIng;
 
       _lastFetchTime = DateTime.now();
       await saveCachedData(
@@ -184,7 +192,15 @@ class IngredientsProvider with ChangeNotifier {
         globalIngredientsKey: _globalIngredientsKey,
         ingredients: _ingredients,
       );
+
+      await fetchUserIngredients();
+
+      debugPrint(
+        'Ingredient updated successfully: ${fullUpdatedUserIng.toJson()}',
+      );
+
       notifyListeners();
+      return fullUpdatedUserIng;
     } catch (e) {
       final index = _userIngredients.indexWhere(
         (ing) => ing.id == userIngredient.id || ing.id < 0,

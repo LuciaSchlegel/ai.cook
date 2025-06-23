@@ -65,7 +65,6 @@ Widget buildIngredientDialog({
               unit: unit,
             );
             await onSave(updatedUserIng);
-            if (context.mounted) Navigator.pop(context);
           }
         } catch (e) {
           if (context.mounted) {

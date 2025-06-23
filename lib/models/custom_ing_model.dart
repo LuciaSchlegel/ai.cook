@@ -18,6 +18,10 @@ class CustomIngredient {
 
   factory CustomIngredient.fromJson(Map<String, dynamic> json) {
     try {
+      final rawUid = json['uid'] ?? json['createdBy']?['uid'];
+      if (rawUid == null) {
+        throw Exception('CustomIngredient must contain a uid');
+      }
       return CustomIngredient(
         id: json['id'] as int,
         name: json['name']?.toString() ?? '',
@@ -29,10 +33,7 @@ class CustomIngredient {
             (json['tags'] as List<dynamic>?)
                 ?.map((tag) => Tag.fromJson(tag as Map<String, dynamic>))
                 .toList(),
-        uid:
-            json['uid']?.toString() ??
-            json['createdBy']?['uid']?.toString() ??
-            '',
+        uid: rawUid?.toString() ?? '', // <- fallback seguro
       );
     } catch (e) {
       print('Error parsing CustomIngredient: $e');
@@ -40,7 +41,6 @@ class CustomIngredient {
       rethrow;
     }
   }
-
   Map<String, dynamic> toJson() {
     return {
       'id': id,

@@ -5,10 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> loadCachedData({
-  required userIngredientsKey,
-  required userIngredients,
-  required globalIngredientsKey,
-  required ingredients,
+  required String userIngredientsKey,
+  required List<UserIng> userIngredients,
+  required String globalIngredientsKey,
+  required List<Ingredient> ingredients,
 }) async {
   try {
     final prefs = await SharedPreferences.getInstance();
@@ -16,13 +16,17 @@ Future<void> loadCachedData({
     final userIngredientsJson = prefs.getString(userIngredientsKey);
     if (userIngredientsJson != null) {
       final List<dynamic> decoded = json.decode(userIngredientsJson);
-      userIngredients = decoded.map((e) => UserIng.fromJson(e)).toList();
+      userIngredients
+        ..clear()
+        ..addAll(decoded.map((e) => UserIng.fromJson(e)));
     }
 
     final globalIngredientsJson = prefs.getString(globalIngredientsKey);
     if (globalIngredientsJson != null) {
       final List<dynamic> decoded = json.decode(globalIngredientsJson);
-      ingredients = decoded.map((e) => Ingredient.fromJson(e)).toList();
+      ingredients
+        ..clear()
+        ..addAll(decoded.map((e) => Ingredient.fromJson(e)));
     }
   } catch (e) {
     debugPrint('Error loading cached data: $e');
