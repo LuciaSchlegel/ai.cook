@@ -59,7 +59,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
     final horizontalPadding = screenWidth * 0.05;
     final resourceProvider = Provider.of<ResourceProvider>(context);
     void openAddIngredientDialog() {
-      addGlobalIngredientsDialog(context);
+      showDialog(context: context, builder: (_) => const AddGlobalIngDialog());
     }
 
     final categories = [

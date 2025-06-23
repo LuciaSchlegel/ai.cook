@@ -1,3 +1,6 @@
+import 'package:ai_cook_project/providers/ingredients_provider.dart';
+import 'package:ai_cook_project/providers/resource_provider.dart';
+import 'package:ai_cook_project/providers/user_provider.dart';
 import 'package:ai_cook_project/screens/auth/services/auth_services.dart';
 import 'package:ai_cook_project/screens/home/home_screen.dart';
 import 'package:ai_cook_project/screens/main/helpers/tabs.dart';
@@ -24,17 +27,37 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = -1; // home screen index
   bool _isAiWindowOpen = false;
 
+  bool _initialized = false;
+
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await MainScreenInit.initializeData(context: context);
-      MainScreenInit.updateSearchScreen(
-        context: context,
-        currentIndex: _currentIndex,
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialized) {
+      final ingredientsProvider = Provider.of<IngredientsProvider>(
+        context,
+        listen: false,
       );
-      if (!mounted) return;
-    });
+      final resourceProvider = Provider.of<ResourceProvider>(
+        context,
+        listen: false,
+      );
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+      Future(() async {
+        await ingredientsProvider.initializeIngredients();
+        await resourceProvider.initializeResources();
+        await userProvider.getUser();
+
+        if (!mounted) return;
+
+        MainScreenInit.updateSearchScreen(
+          context: context,
+          currentIndex: _currentIndex,
+        );
+      });
+
+      _initialized = true;
+    }
   }
 
   void _onTabTapped(int index) {

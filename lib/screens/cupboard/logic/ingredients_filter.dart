@@ -7,6 +7,9 @@ List<UserIng> filterUserIngredients({
   required String searchText,
 }) {
   return allIngredients.where((userIng) {
+    print('Filtering: ${userIng.customIngredient?.name}');
+    print('Tags: ${userIng.customIngredient?.tags?.map((t) => t.name)}');
+    print('Category: ${userIng.customIngredient?.category?.name}');
     final ingredientName =
         userIng.ingredient?.name ?? userIng.customIngredient?.name;
     final ingredientCategory =
