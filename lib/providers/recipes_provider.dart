@@ -22,7 +22,6 @@ class RecipesProvider extends ChangeNotifier {
         Uri.parse('${dotenv.env['API_URL']}/recipes'),
         headers: {'Content-Type': 'application/json'},
       );
-      print('getRecipes response: ${response.body}');
       if (response.statusCode == 200) {
         final List<dynamic> recipesJson = json.decode(response.body);
         _recipes = recipesJson.map((e) => Recipe.fromJson(e)).toList();

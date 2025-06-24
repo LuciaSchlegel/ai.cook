@@ -1,5 +1,6 @@
 import 'package:ai_cook_project/dialogs/ingredients/global_ing/add/logic/filter.dart';
 import 'package:ai_cook_project/dialogs/ingredients/global_ing/add/widgets/add_button.dart';
+import 'package:ai_cook_project/dialogs/ingredients/global_ing/add/widgets/empty_list.dart';
 import 'package:ai_cook_project/dialogs/ingredients/global_ing/widgets/ing_selection_tile.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
@@ -116,52 +117,65 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
             ),
             const SizedBox(height: 24),
             Flexible(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: searchFilteredIngredients.length,
-                itemBuilder: (context, index) {
-                  final ing = searchFilteredIngredients[index];
-                  final ingEntry = selectedIngredients.firstWhere(
-                    (ui) => ui.ingredient?.id == ing.id,
-                    orElse:
-                        () => UserIng(
-                          id: -1,
-                          uid: '',
-                          ingredient: ing,
-                          quantity: 0,
-                          unit: units.first,
+              child: Container(
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height * 0.3,
+                  maxHeight: MediaQuery.of(context).size.height * 0.5,
+                ),
+                child:
+                    searchFilteredIngredients.isEmpty
+                        ? EmptyList()
+                        : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: searchFilteredIngredients.length,
+                          itemBuilder: (context, index) {
+                            final ing = searchFilteredIngredients[index];
+                            final ingEntry = selectedIngredients.firstWhere(
+                              (ui) => ui.ingredient?.id == ing.id,
+                              orElse:
+                                  () => UserIng(
+                                    id: -1,
+                                    uid: '',
+                                    ingredient: ing,
+                                    quantity: 0,
+                                    unit: units.first,
+                                  ),
+                            );
+                            return IngredientSelectionTile(
+                              ingredient: ing,
+                              selected: ingEntry.id != -1,
+                              quantity: ingEntry.quantity,
+                              unit: ingEntry.unit!,
+                              units: units,
+                              onConfirm: (qty, unit) {
+                                setState(() {
+                                  selectedIngredients.removeWhere(
+                                    (ui) => ui.ingredient?.id == ing.id,
+                                  );
+                                  selectedIngredients.add(
+                                    UserIng(
+                                      id: ing.id,
+                                      uid:
+                                          FirebaseAuth
+                                              .instance
+                                              .currentUser!
+                                              .uid,
+                                      ingredient: ing,
+                                      quantity: qty,
+                                      unit: unit,
+                                    ),
+                                  );
+                                });
+                              },
+                              onDeselect:
+                                  () => setState(() {
+                                    selectedIngredients.removeWhere(
+                                      (ui) => ui.ingredient?.id == ing.id,
+                                    );
+                                  }),
+                            );
+                          },
                         ),
-                  );
-                  return IngredientSelectionTile(
-                    ingredient: ing,
-                    selected: ingEntry.id != -1,
-                    quantity: ingEntry.quantity,
-                    unit: ingEntry.unit!,
-                    units: units,
-                    onConfirm: (qty, unit) {
-                      setState(() {
-                        selectedIngredients.removeWhere(
-                          (ui) => ui.ingredient?.id == ing.id,
-                        );
-                        selectedIngredients.add(
-                          UserIng(
-                            id: ing.id,
-                            uid: FirebaseAuth.instance.currentUser!.uid,
-                            ingredient: ing,
-                            quantity: qty,
-                            unit: unit,
-                          ),
-                        );
-                      });
-                    },
-                    onDeselect:
-                        () => setState(() {
-                          selectedIngredients.removeWhere(
-                            (ui) => ui.ingredient?.id == ing.id,
-                          );
-                        }),
-                  );
-                },
               ),
             ),
             const SizedBox(height: 24),

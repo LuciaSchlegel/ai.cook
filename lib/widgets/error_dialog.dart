@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:ai_cook_project/theme.dart';
 
 class ErrorDialog extends StatelessWidget {
@@ -38,50 +39,68 @@ class ErrorDialog extends StatelessWidget {
 void showErrorDialog(
   BuildContext context, {
   required String message,
-  VoidCallback? onResetPassword, // <- botón opcional
+  VoidCallback? onResetPassword,
 }) {
+  if (!context.mounted) return;
+
   showDialog(
     context: context,
+    barrierDismissible: true,
     builder:
-        (_) => AlertDialog(
-          backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+        (BuildContext dialogContext) => CupertinoAlertDialog(
+          title: const Icon(
+            CupertinoIcons.exclamationmark_triangle_fill,
+            color: AppColors.orange,
+            size: 40,
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(
-                Icons.error_outline,
-                color: AppColors.orange,
-                size: 40,
-              ),
               const SizedBox(height: 16),
               Text(
                 message,
-                style: const TextStyle(color: AppColors.black, fontSize: 16),
+                style: const TextStyle(
+                  color: AppColors.black,
+                  fontSize: 16,
+                  height: 1.4,
+                ),
                 textAlign: TextAlign.center,
               ),
-              if (onResetPassword != null) ...[
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: () async {
-                    Navigator.of(context, rootNavigator: true).pop();
-                    await Future.delayed(const Duration(milliseconds: 100));
-                    onResetPassword();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.orange,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  child: const Text("Reset password"),
-                ),
-              ],
             ],
           ),
+          actions: [
+            if (onResetPassword != null)
+              CupertinoDialogAction(
+                onPressed: () {
+                  // Primero cerramos el diálogo de forma segura
+                  if (dialogContext.mounted) {
+                    Navigator.of(dialogContext).pop();
+                  }
+                  // Luego ejecutamos la acción después de un pequeño delay
+                  Future.delayed(
+                    const Duration(milliseconds: 100),
+                    onResetPassword,
+                  );
+                },
+                child: const Text(
+                  "Reset password",
+                  style: TextStyle(
+                    color: AppColors.orange,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            CupertinoDialogAction(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text(
+                "OK",
+                style: TextStyle(
+                  color: AppColors.button,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
         ),
   );
 }

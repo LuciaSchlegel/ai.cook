@@ -119,7 +119,7 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                                 ),
                               ),
                             );
-                          }).toList(),
+                          }),
                           // Agregamos 'All' como una opción más
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),

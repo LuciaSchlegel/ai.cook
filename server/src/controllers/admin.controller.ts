@@ -41,9 +41,9 @@ export const seedIngredientsController = controllerWrapper(async (req) => {
 });
 
 export const seedRecipesController = controllerWrapper(async (req) => {
-  const { recipe } = req.body;
-  if (!recipe) {
+  const { recipes } = req.body;
+  if (!recipes) {
     throw new BadRequestError("Recipe is required");
   }
-  return await seedRecipesService(recipe);
+  return await seedRecipesService(recipes);
 });

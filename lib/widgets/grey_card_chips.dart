@@ -33,27 +33,26 @@ class GreyCardChips extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(right: 8),
             child: FilterChip(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
               label: Text(label),
               selected: isSelected,
               onSelected: (_) => onSelected(label),
-              backgroundColor: CupertinoColors.systemGrey6,
+              backgroundColor: CupertinoColors.systemGrey5,
               selectedColor: AppColors.mutedGreen,
               checkmarkColor: AppColors.white,
               labelStyle: TextStyle(
-                color:
-                    isSelected
-                        ? AppColors.white
-                        : AppColors.black.withOpacity(0.8),
+                color: isSelected ? AppColors.white : AppColors.button,
+                fontWeight: FontWeight.w500,
               ),
-              side: BorderSide(
-                color:
-                    isSelected
-                        ? AppColors.mutedGreen
-                        : CupertinoColors.systemGrey6.resolveFrom(context),
+              shape: StadiumBorder(
+                side: BorderSide(
+                  color:
+                      isSelected
+                          ? AppColors.mutedGreen
+                          : CupertinoColors.systemGrey4,
+                  width: 1.0,
+                ),
               ),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             ),
           );
         },

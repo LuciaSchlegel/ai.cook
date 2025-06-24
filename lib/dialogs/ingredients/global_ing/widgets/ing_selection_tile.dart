@@ -57,7 +57,7 @@ class IngredientSelectionTile extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      '${quantity} ${unit.abbreviation}',
+                      '$quantity ${unit.abbreviation}',
                       style: const TextStyle(
                         color: AppColors.mutedGreen,
                         fontWeight: FontWeight.bold,
