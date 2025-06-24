@@ -63,18 +63,26 @@ export async function addUserIngredientController(req: Request, res: Response, n
 export async function updateUserIngredientController(req: Request, res: Response, next: NextFunction) {
     try {
         const { uid } = req.params;
-        const { quantity, unit, id } = req.body;
+        const { quantity, unit, id, custom_ingredient } = req.body;
         if (!id) {
             return next(new BadRequestError("User ingredient ID is required"));
         }
-        if (!quantity) {
-            return next(new BadRequestError("Quantity is required"));
+
+        const updateData: any = {};
+        if (quantity) updateData.quantity = quantity;
+        if (unit) updateData.unit = unit;
+        if (custom_ingredient) updateData.customIngredient = toCamelCaseDeep(custom_ingredient);
+
+        if (Object.keys(updateData).length === 0) {
+            return next(new BadRequestError("No update data provided"));
         }
-        const userIngredient = await updateUserIngredientService(uid, id, {
-            quantity,
-            unit
-        });
-        return res.status(200).json(userIngredient);
+
+        const userIngredient = await updateUserIngredientService(uid, id, updateData);
+        
+        const serialized = serialize(UserIngredientDto, userIngredient);
+        const response = toSnakeCaseDeep(serialized);
+        
+        return res.status(200).json(response);
     } catch (error) {
         next(error);
     }

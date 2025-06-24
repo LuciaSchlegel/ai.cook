@@ -42,8 +42,9 @@ class IngredientFormUtils {
     required String quantity,
     required Unit unit,
   }) {
-    if (name.isEmpty || tags.isEmpty || unit.name == 'Select unit')
+    if (name.isEmpty || tags.isEmpty || unit.name == 'Select unit') {
       return false;
+    }
     return int.tryParse(quantity) != null;
   }
 

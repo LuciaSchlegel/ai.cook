@@ -24,6 +24,7 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
   final selectedIngredients = <UserIng>[];
   final categories = resourceProvider.categories;
   String selectedCategory = 'All';
+  String searchText = '';
 
   showDialog(
     context: context,
@@ -33,7 +34,7 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
         canPop: false,
         child: StatefulBuilder(
           builder: (context, setState) {
-            final filteredIngredients =
+            final filteredByCategory =
                 selectedCategory == 'All'
                     ? globalIngredients
                     : globalIngredients
@@ -41,6 +42,17 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                           (ing) =>
                               ing.category!.name.trim().toLowerCase() ==
                               selectedCategory.trim().toLowerCase(),
+                        )
+                        .toList();
+
+            final filteredIngredients =
+                searchText.isEmpty
+                    ? filteredByCategory
+                    : filteredByCategory
+                        .where(
+                          (ing) => ing.name.toLowerCase().contains(
+                            searchText.toLowerCase(),
+                          ),
                         )
                         .toList();
 
@@ -66,19 +78,93 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                       ),
                     ),
                     const SizedBox(height: 24),
+                    // Category Filters
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      child: CardChips(
-                        selectedIngredients: selectedIngredients,
-                        categories: categories,
-                        selectedCategory: selectedCategory,
-                        onCategorySelected: (category) {
-                          setState(() {
-                            selectedCategory = category;
-                          });
-                        },
+                      height: 40,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          ...categories.map((category) {
+                            final isSelected =
+                                selectedCategory == category.name;
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: ChoiceChip(
+                                label: Text(category.name),
+                                selected: isSelected,
+                                onSelected: (selected) {
+                                  if (selected) {
+                                    setState(() {
+                                      selectedCategory = category.name;
+                                    });
+                                  }
+                                },
+                                backgroundColor: CupertinoColors.systemGrey5,
+                                selectedColor: AppColors.mutedGreen,
+                                labelStyle: TextStyle(
+                                  color:
+                                      isSelected
+                                          ? AppColors.white
+                                          : AppColors.button,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                shape: StadiumBorder(
+                                  side: BorderSide(
+                                    color:
+                                        isSelected
+                                            ? AppColors.mutedGreen
+                                            : CupertinoColors.systemGrey4,
+                                    width: 1,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          // Agregamos 'All' como una opción más
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: ChoiceChip(
+                              label: const Text('All'),
+                              selected: selectedCategory == 'All',
+                              onSelected: (selected) {
+                                if (selected) {
+                                  setState(() {
+                                    selectedCategory = 'All';
+                                  });
+                                }
+                              },
+                              backgroundColor: CupertinoColors.systemGrey5,
+                              selectedColor: AppColors.mutedGreen,
+                              labelStyle: TextStyle(
+                                color:
+                                    selectedCategory == 'All'
+                                        ? AppColors.white
+                                        : AppColors.button,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              shape: StadiumBorder(
+                                side: BorderSide(
+                                  color:
+                                      selectedCategory == 'All'
+                                          ? AppColors.mutedGreen
+                                          : CupertinoColors.systemGrey4,
+                                  width: 1,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
+                    ),
+                    const SizedBox(height: 16),
+                    // Search Bar
+                    CupertinoSearchTextField(
+                      placeholder: 'Search ingredients',
+                      onChanged: (value) {
+                        setState(() {
+                          searchText = value;
+                        });
+                      },
                     ),
                     const SizedBox(height: 24),
                     Flexible(

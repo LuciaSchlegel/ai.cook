@@ -13,10 +13,10 @@ class Unit {
 
   factory Unit.fromJson(Map<String, dynamic> json) {
     return Unit(
-      id: json['id'] ?? -1,
-      name: json['name'],
-      abbreviation: json['abbreviation'],
-      type: json['type'],
+      id: json['id'] as int? ?? -1,
+      name: json['name']?.toString() ?? 'unit',
+      abbreviation: json['abbreviation']?.toString() ?? 'u',
+      type: json['type']?.toString() ?? 'other',
     );
   }
 

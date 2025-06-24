@@ -50,11 +50,28 @@ class TagsPicker extends StatelessWidget {
                       label: Text(tag.name),
                       selected: isSelected,
                       onSelected: (_) => onTagsSelected(tag),
-                      backgroundColor: CupertinoColors.systemGrey6,
+                      backgroundColor:
+                          isSelected
+                              ? AppColors.mutedGreen
+                              : CupertinoColors.systemGrey5,
                       selectedColor: AppColors.mutedGreen,
                       checkmarkColor: AppColors.white,
                       labelStyle: TextStyle(
                         color: isSelected ? AppColors.white : AppColors.button,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      shape: StadiumBorder(
+                        side: BorderSide(
+                          color:
+                              isSelected
+                                  ? AppColors.mutedGreen
+                                  : CupertinoColors.systemGrey4,
+                          width: 1,
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
                       ),
                     ),
                   );

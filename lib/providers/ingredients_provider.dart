@@ -175,10 +175,18 @@ class IngredientsProvider with ChangeNotifier {
         userIng: userIngredient,
       );
 
+      // Si el backend responde con custom_ingredient: null, mantenemos el anterior
+      final mergedCustomIngredient =
+          savedUserIng.customIngredient ??
+          userIngredient.customIngredient ??
+          originalIngredient.customIngredient;
+
       // ✅ Aplicar las tags actualizadas (del formulario)
       final fullUpdatedUserIng = savedUserIng.copyWith(
-        customIngredient: savedUserIng.customIngredient?.copyWith(
-          tags: userIngredient.customIngredient?.tags,
+        customIngredient: mergedCustomIngredient?.copyWith(
+          tags:
+              userIngredient.customIngredient?.tags ??
+              mergedCustomIngredient.tags,
         ),
       );
 
@@ -193,10 +201,11 @@ class IngredientsProvider with ChangeNotifier {
         ingredients: _ingredients,
       );
 
-      await fetchUserIngredients();
+      // No llamamos a fetchUserIngredients() aquí para no pisar las tags nuevas del formulario
+      // Si el backend empieza a devolver las tags correctas, se puede volver a habilitar
 
       debugPrint(
-        'Ingredient updated successfully: ${fullUpdatedUserIng.toJson()}',
+        'Ingredient updated successfully: \\${fullUpdatedUserIng.toJson()}',
       );
 
       notifyListeners();

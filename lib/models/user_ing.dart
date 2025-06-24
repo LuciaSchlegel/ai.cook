@@ -30,6 +30,33 @@ class UserIng {
       final String uid =
           (json['user']?['uid'] ?? json['uid'])?.toString() ?? '';
 
+      // Permitir tanto objeto como solo id (para compatibilidad)
+      CustomIngredient? customIngredient;
+      if (json['custom_ingredient'] != null) {
+        if (json['custom_ingredient'] is Map<String, dynamic> &&
+            (json['custom_ingredient'] as Map<String, dynamic>).containsKey(
+              'name',
+            )) {
+          customIngredient = CustomIngredient.fromJson(
+            json['custom_ingredient'] as Map<String, dynamic>,
+          );
+        } else if (json['custom_ingredient'] is Map<String, dynamic> &&
+            (json['custom_ingredient'] as Map<String, dynamic>).containsKey(
+              'id',
+            )) {
+          // Solo id, crear dummy
+          customIngredient = CustomIngredient(
+            id: (json['custom_ingredient']['id'] as int?) ?? -1,
+            name: '',
+            category: null,
+            tags: [],
+            uid: '',
+          );
+        }
+      } else {
+        customIngredient = null;
+      }
+
       return UserIng(
         id: json['id'] as int,
         uid: uid,
@@ -39,12 +66,7 @@ class UserIng {
                   json['ingredient'] as Map<String, dynamic>,
                 )
                 : null,
-        customIngredient:
-            json['custom_ingredient'] != null
-                ? CustomIngredient.fromJson(
-                  json['custom_ingredient'] as Map<String, dynamic>,
-                )
-                : null,
+        customIngredient: customIngredient,
         quantity: json['quantity'] as int? ?? 0,
         unit: unit,
       );
@@ -60,10 +82,9 @@ class UserIng {
       'id': id,
       'user': {'uid': uid},
       'ingredient': ingredient?.toJson(),
-      'custom_ingredient':
-          customIngredient != null ? {'id': customIngredient!.id} : null,
+      'custom_ingredient': customIngredient?.toJson(),
       'quantity': quantity,
-      'unit': unit?.id != null ? {'id': unit!.id} : null,
+      'unit': unit?.toJson(),
     };
   }
 

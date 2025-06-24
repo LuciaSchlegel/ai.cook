@@ -1,6 +1,5 @@
 import 'package:ai_cook_project/dialogs/ingredients/logic/build_ing_dialog.dart';
 import 'package:ai_cook_project/models/category_model.dart';
-import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +42,7 @@ class IngredientDialogs {
 
   static void showDeleteDialog({
     required BuildContext context,
-    required Ingredient ingredient,
+    required String ingredientName,
     required Function() onDelete,
   }) {
     showDialog(
@@ -51,9 +50,7 @@ class IngredientDialogs {
       builder:
           (context) => AlertDialog(
             title: const Text('Delete Ingredient'),
-            content: Text(
-              'Are you sure you want to delete ${ingredient.name}?',
-            ),
+            content: Text('Are you sure you want to delete $ingredientName?'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),

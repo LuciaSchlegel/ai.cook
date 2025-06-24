@@ -89,41 +89,61 @@ export async function getUserIngredientsService(uid: string) {
 export async function updateUserIngredientService(
   uid: string,
   id: number,
-  data: Partial<UserIngredient>
+  data: Partial<UserIngredient> & { customIngredient?: Partial<any> }
 ) {
-  const userIngUnit = data.unit;
-
-  const unitEntity = userIngUnit
-    ? await UnitRepository.findOne({
-        where: { id: userIngUnit.id },
-      })
-    : undefined;
-
-  if (userIngUnit && !unitEntity) {
-    throw new NotFoundError(`Unit '${userIngUnit.id}' not found.`);
-  }
-
   const userIngredient = await UserIngredientRepository.findOne({
     where: { id, user: { uid } },
-    relations: {
-      ingredient: { category: true, tags: true },
-      customIngredient: { category: true, tags: true },
-      unit: true, // 👈 esto ahora asegura que la respuesta tenga unit completa
-    },
+    relations: ['ingredient', 'customIngredient', 'unit'],
   });
 
   if (!userIngredient) {
     throw new NotFoundError("UserIngredient not found.");
   }
 
-  Object.assign(userIngredient, data);
+  // Si vienen datos para un customIngredient, actualizarlo primero
+  if (data.customIngredient && userIngredient.customIngredient) {
+    const customIngredient = await CustomIngredientRepository.findOneBy({ id: userIngredient.customIngredient.id });
+    if (!customIngredient) {
+      throw new NotFoundError("Associated CustomIngredient not found.");
+    }
 
-  // ✅ Aseguramos que unitEntity se asigne si vino por `data.unit`
-  if (unitEntity) {
+    // Actualizar campos del CustomIngredient
+    Object.assign(customIngredient, data.customIngredient);
+    await CustomIngredientRepository.save(customIngredient);
+    
+    // Quitar del objeto `data` para que no lo procese Object.assign en UserIngredient
+    delete data.customIngredient;
+  }
+  
+  // Actualizar Unit si se provee
+  if (data.unit) {
+    const unitEntity = await UnitRepository.findOneBy({ id: data.unit.id });
+    if (!unitEntity) throw new NotFoundError(`Unit '${data.unit.id}' not found.`);
     userIngredient.unit = unitEntity;
+    delete data.unit; // Quitar para el Object.assign
   }
 
-  return await UserIngredientRepository.save(userIngredient);
+  // Actualizar los campos restantes de UserIngredient (ej. quantity)
+  Object.assign(userIngredient, data);
+  
+  const savedUserIngredient = await UserIngredientRepository.save(userIngredient);
+
+  // Volver a cargar la entidad para devolverla con todas las relaciones actualizadas
+  return await UserIngredientRepository.findOne({
+    where: { id: savedUserIngredient.id },
+    relations: {
+      user: true,
+      ingredient: {
+        category: true,
+        tags: true
+      },
+      customIngredient: {
+        category: true,
+        tags: true
+      },
+      unit: true
+    }
+  });
 }
 
 // BORRAR INGREDIENTE DEL USUARIO (opcional)

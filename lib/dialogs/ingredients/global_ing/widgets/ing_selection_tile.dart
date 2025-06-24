@@ -28,24 +28,27 @@ class IngredientSelectionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      margin: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
-        color: selected ? AppColors.mutedGreen : CupertinoColors.systemGrey5,
-        borderRadius: BorderRadius.circular(24),
+        color:
+            selected
+                ? AppColors.mutedGreen.withOpacity(0.1)
+                : Colors.transparent,
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color:
-              selected
-                  ? AppColors.mutedGreen
-                  : AppColors.mutedGreen.withOpacity(0.5),
+          color: selected ? AppColors.mutedGreen : CupertinoColors.systemGrey4,
+          width: 1.5,
         ),
       ),
       child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         title: Text(
           ingredient.name,
-          style: TextStyle(
-            color: selected ? AppColors.white : AppColors.button,
-            fontSize: 16,
+          style: const TextStyle(
+            color: AppColors.button,
+            fontWeight: FontWeight.w500,
           ),
         ),
         trailing:
@@ -53,34 +56,22 @@ class IngredientSelectionTile extends StatelessWidget {
                 ? Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        '$quantity ${unit.abbreviation.isNotEmpty ? unit.abbreviation : unit.name}',
-                        style: const TextStyle(
-                          color: CupertinoColors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
+                    Text(
+                      '${quantity} ${unit.abbreviation}',
+                      style: const TextStyle(
+                        color: AppColors.mutedGreen,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(width: 8),
                     const Icon(
-                      CupertinoIcons.checkmark_circle_fill,
-                      color: CupertinoColors.white,
-                      size: 20,
+                      CupertinoIcons.checkmark_alt_circle_fill,
+                      color: AppColors.mutedGreen,
                     ),
                   ],
                 )
                 : const Icon(
-                  CupertinoIcons.circle,
+                  CupertinoIcons.add_circled,
                   color: AppColors.mutedGreen,
                 ),
         onTap: () async {

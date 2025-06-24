@@ -73,14 +73,20 @@ Future<void> showIngredientDialog({
     },
     userIng: userIng,
     onDelete: () {
-      final ing = userIng?.ingredient;
-      if (ing != null) {
+      final ingredientName =
+          userIng?.ingredient?.name ?? userIng?.customIngredient?.name;
+      final ingToDelete = userIng;
+
+      if (ingToDelete != null && ingredientName != null) {
         IngredientDialogs.showDeleteDialog(
           context: context,
-          ingredient: ing,
+          ingredientName: ingredientName,
           onDelete: () async {
-            await ingredientsProvider.removeUserIngredient(userIng!);
+            await ingredientsProvider.removeUserIngredient(ingToDelete);
             onChanged();
+            if (context.mounted) {
+              Navigator.pop(context); // Cierra el formulario de edición
+            }
           },
         );
       }
