@@ -17,7 +17,8 @@ import 'package:ai_cook_project/widgets/loading_indicator.dart';
 import 'package:provider/provider.dart';
 
 class CupboardScreen extends StatefulWidget {
-  const CupboardScreen({super.key});
+  final bool isActive;
+  const CupboardScreen({super.key, required this.isActive});
 
   @override
   State<CupboardScreen> createState() => _CupboardScreenState();
@@ -29,19 +30,27 @@ class _CupboardScreenState extends State<CupboardScreen> {
   bool _hasShownOnboarding = false;
 
   @override
+  void didUpdateWidget(covariant CupboardScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isActive && !_hasShownOnboarding) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        final wasShown = await handleOnboarding(
+          context: context,
+          hasShownOnboarding: _hasShownOnboarding,
+        );
+        if (mounted) {
+          setState(() {
+            _hasShownOnboarding = wasShown;
+          });
+        }
+      });
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final wasShown = await handleOnboarding(
-        context: context,
-        hasShownOnboarding: _hasShownOnboarding,
-      );
-      if (mounted) {
-        setState(() {
-          _hasShownOnboarding = wasShown;
-        });
-      }
-    });
+    // El onboarding ahora se maneja en didUpdateWidget
   }
 
   void _showIngredientDialog([UserIng? userIng]) async {

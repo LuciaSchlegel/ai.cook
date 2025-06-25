@@ -29,10 +29,7 @@ class ProfileScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircleAvatar(
-                radius: 50,
-                backgroundImage: AssetImage('assets/images/default_avatar.png'),
-              ),
+              const CircleAvatar(radius: 50),
               const SizedBox(height: 24),
               const Text(
                 'Lucia Guarino',

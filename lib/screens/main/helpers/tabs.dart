@@ -1,5 +1,4 @@
 import 'package:ai_cook_project/screens/calendar/calendar_screen.dart';
-import 'package:ai_cook_project/screens/cupboard/cupboard_screen.dart';
 import 'package:ai_cook_project/screens/recipes/recipes_screen.dart';
 import 'package:ai_cook_project/screens/settings/settings_screen.dart';
 import 'package:ai_cook_project/theme.dart';
@@ -28,13 +27,9 @@ class IconProperties {
 class _PageData {
   final String title;
   final IconProperties icon;
-  final Widget widget;
+  final Widget? widget;
 
-  const _PageData({
-    required this.title,
-    required this.icon,
-    required this.widget,
-  });
+  const _PageData({required this.title, required this.icon, this.widget});
 }
 
 final List<_PageData> pages = [
@@ -49,7 +44,6 @@ final List<_PageData> pages = [
       activeShadowRadius: 8,
       activeShadowColor: AppColors.orange.withOpacity(0.1),
     ),
-    widget: const CupboardScreen(),
   ),
   _PageData(
     title: 'Recipes',

@@ -27,6 +27,8 @@ class AuthService {
       onSuccess?.call();
     } on FirebaseAuthException catch (e) {
       onError?.call(FirebaseErrorHandler.handleError(e), exception: e);
+    } catch (e) {
+      onError?.call(FirebaseErrorHandler.handleError(e));
     } finally {
       hideLoading?.call();
     }

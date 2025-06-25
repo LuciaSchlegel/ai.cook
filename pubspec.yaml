@@ -71,6 +71,7 @@ flutter:
   # Corrige la indentación de assets
   assets:
     - .env
+    - assets/images/
     - assets/icons/google-logo.png
     - assets/icons/apple-logo.png
     - assets/icons/calendar.svg

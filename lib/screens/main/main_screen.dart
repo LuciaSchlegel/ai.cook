@@ -15,6 +15,7 @@ import 'package:ai_cook_project/widgets/ai_agent/floating_chat_window.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ai_cook_project/providers/search_provider.dart';
+import 'package:ai_cook_project/screens/cupboard/cupboard_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -104,13 +105,6 @@ class _MainScreenState extends State<MainScreen> {
     setState(() => _isAiWindowOpen = !_isAiWindowOpen);
   }
 
-  Widget _getCurrentScreen() {
-    if (_currentIndex == -1) {
-      return const HomeScreen();
-    }
-    return pages[_currentIndex].widget;
-  }
-
   @override
   Widget build(BuildContext context) {
     bool isHomeScreen = _currentIndex == -1;
@@ -140,11 +134,29 @@ class _MainScreenState extends State<MainScreen> {
                             horizontal:
                                 MediaQuery.of(context).size.width * 0.05,
                           ),
-                          child: CustomSearchBar(
-                            controller: searchProvider.searchController,
-                            hintText: searchProvider.getSearchHint(),
-                            onChanged: searchProvider.onSearch,
-                            isMenuOpen: searchProvider.isMenuOpen,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              MainFloatingButton(
+                                key: const ValueKey('main_floating_button'),
+                                onProfileTap: _onProfileTap,
+                                onFeedTap: _onFeedTap,
+                                onLogoutTap: _onLogoutTap,
+                                currentIndex: _currentIndex,
+                                onMenuStateChanged: (isOpen) {
+                                  searchProvider.setMenuOpen(isOpen);
+                                },
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: CustomSearchBar(
+                                  controller: searchProvider.searchController,
+                                  hintText: searchProvider.getSearchHint(),
+                                  onChanged: searchProvider.onSearch,
+                                  isMenuOpen: searchProvider.isMenuOpen,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       if (_currentIndex != -1)
@@ -159,27 +171,12 @@ class _MainScreenState extends State<MainScreen> {
                     index: _currentIndex == -1 ? 0 : _currentIndex + 1,
                     children: [
                       const HomeScreen(),
-                      ...pages.map((p) => p.widget),
+                      CupboardScreen(isActive: _currentIndex == 0),
+                      ...pages.skip(1).map((p) => p.widget!),
                     ],
                   ),
                 ),
               ],
-            ),
-            Positioned(
-              top:
-                  MediaQuery.of(context).padding.top +
-                  MediaQuery.of(context).size.height * 0.02,
-              right: MediaQuery.of(context).size.width * 0.05,
-              child: MainFloatingButton(
-                key: const ValueKey('main_floating_button'),
-                onProfileTap: _onProfileTap,
-                onFeedTap: _onFeedTap,
-                onLogoutTap: _onLogoutTap,
-                currentIndex: _currentIndex,
-                onMenuStateChanged: (isOpen) {
-                  searchProvider.setMenuOpen(isOpen);
-                },
-              ),
             ),
             if (_isAiWindowOpen)
               Positioned.fill(
