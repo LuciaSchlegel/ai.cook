@@ -26,7 +26,6 @@ class _RecipesScreenState extends State<RecipesScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch recipes when the screen loads
     Future.microtask(
       () => Provider.of<RecipesProvider>(context, listen: false).getRecipes(),
     );

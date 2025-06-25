@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'package:ai_cook_project/screens/recipes/widgets/recipe_image.dart';
 import 'package:flutter/material.dart';
 import '../../../models/recipe_model.dart';
 import '../../../models/user_ing.dart';
 import 'recipe_ov_card.dart';
 import '../../../theme.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class RecipeCard extends StatefulWidget {
   final Recipe recipe;
@@ -73,6 +72,9 @@ class _RecipeCardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final width = size.width * 0.24; // Ajusta el valor según tu diseño
+    final height = size.height * 0.22; // Ajusta el valor según tu diseño
     return Card(
       elevation: 6,
       shape: const RoundedRectangleBorder(
@@ -84,7 +86,7 @@ class _RecipeCardContent extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _RecipeImage(imageUrl: recipe.image),
+            RecipeImage(imageUrl: recipe.image, width: width, height: height),
             const SizedBox(width: 16),
             Expanded(
               child: ConstrainedBox(
@@ -99,55 +101,6 @@ class _RecipeCardContent extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _RecipeImage extends StatelessWidget {
-  final String? imageUrl;
-
-  const _RecipeImage({this.imageUrl});
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(15),
-      child:
-          imageUrl != null && imageUrl!.isNotEmpty
-              ? CachedNetworkImage(
-                imageUrl: imageUrl!,
-                fit: BoxFit.cover,
-                width: 80,
-                height: 80,
-                placeholder:
-                    (context, url) => const CupertinoActivityIndicator(),
-                errorWidget:
-                    (context, url, error) => const Icon(
-                      CupertinoIcons.photo,
-                      color: AppColors.button,
-                      size: 40,
-                    ),
-                fadeInDuration: const Duration(milliseconds: 0),
-              )
-              : const _PlaceholderImage(),
-    );
-  }
-}
-
-class _PlaceholderImage extends StatelessWidget {
-  const _PlaceholderImage();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 80,
-      height: 80,
-      color: AppColors.mutedGreen.withOpacity(0.2),
-      child: const Icon(
-        CupertinoIcons.photo,
-        color: AppColors.button,
-        size: 40,
       ),
     );
   }

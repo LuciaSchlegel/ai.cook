@@ -78,18 +78,23 @@ class _ExpandedHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            recipe.name,
-            style: const TextStyle(
-              fontSize: 42,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 1,
-              color: AppColors.button,
-              fontFamily: 'Casta',
+          Expanded(
+            child: Text(
+              recipe.name,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 42,
+                height: 1.2,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 1,
+                color: AppColors.button,
+                fontFamily: 'Casta',
+              ),
             ),
           ),
         ],
