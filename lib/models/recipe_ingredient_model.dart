@@ -1,5 +1,6 @@
 import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/unit.dart';
+import 'package:flutter/foundation.dart';
 
 class RecipeIngredient {
   final Ingredient ingredient;
@@ -13,11 +14,15 @@ class RecipeIngredient {
   });
 
   factory RecipeIngredient.fromJson(Map<String, dynamic> json) {
-    return RecipeIngredient(
-      ingredient: Ingredient.fromJson(json['ingredient']),
-      quantity: json['quantity'].toDouble(),
-      unit: json['unit'] != null ? Unit.fromJson(json['unit']) : null,
-    );
+    try {
+      return RecipeIngredient(
+        ingredient: Ingredient.fromJson(json['ingredient']),
+        quantity: (json['quantity'] as num).toInt(),
+        unit: json['unit'] != null ? Unit.fromJson(json['unit']) : null,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {

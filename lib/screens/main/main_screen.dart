@@ -154,7 +154,15 @@ class _MainScreenState extends State<MainScreen> {
                     ],
                   ),
                 ),
-                Expanded(child: _getCurrentScreen()),
+                Expanded(
+                  child: IndexedStack(
+                    index: _currentIndex == -1 ? 0 : _currentIndex + 1,
+                    children: [
+                      const HomeScreen(),
+                      ...pages.map((p) => p.widget),
+                    ],
+                  ),
+                ),
               ],
             ),
             Positioned(

@@ -16,6 +16,7 @@ class AiButton extends StatelessWidget {
       width: buttonSize,
       height: buttonSize,
       child: FloatingActionButton(
+        heroTag: 'ai_button',
         onPressed: onPressed,
         backgroundColor:
             isActive

@@ -115,9 +115,7 @@ class IngredientsProvider with ChangeNotifier {
         final index = _userIngredients.indexWhere((ing) => ing.id == tempId);
         if (index != -1) {
           _userIngredients[index] = savedUserIng;
-        } else {
-          debugPrint('Warning: Could not find temporary ingredient to replace');
-        }
+        } else {}
 
         _lastFetchTime = DateTime.now();
         await saveCachedData(
@@ -199,13 +197,6 @@ class IngredientsProvider with ChangeNotifier {
         userIngredients: _userIngredients,
         globalIngredientsKey: _globalIngredientsKey,
         ingredients: _ingredients,
-      );
-
-      // No llamamos a fetchUserIngredients() aquí para no pisar las tags nuevas del formulario
-      // Si el backend empieza a devolver las tags correctas, se puede volver a habilitar
-
-      debugPrint(
-        'Ingredient updated successfully: \\${fullUpdatedUserIng.toJson()}',
       );
 
       notifyListeners();
@@ -313,9 +304,7 @@ class IngredientsProvider with ChangeNotifier {
       final index = _userIngredients.indexWhere((ing) => ing.id == tempId);
       if (index != -1) {
         _userIngredients[index] = mergedUserIng;
-      } else {
-        debugPrint('⚠ No se encontró el ingrediente temporal para reemplazar');
-      }
+      } else {}
 
       _lastFetchTime = DateTime.now();
       await saveCachedData(

@@ -1,4 +1,5 @@
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_card.dart';
+import 'package:ai_cook_project/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/user_ing.dart';
@@ -34,11 +35,16 @@ class _RecipesScreenState extends State<RecipesScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      padding: EdgeInsets.symmetric(
+        vertical: MediaQuery.of(context).size.height * 0,
+      ),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.05,
+              vertical: MediaQuery.of(context).size.height * 0.01,
+            ),
             child: DropdownSelector(
               value: selectedFilter,
               items: filterOptions,
@@ -74,7 +80,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                 }
 
                 if (recipesProvider.isLoading) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Center(child: LoadingIndicator());
                 }
 
                 final recipes = recipesProvider.recipes;
@@ -84,9 +90,11 @@ class _RecipesScreenState extends State<RecipesScreen> {
                 }
 
                 return ListView.builder(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
                   itemCount: recipes.length,
                   itemBuilder: (context, index) {
                     return RecipeCard(
+                      key: ValueKey(recipes[index].id),
                       recipe: recipes[index],
                       userIngredients: userIngredients,
                     );

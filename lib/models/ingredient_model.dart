@@ -1,5 +1,6 @@
 import 'package:ai_cook_project/models/tag_model.dart';
-import 'package:ai_cook_project/models/category_model.dart';
+import 'package:ai_cook_project/models/category_model.dart' as model;
+import 'package:flutter/foundation.dart';
 
 class Ingredient {
   final int id;
@@ -8,7 +9,7 @@ class Ingredient {
   final bool isVegetarian;
   final bool isGlutenFree;
   final bool isLactoseFree;
-  final Category? category;
+  final model.Category? category;
   final List<Tag>? tags;
 
   Ingredient({
@@ -23,22 +24,29 @@ class Ingredient {
   });
 
   factory Ingredient.fromJson(Map<String, dynamic> json) {
-    return Ingredient(
-      id: json['id'] as int,
-      name: json['name']?.toString() ?? '',
-      isVegan: json['is_vegan'] ?? json['isVegan'] ?? false,
-      isVegetarian: json['is_vegetarian'] ?? json['isVegetarian'] ?? false,
-      isGlutenFree: json['is_gluten_free'] ?? json['isGlutenFree'] ?? false,
-      isLactoseFree: json['is_lactose_free'] ?? json['isLactoseFree'] ?? false,
-      category:
-          json['category'] != null ? Category.fromJson(json['category']) : null,
-      tags:
-          (json['tags'] as List<dynamic>?)
-              ?.map((e) => Tag.fromJson(e))
-              .toList() ??
-          [],
-    );
+    try {
+      return Ingredient(
+        id: json['id'] as int,
+        name: json['name']?.toString() ?? '',
+        isVegan: json['isVegan'] ?? false,
+        isVegetarian: json['isVegetarian'] ?? false,
+        isGlutenFree: json['isGlutenFree'] ?? false,
+        isLactoseFree: json['isLactoseFree'] ?? false,
+        category:
+            json['category'] != null
+                ? model.Category.fromJson(json['category'])
+                : null,
+        tags:
+            (json['tags'] as List<dynamic>?)
+                ?.map((e) => Tag.fromJson(e))
+                .toList() ??
+            [],
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,

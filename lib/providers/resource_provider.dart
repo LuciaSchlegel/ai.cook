@@ -41,9 +41,7 @@ class ResourceProvider extends ChangeNotifier {
       final List<dynamic> decoded = json.decode(response.body);
       _units = decoded.map((e) => Unit.fromJson(e)).toList();
       notifyListeners();
-    } catch (e) {
-      debugPrint('Error fetching units: $e');
-    }
+    } catch (e) {}
   }
 
   Future<void> getCategories() async {
@@ -55,9 +53,7 @@ class ResourceProvider extends ChangeNotifier {
       final List<dynamic> decoded = json.decode(response.body);
       _categories = decoded.map((e) => Category.fromJson(e)).toList();
       notifyListeners();
-    } catch (e) {
-      debugPrint('Error fetching categories: $e');
-    }
+    } catch (e) {}
   }
 
   Future<void> getTags() async {
@@ -69,9 +65,7 @@ class ResourceProvider extends ChangeNotifier {
       final List<dynamic> decoded = json.decode(response.body);
       _tags = decoded.map((e) => Tag.fromJson(e)).toList();
       notifyListeners();
-    } catch (e) {
-      debugPrint('Error fetching tags: $e');
-    }
+    } catch (e) {}
   }
 
   Future<void> getRecipeTags() async {
@@ -83,8 +77,6 @@ class ResourceProvider extends ChangeNotifier {
       final List<dynamic> decoded = json.decode(response.body);
       _recipeTags = decoded.map((e) => RecipeTag.fromJson(e)).toList();
       notifyListeners();
-    } catch (e) {
-      debugPrint('Error fetching recipe tags: $e');
-    }
+    } catch (e) {}
   }
 }

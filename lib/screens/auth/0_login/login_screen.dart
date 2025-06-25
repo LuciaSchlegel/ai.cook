@@ -106,12 +106,6 @@ class _LoginScreenState extends State<LoginScreen> {
           onRegister: _register,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showErrorDialog(context, message: "Esto es un error de prueba");
-        },
-        child: const Icon(Icons.error),
-      ),
     );
   }
 }

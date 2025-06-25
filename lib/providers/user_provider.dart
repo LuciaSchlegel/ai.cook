@@ -34,9 +34,7 @@ class UserProvider with ChangeNotifier {
           _user = user_model.User.fromJson(decoded);
           notifyListeners();
         }
-      } catch (e) {
-        debugPrint('Error reading user from cache: $e');
-      }
+      } catch (e) {}
     }
     try {
       final String? uid = FirebaseAuth.instance.currentUser?.uid;

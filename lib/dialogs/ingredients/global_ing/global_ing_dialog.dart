@@ -1,4 +1,3 @@
-import 'package:ai_cook_project/dialogs/ingredients/global_ing/widgets/card_chips.dart';
 import 'package:ai_cook_project/dialogs/ingredients/global_ing/widgets/scroller.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';

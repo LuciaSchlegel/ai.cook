@@ -71,8 +71,6 @@ class UserIng {
         unit: unit,
       );
     } catch (e) {
-      debugPrint('Error parsing UserIng: $e');
-      debugPrint('JSON data: $json');
       rethrow;
     }
   }

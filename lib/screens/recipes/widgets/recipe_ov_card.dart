@@ -82,12 +82,12 @@ class _RecipeOverviewCardState extends State<RecipeOverviewCard>
         onVerticalDragUpdate: _handleDragUpdate,
         onVerticalDragEnd: _handleDragEnd,
         child: Card(
-          elevation: 4,
+          elevation: 6,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(30)),
           ),
           clipBehavior: Clip.antiAlias,
-          color: CupertinoColors.white,
+          color: AppColors.white,
           child: SizedBox(
             height: size.height * 0.85,
             width: size.width * 0.88,
@@ -136,7 +136,7 @@ class _RecipeHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _RecipeImage(imageUrl: recipe.imageUrl),
+          _RecipeImage(imageUrl: recipe.image),
           Expanded(child: _RecipeTitle(name: recipe.name)),
         ],
       ),
@@ -239,17 +239,17 @@ class _RecipeTitle extends StatelessWidget {
 
   TextStyle _calculateTextStyle(List<String> words) {
     const int longWordThreshold = 12;
-    const double baseFontSize = 40.0;
+    const double baseFontSize = 34.0;
     const double scaleFactor = 0.9;
 
     bool hasLongWord = words.any((word) => word.length > longWordThreshold);
     return TextStyle(
       fontSize: hasLongWord ? baseFontSize * scaleFactor : baseFontSize,
       height: 1.1,
-      letterSpacing: 1.5,
+      letterSpacing: 1.2,
       fontWeight: FontWeight.w600,
       fontFamily: 'Casta',
-      color: const Color(0xFF2F2F2F),
+      color: AppColors.button,
     );
   }
 }
@@ -300,14 +300,14 @@ class _RecipeTag extends StatelessWidget {
         tag,
         style: const TextStyle(
           fontWeight: FontWeight.w400,
-          fontSize: 11,
+          fontSize: 12,
           color: AppColors.white,
           fontFamily: 'Inter',
           letterSpacing: 0.2,
         ),
       ),
       backgroundColor: AppColors.mutedGreen,
-      padding: const EdgeInsets.symmetric(horizontal: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: VisualDensity.compact,
     );
@@ -407,14 +407,14 @@ class _GlanceInfoRow extends StatelessWidget {
   Widget _buildGlanceItem(IconData icon, String text) {
     return Row(
       children: [
-        Icon(icon, size: 14, color: AppColors.button),
+        Icon(icon, size: 16, color: AppColors.mutedGreen),
         const SizedBox(width: 4),
         Text(
           text,
           style: const TextStyle(
-            fontSize: 12,
+            fontSize: 13,
             color: AppColors.button,
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w500,
             fontFamily: 'Inter',
           ),
         ),

@@ -74,7 +74,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
         top: false,
         child: Column(
           children: [
-            SizedBox(height: 16),
+            const SizedBox(height: 9),
             // Category Dropdown
             Padding(
               padding: EdgeInsets.fromLTRB(

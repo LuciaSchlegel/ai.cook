@@ -13,6 +13,7 @@ class FloatingAddButton extends StatelessWidget {
         bottom: MediaQuery.of(context).padding.bottom + 16,
       ),
       child: FloatingActionButton(
+        heroTag: 'add_button',
         onPressed: onPressed,
         backgroundColor: AppColors.button.withOpacity(0.9),
         elevation: 2,

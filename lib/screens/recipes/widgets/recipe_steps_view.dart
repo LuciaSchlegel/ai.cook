@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/recipe_model.dart';
+import '../../../theme.dart';
 
 class RecipeStepsView extends StatelessWidget {
   final Recipe recipe;
@@ -14,25 +15,28 @@ class RecipeStepsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           children: [
             Stack(
               children: [
-                recipe.imageUrl != null
+                recipe.image != null
                     ? Image.network(
-                      recipe.imageUrl!,
+                      recipe.image!,
                       width: double.infinity,
                       height: 200,
                       fit: BoxFit.cover,
                     )
-                    : Container(height: 200, color: Colors.grey),
+                    : Container(
+                      height: 200,
+                      color: AppColors.mutedGreen.withOpacity(0.2),
+                    ),
                 Positioned(
                   top: 12,
                   left: 12,
                   child: IconButton(
-                    icon: const Icon(Icons.close),
+                    icon: const Icon(Icons.close, color: AppColors.button),
                     onPressed: onClose,
                   ),
                 ),
@@ -43,13 +47,14 @@ class RecipeStepsView extends StatelessWidget {
               child: Text(
                 recipe.name,
                 style: const TextStyle(
-                  fontSize: 26,
+                  fontSize: 28,
                   fontWeight: FontWeight.w600,
-                  fontFamily: 'Times New Roman',
+                  fontFamily: 'Casta',
+                  color: AppColors.button,
                 ),
               ),
             ),
-            const Divider(),
+            const Divider(color: AppColors.mutedGreen, thickness: 1),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Align(
@@ -57,9 +62,10 @@ class RecipeStepsView extends StatelessWidget {
                 child: Text(
                   'steps...',
                   style: TextStyle(
-                    fontFamily: 'Times New Roman',
+                    fontFamily: 'Inter',
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
+                    color: AppColors.mutedGreen,
                   ),
                 ),
               ),
@@ -77,7 +83,14 @@ class RecipeStepsView extends StatelessWidget {
                           .map(
                             (entry) => Padding(
                               padding: const EdgeInsets.symmetric(vertical: 6),
-                              child: Text('${entry.key + 1}. ${entry.value}'),
+                              child: Text(
+                                '${entry.key + 1}. ${entry.value}',
+                                style: const TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 15,
+                                  color: AppColors.white,
+                                ),
+                              ),
                             ),
                           )
                           .toList(),

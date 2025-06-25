@@ -26,6 +26,7 @@ export const setAdminRoleController = controllerWrapper(async (req) => {
 export const seedResourcesController = controllerWrapper(async (req) => {
   const { resourceType } = req.params;
   const { resource } = req.body;
+  console.log("controller", resourceType, resource);
   if (!resourceType) {
     throw new BadRequestError("Resource type is required");
   }

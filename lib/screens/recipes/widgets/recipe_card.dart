@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../models/recipe_model.dart';
 import '../../../models/user_ing.dart';
 import 'recipe_ov_card.dart';
+import '../../../theme.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class RecipeCard extends StatefulWidget {
   final Recipe recipe;
@@ -39,7 +41,7 @@ class _RecipeCardState extends State<RecipeCard> {
           GestureDetector(
             onTap: () => _showRecipeDetail(context),
             child: SizedBox(
-              height: 120,
+              height: size.height * 0.16,
               child: _RecipeCardContent(
                 recipe: widget.recipe,
                 userIngredients: widget.userIngredients,
@@ -62,33 +64,37 @@ class _RecipeCardContent extends StatelessWidget {
   });
 
   String _getMissingIngredientsText() {
-    // final missingIngredients = recipe.getMissingIngredients(userIngredients);
-    // if (missingIngredients.isEmpty) {
-    //   return 'All available';
-    // }
-    // return '${missingIngredients.length} missing';
-    return 'All available';
+    final missingIngredients = recipe.getMissingIngredients(userIngredients);
+    if (missingIngredients.isEmpty) {
+      return 'All available';
+    }
+    return '${missingIngredients.length} missing';
   }
 
   @override
   Widget build(BuildContext context) {
-    return Card.filled(
-      elevation: 10,
+    return Card(
+      elevation: 6,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
-      color: CupertinoColors.systemGrey6.resolveFrom(context),
+      color: AppColors.white,
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(16.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _RecipeImage(imageUrl: recipe.imageUrl),
-            const SizedBox(width: 12),
+            _RecipeImage(imageUrl: recipe.image),
+            const SizedBox(width: 16),
             Expanded(
-              child: _RecipeDetails(
-                recipe: recipe,
-                missingIngredientsText: _getMissingIngredientsText(),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.14,
+                ),
+                child: _RecipeDetails(
+                  recipe: recipe,
+                  missingIngredientsText: _getMissingIngredientsText(),
+                ),
               ),
             ),
           ],
@@ -105,26 +111,26 @@ class _RecipeImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.22,
-      height: MediaQuery.of(context).size.width * 0.22,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child:
-            imageUrl != null
-                ? Image.network(
-                  imageUrl!,
-                  fit: BoxFit.cover,
-                  cacheWidth:
-                      (MediaQuery.of(context).size.width *
-                              0.22 *
-                              MediaQuery.of(context).devicePixelRatio)
-                          .round(),
-                  errorBuilder: (_, __, ___) => const _PlaceholderImage(),
-                )
-                : const _PlaceholderImage(),
-      ),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(15),
+      child:
+          imageUrl != null && imageUrl!.isNotEmpty
+              ? CachedNetworkImage(
+                imageUrl: imageUrl!,
+                fit: BoxFit.cover,
+                width: 80,
+                height: 80,
+                placeholder:
+                    (context, url) => const CupertinoActivityIndicator(),
+                errorWidget:
+                    (context, url, error) => const Icon(
+                      CupertinoIcons.photo,
+                      color: AppColors.button,
+                      size: 40,
+                    ),
+                fadeInDuration: const Duration(milliseconds: 0),
+              )
+              : const _PlaceholderImage(),
     );
   }
 }
@@ -135,10 +141,13 @@ class _PlaceholderImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: CupertinoColors.systemGrey4,
+      width: 80,
+      height: 80,
+      color: AppColors.mutedGreen.withOpacity(0.2),
       child: const Icon(
         CupertinoIcons.photo,
-        color: CupertinoColors.systemGrey2,
+        color: AppColors.button,
+        size: 40,
       ),
     );
   }
@@ -157,30 +166,48 @@ class _RecipeDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Text(
-          recipe.name,
-          style: const TextStyle(
-            fontFamily: 'Times New Roman',
-            letterSpacing: -0.5,
-            fontSize: 22,
-            height: 1.0,
-            fontWeight: FontWeight.w500,
-            color: CupertinoColors.black,
+        Expanded(
+          flex: 2,
+          child: Text(
+            recipe.name,
+            style: const TextStyle(
+              fontFamily: 'Casta',
+              letterSpacing: 1.2,
+              fontSize: 20,
+              height: 1.1,
+              fontWeight: FontWeight.w600,
+              color: AppColors.button,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
         ),
-        const SizedBox(height: 4),
-        _DetailRow(label: 'Est. time: ', value: recipe.cookingTime ?? "N/A"),
-        const SizedBox(height: 2),
-        _DetailRow(label: 'Difficulty: ', value: recipe.difficulty ?? "N/A"),
-        const SizedBox(height: 2),
-        _DetailRow(
-          label: 'Ingredients: ',
-          value: missingIngredientsText,
-          valueColor: recipe.ingredients.isEmpty ? Colors.red : Colors.green,
+        Expanded(
+          flex: 3,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _DetailRow(
+                label: 'Est. time: ',
+                value: recipe.cookingTime ?? "N/A",
+              ),
+              _DetailRow(
+                label: 'Difficulty: ',
+                value: recipe.difficulty ?? "N/A",
+              ),
+              _DetailRow(
+                label: 'Ingredients: ',
+                value: missingIngredientsText,
+                valueColor:
+                    missingIngredientsText.contains('missing')
+                        ? AppColors.orange
+                        : AppColors.mutedGreen,
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -195,7 +222,7 @@ class _DetailRow extends StatelessWidget {
   const _DetailRow({
     required this.label,
     required this.value,
-    this.valueColor = CupertinoColors.black,
+    this.valueColor = AppColors.button,
   });
 
   @override
@@ -206,13 +233,18 @@ class _DetailRow extends StatelessWidget {
           label,
           style: const TextStyle(
             fontSize: 13,
-            color: CupertinoColors.systemGrey,
+            color: AppColors.mutedGreen,
+            fontFamily: 'Inter',
           ),
         ),
         Expanded(
           child: Text(
             value,
-            style: TextStyle(fontSize: 13, color: valueColor),
+            style: TextStyle(
+              fontSize: 13,
+              color: valueColor,
+              fontFamily: 'Inter',
+            ),
             overflow: TextOverflow.ellipsis,
           ),
         ),

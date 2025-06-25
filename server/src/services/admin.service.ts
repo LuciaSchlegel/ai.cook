@@ -112,7 +112,7 @@ export async function setAdminRoleService(uid: string) {
 export async function seedResourcesService(resourceType: string, resources: Resource | Resource[]) {
     // Convert single resource to array for uniform handling
     const resourceArray = Array.isArray(resources) ? resources : [resources];
-    
+    console.log("resourceArray", resourceArray);
     if (resourceArray.length === 0) {
         throw new BadRequestError("At least one resource is required");
     }

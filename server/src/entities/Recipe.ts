@@ -1,5 +1,5 @@
 //Recipe.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, JoinTable, ManyToMany } from 'typeorm';
 import { User } from './User';
 import { RecipeTag } from './RecipeTag';
 import { RecipeIngredient } from './RecipeIngredient';
@@ -43,6 +43,11 @@ export class Recipe {
   @Column({ nullable: true })
   servings?: string;
 
-  @OneToMany(() => RecipeTag, tag => tag.recipe)
+  @ManyToMany(() => RecipeTag, recipeTag => recipeTag.recipes)
+  @JoinTable({
+    name: 'recipe_recipe_tags', // tabla intermedia
+    joinColumn: { name: 'recipe_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'recipe_tag_id', referencedColumnName: 'id' }
+  })
   tags!: RecipeTag[];
 }
