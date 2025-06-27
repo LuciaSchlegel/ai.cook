@@ -1,3 +1,4 @@
+import 'package:ai_cook_project/providers/api_rec_provider.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
 import 'package:ai_cook_project/screens/auth/0_login/login_screen.dart';
@@ -34,6 +35,9 @@ void main() async {
         ),
         ChangeNotifierProvider<ResourceProvider>(
           create: (_) => ResourceProvider(),
+        ),
+        ChangeNotifierProvider<ExtRecipesProvider>(
+          create: (_) => ExtRecipesProvider(),
         ),
       ],
       child: const MyApp(),
