@@ -6,6 +6,7 @@ import { UserIngredient } from './UserIngredient';
 import { Recipe } from './Recipe';
 import { Event } from './Event';
 import { CustomIngredient } from './Custom_Ingredient';
+import { ExternalRecipe } from './ExternalRecipe';
 
 export enum UserRole {
     USER = 'user',
@@ -64,4 +65,7 @@ export class User {
 
     @OneToMany(() => Event, event => event.user)
     events!: Event[];
+
+    @OneToMany(() => ExternalRecipe, recipe => recipe.savedBy)
+    savedExternalRecipes!: ExternalRecipe[];
 }

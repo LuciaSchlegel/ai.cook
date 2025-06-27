@@ -22,7 +22,7 @@ export class Recipe {
   @OneToMany(() => RecipeIngredient, recipeIngredient => recipeIngredient.recipe)
   ingredients!: RecipeIngredient[];
 
-  @Column('simple-array', { nullable: true })
+  @Column('simple-json', { nullable: true })
   steps?: string[];
 
   @CreateDateColumn()

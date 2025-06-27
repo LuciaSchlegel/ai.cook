@@ -1,6 +1,5 @@
 import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/unit.dart';
-import 'package:flutter/foundation.dart';
 
 class RecipeIngredient {
   final Ingredient ingredient;

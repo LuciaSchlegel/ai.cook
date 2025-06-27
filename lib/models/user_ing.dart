@@ -1,7 +1,6 @@
 import 'package:ai_cook_project/models/custom_ing_model.dart';
 import 'package:ai_cook_project/models/unit.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
-import 'package:flutter/foundation.dart';
 
 class UserIng {
   final int id;

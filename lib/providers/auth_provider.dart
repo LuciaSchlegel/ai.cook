@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:ai_cook_project/providers/ingredients_provider.dart';
+import 'package:ai_cook_project/utils/ingredients_cache.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FBAuthProvider with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -86,5 +89,15 @@ class FBAuthProvider with ChangeNotifier {
   Future<void> signOut(BuildContext context) async {
     await _auth.signOut();
     Provider.of<UserProvider>(context, listen: false).clearUser();
+    Provider.of<IngredientsProvider>(context, listen: false).clearAll();
+    await clearUserCache();
+  }
+
+  Future<void> clearUserCache() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('user_ingredients');
+    await prefs.remove('global_ingredients');
+    await prefs.remove('cached_user');
+    // Agrega aquí cualquier otra clave relevante
   }
 }

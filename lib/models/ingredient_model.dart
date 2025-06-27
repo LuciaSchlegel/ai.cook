@@ -1,6 +1,5 @@
 import 'package:ai_cook_project/models/tag_model.dart';
 import 'package:ai_cook_project/models/category_model.dart' as model;
-import 'package:flutter/foundation.dart';
 
 class Ingredient {
   final int id;

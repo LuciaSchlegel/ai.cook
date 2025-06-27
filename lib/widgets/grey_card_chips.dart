@@ -32,7 +32,7 @@ class GreyCardChips extends StatelessWidget {
           final isSelected = label == selectedItem;
           return Padding(
             padding: const EdgeInsets.only(right: 8),
-            child: FilterChip(
+            child: ChoiceChip(
               label: Text(label),
               selected: isSelected,
               onSelected: (_) => onSelected(label),
@@ -49,7 +49,7 @@ class GreyCardChips extends StatelessWidget {
                       isSelected
                           ? AppColors.mutedGreen
                           : CupertinoColors.systemGrey4,
-                  width: 1.0,
+                  width: 1,
                 ),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),

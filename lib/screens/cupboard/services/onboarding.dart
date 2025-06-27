@@ -27,6 +27,13 @@ Future<bool> handleOnboarding({
     await ingredientsProvider.initializeIngredients();
   }
 
+  // Espera a que los ingredientes globales estén cargados (máx 3 segundos)
+  int waited = 0;
+  while (ingredientsProvider.ingredients.isEmpty && waited < 3000) {
+    await Future.delayed(const Duration(milliseconds: 100));
+    waited += 100;
+  }
+
   // Show onboarding dialog if it's the first time
   if (!hasShownOnboarding && ingredientsProvider.userIngredients.isEmpty) {
     await showGlobalIngredientsDialog(context);

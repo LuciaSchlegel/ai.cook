@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../models/user_ing.dart';
 import '../../widgets/dropdown_selector.dart';
 import '../../providers/recipes_provider.dart';
+import '../../providers/resource_provider.dart';
 
 class RecipesScreen extends StatefulWidget {
   const RecipesScreen({super.key});
@@ -21,6 +22,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
     'Missing Ingredients',
   ];
 
+  String selectedTag = 'All';
   final List<UserIng> userIngredients = [];
 
   @override
@@ -33,6 +35,8 @@ class _RecipesScreenState extends State<RecipesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final resourceProvider = Provider.of<ResourceProvider>(context);
+    final tagNames = ['All', ...resourceProvider.recipeTags.map((t) => t.name)];
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: MediaQuery.of(context).size.height * 0,
@@ -54,6 +58,33 @@ class _RecipesScreenState extends State<RecipesScreen> {
                   });
                 }
               },
+            ),
+          ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.05,
+              vertical: 8,
+            ),
+            child: Row(
+              children:
+                  tagNames.map((tag) {
+                    final isSelected = selectedTag == tag;
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: ChoiceChip(
+                        label: Text(tag),
+                        selected: isSelected,
+                        onSelected: (_) {
+                          setState(() {
+                            selectedTag = tag;
+                          });
+                        },
+                        selectedColor: Theme.of(context).colorScheme.secondary,
+                        checkmarkColor: Colors.white,
+                      ),
+                    );
+                  }).toList(),
             ),
           ),
           Expanded(
@@ -82,7 +113,15 @@ class _RecipesScreenState extends State<RecipesScreen> {
                   return Center(child: LoadingIndicator());
                 }
 
-                final recipes = recipesProvider.recipes;
+                var recipes = recipesProvider.recipes;
+                if (selectedTag != 'All') {
+                  recipes =
+                      recipes
+                          .where(
+                            (r) => r.tags.any((t) => t.name == selectedTag),
+                          )
+                          .toList();
+                }
 
                 if (recipes.isEmpty) {
                   return const Center(child: Text('No recipes found'));

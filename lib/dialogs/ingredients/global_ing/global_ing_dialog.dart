@@ -55,6 +55,20 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                         )
                         .toList();
 
+            // Si no hay ingredientes globales, muestra un loading spinner
+            if (globalIngredients.isEmpty) {
+              return Dialog(
+                backgroundColor: CupertinoColors.systemGrey6,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: SizedBox(
+                  height: 200,
+                  child: Center(child: CupertinoActivityIndicator(radius: 20)),
+                ),
+              );
+            }
+
             return Dialog(
               backgroundColor: CupertinoColors.systemGrey6,
               shape: RoundedRectangleBorder(
@@ -107,6 +121,7 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                                           : AppColors.button,
                                   fontWeight: FontWeight.w500,
                                 ),
+                                checkmarkColor: AppColors.white,
                                 shape: StadiumBorder(
                                   side: BorderSide(
                                     color:

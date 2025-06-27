@@ -8,6 +8,7 @@ import recipesRouter from "./recipes.router";
 import ingredientsRouter from "./ingredients.router";
 import llmRouter from "./llm.router"; 
 import resourcesRouter from "./resources.router";
+import apiRouter from "./api.router";
 
 const router = Router();
 
@@ -16,6 +17,7 @@ router.use("/admin", adminRouter);
 router.use("/resources", resourcesRouter);  
 router.use("/analytics", analyticsRouter);
 router.use("/attributes", attributesRouter);
+router.use("/api", apiRouter);
 router.use("/calendar", calendarRouter);
 router.use("/ingredients", ingredientsRouter);
 router.use("/recipes", recipesRouter);
