@@ -7,7 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ExtRecipesProvider extends ChangeNotifier {
   List<ExternalRecipePreview> _extRecipes = [];
-  List<ExternalRecipeSteps> _extRecipeSteps = [];
+  final List<ExternalRecipeSteps> _extRecipeSteps = [];
   bool _isLoading = false;
   String? _error;
 
@@ -15,7 +15,7 @@ class ExtRecipesProvider extends ChangeNotifier {
   List<ExternalRecipeSteps> get extRecipeSteps => _extRecipeSteps;
   bool get isLoading => _isLoading;
   String? get error => _error;
-
+  //busqueda de recetas en la api por tags o searchController
   Future<void> searchRecipes(
     // RecipeSearchParams recipeSearchParams
   ) async {
@@ -23,7 +23,6 @@ class ExtRecipesProvider extends ChangeNotifier {
     _clearError();
 
     try {
-      print('we entered ext prov');
       final queryParams = {
         'query': 'pasta',
         'diet': 'vegetarian',
@@ -33,13 +32,10 @@ class ExtRecipesProvider extends ChangeNotifier {
       final uri = Uri.parse(
         '$apiUrl/api/recipes',
       ).replace(queryParameters: queryParams);
-      print(uri);
       final response = await http.get(
         uri,
         headers: {'Content-Type': 'application/json'},
       );
-      final dec = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200) {
         final decoded = json.decode(response.body);
         final List<dynamic> extRecipesJson = decoded['results'];
@@ -54,6 +50,46 @@ class ExtRecipesProvider extends ChangeNotifier {
       }
     } catch (e) {
       _setError('Failed to load recipes: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  //busqueda de recetas en la api por ingredients!
+  Future<void> searchRecipesByIngredients({
+    required List<String> ingredients,
+    int number = 10,
+  }) async {
+    _setLoading(true);
+    _clearError();
+    try {
+      final apiUrl = dotenv.env['API_URL'] ?? '';
+      final ingredientsParam = ingredients.join(',');
+      final queryParams = {
+        'ingredients': ingredientsParam,
+        'number': number.toString(),
+      };
+      final uri = Uri.parse(
+        '$apiUrl/api/recipes/by-ingredients',
+      ).replace(queryParameters: queryParams);
+      final response = await http.get(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+      );
+      if (response.statusCode == 200) {
+        final decoded = json.decode(response.body);
+        final List<dynamic> extRecipesJson = decoded['results'];
+        _extRecipes =
+            extRecipesJson
+                .map((e) => ExternalRecipePreview.fromJson(e))
+                .toList();
+      } else {
+        _setError(
+          'Failed to load recipes by ingredients. Status code: ${response.statusCode}',
+        );
+      }
+    } catch (e) {
+      _setError('Failed to load recipes by ingredients: $e');
     } finally {
       _setLoading(false);
     }

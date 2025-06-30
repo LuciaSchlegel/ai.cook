@@ -1,4 +1,4 @@
-import 'package:ai_cook_project/dialogs/expanded_recipe_dialog.dart';
+import 'package:ai_cook_project/dialogs/recipes/expanded_recipe_dialog.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_glance_card.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_header.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_tags.dart';

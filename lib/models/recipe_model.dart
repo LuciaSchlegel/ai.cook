@@ -1,6 +1,5 @@
 import 'package:ai_cook_project/models/recipe_ingredient_model.dart';
 import 'package:ai_cook_project/models/recipe_tag_model.dart';
-import 'package:flutter/material.dart';
 import '../models/user_ing.dart';
 
 class Recipe {

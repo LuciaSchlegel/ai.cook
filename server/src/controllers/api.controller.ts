@@ -2,6 +2,7 @@ import { NextFunction, RequestHandler, Request, Response } from "express";
 import {
   getRecipeStepsService,
   searchExternalRecipesService,
+  searchExtRecipesByIngService,
 } from "../services/api.service";
 
 export interface RecipeSearchParams {
@@ -26,6 +27,11 @@ export interface RecipeSearchParams {
 
 export interface GetRecipeParams {
   recipeId: number;
+}
+
+export interface IngRecipeSearchParams {
+  ingredients?: string,
+  number?: number, 
 }
 
 type ControllerFunction = (req: Request) => Promise<any>;
@@ -87,6 +93,20 @@ export const searchExternalRecipesController = controllerWrapper(async (req) => 
   );
 
   return await searchExternalRecipesService(cleanedParams);
+});
+
+export const searchExtRecipesByIngController = controllerWrapper(async (req) => {
+  const { ingredients, number } = req.query;
+  const params = {
+    ingredients: ingredients ? ingredients : undefined,
+    number: number ? Number(number) : 10,
+  }
+
+  const cleanedParams = Object.fromEntries(
+    Object.entries(params).filter(([_, v]) => v !== undefined && v !== "")
+  );
+
+  return await searchExtRecipesByIngService(cleanedParams);
 });
 
 export const getRecipeStepsController = controllerWrapper(async (req) => {

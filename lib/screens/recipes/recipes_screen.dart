@@ -1,5 +1,6 @@
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_card.dart';
 import 'package:ai_cook_project/widgets/floating_add_button.dart';
+import 'package:ai_cook_project/widgets/grey_card_chips.dart';
 import 'package:ai_cook_project/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,7 @@ import '../../models/user_ing.dart';
 import '../../widgets/dropdown_selector.dart';
 import '../../providers/recipes_provider.dart';
 import '../../providers/resource_provider.dart';
+import '../../dialogs/recipes/add_ext_recipe.dart';
 
 class RecipesScreen extends StatefulWidget {
   const RecipesScreen({super.key});
@@ -38,6 +40,13 @@ class _RecipesScreenState extends State<RecipesScreen> {
   Widget build(BuildContext context) {
     final resourceProvider = Provider.of<ResourceProvider>(context);
     final tagNames = ['All', ...resourceProvider.recipeTags.map((t) => t.name)];
+
+    void onSelected(String tag) {
+      setState(() {
+        selectedTag = tag;
+      });
+    }
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Padding(
@@ -63,33 +72,12 @@ class _RecipesScreenState extends State<RecipesScreen> {
                 },
               ),
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.05,
-                vertical: 8,
-              ),
-              child: Row(
-                children:
-                    tagNames.map((tag) {
-                      final isSelected = selectedTag == tag;
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: ChoiceChip(
-                          label: Text(tag),
-                          selected: isSelected,
-                          onSelected: (_) {
-                            setState(() {
-                              selectedTag = tag;
-                            });
-                          },
-                          selectedColor:
-                              Theme.of(context).colorScheme.secondary,
-                          checkmarkColor: Colors.white,
-                        ),
-                      );
-                    }).toList(),
-              ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+            GreyCardChips(
+              items: tagNames,
+              selectedItem: selectedTag,
+              onSelected: onSelected,
+              horizontalPadding: MediaQuery.of(context).size.width * 0.05,
             ),
             Expanded(
               child: Consumer<RecipesProvider>(
@@ -148,7 +136,15 @@ class _RecipesScreenState extends State<RecipesScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingAddButton(onPressed: () => {}),
+      floatingActionButton: FloatingAddButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) => const AddExtRecipe(),
+          );
+        },
+        heroTag: 'add_button_recipes',
+      ),
     );
   }
 }

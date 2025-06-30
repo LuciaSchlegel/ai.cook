@@ -7,7 +7,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
-import 'package:ai_cook_project/utils/ingredients_cache.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FBAuthProvider with ChangeNotifier {

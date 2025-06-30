@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GetRecipeParams, RecipeSearchParams } from "../controllers/api.controller";
+import { GetRecipeParams, IngRecipeSearchParams, RecipeSearchParams } from "../controllers/api.controller";
 import { ExternalRecipePreviewDto } from "../dtos/ext_recipe_prev.dto";
 import { ExternalRecipeStepsDto } from "../dtos/ext_recipe_steps";
 import { ExternalRecipeFullDto } from "../dtos/ext_recipe_full.dto";
@@ -64,6 +64,68 @@ export async function searchExternalRecipesService(
         cuisines: r.cuisines ?? [],
         dishTypes: r.dishTypes ?? [],
         diets: r.diets ?? [],
+        extendedIngredients,
+      };
+    })
+  );
+
+  return { results };
+}
+
+export async function searchExtRecipesByIngService(params: IngRecipeSearchParams): Promise<{ results: ExternalRecipePreviewDto[] }> {
+  const searchResponse = await axios.get(`${baseUrl}/findByIngredients`, {
+    params: {
+      ingredients: params.ingredients,
+      number: params.number,
+      apiKey
+    },
+  });
+
+  const rawResults = searchResponse.data || [];
+  const results: ExternalRecipePreviewDto[] = await Promise.all(
+    rawResults.map(async (r: any) => {
+      let readyInMinutes = 0;
+      let servings = 0;
+      let cuisines: string[] = [];
+      let dishTypes: string[] = [];
+      let diets: string[] = [];
+      let extendedIngredients: ExternalRecipePreviewDto["extendedIngredients"] = [];
+
+      try {
+        const detailResponse = await axios.get(`${baseUrl}/${r.id}/information`, {
+          params: {
+            includeNutrition: false,
+            apiKey,
+          },
+        });
+        const full = detailResponse.data;
+        readyInMinutes = full.readyInMinutes;
+        servings = full.servings;
+        cuisines = full.cuisines ?? [];
+        dishTypes = full.dishTypes ?? [];
+        diets = full.diets ?? [];
+        if (full.extendedIngredients?.length) {
+          extendedIngredients = full.extendedIngredients.map((i: any) => ({
+            id: i.id,
+            name: i.name,
+            original: i.original,
+            amount: i.measures?.metric?.amount ?? 0,
+            unit: i.measures?.metric?.unitShort ?? '',
+          }));
+        }
+      } catch (err) {
+        console.warn(`Failed to fetch details for recipe ${r.id}`);
+      }
+
+      return {
+        id: r.id,
+        title: r.title,
+        image: r.image,
+        readyInMinutes,
+        servings,
+        cuisines,
+        dishTypes,
+        diets,
         extendedIngredients,
       };
     })
