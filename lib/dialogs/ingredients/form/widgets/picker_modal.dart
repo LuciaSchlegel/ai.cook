@@ -54,19 +54,17 @@ class _UnitPickerModalState extends State<UnitPickerModal> {
                     horizontal: 16,
                     vertical: 6,
                   ),
-                  minSize: 0,
                   onPressed: () => Navigator.pop(context),
                   child: const Text(
                     'Cancel',
                     style: TextStyle(color: AppColors.mutedGreen, fontSize: 16),
-                  ),
+                  ), minimumSize: Size(0, 0),
                 ),
                 CupertinoButton(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 6,
                   ),
-                  minSize: 0,
                   onPressed: () {
                     widget.onSelected(_tempSelected);
                     Navigator.pop(context);
@@ -78,7 +76,7 @@ class _UnitPickerModalState extends State<UnitPickerModal> {
                       color: AppColors.mutedGreen,
                       fontSize: 16,
                     ),
-                  ),
+                  ), minimumSize: Size(0, 0),
                 ),
               ],
             ),

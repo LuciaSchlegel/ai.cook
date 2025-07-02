@@ -39,7 +39,7 @@
     },
     {
       "name": "async",
-      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/async-2.12.0",
+      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/async-2.13.0",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
@@ -183,7 +183,7 @@
     },
     {
       "name": "fake_async",
-      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/fake_async-1.3.2",
+      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/fake_async-1.3.3",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
@@ -243,7 +243,7 @@
     },
     {
       "name": "flutter",
-      "rootUri": "file:///opt/homebrew/Caskroom/flutter/3.29.3/flutter/packages/flutter",
+      "rootUri": "file:///Users/luciaschlegel/flutter/packages/flutter",
       "packageUri": "lib/",
       "languageVersion": "3.7"
     },
@@ -273,13 +273,13 @@
     },
     {
       "name": "flutter_test",
-      "rootUri": "file:///opt/homebrew/Caskroom/flutter/3.29.3/flutter/packages/flutter_test",
+      "rootUri": "file:///Users/luciaschlegel/flutter/packages/flutter_test",
       "packageUri": "lib/",
       "languageVersion": "3.7"
     },
     {
       "name": "flutter_web_plugins",
-      "rootUri": "file:///opt/homebrew/Caskroom/flutter/3.29.3/flutter/packages/flutter_web_plugins",
+      "rootUri": "file:///Users/luciaschlegel/flutter/packages/flutter_web_plugins",
       "packageUri": "lib/",
       "languageVersion": "3.7"
     },
@@ -387,7 +387,7 @@
     },
     {
       "name": "leak_tracker",
-      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/leak_tracker-10.0.8",
+      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/leak_tracker-10.0.9",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
@@ -633,7 +633,7 @@
     },
     {
       "name": "sky_engine",
-      "rootUri": "file:///opt/homebrew/Caskroom/flutter/3.29.3/flutter/bin/cache/pkg/sky_engine",
+      "rootUri": "file:///Users/luciaschlegel/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
       "languageVersion": "3.7"
     },
@@ -801,7 +801,7 @@
     },
     {
       "name": "vm_service",
-      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/vm_service-14.3.1",
+      "rootUri": "file:///Users/luciaschlegel/.pub-cache/hosted/pub.dev/vm_service-15.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
@@ -854,10 +854,9 @@
       "languageVersion": "3.7"
     }
   ],
-  "generated": "2025-06-27T12:29:50.026623Z",
   "generator": "pub",
-  "generatorVersion": "3.7.2",
-  "flutterRoot": "file:///opt/homebrew/Caskroom/flutter/3.29.3/flutter",
-  "flutterVersion": "3.29.3",
+  "generatorVersion": "3.8.1",
+  "flutterRoot": "file:///Users/luciaschlegel/flutter",
+  "flutterVersion": "3.32.5",
   "pubCache": "file:///Users/luciaschlegel/.pub-cache"
 }
