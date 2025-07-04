@@ -3,7 +3,7 @@ import { AppDataSource } from "./config/data_source";
 import express from "express";
 import cors from "cors";
 import router from "./routes";
-import { errorHandler } from "./utils/errorhandler";
+import { errorHandler } from "./utils/error_handler";
 
 // set up server
 const app = express();
