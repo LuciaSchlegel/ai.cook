@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:ai_cook_project/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
@@ -23,23 +23,29 @@ class FBAuthProvider with ChangeNotifier {
 
 Future<void> signInWithGoogle() async {
   // Comentar temporalmente para pruebas
-  throw UnimplementedError('Google Sign-In temporalmente deshabilitado');
-  
-  /*
-  final googleSignIn = GoogleSignIn();
-  final googleUser = await googleSignIn.signIn();
-  if (googleUser == null) return; // User canceled
-  final googleAuth = await googleUser.authentication;
-  final credential = GoogleAuthProvider.credential(
-    accessToken: googleAuth.accessToken,
-    idToken: googleAuth.idToken,
-  );
+  // throw UnimplementedError('Google Sign-In temporalmente deshabilitado');
+    
   try {
+    // Inicializar GoogleSignIn si no se ha hecho antes
+    await GoogleSignIn.instance.initialize();
+    
+    // Autenticar con Google
+    final googleUser = await GoogleSignIn.instance.authenticate();
+    if (googleUser == null) return; // User canceled
+    
+    // Obtener tokens de autorización
+    final authClient = googleUser.authorizationClient;
+    final auth = await authClient.authorizeScopes(['email', 'profile']);
+    
+    final credential = GoogleAuthProvider.credential(
+      accessToken: auth.accessToken,
+      idToken: googleUser.authentication.idToken,
+    );
+    
     await _auth.signInWithCredential(credential);
   } on FirebaseAuthException {
     rethrow;
   }
-  */
 }
   Future<void> signInWithApple() async {
     if (!Platform.isIOS) return;
