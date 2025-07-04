@@ -1,7 +1,5 @@
-import UIKit
 import Flutter
-import FirebaseCore
-import GoogleSignIn
+import UIKit
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -9,15 +7,7 @@ import GoogleSignIn
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    FirebaseApp.configure()
+    GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
-  }
-
-  override func application(
-    _ app: UIApplication,
-    open url: URL,
-    options: [UIApplication.OpenURLOptionsKey : Any] = [:]
-  ) -> Bool {
-    return GIDSignIn.sharedInstance.handle(url) || super.application(app, open: url, options: options)
   }
 }

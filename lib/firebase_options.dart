@@ -50,19 +50,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAO3EPtyafb4V7iBkTTbOpPKCxslo4bwug',
-    appId: '1:466421311982:android:47b52cea948afea470c6ff',
-    messagingSenderId: '466421311982',
-    projectId: 'ai-cook-11ab9',
-    storageBucket: 'ai-cook-11ab9.firebasestorage.app',
+    apiKey: 'AIzaSyCJioHJOZGaHWkpd0-6VkOL6M_XQVa_nYw',
+    appId: '1:1065239569833:android:c891c6093497c9544bd0b8',
+    messagingSenderId: '1065239569833',
+    projectId: 'aicook-bd932',
+    storageBucket: 'aicook-bd932.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCujFX_SoEjBZ0-0Me6g-_9LBJ40eBqt4Y',
-    appId: '1:466421311982:ios:40b2e04313c7564170c6ff',
-    messagingSenderId: '466421311982',
-    projectId: 'ai-cook-11ab9',
-    storageBucket: 'ai-cook-11ab9.appspot.com',
+    apiKey: 'AIzaSyByHH1LPWwkeBG2zr4rOn2c1O1usgXpU5A',
+    appId: '1:1065239569833:ios:5c92d4b13d94d6054bd0b8',
+    messagingSenderId: '1065239569833',
+    projectId: 'aicook-bd932',
+    storageBucket: 'aicook-bd932.firebasestorage.app',
+    iosClientId: '1065239569833-ns0jrv1iges11dgkptuhio7cs9aba912.apps.googleusercontent.com',
     iosBundleId: 'com.example.aiCookProject',
   );
+
 }

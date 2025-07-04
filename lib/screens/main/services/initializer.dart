@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MainScreenInit {
-  static updateSearchScreen({
+  static void updateSearchScreen({
     required BuildContext context,
     required currentIndex,
   }) {

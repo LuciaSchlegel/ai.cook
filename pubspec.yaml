@@ -32,17 +32,17 @@ dependencies:
     sdk: flutter
   provider: ^6.1.5
   http: ^1.4.0
-  google_sign_in: ^6.3.0
+  google_sign_in: ^7.1.0
   sign_in_with_apple: ^7.0.1
   cupertino_icons: ^1.0.8
-  firebase_core: ^3.13.1
-  firebase_auth: ^5.5.4
+  firebase_core: ^3.15.1
+  firebase_auth: ^5.6.2
   flutter_svg: ^2.1.0
   video_player: ^2.9.5
   animated_text_kit: ^4.2.3
   animate_do: ^4.2.0
   auto_size_text: ^3.0.0
-  intl: ^0.18.0
+  intl: ^0.20.2
   flutter_dotenv: ^5.1.0
   shared_preferences: ^2.5.2
   cached_network_image: ^3.4.1
@@ -57,7 +57,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

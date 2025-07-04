@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1065239569833",
+    "project_id": "aicook-bd932",
+    "storage_bucket": "aicook-bd932.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065239569833:android:c891c6093497c9544bd0b8",
+        "android_client_info": {
+          "package_name": "com.example.ai_cook_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1065239569833-hujcui3kkluqf4nd8gejqds000848ksk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJioHJOZGaHWkpd0-6VkOL6M_XQVa_nYw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1065239569833-hujcui3kkluqf4nd8gejqds000848ksk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1065239569833-ns0jrv1iges11dgkptuhio7cs9aba912.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.aiCookProject"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

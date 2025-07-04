@@ -45,28 +45,5 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<key>NSLocalNetworkUsageDescription</key>
-	<string>This app uses the local network to enable Flutter debugging and development tools.</string>
-	<key>NSBonjourServices</key>
-	<array>
-	<string>_dartobservatory._tcp</string>
-	</array>
-	<key>CFBundleURLTypes</key>
-	<array>
-	<dict>
-		<key>CFBundleTypeRole</key>
-		<string>Editor</string>
-		<key>CFBundleURLSchemes</key>
-		<array>
-		<string>com.googleusercontent.apps.466421311982-jo9v94ot9mqbl2cd0tkns7uldjcjrqum</string>
-		</array>
-	</dict>
-	</array>
-
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-	<string>google</string>
-	<string>com.googleusercontent.apps.466421311982-jo9v94ot9mqbl2cd0tkns7uldjcjrqum</string>
-	</array>
 </dict>
 </plist>
