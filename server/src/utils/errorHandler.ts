@@ -1,7 +1,7 @@
 import { ErrorRequestHandler } from 'express';
 import { AppError } from '../types/AppError';
 
-export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+export const error_handler: ErrorRequestHandler = (err, req, res, next) => {
   // Si es un error de negocio que extendiste de AppError:
   if (err instanceof AppError) {
     if (process.env.NODE_ENV !== 'test') {
