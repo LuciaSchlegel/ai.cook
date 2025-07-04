@@ -3,7 +3,6 @@ import { AppDataSource } from "./config/data_source";
 import express from "express";
 import cors from "cors";
 import router from "./routes";
-import { error_handler } from "./utils/errorhandler";
 // import { spawn } from "child_process"; // ✅ nur dieser
 //  import { loadIngredientsFromLocalFile } from "./services/ingredient.service";
 
@@ -20,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 // include routes // offer routes to frontend 
 app.use(router);
 // error handling middleware
-app.use(error_handler);
+// app.use(error_handler);
 
 
 const initializeDatabase = async () => {
