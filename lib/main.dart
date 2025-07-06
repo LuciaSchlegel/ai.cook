@@ -30,8 +30,8 @@ void main() async {
 
   // Captura errores globales de la plataforma
   PlatformDispatcher.instance.onError = (error, stack) {
-    print('PlatformDispatcher error: ${error}');
-    print('Stacktrace: ${stack}');
+    print('PlatformDispatcher error: $error');
+    print('Stacktrace: $stack');
     return true;
   };
 

@@ -8,6 +8,7 @@ import 'package:ai_cook_project/screens/cupboard/widgets/empty_ing_list.dart';
 import 'package:ai_cook_project/screens/cupboard/widgets/ing_list.dart';
 import 'package:ai_cook_project/widgets/floating_add_button.dart';
 import 'package:ai_cook_project/widgets/grey_card_chips.dart';
+import 'package:ai_cook_project/widgets/screen_header.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
@@ -47,12 +48,6 @@ class _CupboardScreenState extends State<CupboardScreen> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    // El onboarding ahora se maneja en didUpdateWidget
-  }
-
   void _showIngredientDialog([UserIng? userIng]) async {
     await showIngredientDialog(
       context: context,
@@ -71,20 +66,21 @@ class _CupboardScreenState extends State<CupboardScreen> {
       showDialog(context: context, builder: (_) => const AddGlobalIngDialog());
     }
 
-    final categories = [
-      'All',
-      ...resourceProvider.categories.map((c) => c.name),
-    ];
+    final categories = ['All', ...resourceProvider.categories.map((c) => c.name)];
     final tags = ['All', ...resourceProvider.tags.map((t) => t.name)];
 
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        top: false,
         child: Column(
           children: [
-            const SizedBox(height: 9),
-            // Category Dropdown
+            ScreenHeader(
+              onProfileTap: () {},
+              onFeedTap: () {},
+              onLogoutTap: () {},
+              currentIndex: 0,
+            ),
+            SizedBox(height: screenHeight * 0.03),
             Padding(
               padding: EdgeInsets.fromLTRB(
                 horizontalPadding,
@@ -102,7 +98,6 @@ class _CupboardScreenState extends State<CupboardScreen> {
                 },
               ),
             ),
-            // Property Chips
             GreyCardChips(
               items: tags,
               selectedItem: _selectedProperty,
@@ -112,8 +107,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
                 });
               },
               horizontalPadding: horizontalPadding,
-              verticalSpacing: screenHeight * 0.02,
-            ), // Ingredients List
+            ),
             Expanded(
               child: Consumer<IngredientsProvider>(
                 builder: (context, ingredientsProvider, _) {
@@ -128,19 +122,16 @@ class _CupboardScreenState extends State<CupboardScreen> {
                     allIngredients: ingredientsProvider.userIngredients,
                     selectedCategory: _selectedCategory,
                     selectedProperty: _selectedProperty,
-                    searchText:
-                        Provider.of<SearchProvider>(
-                          context,
-                        ).searchController.text,
+                    searchText: Provider.of<SearchProvider>(context).searchController.text,
                   );
 
                   return filteredIngredients.isEmpty
                       ? const EmptyIngredientListMessage()
                       : IngredientListView(
-                        ingredients: filteredIngredients,
-                        horizontalPadding: horizontalPadding,
-                        onTap: _showIngredientDialog,
-                      );
+                          ingredients: filteredIngredients,
+                          horizontalPadding: horizontalPadding,
+                          onTap: _showIngredientDialog,
+                        );
                 },
               ),
             ),

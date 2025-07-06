@@ -95,19 +95,21 @@ class _RecipeOverviewCardState extends State<RecipeOverviewCard>
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       RecipeHeader(
                         recipe: widget.recipe,
                         onClose: () => Navigator.pop(context),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 16),
                       RecipeTags(
                         tags:
                             widget.recipe.tags.map((tag) => tag.name).toList(),
                       ),
-                      const SizedBox(height: 20),
-                      RecipeGlanceCard(recipe: widget.recipe, size: size),
+                      const SizedBox(height: 16),
+                      Expanded(
+                        child: RecipeGlanceCard(recipe: widget.recipe, size: size),
+                      ),
                     ],
                   ),
                 ),

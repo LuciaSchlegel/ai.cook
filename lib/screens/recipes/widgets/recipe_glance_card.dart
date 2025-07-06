@@ -13,97 +13,104 @@ class RecipeGlanceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: size.width * 0.92,
-      height: size.height * 0.5,
-      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 18),
+      height: size.height * 0.52,
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.mutedGreen, width: 1),
-        color: Colors.black.withOpacity(0.10),
-        borderRadius: BorderRadius.circular(20),
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: AppColors.mutedGreen.withOpacity(0.3),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.black.withOpacity(0.08),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'at a glance',
-            style: TextStyle(
-              fontSize: 35,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.8,
-              color: AppColors.withOpacity(AppColors.button, 0.8),
-              fontFamily: 'Casta',
-            ),
+          // Header Section
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.mutedGreen.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.visibility_outlined,
+                  size: 20,
+                  color: AppColors.mutedGreen,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'Quick Overview',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.5,
+                    color: AppColors.button,
+                    fontFamily: 'Casta',
+                  ),
+                ),
+              ),
+            ],
           ),
-          _GlanceDivider(width: size.width * 1),
-          const SizedBox(height: 10),
-          _GlanceInfoRow(recipe: recipe),
-          const SizedBox(height: 10),
-          _GlanceDetailsRow(recipe: recipe, size: size),
+          
+          const SizedBox(height: 16),
+          
+          // Info Cards Section
+          _RecipeInfoCards(recipe: recipe),
+          
+          const SizedBox(height: 20),
+          
+          // Ingredients Section
+          Expanded(
+            child: _IngredientsSection(recipe: recipe, size: size),
+          ),
         ],
       ),
     );
   }
 }
 
-class _GlanceDivider extends StatelessWidget {
-  final double width;
-
-  const _GlanceDivider({required this.width});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: 1,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            const Color(0xFF151414).withOpacity(0.5),
-            const Color(0xFF151414).withOpacity(0.5),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _GlanceInfoRow extends StatelessWidget {
+class _RecipeInfoCards extends StatelessWidget {
   final Recipe recipe;
 
-  const _GlanceInfoRow({required this.recipe});
+  const _RecipeInfoCards({required this.recipe});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _buildGlanceItem(Icons.timer_outlined, recipe.cookingTime ?? "N/A"),
-          _buildGlanceItem(
-            Icons.restaurant_menu_rounded,
-            'Level: ${recipe.difficulty}',
-          ),
-          _buildGlanceItem(
-            Icons.people_outline_rounded,
-            'Servings: ${recipe.servings}',
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildGlanceItem(IconData icon, String text) {
     return Row(
       children: [
-        Icon(icon, size: 16, color: AppColors.mutedGreen),
-        const SizedBox(width: 4),
-        Text(
-          text,
-          style: const TextStyle(
-            fontSize: 13,
-            color: AppColors.button,
-            fontWeight: FontWeight.w500,
-            fontFamily: 'Inter',
+        Expanded(
+          child: _InfoCard(
+            icon: Icons.timer_outlined,
+            title: 'Time',
+            value: recipe.cookingTime ?? 'N/A',
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: _InfoCard(
+            icon: Icons.restaurant_menu_rounded,
+            title: 'Level',
+            value: recipe.difficulty ?? 'N/A',
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: _InfoCard(
+            icon: Icons.people_outline_rounded,
+            title: 'Serves',
+            value: '${recipe.servings ?? 'N/A'}',
           ),
         ),
       ],
@@ -111,22 +118,77 @@ class _GlanceInfoRow extends StatelessWidget {
   }
 }
 
-class _GlanceDetailsRow extends StatelessWidget {
-  final Recipe recipe;
-  final Size size;
+class _InfoCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String value;
 
-  const _GlanceDetailsRow({required this.recipe, required this.size});
+  const _InfoCard({
+    required this.icon,
+    required this.title,
+    required this.value,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: size.height * 0.34,
-        child: RecipeIngCard(
-          recipe: recipe,
-          size: Size(size.width * 0.85, size.height * 0.3),
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+      decoration: BoxDecoration(
+        color: AppColors.background.withOpacity(0.03),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppColors.mutedGreen.withOpacity(0.15),
+          width: 1,
         ),
       ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            size: 24,
+            color: AppColors.mutedGreen,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: AppColors.mutedGreen,
+              fontFamily: 'Inter',
+              letterSpacing: 0.5,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              color: AppColors.button,
+              fontFamily: 'Inter',
+            ),
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _IngredientsSection extends StatelessWidget {
+  final Recipe recipe;
+  final Size size;
+
+  const _IngredientsSection({required this.recipe, required this.size});
+
+  @override
+  Widget build(BuildContext context) {
+    return RecipeIngCard(
+      recipe: recipe,
+      size: Size(size.width * 0.85, size.height * 0.25),
     );
   }
 }

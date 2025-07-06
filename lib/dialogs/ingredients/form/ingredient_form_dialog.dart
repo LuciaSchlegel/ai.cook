@@ -141,17 +141,17 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                     ? 'Add Ingredient'
                     : 'Edit Ingredient',
                 style: const TextStyle(
-                  fontSize: 28,
+                  fontSize: 30,
                   fontFamily: 'Casta',
                   color: AppColors.button,
                   fontWeight: FontWeight.bold,
-                  letterSpacing: 1,
+                  letterSpacing: 1.2,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 28),
               IngredientNameField(name: _nameController.text),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
               Row(
                 children: [
                   Expanded(
@@ -189,7 +189,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                   ),
                 ],
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 36),
               FormActionButtons(
                 isValid: _validateForm(),
                 onDelete: widget.onDelete,

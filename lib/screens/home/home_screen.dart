@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:ai_cook_project/widgets/screen_header.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,16 +27,21 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return Container(
-      color: AppColors.background,
-      child: SafeArea(
-        top: false,
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 16),
+              ScreenHeader(
+                onProfileTap: () {},
+                onFeedTap: () {},
+                onLogoutTap: () {},
+                currentIndex: -1,
+              ),
+              SizedBox(height: size.height * 0.03),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
                 child: Column(
@@ -67,21 +73,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: child,
                                 );
                               },
-                              child:
-                                  isLoading || name == null
-                                      ? const SizedBox(
-                                        height: 48,
-                                      ) // mantiene la altura
-                                      : Text(
-                                        name,
-                                        key: ValueKey(name),
-                                        style: const TextStyle(
-                                          fontFamily: 'Casta',
-                                          fontSize: 48,
-                                          color: Colors.white,
-                                          height: 1.1,
-                                        ),
+                              child: isLoading || name == null
+                                  ? const SizedBox(height: 48)
+                                  : Text(
+                                      name,
+                                      key: ValueKey(name),
+                                      style: const TextStyle(
+                                        fontFamily: 'Casta',
+                                        fontSize: 48,
+                                        color: Colors.white,
+                                        height: 1.1,
                                       ),
+                                    ),
                             );
                           },
                         ),

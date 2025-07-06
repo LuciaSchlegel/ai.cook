@@ -147,15 +147,15 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
                     ? 'Add Custom Ingredient'
                     : 'Edit Custom Ingredient',
                 style: const TextStyle(
-                  fontSize: 28,
+                  fontSize: 30,
                   fontFamily: 'Casta',
                   color: AppColors.button,
                   fontWeight: FontWeight.bold,
-                  letterSpacing: 1,
+                  letterSpacing: 1.2,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 28),
               custom_ing_fields.ControlledIngNameField(
                 controller: _nameController,
               ),
@@ -291,7 +291,7 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
                   ),
                 ],
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 36),
               SaveButtonsRow(
                 isEditing: widget.customIngredient != null,
                 onDelete: widget.onDelete,

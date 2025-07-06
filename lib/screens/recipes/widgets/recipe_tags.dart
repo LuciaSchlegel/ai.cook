@@ -8,24 +8,28 @@ class RecipeTags extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: SizedBox(
-            height: 35,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: tags.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: _RecipeTag(tag: tags[index]),
-                );
-              },
-            ),
-          ),
+    if (tags.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: SizedBox(
+        height: 40,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: tags.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: EdgeInsets.only(
+                right: index < tags.length - 1 ? 12.0 : 0.0,
+              ),
+              child: _RecipeTag(tag: tags[index]),
+            );
+          },
         ),
-      ],
+      ),
     );
   }
 }
@@ -37,26 +41,26 @@ class _RecipeTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Chip(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      side: BorderSide(
-        color: AppColors.mutedGreen.withOpacity(0.3),
-        width: 0.5,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: AppColors.mutedGreen.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: AppColors.mutedGreen.withOpacity(0.3),
+          width: 1,
+        ),
       ),
-      label: Text(
+      child: Text(
         tag,
         style: const TextStyle(
-          fontWeight: FontWeight.w400,
-          fontSize: 12,
-          color: AppColors.white,
+          fontWeight: FontWeight.w600,
+          fontSize: 13,
+          color: AppColors.mutedGreen,
           fontFamily: 'Inter',
           letterSpacing: 0.2,
         ),
       ),
-      backgroundColor: AppColors.mutedGreen,
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      visualDensity: VisualDensity.compact,
     );
   }
 }

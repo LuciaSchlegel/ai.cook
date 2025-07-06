@@ -84,13 +84,13 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                       'Start Your Cupboard',
                       style: TextStyle(
                         color: AppColors.button,
-                        fontSize: 28,
+                        fontSize: 30,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Casta',
-                        letterSpacing: 1,
+                        letterSpacing: 1.2,
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 28),
                     // Category Filters
                     SizedBox(
                       height: 40,
@@ -170,7 +170,7 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                     // Search Bar
                     CupertinoSearchTextField(
                       placeholder: 'Search ingredients',
@@ -180,7 +180,7 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                         });
                       },
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 28),
                     Flexible(
                       child: Container(
                         constraints: BoxConstraints(
@@ -199,7 +199,7 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 28),
                     CupertinoButton(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       color:

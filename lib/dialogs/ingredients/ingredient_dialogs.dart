@@ -56,7 +56,7 @@ class IngredientDialogs {
               child: const Text(
                 'Delete Ingredient',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 22,
                   fontFamily: 'Casta',
                   color: AppColors.button,
                   fontWeight: FontWeight.bold,
@@ -66,7 +66,7 @@ class IngredientDialogs {
             ),
             content: Text(
               'Are you sure you want to delete $ingredientName?',
-              style: const TextStyle(fontSize: 16, color: AppColors.button),
+              style: const TextStyle(fontSize: 17, color: AppColors.button),
             ),
             actions: [
               CupertinoDialogAction(
@@ -76,6 +76,7 @@ class IngredientDialogs {
                   style: TextStyle(
                     color: AppColors.button,
                     fontWeight: FontWeight.w500,
+                    fontSize: 17,
                   ),
                 ),
               ),
@@ -87,7 +88,7 @@ class IngredientDialogs {
                 isDestructiveAction: true,
                 child: const Text(
                   'Delete',
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
                 ),
               ),
             ],

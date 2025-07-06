@@ -161,6 +161,11 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
 
   @override
   Widget build(BuildContext context) {
+    // Si no está abierto, no renderizar nada
+    if (!widget.isOpen) {
+      return const SizedBox.shrink();
+    }
+
     return Material(
       type: MaterialType.transparency,
       child: LayoutBuilder(
@@ -177,10 +182,11 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
 
           return Stack(
             children: [
-              // Optional semi-transparent background overlay
+              // Background overlay que solo captura gestos cuando está abierto
               Positioned.fill(
                 child: GestureDetector(
                   onTap: widget.onClose,
+                  behavior: HitTestBehavior.opaque,
                   child: Container(color: Colors.black.withOpacity(0.3)),
                 ),
               ),

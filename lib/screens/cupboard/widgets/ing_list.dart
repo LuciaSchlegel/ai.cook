@@ -18,7 +18,7 @@ class IngredientListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 12),
       itemCount: ingredients.length,
       itemBuilder: (context, index) {
         final userIng = ingredients[index];
@@ -36,7 +36,7 @@ class IngredientListView extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
-                  vertical: 12,
+                  vertical: 14,
                 ),
                 child: Row(
                   children: [
@@ -48,19 +48,20 @@ class IngredientListView extends StatelessWidget {
                         style: const TextStyle(
                           color: AppColors.button,
                           fontFamily: 'Times New Roman',
-                          fontSize: 16,
+                          fontSize: 17,
                           letterSpacing: 0.5,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 10),
                     Text(
                       '${userIng.quantity} ${userIng.unit?.abbreviation ?? ''}',
                       style: const TextStyle(
                         color: AppColors.button,
                         fontFamily: 'Times New Roman',
-                        fontSize: 14,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
@@ -73,3 +74,5 @@ class IngredientListView extends StatelessWidget {
     );
   }
 }
+
+

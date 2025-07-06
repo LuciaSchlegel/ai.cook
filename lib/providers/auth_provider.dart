@@ -30,8 +30,7 @@ Future<void> signInWithGoogle() async {
     await GoogleSignIn.instance.initialize();
     
     // Autenticar con Google
-    final googleUser = await GoogleSignIn.instance.authenticate();
-    if (googleUser == null) return; // User canceled
+    final googleUser = await GoogleSignIn.instance.authenticate(); // User canceled
     
     // Obtener tokens de autorización
     final authClient = googleUser.authorizationClient;

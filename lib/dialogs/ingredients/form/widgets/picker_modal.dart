@@ -57,7 +57,7 @@ class _UnitPickerModalState extends State<UnitPickerModal> {
                   onPressed: () => Navigator.pop(context), minimumSize: Size(0, 0),
                   child: const Text(
                     'Cancel',
-                    style: TextStyle(color: AppColors.mutedGreen, fontSize: 16),
+                    style: TextStyle(color: AppColors.mutedGreen, fontSize: 17),
                   ),
                 ),
                 CupertinoButton(
@@ -74,7 +74,7 @@ class _UnitPickerModalState extends State<UnitPickerModal> {
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: AppColors.mutedGreen,
-                      fontSize: 16,
+                      fontSize: 17,
                     ),
                   ),
                 ),
@@ -84,7 +84,7 @@ class _UnitPickerModalState extends State<UnitPickerModal> {
 
           Expanded(
             child: CupertinoPicker(
-              itemExtent: 32.0,
+              itemExtent: 36.0,
               scrollController: FixedExtentScrollController(
                 initialItem: widget.units.indexWhere(
                   (u) => u.id == widget.selectedUnit.id,

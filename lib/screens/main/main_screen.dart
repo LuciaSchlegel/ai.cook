@@ -1,21 +1,17 @@
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
 import 'package:ai_cook_project/providers/user_provider.dart';
-import 'package:ai_cook_project/screens/auth/services/auth_services.dart';
 import 'package:ai_cook_project/screens/home/home_screen.dart';
-import 'package:ai_cook_project/screens/main/helpers/tabs.dart';
 import 'package:ai_cook_project/screens/main/services/initializer.dart';
 import 'package:ai_cook_project/screens/main/widgets/bottom_app_bar.dart';
-import 'package:ai_cook_project/screens/profile/profile_screen.dart';
-import 'package:ai_cook_project/screens/first_screen.dart';
 import 'package:ai_cook_project/theme.dart';
-import 'package:ai_cook_project/widgets/search_bar.dart';
-import 'package:ai_cook_project/widgets/main_floating_button.dart';
 import 'package:ai_cook_project/widgets/ai_agent/floating_chat_window.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ai_cook_project/providers/search_provider.dart';
 import 'package:ai_cook_project/screens/cupboard/cupboard_screen.dart';
+import 'package:ai_cook_project/screens/recipes/recipes_screen.dart';
+import 'package:ai_cook_project/screens/calendar/calendar_screen.dart';
+import 'package:ai_cook_project/screens/settings/settings_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -34,14 +30,8 @@ class _MainScreenState extends State<MainScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!_initialized) {
-      final ingredientsProvider = Provider.of<IngredientsProvider>(
-        context,
-        listen: false,
-      );
-      final resourceProvider = Provider.of<ResourceProvider>(
-        context,
-        listen: false,
-      );
+      final ingredientsProvider = Provider.of<IngredientsProvider>(context, listen: false);
+      final resourceProvider = Provider.of<ResourceProvider>(context, listen: false);
       final userProvider = Provider.of<UserProvider>(context, listen: false);
 
       Future(() async {
@@ -69,130 +59,45 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  void _onProfileTap() {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (context) => const ProfileScreen()));
-  }
-
-  void _onFeedTap() {
-    setState(() => _currentIndex = -1);
-    MainScreenInit.updateSearchScreen(
-      context: context,
-      currentIndex: _currentIndex,
-    );
-  }
-
-  void _onLogoutTap() async {
-    try {
-      await AuthService.logout(context: context);
-      if (mounted) {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const FirstScreen()),
-          (route) => false,
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Error logging out. Please try again.')),
-        );
-      }
-    }
-  }
-
   void _toggleAiWindow() {
     setState(() => _isAiWindowOpen = !_isAiWindowOpen);
   }
 
   @override
   Widget build(BuildContext context) {
-    bool isHomeScreen = _currentIndex == -1;
-    bool isCupboardScreen = _currentIndex == 0;
-    bool isRecipesScreen = _currentIndex == 1;
-    final searchProvider = Provider.of<SearchProvider>(context);
-
-    return Material(
-      child: Scaffold(
-        backgroundColor: AppColors.background,
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            Column(
-              children: [
-                SafeArea(
-                  bottom: false,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
-                      ),
-                      if (isHomeScreen || isCupboardScreen || isRecipesScreen)
-                        Container(
-                          color: AppColors.background,
-                          padding: EdgeInsets.symmetric(
-                            horizontal:
-                                MediaQuery.of(context).size.width * 0.05,
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              MainFloatingButton(
-                                key: const ValueKey('main_floating_button'),
-                                onProfileTap: _onProfileTap,
-                                onFeedTap: _onFeedTap,
-                                onLogoutTap: _onLogoutTap,
-                                currentIndex: _currentIndex,
-                                onMenuStateChanged: (isOpen) {
-                                  searchProvider.setMenuOpen(isOpen);
-                                },
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: CustomSearchBar(
-                                  controller: searchProvider.searchController,
-                                  hintText: searchProvider.getSearchHint(),
-                                  onChanged: searchProvider.onSearch,
-                                  isMenuOpen: searchProvider.isMenuOpen,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      if (_currentIndex != -1)
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: IndexedStack(
-                    index: _currentIndex == -1 ? 0 : _currentIndex + 1,
-                    children: [
-                      const HomeScreen(),
-                      CupboardScreen(isActive: _currentIndex == 0),
-                      ...pages.skip(1).map((p) => p.widget!),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            if (_isAiWindowOpen)
-              Positioned.fill(
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          _currentIndex == -1
+              ? const HomeScreen()
+              : _currentIndex == 0
+                  ? CupboardScreen(isActive: true)
+                  : _currentIndex == 1
+                      ? const RecipesScreen()
+                      : _currentIndex == 2
+                          ? const CalendarScreen()
+                          : _currentIndex == 3
+                              ? const SettingsScreen()
+                              : const SizedBox(),
+          if (_isAiWindowOpen)
+            Positioned.fill(
+              child: IgnorePointer(
+                ignoring: !_isAiWindowOpen,
                 child: FloatingChatWindow(
                   isOpen: _isAiWindowOpen,
                   onClose: _toggleAiWindow,
                 ),
               ),
-          ],
-        ),
-        bottomNavigationBar: NavBarBuilder(
-          currentIndex: _currentIndex,
-          onTabTapped: _onTabTapped,
-          toggleAiWindow: _toggleAiWindow,
-          isAiWindowOpen: _isAiWindowOpen,
-        ),
+            ),
+        ],
+      ),
+      bottomNavigationBar: NavBarBuilder(
+        currentIndex: _currentIndex,
+        onTabTapped: _onTabTapped,
+        toggleAiWindow: _toggleAiWindow,
+        isAiWindowOpen: _isAiWindowOpen,
       ),
     );
   }

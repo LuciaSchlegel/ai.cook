@@ -7,7 +7,6 @@ class GreyCardChips extends StatelessWidget {
   final String selectedItem;
   final void Function(String) onSelected;
   final double horizontalPadding;
-  final double verticalSpacing;
 
   const GreyCardChips({
     super.key,
@@ -15,14 +14,12 @@ class GreyCardChips extends StatelessWidget {
     required this.selectedItem,
     required this.onSelected,
     this.horizontalPadding = 16.0,
-    this.verticalSpacing = 16.0,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 50,
-      margin: EdgeInsets.only(bottom: verticalSpacing),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: items.length,

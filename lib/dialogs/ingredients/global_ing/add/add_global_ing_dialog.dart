@@ -56,12 +56,13 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
               'Add Ingredients',
               style: TextStyle(
                 color: AppColors.button,
-                fontSize: 28,
+                fontSize: 30,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Casta',
+                letterSpacing: 1.2,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 28),
             CupertinoTextField(
               controller: searchController,
               placeholder: 'Search ingredients...',
@@ -75,7 +76,7 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
               ),
               onChanged: (_) => setState(() {}),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 28),
             SizedBox(
               height: 40,
               child: ListView.builder(
@@ -115,7 +116,7 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                 },
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 28),
             Flexible(
               child: Container(
                 constraints: BoxConstraints(
@@ -178,7 +179,7 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                         ),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 28),
             CupertinoButton(
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
               color:
@@ -204,7 +205,7 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 28),
             const AddCustomIngredientButton(),
           ],
         ),
