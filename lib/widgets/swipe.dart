@@ -1,6 +1,5 @@
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 class SwipeIndicator extends StatefulWidget {
   const SwipeIndicator({super.key});
@@ -26,18 +25,13 @@ class _SwipeIndicatorState extends State<SwipeIndicator>
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0, 1), // Comienza desde abajo
       end: Offset.zero, // Termina en su posición final
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOutCubic,
-    ));
+    ).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
+    );
 
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOut,
-    ));
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
+    );
 
     // Inicia la animación después de un pequeño delay
     Future.delayed(const Duration(milliseconds: 300), () {

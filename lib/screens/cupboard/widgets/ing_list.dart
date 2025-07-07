@@ -16,8 +16,10 @@ class IngredientListView extends StatelessWidget {
   });
 
   Widget _getCategoryIcon(UserIng userIng) {
-    final categoryName = userIng.ingredient?.category?.name?.toLowerCase() ??
-        userIng.customIngredient?.category?.name?.toLowerCase() ?? '';
+    final categoryName =
+        userIng.ingredient?.category?.name.toLowerCase() ??
+        userIng.customIngredient?.category?.name.toLowerCase() ??
+        '';
 
     String assetPath;
     switch (categoryName) {
@@ -57,7 +59,10 @@ class IngredientListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 16),
+      padding: EdgeInsets.symmetric(
+        horizontal: horizontalPadding,
+        vertical: 16,
+      ),
       itemCount: ingredients.length,
       itemBuilder: (context, index) {
         final userIng = ingredients[index];
@@ -92,9 +97,7 @@ class IngredientListView extends StatelessWidget {
                           color: AppColors.mutedGreen.withOpacity(0.08),
                           borderRadius: BorderRadius.circular(18),
                         ),
-                        child: Center(
-                          child: _getCategoryIcon(userIng),
-                        ),
+                        child: Center(child: _getCategoryIcon(userIng)),
                       ),
                       const SizedBox(width: 20),
                       // Ingredient details
@@ -146,5 +149,3 @@ class IngredientListView extends StatelessWidget {
     );
   }
 }
-
-

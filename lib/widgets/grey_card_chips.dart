@@ -18,7 +18,7 @@ class GreyCardChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 50,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -53,14 +53,14 @@ class GreyCardChips extends StatelessWidget {
                 ),
                 shape: StadiumBorder(
                   side: BorderSide(
-                    color:
-                        isSelected
-                            ? AppColors.mutedGreen
-                            : AppColors.white,
+                    color: isSelected ? AppColors.mutedGreen : AppColors.white,
                     width: 1,
                   ),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
               ),
             ),
           );

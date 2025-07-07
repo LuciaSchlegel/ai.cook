@@ -29,7 +29,7 @@ class IngredientSelectionTile extends StatelessWidget {
   });
 
   Widget _getCategoryIcon() {
-    final categoryName = ingredient.category?.name?.toLowerCase() ?? '';
+    final categoryName = ingredient.category?.name.toLowerCase() ?? '';
     String assetPath;
     switch (categoryName) {
       case 'fruits':
@@ -75,9 +75,10 @@ class IngredientSelectionTile extends StatelessWidget {
           color: AppColors.white,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: selected
-                ? AppColors.mutedGreen
-                : AppColors.mutedGreen.withOpacity(0.18),
+            color:
+                selected
+                    ? AppColors.mutedGreen
+                    : AppColors.mutedGreen.withOpacity(0.18),
             width: selected ? 1.5 : 1.1,
           ),
           boxShadow: [
@@ -147,29 +148,33 @@ class IngredientSelectionTile extends StatelessWidget {
                 ),
               // Botón de acción
               GestureDetector(
-                onTap: disabled
-                    ? null
-                    : () async {
-                        if (selected) {
-                          onDeselect();
-                        } else {
-                          final result = await showCupertinoModalPopup<(int, Unit)?>(
-                            context: context,
-                            builder: (_) => QuantityUnitPicker(units: units),
-                          );
-                          if (result != null) {
-                            final (qty, unit) = result;
-                            onConfirm(qty, unit);
+                onTap:
+                    disabled
+                        ? null
+                        : () async {
+                          if (selected) {
+                            onDeselect();
+                          } else {
+                            final result =
+                                await showCupertinoModalPopup<(int, Unit)?>(
+                                  context: context,
+                                  builder:
+                                      (_) => QuantityUnitPicker(units: units),
+                                );
+                            if (result != null) {
+                              final (qty, unit) = result;
+                              onConfirm(qty, unit);
+                            }
                           }
-                        }
-                      },
+                        },
                 child: Icon(
                   selected
                       ? CupertinoIcons.checkmark_alt_circle_fill
                       : CupertinoIcons.add_circled,
-                  color: disabled
-                      ? AppColors.button.withOpacity(0.3)
-                      : AppColors.mutedGreen,
+                  color:
+                      disabled
+                          ? AppColors.button.withOpacity(0.3)
+                          : AppColors.mutedGreen,
                   size: 28,
                 ),
               ),

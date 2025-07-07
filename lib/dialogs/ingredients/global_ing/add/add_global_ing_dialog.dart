@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../../../../theme.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ai_cook_project/widgets/error_dialog.dart';
 import 'package:ai_cook_project/utils/app_error_handler.dart';
 
@@ -146,7 +145,9 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                                     unit: units.first,
                                   ),
                             );
-                            final isInCupboard = userIngredients.any((ui) => ui.ingredient?.id == ing.id);
+                            final isInCupboard = userIngredients.any(
+                              (ui) => ui.ingredient?.id == ing.id,
+                            );
                             return IngredientSelectionTile(
                               ingredient: ing,
                               selected: ingEntry.id != -1,
@@ -196,18 +197,18 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
               onPressed:
                   selectedIngredients.isNotEmpty
                       ? () async {
-                          try {
-                            for (final ing in selectedIngredients) {
-                              await ingredientsProvider.addUserIngredient(ing);
-                            }
-                            if (context.mounted) Navigator.pop(context);
-                          } catch (e) {
-                            final errorMsg = AppErrorHandler.handle(e);
-                            if (context.mounted) {
-                              showErrorDialog(context, message: errorMsg);
-                            }
+                        try {
+                          for (final ing in selectedIngredients) {
+                            await ingredientsProvider.addUserIngredient(ing);
+                          }
+                          if (context.mounted) Navigator.pop(context);
+                        } catch (e) {
+                          final errorMsg = AppErrorHandler.handle(e);
+                          if (context.mounted) {
+                            showErrorDialog(context, message: errorMsg);
                           }
                         }
+                      }
                       : null,
               child: const Text(
                 'Add Selected',

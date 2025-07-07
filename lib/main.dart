@@ -16,7 +16,6 @@ import 'package:ai_cook_project/providers/search_provider.dart';
 import 'package:ai_cook_project/providers/user_provider.dart';
 import 'package:ai_cook_project/providers/recipes_provider.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +41,7 @@ void main() async {
   } catch (e) {
     print('❌ Error loading environment variables: $e');
   }
-  
+
   runApp(
     MultiProvider(
       providers: [
@@ -142,7 +141,8 @@ class FirebaseInitializer extends StatelessWidget {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const FirebaseInitializer(),
+                                builder:
+                                    (context) => const FirebaseInitializer(),
                               ),
                             );
                           },
@@ -176,10 +176,7 @@ class FirebaseInitializer extends StatelessWidget {
                 SizedBox(height: 20),
                 Text(
                   'Iniciando Firebase...',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ],
             ),
@@ -196,7 +193,7 @@ class AuthWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<FBAuthProvider>(context);
-    
+
     if (auth.user == null) {
       // Solo al inicio, navega a FirstScreen
       Future.microtask(() {
