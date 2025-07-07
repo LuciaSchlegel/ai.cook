@@ -5,7 +5,8 @@ import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/material.dart';
 
 class IconProperties {
-  final IconData icon;
+  final IconData? icon;
+  final String? svgAsset;
   final double size;
   final double? activeSize;
   final Color? activeColor;
@@ -14,14 +15,18 @@ class IconProperties {
   final Color? activeShadowColor;
 
   const IconProperties({
-    required this.icon,
+    this.icon,
+    this.svgAsset,
     this.size = 24,
     this.activeSize,
     this.activeColor,
     this.inactiveColor,
     this.activeShadowRadius,
     this.activeShadowColor,
-  });
+  }) : assert(
+         icon != null || svgAsset != null,
+         'Either icon or svgAsset must be provided',
+       );
 }
 
 class _PageData {
@@ -36,8 +41,8 @@ final List<_PageData> pages = [
   _PageData(
     title: 'Cupboard',
     icon: IconProperties(
-      icon: Icons.kitchen_rounded,
-      size: 24,
+      svgAsset: 'assets/icons/fridge.svg',
+      size: 26,
       activeSize: 28,
       activeColor: AppColors.orange,
       inactiveColor: const Color.fromARGB(255, 123, 123, 123),
@@ -48,8 +53,8 @@ final List<_PageData> pages = [
   _PageData(
     title: 'Recipes',
     icon: IconProperties(
-      icon: Icons.restaurant_menu_rounded,
-      size: 24,
+      svgAsset: 'assets/icons/recipes.svg',
+      size: 26,
       activeSize: 28,
       activeColor: AppColors.orange,
       inactiveColor: const Color.fromARGB(255, 123, 123, 123),
@@ -62,7 +67,7 @@ final List<_PageData> pages = [
     title: 'Calendar',
     icon: IconProperties(
       icon: Icons.calendar_month_rounded,
-      size: 24,
+      size: 26,
       activeSize: 28,
       activeColor: AppColors.orange,
       inactiveColor: const Color.fromARGB(255, 123, 123, 123),
@@ -74,8 +79,8 @@ final List<_PageData> pages = [
   _PageData(
     title: 'Settings',
     icon: IconProperties(
-      icon: Icons.settings_rounded,
-      size: 24,
+      svgAsset: 'assets/icons/settings.svg',
+      size: 26,
       activeSize: 28,
       activeColor: AppColors.orange,
       inactiveColor: const Color.fromARGB(255, 123, 123, 123),

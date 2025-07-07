@@ -24,7 +24,7 @@ class CupboardScreen extends StatefulWidget {
   final VoidCallback? onLogoutTap;
 
   const CupboardScreen({
-    super.key, 
+    super.key,
     required this.isActive,
     this.onProfileTap,
     this.onFeedTap,
@@ -76,7 +76,10 @@ class _CupboardScreenState extends State<CupboardScreen> {
       showDialog(context: context, builder: (_) => const AddGlobalIngDialog());
     }
 
-    final categories = ['All', ...resourceProvider.categories.map((c) => c.name)];
+    final categories = [
+      'All',
+      ...resourceProvider.categories.map((c) => c.name),
+    ];
     final tags = ['All', ...resourceProvider.tags.map((t) => t.name)];
 
     return Scaffold(
@@ -133,16 +136,19 @@ class _CupboardScreenState extends State<CupboardScreen> {
                     allIngredients: ingredientsProvider.userIngredients,
                     selectedCategory: _selectedCategory,
                     selectedProperty: _selectedProperty,
-                    searchText: Provider.of<SearchProvider>(context).searchController.text,
+                    searchText:
+                        Provider.of<SearchProvider>(
+                          context,
+                        ).searchController.text,
                   );
 
                   return filteredIngredients.isEmpty
                       ? const EmptyIngredientListMessage()
                       : IngredientListView(
-                          ingredients: filteredIngredients,
-                          horizontalPadding: horizontalPadding,
-                          onTap: _showIngredientDialog,
-                        );
+                        ingredients: filteredIngredients,
+                        horizontalPadding: horizontalPadding,
+                        onTap: _showIngredientDialog,
+                      );
                 },
               ),
             ),

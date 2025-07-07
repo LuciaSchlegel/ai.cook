@@ -72,6 +72,14 @@ class NavBarBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
+    // Parámetros de animación
+    final double normalSize = 64;
+    final double activeSize = 88;
+    final double normalTop = 3;
+    final double activeTop =
+        -24; // Suficiente para que la mitad quede sobre la bottom bar
+    final Duration animDuration = const Duration(milliseconds: 250);
+
     return SizedBox(
       height: 70 + bottomPadding,
       child: Stack(
@@ -82,11 +90,19 @@ class NavBarBuilder extends StatelessWidget {
             currentIndex: currentIndex,
             onTabTapped: onTabTapped,
           ),
-          Positioned(
-            top: -25,
-            child: AiButton(
-              onPressed: toggleAiWindow,
-              isActive: isAiWindowOpen,
+          AnimatedPositioned(
+            duration: animDuration,
+            curve: Curves.easeOut,
+            top: isAiWindowOpen ? activeTop : normalTop,
+            child: AnimatedContainer(
+              duration: animDuration,
+              curve: Curves.easeOut,
+              width: isAiWindowOpen ? activeSize : normalSize,
+              height: isAiWindowOpen ? activeSize : normalSize,
+              child: AiButton(
+                onPressed: toggleAiWindow,
+                isActive: isAiWindowOpen,
+              ),
             ),
           ),
         ],

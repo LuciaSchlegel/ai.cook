@@ -1,6 +1,7 @@
 import 'package:ai_cook_project/screens/main/helpers/tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class TabItem extends StatelessWidget {
   final IconProperties icon;
@@ -25,6 +26,20 @@ class TabItem extends StatelessWidget {
     final iconColor =
         isActive ? (icon.activeColor ?? color) : (icon.inactiveColor ?? color);
 
+    Widget iconWidget;
+    if (icon.svgAsset != null) {
+      // Handle SVG asset
+      iconWidget = SvgPicture.asset(
+        icon.svgAsset!,
+        width: iconSize,
+        height: iconSize,
+        colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
+      );
+    } else {
+      // Handle Flutter icon
+      iconWidget = Icon(icon.icon, size: iconSize, color: iconColor);
+    }
+
     return InkWell(
       onTap: onTap,
       splashColor: Colors.transparent,
@@ -48,7 +63,7 @@ class TabItem extends StatelessWidget {
                       ],
                     )
                     : null,
-            child: Icon(icon.icon, size: iconSize, color: iconColor),
+            child: iconWidget,
           ),
           const SizedBox(height: 4),
           Flexible(

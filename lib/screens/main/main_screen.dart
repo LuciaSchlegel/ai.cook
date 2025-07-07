@@ -33,8 +33,14 @@ class _MainScreenState extends State<MainScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!_initialized) {
-      final ingredientsProvider = Provider.of<IngredientsProvider>(context, listen: false);
-      final resourceProvider = Provider.of<ResourceProvider>(context, listen: false);
+      final ingredientsProvider = Provider.of<IngredientsProvider>(
+        context,
+        listen: false,
+      );
+      final resourceProvider = Provider.of<ResourceProvider>(
+        context,
+        listen: false,
+      );
       final userProvider = Provider.of<UserProvider>(context, listen: false);
 
       Future(() async {
@@ -68,9 +74,9 @@ class _MainScreenState extends State<MainScreen> {
 
   // Navigation methods for floating button
   void _onProfileTap() {
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => const ProfileScreen()),
-    );
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (context) => const ProfileScreen()));
   }
 
   void _onFeedTap() {
@@ -108,36 +114,36 @@ class _MainScreenState extends State<MainScreen> {
         children: [
           _currentIndex == -1
               ? HomeScreen(
-                  onProfileTap: _onProfileTap,
-                  onFeedTap: _onFeedTap,
-                  onLogoutTap: _onLogoutTap,
-                )
+                onProfileTap: _onProfileTap,
+                onFeedTap: _onFeedTap,
+                onLogoutTap: _onLogoutTap,
+              )
               : _currentIndex == 0
-                  ? CupboardScreen(
-                      isActive: true,
-                      onProfileTap: _onProfileTap,
-                      onFeedTap: _onFeedTap,
-                      onLogoutTap: _onLogoutTap,
-                    )
-                  : _currentIndex == 1
-                      ? RecipesScreen(
-                          onProfileTap: _onProfileTap,
-                          onFeedTap: _onFeedTap,
-                          onLogoutTap: _onLogoutTap,
-                        )
-                      : _currentIndex == 2
-                          ? CalendarScreen(
-                              onProfileTap: _onProfileTap,
-                              onFeedTap: _onFeedTap,
-                              onLogoutTap: _onLogoutTap,
-                            )
-                          : _currentIndex == 3
-                              ? SettingsScreen(
-                                  onProfileTap: _onProfileTap,
-                                  onFeedTap: _onFeedTap,
-                                  onLogoutTap: _onLogoutTap,
-                                )
-                              : const SizedBox(),
+              ? CupboardScreen(
+                isActive: true,
+                onProfileTap: _onProfileTap,
+                onFeedTap: _onFeedTap,
+                onLogoutTap: _onLogoutTap,
+              )
+              : _currentIndex == 1
+              ? RecipesScreen(
+                onProfileTap: _onProfileTap,
+                onFeedTap: _onFeedTap,
+                onLogoutTap: _onLogoutTap,
+              )
+              : _currentIndex == 2
+              ? CalendarScreen(
+                onProfileTap: _onProfileTap,
+                onFeedTap: _onFeedTap,
+                onLogoutTap: _onLogoutTap,
+              )
+              : _currentIndex == 3
+              ? SettingsScreen(
+                onProfileTap: _onProfileTap,
+                onFeedTap: _onFeedTap,
+                onLogoutTap: _onLogoutTap,
+              )
+              : const SizedBox(),
           if (_isAiWindowOpen)
             Positioned.fill(
               child: IgnorePointer(
