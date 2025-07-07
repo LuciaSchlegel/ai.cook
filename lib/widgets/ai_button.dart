@@ -15,24 +15,40 @@ class AiButton extends StatelessWidget {
     return SizedBox(
       width: buttonSize,
       height: buttonSize,
-      child: FloatingActionButton(
-        heroTag: 'ai_button',
-        onPressed: onPressed,
-        backgroundColor:
-            isActive
-                ? const Color.fromARGB(255, 139, 76, 33)
-                : AppColors.orange,
-        elevation: isActive ? 2 : 6,
-        shape: const CircleBorder(),
-        child: Image.asset('assets/icons/ai.png', width: 44, height: 44),
-        // Text(
-        //   'ai',
-        //   style: TextStyle(
-        //     fontFamily: 'Casta',
-        //     fontSize: 52,
-        //     color: Colors.grey[200],
-        //   ),
-        // ),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: LinearGradient(
+            colors: isActive
+                ? [AppColors.orange, const Color(0xFFF8D794)]
+                : [const Color(0xFFF8D794), Colors.white],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.orange.withOpacity(0.18),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          shape: const CircleBorder(),
+          child: InkWell(
+            customBorder: const CircleBorder(),
+            onTap: onPressed,
+            child: Center(
+              child: Image.asset(
+                'assets/icons/ai.png',
+                width: 44,
+                height: 44,
+                color: isActive ? AppColors.white : AppColors.button,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

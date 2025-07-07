@@ -1,14 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:ai_cook_project/widgets/screen_header.dart';
 
 class CalendarScreen extends StatelessWidget {
-  const CalendarScreen({super.key});
+  final VoidCallback? onProfileTap;
+  final VoidCallback? onFeedTap;
+  final VoidCallback? onLogoutTap;
+
+  const CalendarScreen({
+    super.key,
+    this.onProfileTap,
+    this.onFeedTap,
+    this.onLogoutTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Calendar Screen',
-        style: TextStyle(fontSize: 24, color: Colors.white),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: SafeArea(
+        child: Column(
+          children: [
+            ScreenHeader(
+              onProfileTap: onProfileTap ?? () {},
+              onFeedTap: onFeedTap ?? () {},
+              onLogoutTap: onLogoutTap ?? () {},
+              currentIndex: 2,
+            ),
+            Expanded(
+              child: Center(
+                child: Text(
+                  'Calendar Screen',
+                  style: TextStyle(fontSize: 24, color: Colors.white),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

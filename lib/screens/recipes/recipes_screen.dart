@@ -14,7 +14,16 @@ import '../../dialogs/recipes/add_ext_recipe.dart';
 import '../../utils/recipes_filter.dart';
 
 class RecipesScreen extends StatefulWidget {
-  const RecipesScreen({super.key});
+  final VoidCallback? onProfileTap;
+  final VoidCallback? onFeedTap;
+  final VoidCallback? onLogoutTap;
+
+  const RecipesScreen({
+    super.key,
+    this.onProfileTap,
+    this.onFeedTap,
+    this.onLogoutTap,
+  });
 
   @override
   State<RecipesScreen> createState() => _RecipesScreenState();
@@ -118,9 +127,9 @@ class _RecipesScreenState extends State<RecipesScreen> {
         child: Column(
           children: [
             ScreenHeader(
-              onProfileTap: () {},
-              onFeedTap: () {},
-              onLogoutTap: () {},
+              onProfileTap: widget.onProfileTap ?? () {},
+              onFeedTap: widget.onFeedTap ?? () {},
+              onLogoutTap: widget.onLogoutTap ?? () {},
               currentIndex: 0,
             ),
             SizedBox(height: screenHeight * 0.03),

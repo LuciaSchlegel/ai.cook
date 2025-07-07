@@ -19,7 +19,7 @@ class TagsPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: CupertinoColors.white,
+        color: AppColors.mutedGreen.withOpacity(0.05),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: AppColors.button.withOpacity(0.2)),
       ),
@@ -53,19 +53,19 @@ class TagsPicker extends StatelessWidget {
                       backgroundColor:
                           isSelected
                               ? AppColors.mutedGreen
-                              : CupertinoColors.systemGrey5,
+                              : AppColors.mutedGreen.withOpacity(0.18),
                       selectedColor: AppColors.mutedGreen,
                       checkmarkColor: AppColors.white,
                       labelStyle: TextStyle(
                         color: isSelected ? AppColors.white : AppColors.button,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w400,
                       ),
                       shape: StadiumBorder(
                         side: BorderSide(
                           color:
                               isSelected
                                   ? AppColors.mutedGreen
-                                  : CupertinoColors.systemGrey4,
+                                  : CupertinoColors.systemGrey6,
                           width: 1,
                         ),
                       ),

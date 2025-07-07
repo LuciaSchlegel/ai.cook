@@ -8,7 +8,16 @@ import 'package:provider/provider.dart';
 import 'package:ai_cook_project/widgets/screen_header.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final VoidCallback? onProfileTap;
+  final VoidCallback? onFeedTap;
+  final VoidCallback? onLogoutTap;
+
+  const HomeScreen({
+    super.key,
+    this.onProfileTap,
+    this.onFeedTap,
+    this.onLogoutTap,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -36,9 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ScreenHeader(
-                onProfileTap: () {},
-                onFeedTap: () {},
-                onLogoutTap: () {},
+                onProfileTap: widget.onProfileTap ?? () {},
+                onFeedTap: widget.onFeedTap ?? () {},
+                onLogoutTap: widget.onLogoutTap ?? () {},
                 currentIndex: -1,
               ),
               SizedBox(height: size.height * 0.03),

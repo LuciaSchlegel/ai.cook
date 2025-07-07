@@ -67,7 +67,7 @@ class _SwipeIndicatorState extends State<SwipeIndicator>
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: AppColors.white.withOpacity(0.95),
+                color: AppColors.button.withOpacity(0.98),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: AppColors.mutedGreen.withOpacity(0.2),
@@ -87,7 +87,7 @@ class _SwipeIndicatorState extends State<SwipeIndicator>
                   Icon(
                     CupertinoIcons.chevron_up,
                     size: 16,
-                    color: AppColors.mutedGreen,
+                    color: AppColors.white,
                   ),
                   const SizedBox(width: 6),
                   Text(
@@ -95,7 +95,7 @@ class _SwipeIndicatorState extends State<SwipeIndicator>
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.mutedGreen,
+                      color: AppColors.white,
                       fontFamily: 'Inter',
                       letterSpacing: 0.3,
                     ),

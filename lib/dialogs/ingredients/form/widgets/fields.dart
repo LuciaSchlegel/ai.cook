@@ -60,7 +60,7 @@ class ControlledIngNameField extends StatelessWidget {
       decoration: BoxDecoration(
         color: CupertinoColors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.button.withOpacity(0.2)),
+        border: Border.all(color: AppColors.button.withOpacity(0.3)),
       ),
       child: CupertinoTextField(
         controller: controller,

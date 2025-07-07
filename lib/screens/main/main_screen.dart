@@ -12,6 +12,9 @@ import 'package:ai_cook_project/screens/cupboard/cupboard_screen.dart';
 import 'package:ai_cook_project/screens/recipes/recipes_screen.dart';
 import 'package:ai_cook_project/screens/calendar/calendar_screen.dart';
 import 'package:ai_cook_project/screens/settings/settings_screen.dart';
+import 'package:ai_cook_project/screens/profile/profile_screen.dart';
+import 'package:ai_cook_project/screens/auth/services/auth_services.dart';
+import 'package:ai_cook_project/screens/first_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -63,6 +66,39 @@ class _MainScreenState extends State<MainScreen> {
     setState(() => _isAiWindowOpen = !_isAiWindowOpen);
   }
 
+  // Navigation methods for floating button
+  void _onProfileTap() {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const ProfileScreen()),
+    );
+  }
+
+  void _onFeedTap() {
+    setState(() => _currentIndex = -1);
+    MainScreenInit.updateSearchScreen(
+      context: context,
+      currentIndex: _currentIndex,
+    );
+  }
+
+  void _onLogoutTap() async {
+    try {
+      await AuthService.logout(context: context);
+      if (context.mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const FirstScreen()),
+          (route) => false,
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Error logging out. Please try again.')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,15 +107,36 @@ class _MainScreenState extends State<MainScreen> {
         fit: StackFit.expand,
         children: [
           _currentIndex == -1
-              ? const HomeScreen()
+              ? HomeScreen(
+                  onProfileTap: _onProfileTap,
+                  onFeedTap: _onFeedTap,
+                  onLogoutTap: _onLogoutTap,
+                )
               : _currentIndex == 0
-                  ? CupboardScreen(isActive: true)
+                  ? CupboardScreen(
+                      isActive: true,
+                      onProfileTap: _onProfileTap,
+                      onFeedTap: _onFeedTap,
+                      onLogoutTap: _onLogoutTap,
+                    )
                   : _currentIndex == 1
-                      ? const RecipesScreen()
+                      ? RecipesScreen(
+                          onProfileTap: _onProfileTap,
+                          onFeedTap: _onFeedTap,
+                          onLogoutTap: _onLogoutTap,
+                        )
                       : _currentIndex == 2
-                          ? const CalendarScreen()
+                          ? CalendarScreen(
+                              onProfileTap: _onProfileTap,
+                              onFeedTap: _onFeedTap,
+                              onLogoutTap: _onLogoutTap,
+                            )
                           : _currentIndex == 3
-                              ? const SettingsScreen()
+                              ? SettingsScreen(
+                                  onProfileTap: _onProfileTap,
+                                  onFeedTap: _onFeedTap,
+                                  onLogoutTap: _onLogoutTap,
+                                )
                               : const SizedBox(),
           if (_isAiWindowOpen)
             Positioned.fill(

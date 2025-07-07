@@ -19,7 +19,17 @@ import 'package:provider/provider.dart';
 
 class CupboardScreen extends StatefulWidget {
   final bool isActive;
-  const CupboardScreen({super.key, required this.isActive});
+  final VoidCallback? onProfileTap;
+  final VoidCallback? onFeedTap;
+  final VoidCallback? onLogoutTap;
+
+  const CupboardScreen({
+    super.key, 
+    required this.isActive,
+    this.onProfileTap,
+    this.onFeedTap,
+    this.onLogoutTap,
+  });
 
   @override
   State<CupboardScreen> createState() => _CupboardScreenState();
@@ -75,9 +85,9 @@ class _CupboardScreenState extends State<CupboardScreen> {
         child: Column(
           children: [
             ScreenHeader(
-              onProfileTap: () {},
-              onFeedTap: () {},
-              onLogoutTap: () {},
+              onProfileTap: widget.onProfileTap ?? () {},
+              onFeedTap: widget.onFeedTap ?? () {},
+              onLogoutTap: widget.onLogoutTap ?? () {},
               currentIndex: 0,
             ),
             SizedBox(height: screenHeight * 0.03),
@@ -108,6 +118,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
               },
               horizontalPadding: horizontalPadding,
             ),
+            SizedBox(height: screenHeight * 0.02),
             Expanded(
               child: Consumer<IngredientsProvider>(
                 builder: (context, ingredientsProvider, _) {

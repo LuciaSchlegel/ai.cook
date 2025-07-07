@@ -74,18 +74,7 @@ flutter:
   assets:
     - .env
     - assets/images/
-    - assets/icons/google-logo.png
-    - assets/icons/apple-logo.png
-    - assets/icons/calendar.svg
-    - assets/icons/chef.svg
-    - assets/icons/recipe.svg
-    - assets/icons/settings.svg
-    - assets/icons/main_logo.png
-    - assets/icons/nut_assist.png
-    - assets/icons/calendaradd.png
-    - assets/icons/timer.png
-    - assets/icons/post.png
-    - assets/icons/ai.png
+    - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

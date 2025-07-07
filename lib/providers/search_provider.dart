@@ -22,11 +22,11 @@ class SearchProvider with ChangeNotifier {
   String getSearchHint() {
     switch (_currentScreen) {
       case 'cupboard':
-        return 'Search ingredients...';
+        return 'Find ingredients...';
       case 'recipes':
-        return 'Search recipes...';
+        return 'Find recipes...';
       default:
-        return 'Search...';
+        return 'Discover...';
     }
   }
 

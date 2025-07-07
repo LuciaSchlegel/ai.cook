@@ -27,6 +27,7 @@ class TabItem extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
+      splashColor: Colors.transparent,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,

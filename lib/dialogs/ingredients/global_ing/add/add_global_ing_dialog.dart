@@ -10,6 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../../../../theme.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ai_cook_project/widgets/error_dialog.dart';
+import 'package:ai_cook_project/utils/app_error_handler.dart';
 
 class AddGlobalIngDialog extends StatefulWidget {
   const AddGlobalIngDialog({super.key});
@@ -35,6 +38,7 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
     );
 
     final globalIngredients = ingredientsProvider.ingredients;
+    final userIngredients = ingredientsProvider.userIngredients;
     final categories = resourceProvider.categories;
     final units = resourceProvider.units;
     final searchText = searchController.text.toLowerCase();
@@ -45,7 +49,7 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
     );
 
     return Dialog(
-      backgroundColor: CupertinoColors.systemGrey6,
+      backgroundColor: AppColors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -142,6 +146,7 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                                     unit: units.first,
                                   ),
                             );
+                            final isInCupboard = userIngredients.any((ui) => ui.ingredient?.id == ing.id);
                             return IngredientSelectionTile(
                               ingredient: ing,
                               selected: ingEntry.id != -1,
@@ -174,6 +179,7 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                                       (ui) => ui.ingredient?.id == ing.id,
                                     );
                                   }),
+                              disabled: isInCupboard,
                             );
                           },
                         ),
@@ -190,11 +196,18 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
               onPressed:
                   selectedIngredients.isNotEmpty
                       ? () async {
-                        for (final ing in selectedIngredients) {
-                          await ingredientsProvider.addUserIngredient(ing);
+                          try {
+                            for (final ing in selectedIngredients) {
+                              await ingredientsProvider.addUserIngredient(ing);
+                            }
+                            if (context.mounted) Navigator.pop(context);
+                          } catch (e) {
+                            final errorMsg = AppErrorHandler.handle(e);
+                            if (context.mounted) {
+                              showErrorDialog(context, message: errorMsg);
+                            }
+                          }
                         }
-                        if (context.mounted) Navigator.pop(context);
-                      }
                       : null,
               child: const Text(
                 'Add Selected',

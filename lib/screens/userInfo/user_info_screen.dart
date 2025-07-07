@@ -5,6 +5,7 @@ import 'package:ai_cook_project/screens/userInfo/widgets/form.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/widgets/error_dialog.dart';
 
 class UserInfoScreen extends StatefulWidget {
   const UserInfoScreen({super.key});
@@ -47,7 +48,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     } else if (result.validationErrors != null) {
       showValidationErrorDialog(context, result.validationErrors!);
     } else if (result.errorMessage != null) {
-      showErrorDialog(context, result.errorMessage!);
+      showErrorDialog(context, message: result.errorMessage!);
     }
   }
 

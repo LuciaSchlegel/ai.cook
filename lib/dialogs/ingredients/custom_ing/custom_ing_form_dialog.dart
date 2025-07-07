@@ -125,8 +125,9 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
           MediaQuery.of(context).viewInsets.bottom + 24,
         ),
         decoration: BoxDecoration(
-          color: CupertinoColors.systemGrey6.withOpacity(1),
+          color: AppColors.white,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          // No shadow at all
         ),
         child: SingleChildScrollView(
           child: Column(
@@ -138,7 +139,7 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
                 height: 4,
                 margin: const EdgeInsets.only(bottom: 24),
                 decoration: BoxDecoration(
-                  color: AppColors.button.withOpacity(0.2),
+                  color: AppColors.button.withOpacity(0.15), // softer
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -164,7 +165,7 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
                 decoration: BoxDecoration(
                   color: CupertinoColors.white,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.button.withOpacity(0.2)),
+                  border: Border.all(color: AppColors.button.withOpacity(0.3)),
                 ),
                 child: CupertinoButton(
                   padding: const EdgeInsets.symmetric(
@@ -228,7 +229,7 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
                         color: CupertinoColors.white,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: AppColors.button.withOpacity(0.2),
+                          color: AppColors.button.withOpacity(0.3),
                         ),
                       ),
                       child: custom_ing_fields.QuantityField(
@@ -243,7 +244,7 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
                         color: CupertinoColors.white,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: AppColors.button.withOpacity(0.2),
+                          color: AppColors.button.withOpacity(0.3),
                         ),
                       ),
                       child: CupertinoButton(

@@ -119,8 +119,9 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
           MediaQuery.of(context).viewInsets.bottom + 24,
         ),
         decoration: BoxDecoration(
-          color: CupertinoColors.systemGrey6.withOpacity(1),
+          color: AppColors.white,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          // No shadow at all
         ),
         child: SingleChildScrollView(
           child: Column(
@@ -132,7 +133,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                 height: 4,
                 margin: const EdgeInsets.only(bottom: 24),
                 decoration: BoxDecoration(
-                  color: AppColors.button.withOpacity(0.2),
+                  color: AppColors.button.withOpacity(0.15), // softer
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -160,7 +161,8 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                         color: CupertinoColors.white,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: AppColors.button.withOpacity(0.2),
+                          color: AppColors.button.withOpacity(0.12), // lighter border
+                          width: 1,
                         ),
                       ),
                       child: QuantityField(controller: _quantityController),
@@ -173,7 +175,8 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                         color: CupertinoColors.white,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: AppColors.button.withOpacity(0.2),
+                          color: AppColors.button.withOpacity(0.12), // lighter border
+                          width: 1,
                         ),
                       ),
                       child: UnitSelectorButton(
@@ -190,27 +193,32 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                 ],
               ),
               const SizedBox(height: 36),
-              FormActionButtons(
-                isValid: _validateForm(),
-                onDelete: widget.onDelete,
-                isEditing:
-                    widget.ingredient != null ||
-                    widget.customIngredient != null,
-                onCancel: () => Navigator.pop(context),
-                onSave:
-                    () => IngredientFormUtils.handleSave(
-                      validateForm: _validateForm,
-                      onSave: () {
-                        widget.onSave(
-                          _nameController.text,
-                          _selectedCategory,
-                          _selectedTags.toList(),
-                          int.parse(_quantityController.text),
-                          _selectedUnit,
-                        );
-                      },
-                      closeDialog: () => Navigator.pop(context),
-                    ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: FormActionButtons(
+                  isValid: _validateForm(),
+                  onDelete: widget.onDelete,
+                  isEditing:
+                      widget.ingredient != null ||
+                      widget.customIngredient != null,
+                  onCancel: () => Navigator.pop(context),
+                  onSave:
+                      () => IngredientFormUtils.handleSave(
+                        validateForm: _validateForm,
+                        onSave: () {
+                          widget.onSave(
+                            _nameController.text,
+                            _selectedCategory,
+                            _selectedTags.toList(),
+                            int.parse(_quantityController.text),
+                            _selectedUnit,
+                          );
+                        },
+                        closeDialog: () => Navigator.pop(context),
+                      ),
+                ),
               ),
               const SizedBox(height: 16),
             ],

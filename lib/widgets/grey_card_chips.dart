@@ -29,27 +29,39 @@ class GreyCardChips extends StatelessWidget {
           final isSelected = label == selectedItem;
           return Padding(
             padding: const EdgeInsets.only(right: 8),
-            child: ChoiceChip(
-              label: Text(label),
-              selected: isSelected,
-              onSelected: (_) => onSelected(label),
-              backgroundColor: CupertinoColors.systemGrey5,
-              selectedColor: AppColors.mutedGreen,
-              checkmarkColor: AppColors.white,
-              labelStyle: TextStyle(
-                color: isSelected ? AppColors.white : AppColors.button,
-                fontWeight: FontWeight.w500,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
-              shape: StadiumBorder(
-                side: BorderSide(
-                  color:
-                      isSelected
-                          ? AppColors.mutedGreen
-                          : CupertinoColors.systemGrey4,
-                  width: 1,
+              child: ChoiceChip(
+                label: Text(label),
+                selected: isSelected,
+                onSelected: (_) => onSelected(label),
+                backgroundColor: AppColors.white,
+                selectedColor: AppColors.mutedGreen,
+                checkmarkColor: AppColors.white,
+                labelStyle: TextStyle(
+                  color: isSelected ? AppColors.white : AppColors.button,
+                  fontWeight: FontWeight.w500,
                 ),
+                shape: StadiumBorder(
+                  side: BorderSide(
+                    color:
+                        isSelected
+                            ? AppColors.mutedGreen
+                            : AppColors.white,
+                    width: 1,
+                  ),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             ),
           );
         },

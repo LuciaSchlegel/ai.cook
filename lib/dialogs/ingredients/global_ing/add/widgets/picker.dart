@@ -27,7 +27,7 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
     return Container(
       padding: MediaQuery.of(context).viewInsets.add(const EdgeInsets.all(24)),
       decoration: const BoxDecoration(
-        color: CupertinoColors.systemGrey6,
+        color: AppColors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: Column(
@@ -55,6 +55,10 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
           ),
           const SizedBox(height: 16),
           CupertinoTextField(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.button.withOpacity(0.2)),
+            ),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             keyboardType: TextInputType.number,
             placeholder: 'e.g. 2',
