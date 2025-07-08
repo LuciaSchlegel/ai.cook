@@ -44,7 +44,7 @@ export async function addUserIngredientService({
     },
     relations: ['ingredient', 'customIngredient']
   });
-  if (exists) throw new ConflictError("This ingredient is already in user's list.");
+  if (exists) throw new ConflictError(`${exists} is already in user's list.`)
 
   const unitEntity = unit
     ? await UnitRepository.findOne({
