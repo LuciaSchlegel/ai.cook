@@ -5,6 +5,7 @@
     { "name": "Liters", "abbreviation": "l", "type": "volume" },
     { "name": "Teaspoon", "abbreviation": "tsp", "type": "volume" },
     { "name": "Tablespoon", "abbreviation": "tbsp", "type": "volume" },
-    { "name": "Cup", "abbreviation": "cup", "type": "volume" }
+    { "name": "Cup", "abbreviation": "cup", "type": "volume" },
+    { "name": "Unit", "abbreviation": "u", "type": "quantitative" }
 ]
 

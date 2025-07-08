@@ -26,23 +26,23 @@
           },
           {
             "name": "Tomato",
-            "quantity": 2,
-            "unit": "med"
+            "quantity": 450,
+            "unit": "g"
           },
           {
             "name": "Cucumber",
             "quantity": 1,
-            "unit": "lg"
+            "unit": "u"
           },
           {
             "name": "Red bell pepper",
             "quantity": 1,
-            "unit": "pc"
+            "unit": "u"
           },
           {
             "name": "Onion",
-            "quantity": 1,
-            "unit": "sm"
+            "quantity": 2,
+            "unit": "u"
           },
           {
             "name": "Arugula",
@@ -52,12 +52,12 @@
           {
             "name": "Lemon",
             "quantity": 1,
-            "unit": "unit"
+            "unit": "u"
           },
           {
             "name": "Garlic",
             "quantity": 2,
-            "unit": "clove"
+            "unit": "u"
           },
           {
             "name": "Sunflower seeds",
@@ -92,23 +92,23 @@
         "ingredients": [
           {
             "name": "Salmon",
-            "quantity": 4,
-            "unit": "unit"
+            "quantity": 750,
+            "unit": "g"
           },
           {
             "name": "Asparagus",
-            "quantity": 454,
+            "quantity": 500,
             "unit": "g"
           },
           {
             "name": "Lemon",
             "quantity": 2,
-            "unit": "unit"
+            "unit": "u"
           },
           {
             "name": "Garlic",
             "quantity": 3,
-            "unit": "clove"
+            "unit": "u"
           }
         ],
         "tags": [
@@ -140,7 +140,7 @@
         "ingredients": [
           {
             "name": "Chicken breast",
-            "quantity": 454,
+            "quantity": 450,
             "unit": "g"
           },
           {
@@ -156,27 +156,27 @@
           {
             "name": "Carrot",
             "quantity": 2,
-            "unit": "lg"
+            "unit": "u"
           },
           {
             "name": "Red bell pepper",
             "quantity": 1,
-            "unit": "pc"
+            "unit": "u"
           },
           {
             "name": "Green bell pepper",
             "quantity": 1,
-            "unit": "pc"
+            "unit": "u"
           },
           {
             "name": "Garlic",
             "quantity": 3,
-            "unit": "clove"
+            "unit": "u"
           },
           {
             "name": "Onion",
             "quantity": 1,
-            "unit": "med"
+            "unit": "u"
           }
         ],
         "tags": [
@@ -212,18 +212,18 @@
           },
           {
             "name": "Sweet potato",
-            "quantity": 2,
-            "unit": "med"
+            "quantity": 420,
+            "unit": "g"
           },
           {
             "name": "Carrot",
             "quantity": 3,
-            "unit": "lg"
+            "unit": "u"
           },
           {
             "name": "Beetroot",
-            "quantity": 2,
-            "unit": "med"
+            "quantity": 270,
+            "unit": "g"
           },
           {
             "name": "Spinach",
@@ -233,17 +233,17 @@
           {
             "name": "Cucumber",
             "quantity": 1,
-            "unit": "lg"
+            "unit": "u"
           },
           {
             "name": "Onion",
             "quantity": 1,
-            "unit": "sm"
+            "unit": "u"
           },
           {
             "name": "Lemon",
             "quantity": 1,
-            "unit": "unit"
+            "unit": "u"
           }
         ],
         "tags": [

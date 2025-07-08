@@ -11,36 +11,51 @@ List<Recipe> recommendRecipes({
 }) {
   return allRecipes.where((recipe) {
     // Paso 1: match de ingredientes
-    final matchedCount = recipe.ingredients.where((ri) {
-      return userIngredients.any((ui) => ui.ingredient?.id == ri.ingredient.id);
-    }).length;
+    final matchedCount =
+        recipe.ingredients.where((ri) {
+          return userIngredients.any(
+            (ui) => ui.ingredient?.id == ri.ingredient.id,
+          );
+        }).length;
 
     final ratio = matchedCount / recipe.ingredients.length;
     if (ratio < minMatchRatio) return false;
 
-    // Paso 2: verificar cantidades y unidades
+    // Paso 2: verificar cantidades y unidades usando conversión
     final hasEnoughAll = recipe.ingredients.every((ri) {
       final userIng = userIngredients.firstWhere(
         (ui) => ui.ingredient?.id == ri.ingredient.id,
         orElse: () => UserIng(id: -1, uid: '', quantity: 0),
       );
 
-      // Validar unidad
-      if (ri.unit?.id != userIng.unit?.id) {
-        // Podrías implementar conversión si querés
-        return false;
-      }
+      // Si no tiene cantidad o unit definida, rechazar
+      if (userIng.unit == null || ri.unit == null) return false;
 
-      return userIng.quantity >= ri.quantity;
+      // Verificar si son compatibles
+      if (!userIng.unit!.isCompatibleWith(ri.unit!)) return false;
+
+      try {
+        final userAmountBase = userIng.unit!.convertToBase(
+          userIng.quantity.toDouble(),
+        );
+        final recipeAmountBase = ri.unit!.convertToBase(ri.quantity.toDouble());
+
+        return userAmountBase >= recipeAmountBase;
+      } catch (_) {
+        return false; // Si falla la conversión, asumir que no alcanza
+      }
     });
 
     if (!hasEnoughAll) return false;
 
     // Paso 3: filtrar por tags (preferencias)
-    final matchesTags = preferredTags.isEmpty ||
-        recipe.tags.any((tag) =>
-            preferredTags.any((pref) =>
-                tag.name.toLowerCase() == pref.toLowerCase()));
+    final matchesTags =
+        preferredTags.isEmpty ||
+        recipe.tags.any(
+          (tag) => preferredTags.any(
+            (pref) => tag.name.toLowerCase() == pref.toLowerCase(),
+          ),
+        );
 
     if (!matchesTags) return false;
 
@@ -51,7 +66,7 @@ List<Recipe> recommendRecipes({
       return false;
     }
 
-    // Paso 5: filtrar por dificultad (opcional)
+    // Paso 5: filtrar por dificultad
     if (preferredDifficulty != null &&
         recipe.difficulty?.toLowerCase() != preferredDifficulty.toLowerCase()) {
       return false;
@@ -63,7 +78,10 @@ List<Recipe> recommendRecipes({
 
 // Helper para extraer minutos de string "25 min" o "1h 20m"
 int _extractCookingTime(String cookingTime) {
-  final regex = RegExp(r'(\d+)\s*(h|hour|hours|m|min|minutes)?', caseSensitive: false);
+  final regex = RegExp(
+    r'(\d+)\s*(h|hour|hours|m|min|minutes)?',
+    caseSensitive: false,
+  );
   final matches = regex.allMatches(cookingTime);
 
   int totalMinutes = 0;
