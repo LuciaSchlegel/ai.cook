@@ -60,9 +60,7 @@ class AddCustomIngredientButton extends StatelessWidget {
                 unit: userIng.unit,
               );
               if (context.mounted) Navigator.pop(context);
-            } catch (e, stackTrace) {
-              debugPrint('Error creating custom ingredient: $e');
-              debugPrint('Stack trace: $stackTrace');
+            } catch (e) {
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

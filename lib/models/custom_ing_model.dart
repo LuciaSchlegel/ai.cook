@@ -33,8 +33,6 @@ class CustomIngredient {
         uid: rawUid?.toString() ?? '',
       );
     } catch (e) {
-      print('Error parsing CustomIngredient: $e');
-      print('JSON data: $json');
       rethrow;
     }
   }

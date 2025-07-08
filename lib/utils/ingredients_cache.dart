@@ -28,9 +28,7 @@ Future<void> loadCachedData({
         ..clear()
         ..addAll(decoded.map((e) => Ingredient.fromJson(e)));
     }
-  } catch (e) {
-    debugPrint('Error loading cached data: $e');
-  }
+  } catch (e) {}
 }
 
 Future<void> saveCachedData({
@@ -51,7 +49,5 @@ Future<void> saveCachedData({
       globalIngredientsKey,
       json.encode(ingredients.map((e) => e.toJson()).toList()),
     );
-  } catch (e) {
-    debugPrint('Error saving cached data: $e');
-  }
+  } catch (e) {}
 }

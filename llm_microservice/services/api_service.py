@@ -58,7 +58,6 @@ async def communicateWithModel(prompt: str) -> str:
     if not prompt:
         return "kein prompt erhalten"
     
-    print("received promt in service")
     payload = {
         "model": "mistralai/devstral-small:free",  # kostenloses Modell
         "messages": [

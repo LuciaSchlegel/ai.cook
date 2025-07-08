@@ -68,9 +68,6 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
 
     _selectedTags = widget.customIngredient?.tags?.toSet() ?? {};
 
-    debugPrint(
-      'CustomIngFormDialog: Initializing with category: ${_selectedCategory.name}, unit: ${_selectedUnit.name}, tags: ${_selectedTags.map((tag) => tag.name).join(', ')}',
-    );
     if (widget.customIngredient?.tags != null) {
       _selectedTags.addAll(widget.customIngredient!.tags!);
     }

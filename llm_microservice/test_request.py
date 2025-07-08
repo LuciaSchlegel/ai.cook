@@ -5,8 +5,6 @@ response = httpx.post(
     json={"keywords": ["chicken", "lemon", "garlic"]}
 )
 
-print("Status:", response.status_code)
-print("Text:", response.text)
 
 """
 

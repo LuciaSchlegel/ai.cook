@@ -46,7 +46,6 @@ void main() {
       });
       when(mockClient.get(any, headers: captureAnyNamed('headers'))).thenAnswer(
         (invocation) async {
-          print('Mock intercepted: ${invocation.positionalArguments}');
           return http.Response(fakeJson, 200);
         },
       );

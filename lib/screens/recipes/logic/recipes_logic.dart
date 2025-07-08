@@ -15,9 +15,6 @@ List<Recipe> filterByAvailableIngredients(
       );
       if (userIng.ingredient == null) {
         // DEBUG: No se encontró el ingrediente en userIngredients
-        print(
-          '[DEBUG] Receta "${recipe.name}": ingrediente faltante: ${ri.ingredient.name} (id: ${ri.ingredient.id})',
-        );
         allOk = false;
         break;
       }
@@ -27,9 +24,7 @@ List<Recipe> filterByAvailableIngredients(
       }
       if (!userIng.unit!.isCompatibleWith(ri.unit!)) {
         // Unidades incompatibles: NO descartar, solo warning en la card
-        print(
-          '[DEBUG] Receta "${recipe.name}": unidades incompatibles: userIng=${userIng.unit!.abbreviation}, receta=${ri.unit!.abbreviation} para ingrediente ${ri.ingredient.name}',
-        );
+
         continue;
       }
       try {
@@ -38,23 +33,15 @@ List<Recipe> filterByAvailableIngredients(
         );
         final recipeAmountBase = ri.unit!.convertToBase(ri.quantity.toDouble());
         if (userAmountBase < recipeAmountBase) {
-          print(
-            '[DEBUG] Receta "${recipe.name}": cantidad insuficiente para ${ri.ingredient.name}. Usuario: $userAmountBase, Receta: $recipeAmountBase (base)',
-          );
           allOk = false;
           break;
         }
       } catch (e) {
-        print(
-          '[DEBUG] Receta "${recipe.name}": error en conversión de unidades para ${ri.ingredient.name}: $e',
-        );
         allOk = false;
         break;
       }
     }
-    if (!allOk) {
-      print('[DEBUG] Receta "${recipe.name}" descartada.');
-    }
+    if (!allOk) {}
     return allOk;
   }).toList();
 }

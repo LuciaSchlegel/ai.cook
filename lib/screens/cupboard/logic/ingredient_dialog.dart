@@ -28,7 +28,6 @@ Future<void> showIngredientDialog({
       (i) => i.id == userIng!.id,
       orElse: () => userIng!,
     );
-    debugPrint('Updated user ingredient: ${updated.toJson()}');
 
     // ✅ Buscar el customIngredient completo para asegurar que tenga tags
     if (updated.customIngredient != null) {
@@ -40,14 +39,10 @@ Future<void> showIngredientDialog({
             orElse: () => updated.customIngredient!,
           );
 
-      debugPrint('Full custom ingredient: ${fullCustom.toJson()}');
       userIng = updated.copyWith(
         customIngredient: updated.customIngredient!.copyWith(
           tags: fullCustom.tags,
         ),
-      );
-      debugPrint(
-        'Updated user ingredient with full custom: ${userIng.toJson()}',
       );
     } else {
       userIng = updated;

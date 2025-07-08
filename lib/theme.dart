@@ -45,4 +45,10 @@ final ThemeData appTheme = ThemeData(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     ),
   ),
+
+  textSelectionTheme: TextSelectionThemeData(
+    cursorColor: AppColors.orange,
+    selectionColor: AppColors.orange,
+    selectionHandleColor: AppColors.orange,
+  ),
 );

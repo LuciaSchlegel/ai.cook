@@ -47,10 +47,6 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
       searchText: searchText,
     );
 
-    debugPrint(
-      'Selected ingredients: ${selectedIngredients.map((ui) => ui.ingredient?.name).toList()}',
-    );
-
     return Dialog(
       backgroundColor: AppColors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),

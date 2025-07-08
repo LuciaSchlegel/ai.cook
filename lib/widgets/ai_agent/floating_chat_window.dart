@@ -81,7 +81,6 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
 
   void _handleSendMessage(String message) async {
     try {
-      print('Attempting to send message to server: $message');
       final response = await http
           .post(
             Uri.parse('http://172.20.10.14:3000/llm/talk'),
@@ -95,9 +94,6 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
             },
           );
 
-      print('Server response status code: ${response.statusCode}');
-      print('Server response body: ${response.body}');
-
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         final aiResponse = responseData['response'] as String;
@@ -105,8 +101,6 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
           _chatWidgetKey.currentState!.receiveMessage(aiResponse);
         }
       } else {
-        print('Failed to send message. Status code: ${response.statusCode}');
-        print('Response body: ${response.body}');
         if (_chatWidgetKey.currentState != null) {
           _chatWidgetKey.currentState!.receiveMessage(
             'Sorry, I encountered an error while processing your message. Please try again.',
@@ -114,10 +108,7 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
         }
       }
     } catch (error) {
-      print('Error sending message: $error');
-      if (error is TimeoutException) {
-        print('Request timed out. Server might be unresponsive.');
-      }
+      if (error is TimeoutException) {}
       if (_chatWidgetKey.currentState != null) {
         _chatWidgetKey.currentState!.receiveMessage(
           'Sorry, I encountered an error while processing your message. Please try again.',

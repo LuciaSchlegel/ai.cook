@@ -24,6 +24,5 @@ async def talk_to_chat(request: ChatRequest):
     """
     chat endpoint: einfach an service weiter geben 
     """
-    print("Received request in router:", request)
     response = await communicateWithModel(request.prompt)
     return {"response": response}  

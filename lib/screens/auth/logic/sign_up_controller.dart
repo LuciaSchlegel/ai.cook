@@ -32,7 +32,6 @@ Future<void> handleRegister({
       }
     },
     onSuccess: () async {
-      debugPrint('Registration successful, fetching user info');
       if (!context.mounted) return;
 
       // Cierra el loading si está abierto
@@ -52,7 +51,6 @@ Future<void> handleRegister({
     onError: (msg, {exception}) async {
       if (exception != null && exception.code == 'email-already-in-use') {
         if (context.mounted) {
-          debugPrint('Mostrando diálogo de email ya en uso');
           await handleExistingEmail(context: context, email: email);
         }
       } else {

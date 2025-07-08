@@ -10,7 +10,6 @@ import '../../providers/recipes_provider.dart';
 import '../../providers/resource_provider.dart';
 import '../../providers/ingredients_provider.dart';
 import '../../dialogs/recipes/add_ext_recipe.dart';
-import '../../utils/recipes_filter.dart';
 import 'logic/recipes_logic.dart';
 
 class RecipesScreen extends StatefulWidget {
