@@ -202,9 +202,16 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                   selectedIngredients.isNotEmpty
                       ? () async {
                         try {
-                          for (final ing in selectedIngredients) {
-                            await ingredientsProvider.addUserIngredient(ing);
-                          }
+                          await Future.wait(
+                            selectedIngredients.map(
+                              (ing) => ingredientsProvider.addUserIngredient(
+                                ing.copyWith(id: 0),
+                                optimistic: false,
+                              ),
+                            ),
+                          );
+                          await ingredientsProvider
+                              .fetchUserIngredients(); // <-- Refresca la lista
                           if (context.mounted) Navigator.pop(context);
                         } catch (e) {
                           final errorMsg = AppErrorHandler.handle(e);

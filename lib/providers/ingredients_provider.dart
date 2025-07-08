@@ -81,7 +81,10 @@ class IngredientsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addUserIngredient(UserIng userIngredient) async {
+  Future<void> addUserIngredient(
+    UserIng userIngredient, {
+    bool optimistic = true,
+  }) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) {
       _setError('User not authenticated');
@@ -100,8 +103,10 @@ class IngredientsProvider with ChangeNotifier {
       final tempId = DateTime.now().millisecondsSinceEpoch * -1;
       final tempUserIng = userIngredient.copyWith(id: tempId, uid: uid);
 
-      _userIngredients.add(tempUserIng);
-      notifyListeners();
+      if (optimistic) {
+        _userIngredients.add(tempUserIng);
+        notifyListeners();
+      }
 
       final savedUserIng = await IngredientsRepo.addUserIngredient(
         uid: uid,
@@ -112,10 +117,12 @@ class IngredientsProvider with ChangeNotifier {
       );
 
       if (savedUserIng != null) {
-        final index = _userIngredients.indexWhere((ing) => ing.id == tempId);
-        if (index != -1) {
-          _userIngredients[index] = savedUserIng;
-        } else {}
+        if (optimistic) {
+          final index = _userIngredients.indexWhere((ing) => ing.id == tempId);
+          if (index != -1) {
+            _userIngredients[index] = savedUserIng;
+          } else {}
+        }
 
         _lastFetchTime = DateTime.now();
         await saveCachedData(
@@ -127,8 +134,10 @@ class IngredientsProvider with ChangeNotifier {
         notifyListeners();
         await fetchUserIngredients();
       } else {
-        _userIngredients.removeWhere((ing) => ing.id == tempId);
-        notifyListeners();
+        if (optimistic) {
+          _userIngredients.removeWhere((ing) => ing.id == tempId);
+          notifyListeners();
+        }
       }
     } catch (e) {
       _setError('Failed to add user ingredient: $e');

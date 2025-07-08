@@ -109,4 +109,22 @@ class Recipe {
         )
         .toList();
   }
+
+  /// Devuelve la cantidad de advertencias por incompatibilidad de unidades entre los ingredientes del usuario y los de la receta.
+  int getUnitWarnings(List<UserIng> userIngredients) {
+    int warnings = 0;
+    for (final recipeIng in ingredients) {
+      final userIng = userIngredients.firstWhere(
+        (ui) => ui.ingredient?.id == recipeIng.ingredient.id,
+        orElse: () => UserIng(id: -1, uid: '', quantity: 0),
+      );
+      if (userIng.ingredient == null)
+        continue; // No está, no cuenta como warning de unidad
+      if (userIng.unit == null || recipeIng.unit == null) continue;
+      if (!userIng.unit!.isCompatibleWith(recipeIng.unit!)) {
+        warnings++;
+      }
+    }
+    return warnings;
+  }
 }

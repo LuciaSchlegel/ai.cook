@@ -62,12 +62,16 @@ class _RecipeCardContent extends StatelessWidget {
     required this.userIngredients,
   });
 
-  String _getMissingIngredientsText() {
+  String _getIngredientsStatusText() {
     final missingIngredients = recipe.getMissingIngredients(userIngredients);
-    if (missingIngredients.isEmpty) {
-      return 'All available';
+    final unitWarnings = recipe.getUnitWarnings(userIngredients);
+    if (missingIngredients.isNotEmpty) {
+      return '${missingIngredients.length} missing';
     }
-    return '${missingIngredients.length} missing';
+    if (unitWarnings > 0) {
+      return 'All available (${unitWarnings} warning${unitWarnings > 1 ? 's' : ''})';
+    }
+    return 'All available';
   }
 
   @override
@@ -75,6 +79,8 @@ class _RecipeCardContent extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final width = size.width * 0.24; // Ajusta el valor según tu diseño
     final height = size.height * 0.22; // Ajusta el valor según tu diseño
+    final unitWarnings = recipe.getUnitWarnings(userIngredients);
+    final missingIngredients = recipe.getMissingIngredients(userIngredients);
     return Card(
       elevation: 6,
       shape: const RoundedRectangleBorder(
@@ -95,7 +101,8 @@ class _RecipeCardContent extends StatelessWidget {
                 ),
                 child: _RecipeDetails(
                   recipe: recipe,
-                  missingIngredientsText: _getMissingIngredientsText(),
+                  ingredientsStatusText: _getIngredientsStatusText(),
+                  warning: missingIngredients.isEmpty && unitWarnings > 0,
                 ),
               ),
             ),
@@ -108,11 +115,13 @@ class _RecipeCardContent extends StatelessWidget {
 
 class _RecipeDetails extends StatelessWidget {
   final Recipe recipe;
-  final String missingIngredientsText;
+  final String ingredientsStatusText;
+  final bool warning;
 
   const _RecipeDetails({
     required this.recipe,
-    required this.missingIngredientsText,
+    required this.ingredientsStatusText,
+    this.warning = false,
   });
 
   @override
@@ -153,11 +162,13 @@ class _RecipeDetails extends StatelessWidget {
               ),
               _DetailRow(
                 label: 'Ingredients: ',
-                value: missingIngredientsText,
+                value: ingredientsStatusText,
                 valueColor:
-                    missingIngredientsText.contains('missing')
+                    warning
                         ? AppColors.orange
-                        : AppColors.mutedGreen,
+                        : (ingredientsStatusText.contains('missing')
+                            ? AppColors.orange
+                            : AppColors.mutedGreen),
               ),
             ],
           ),

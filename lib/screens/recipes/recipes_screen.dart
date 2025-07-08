@@ -11,6 +11,7 @@ import '../../providers/resource_provider.dart';
 import '../../providers/ingredients_provider.dart';
 import '../../dialogs/recipes/add_ext_recipe.dart';
 import '../../utils/recipes_filter.dart';
+import 'logic/recipes_logic.dart';
 
 class RecipesScreen extends StatefulWidget {
   final VoidCallback? onProfileTap;
@@ -34,12 +35,9 @@ class _RecipesScreenState extends State<RecipesScreen> {
     'All Recipes',
     'Available',
     'Missing Ingredients',
-    'Recommended',
   ];
 
   String selectedTag = 'All';
-  List<Recipe> recommendedRecipes = [];
-  bool isShowingRecommended = false;
 
   @override
   void initState() {
@@ -49,82 +47,19 @@ class _RecipesScreenState extends State<RecipesScreen> {
     );
   }
 
-  void _testRecipeFiltering() {
-    final ingredientsProvider = Provider.of<IngredientsProvider>(
-      context,
-      listen: false,
-    );
-    final recipesProvider = Provider.of<RecipesProvider>(
-      context,
-      listen: false,
-    );
-
-    final userIngredients = ingredientsProvider.userIngredients;
-
-    if (userIngredients.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'No tienes ingredientes en tu alacena. Agrega algunos ingredientes primero.',
-          ),
-          backgroundColor: Colors.orange,
-        ),
-      );
-      return;
-    }
-
-    final allRecipes = recipesProvider.recipes;
-
-    if (allRecipes.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('No hay recipes disponibles.'),
-          backgroundColor: Colors.orange,
-        ),
-      );
-      return;
-    }
-
-    final recommended = recommendRecipes(
-      allRecipes: allRecipes,
-      userIngredients: userIngredients,
-      minMatchRatio: 0.6,
-      preferredTags: selectedTag != 'All' ? [selectedTag] : [],
-      maxCookingTimeMinutes: 60,
-      preferredDifficulty: null,
-    );
-
-    setState(() {
-      recommendedRecipes = recommended;
-      isShowingRecommended = true;
-      selectedFilter = 'Recommended';
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          recommended.isEmpty
-              ? 'No se encontraron recipes que coincidan con tus ingredientes y preferencias.'
-              : 'Se encontraron ${recommended.length} recipes recomendadas basadas en tus ingredientes.',
-        ),
-        backgroundColor: recommended.isEmpty ? Colors.orange : Colors.green,
-        duration: const Duration(seconds: 3),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final resourceProvider = Provider.of<ResourceProvider>(context);
     final tagNames = ['All', ...resourceProvider.recipeTags.map((t) => t.name)];
+    final ingredientsProvider = Provider.of<IngredientsProvider>(
+      context,
+      listen: false,
+    );
 
     void onSelected(String tag) {
       setState(() {
         selectedTag = tag;
-        if (isShowingRecommended) {
-          _testRecipeFiltering();
-        }
       });
     }
 
@@ -147,7 +82,6 @@ class _RecipesScreenState extends State<RecipesScreen> {
                 if (value != null) {
                   setState(() {
                     selectedFilter = value;
-                    isShowingRecommended = value == 'Recommended';
                   });
                 }
               },
@@ -164,7 +98,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Error: ${recipesProvider.error}',
+                            'Error:  [38;5;9m${recipesProvider.error} [0m',
                             style: const TextStyle(color: Colors.red),
                           ),
                           const SizedBox(height: 16),
@@ -181,39 +115,35 @@ class _RecipesScreenState extends State<RecipesScreen> {
                     return Center(child: LoadingIndicator());
                   }
 
-                  var recipes = recipesProvider.recipes;
-
-                  if (selectedFilter == 'Recommended' && isShowingRecommended) {
-                    recipes = recommendedRecipes;
-                  } else if (selectedTag != 'All') {
-                    recipes =
-                        recipes
-                            .where(
-                              (r) => r.tags.any((t) => t.name == selectedTag),
-                            )
-                            .toList();
+                  // --- FILTRADO SOLO POR INGREDIENTES DISPONIBLES ---
+                  final userIngredients = ingredientsProvider.userIngredients;
+                  final allRecipes = recipesProvider.recipes;
+                  List<Recipe> recipes;
+                  if (selectedFilter == 'Available') {
+                    recipes = filterByAvailableIngredients(
+                      allRecipes,
+                      userIngredients,
+                    );
+                  } else if (selectedFilter == 'Missing Ingredients') {
+                    recipes = filterByMissingIngredients(
+                      allRecipes,
+                      userIngredients,
+                    );
+                  } else {
+                    recipes = allRecipes;
                   }
+                  // Aplicar filtro de tags si corresponde
+                  if (selectedTag != 'All' && selectedFilter != 'Recommended') {
+                    recipes = filterByTags(recipes, [selectedTag]);
+                  }
+                  // --- FIN FILTRADO ---
 
                   if (recipes.isEmpty) {
                     String message = 'No recipes found';
-                    if (selectedFilter == 'Recommended' &&
-                        isShowingRecommended) {
-                      message =
-                          'No se encontraron recipes recomendadas. Intenta con diferentes ingredientes o preferencias.';
-                    }
                     return Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(message, textAlign: TextAlign.center),
-                          if (selectedFilter == 'Recommended') ...[
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: _testRecipeFiltering,
-                              child: const Text('Probar de nuevo'),
-                            ),
-                          ],
-                        ],
+                        children: [Text(message, textAlign: TextAlign.center)],
                       ),
                     );
                   }
