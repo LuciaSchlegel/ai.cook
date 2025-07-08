@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/providers/search_provider.dart';
-import 'package:ai_cook_project/widgets/dropdown_selector.dart';
 import 'package:ai_cook_project/widgets/loading_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -94,32 +93,21 @@ class _CupboardScreenState extends State<CupboardScreen> {
               currentIndex: 0,
             ),
             SizedBox(height: screenHeight * 0.03),
-            Padding(
-              padding: EdgeInsets.fromLTRB(
-                horizontalPadding,
-                0,
-                horizontalPadding,
-                screenHeight * 0.02,
-              ),
-              child: DropdownSelector(
-                value: _selectedCategory,
-                items: categories,
-                onChanged: (value) {
-                  if (value != null) {
-                    setState(() => _selectedCategory = value);
-                  }
-                },
-              ),
-            ),
-            GreyCardChips(
-              items: tags,
-              selectedItem: _selectedProperty,
-              onSelected: (value) {
+            ChipsDropdownCard(
+              dropdownValue: _selectedCategory,
+              dropdownItems: categories,
+              onDropdownChanged: (value) {
+                if (value != null) {
+                  setState(() => _selectedCategory = value);
+                }
+              },
+              chipsItems: tags,
+              chipsSelectedItem: _selectedProperty,
+              onChipSelected: (value) {
                 setState(() {
                   _selectedProperty = value;
                 });
               },
-              horizontalPadding: horizontalPadding,
             ),
             SizedBox(height: screenHeight * 0.02),
             Expanded(

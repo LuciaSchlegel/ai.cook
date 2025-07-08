@@ -6,7 +6,6 @@ import 'package:ai_cook_project/widgets/screen_header.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/recipe_model.dart';
-import '../../widgets/dropdown_selector.dart';
 import '../../providers/recipes_provider.dart';
 import '../../providers/resource_provider.dart';
 import '../../providers/ingredients_provider.dart';
@@ -45,19 +44,29 @@ class _RecipesScreenState extends State<RecipesScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => Provider.of<RecipesProvider>(context, listen: false).getRecipes());
+    Future.microtask(
+      () => Provider.of<RecipesProvider>(context, listen: false).getRecipes(),
+    );
   }
 
   void _testRecipeFiltering() {
-    final ingredientsProvider = Provider.of<IngredientsProvider>(context, listen: false);
-    final recipesProvider = Provider.of<RecipesProvider>(context, listen: false);
+    final ingredientsProvider = Provider.of<IngredientsProvider>(
+      context,
+      listen: false,
+    );
+    final recipesProvider = Provider.of<RecipesProvider>(
+      context,
+      listen: false,
+    );
 
     final userIngredients = ingredientsProvider.userIngredients;
 
     if (userIngredients.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('No tienes ingredientes en tu alacena. Agrega algunos ingredientes primero.'),
+          content: Text(
+            'No tienes ingredientes en tu alacena. Agrega algunos ingredientes primero.',
+          ),
           backgroundColor: Colors.orange,
         ),
       );
@@ -106,9 +115,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final horizontalPadding = screenWidth * 0.05;
     final resourceProvider = Provider.of<ResourceProvider>(context);
     final tagNames = ['All', ...resourceProvider.recipeTags.map((t) => t.name)];
 
@@ -133,59 +140,20 @@ class _RecipesScreenState extends State<RecipesScreen> {
               currentIndex: 0,
             ),
             SizedBox(height: screenHeight * 0.03),
-            Padding(
-              padding: EdgeInsets.fromLTRB(
-                horizontalPadding,
-                0,
-                horizontalPadding,
-                screenHeight * 0.02,
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: DropdownSelector(
-                      value: selectedFilter,
-                      items: filterOptions,
-                      onChanged: (value) {
-                        if (value != null) {
-                          setState(() {
-                            selectedFilter = value;
-                            isShowingRecommended = value == 'Recommended';
-                          });
-                        }
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  GestureDetector(
-                    onTap: _testRecipeFiltering,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(Icons.psychology, size: 18, color: Colors.white),
-                          const SizedBox(width: 4),
-                          const Text(
-                            'Test',
-                            style: TextStyle(color: Colors.white, fontSize: 14),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            GreyCardChips(
-              items: tagNames,
-              selectedItem: selectedTag,
-              onSelected: onSelected,
-              horizontalPadding: horizontalPadding,
+            ChipsDropdownCard(
+              dropdownValue: selectedFilter,
+              dropdownItems: filterOptions,
+              onDropdownChanged: (value) {
+                if (value != null) {
+                  setState(() {
+                    selectedFilter = value;
+                    isShowingRecommended = value == 'Recommended';
+                  });
+                }
+              },
+              chipsItems: tagNames,
+              chipsSelectedItem: selectedTag,
+              onChipSelected: onSelected,
             ),
             Expanded(
               child: Consumer<RecipesProvider>(
@@ -218,13 +186,20 @@ class _RecipesScreenState extends State<RecipesScreen> {
                   if (selectedFilter == 'Recommended' && isShowingRecommended) {
                     recipes = recommendedRecipes;
                   } else if (selectedTag != 'All') {
-                    recipes = recipes.where((r) => r.tags.any((t) => t.name == selectedTag)).toList();
+                    recipes =
+                        recipes
+                            .where(
+                              (r) => r.tags.any((t) => t.name == selectedTag),
+                            )
+                            .toList();
                   }
 
                   if (recipes.isEmpty) {
                     String message = 'No recipes found';
-                    if (selectedFilter == 'Recommended' && isShowingRecommended) {
-                      message = 'No se encontraron recipes recomendadas. Intenta con diferentes ingredientes o preferencias.';
+                    if (selectedFilter == 'Recommended' &&
+                        isShowingRecommended) {
+                      message =
+                          'No se encontraron recipes recomendadas. Intenta con diferentes ingredientes o preferencias.';
                     }
                     return Center(
                       child: Column(
@@ -250,7 +225,11 @@ class _RecipesScreenState extends State<RecipesScreen> {
                       return RecipeCard(
                         key: ValueKey(recipes[index].id),
                         recipe: recipes[index],
-                        userIngredients: Provider.of<IngredientsProvider>(context, listen: false).userIngredients,
+                        userIngredients:
+                            Provider.of<IngredientsProvider>(
+                              context,
+                              listen: false,
+                            ).userIngredients,
                       );
                     },
                   );

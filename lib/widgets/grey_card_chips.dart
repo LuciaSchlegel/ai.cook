@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/widgets/dropdown_selector.dart';
 
 class GreyCardChips extends StatelessWidget {
   final List<String> items;
@@ -13,58 +14,216 @@ class GreyCardChips extends StatelessWidget {
     required this.items,
     required this.selectedItem,
     required this.onSelected,
-    this.horizontalPadding = 16.0,
+    this.horizontalPadding = 20.0,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 50,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: items.length,
-        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-        itemBuilder: (context, index) {
-          final label = items[index];
-          final isSelected = label == selectedItem;
-          return Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(28),
+        // Sombra más suave y consistente con tu diseño
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.065,
+        padding: EdgeInsets.symmetric(
+          horizontal: horizontalPadding,
+          vertical: 10.0,
+        ),
+        child: ShaderMask(
+          shaderCallback: (Rect bounds) {
+            return LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [Colors.black, Colors.black, Colors.transparent],
+              stops: [0.0, 0.95, 1.0],
+            ).createShader(bounds);
+          },
+          blendMode: BlendMode.dstIn,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: items.length,
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (context, index) {
+                final label = items[index];
+                final isSelected = label == selectedItem;
+
+                return Padding(
+                  padding: EdgeInsets.only(
+                    left: index == 0 ? 10 : 0,
+                    right: 10,
                   ),
-                ],
-              ),
-              child: ChoiceChip(
-                label: Text(label),
-                selected: isSelected,
-                onSelected: (_) => onSelected(label),
-                backgroundColor: AppColors.white,
-                selectedColor: AppColors.mutedGreen,
-                checkmarkColor: AppColors.white,
-                labelStyle: TextStyle(
-                  color: isSelected ? AppColors.white : AppColors.button,
-                  fontWeight: FontWeight.w500,
-                ),
-                shape: StadiumBorder(
-                  side: BorderSide(
-                    color: isSelected ? AppColors.mutedGreen : AppColors.white,
-                    width: 1,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 250),
+                    curve: Curves.easeInOut,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(22),
+                        onTap: () => onSelected(label),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 250),
+                          curve: Curves.easeInOut,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(22),
+                            color:
+                                isSelected
+                                    ? AppColors.mutedGreen
+                                    : Colors.grey.withOpacity(0.08),
+                            // Sombra sutil solo para el seleccionado
+                            boxShadow:
+                                isSelected
+                                    ? [
+                                      BoxShadow(
+                                        color: AppColors.mutedGreen.withOpacity(
+                                          index == 0 ? 0.15 : 0.3,
+                                        ),
+                                        blurRadius: index == 0 ? 4 : 8,
+                                        offset: const Offset(0, 2),
+                                        spreadRadius: 0,
+                                      ),
+                                    ]
+                                    : null,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Checkmark más sutil
+                              if (isSelected) ...[
+                                Container(
+                                  width: 16,
+                                  height: 16,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    CupertinoIcons.checkmark,
+                                    size: 10,
+                                    color: AppColors.mutedGreen,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                              ],
+                              Text(
+                                label,
+                                style: TextStyle(
+                                  color:
+                                      isSelected
+                                          ? AppColors.white
+                                          : AppColors.button,
+                                  fontWeight:
+                                      isSelected
+                                          ? FontWeight.w600
+                                          : FontWeight.w500,
+                                  fontSize: 14,
+                                  letterSpacing: 0.2,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-              ),
+                );
+              },
             ),
-          );
-        },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ChipsDropdownCard extends StatelessWidget {
+  final String dropdownValue;
+  final List<String> dropdownItems;
+  final ValueChanged<String?> onDropdownChanged;
+  final String chipsSelectedItem;
+  final List<String> chipsItems;
+  final ValueChanged<String> onChipSelected;
+  final String? dropdownTitle;
+
+  const ChipsDropdownCard({
+    super.key,
+    required this.dropdownValue,
+    required this.dropdownItems,
+    required this.onDropdownChanged,
+    required this.chipsSelectedItem,
+    required this.chipsItems,
+    required this.onChipSelected,
+    this.dropdownTitle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(color: AppColors.mutedGreen, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width * 0.02,
+        vertical: MediaQuery.of(context).size.height * 0.01,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: AppColors.mutedGreen.withOpacity(
+              0.5,
+            ), // Borde interno más suave
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(
+            24,
+          ), // Un poco menor que el exterior
+        ),
+        padding: const EdgeInsets.all(10), // Espacio entre los bordes
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            DropdownSelector(
+              value: dropdownValue,
+              items: dropdownItems,
+              onChanged: onDropdownChanged,
+              title: dropdownTitle,
+            ),
+            const SizedBox(height: 8),
+            GreyCardChips(
+              items: chipsItems,
+              selectedItem: chipsSelectedItem,
+              onSelected: onChipSelected,
+              horizontalPadding: 0, // Ya hay padding en el contenedor principal
+            ),
+          ],
+        ),
       ),
     );
   }

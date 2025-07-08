@@ -66,7 +66,7 @@ final List<_PageData> pages = [
   _PageData(
     title: 'Calendar',
     icon: IconProperties(
-      icon: Icons.calendar_month_rounded,
+      svgAsset: 'assets/icons/calendar.svg',
       size: 26,
       activeSize: 28,
       activeColor: AppColors.orange,
