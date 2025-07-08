@@ -40,10 +40,10 @@ class _CupboardScreenState extends State<CupboardScreen> {
   bool _hasShownOnboarding = false;
 
   @override
-  void didUpdateWidget(covariant CupboardScreen oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.isActive && !_hasShownOnboarding) {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!_hasShownOnboarding) {
         final wasShown = await handleOnboarding(
           context: context,
           hasShownOnboarding: _hasShownOnboarding,
@@ -53,8 +53,8 @@ class _CupboardScreenState extends State<CupboardScreen> {
             _hasShownOnboarding = wasShown;
           });
         }
-      });
-    }
+      }
+    });
   }
 
   void _showIngredientDialog([UserIng? userIng]) async {
