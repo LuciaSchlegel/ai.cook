@@ -10,7 +10,7 @@ class AiButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final buttonSize = screenWidth < 400 ? 52.0 : 64.0;
+    final buttonSize = screenWidth < 400 ? 58.0 : 70.0;
     final borderWidth = 4.0;
 
     return SizedBox(
@@ -92,7 +92,7 @@ class _GradientBorderPainter extends CustomPainter {
           ..strokeWidth = strokeWidth;
     canvas.drawCircle(
       size.center(Offset.zero),
-      (size.width / 2) - strokeWidth / 2,
+      (size.width / 1.8) - strokeWidth / 2,
       paint,
     );
   }

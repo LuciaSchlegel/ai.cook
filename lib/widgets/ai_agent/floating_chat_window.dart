@@ -28,12 +28,16 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
   Offset? _position;
   bool _isDragging = false;
 
+  // Track keyboard state
+  double _keyboardHeight = 0;
+  bool _keyboardVisible = false;
+
   // Responsive size constants
   static const double _minWindowWidth = 320.0;
   static const double _maxWindowWidth = 500.0;
-  static const double _minWindowHeight = 450.0;
+  static const double _minWindowHeight = 400.0;
   static const double _maxWindowHeight = 700.0;
-  static const double _aspectRatio = 0.75; // height = width * 1.5
+  static const double _aspectRatio = 0.75; // height = width * 1.33
 
   final GlobalKey<ChatWidgetState> _chatWidgetKey =
       GlobalKey<ChatWidgetState>();
@@ -108,7 +112,6 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
         }
       }
     } catch (error) {
-      if (error is TimeoutException) {}
       if (_chatWidgetKey.currentState != null) {
         _chatWidgetKey.currentState!.receiveMessage(
           'Sorry, I encountered an error while processing your message. Please try again.',
@@ -117,32 +120,37 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
     }
   }
 
-  Size _calculateWindowSize(BoxConstraints constraints) {
-    // Calculate base width as percentage of screen width
+  Size _calculateWindowSize(BoxConstraints constraints, double keyboardHeight) {
     final screenWidth = constraints.maxWidth;
     final screenHeight = constraints.maxHeight;
+    final availableHeight = screenHeight - keyboardHeight;
     final isLandscape = screenWidth > screenHeight;
 
-    // Base calculations
+    // Calculate width
     double width;
     if (isLandscape) {
-      // In landscape, use smaller percentage of screen width
       width = screenWidth * 0.4;
     } else {
-      // In portrait, use larger percentage of screen width
       width = screenWidth * 0.85;
     }
-
-    // Clamp width between min and max
     width = width.clamp(_minWindowWidth, _maxWindowWidth);
 
-    // Calculate height based on aspect ratio, but respect min/max
-    double height = width / _aspectRatio;
-    height = height.clamp(_minWindowHeight, _maxWindowHeight);
+    // Calculate height with keyboard consideration
+    double height;
+    if (keyboardHeight > 0) {
+      // When keyboard is visible, use more of available height
+      height = availableHeight * 0.8;
+      // Ensure minimum height even with keyboard
+      height = height.clamp(_minWindowHeight, _maxWindowHeight);
+    } else {
+      // Normal height calculation
+      height = width / _aspectRatio;
+      height = height.clamp(_minWindowHeight, _maxWindowHeight);
+    }
 
     // Final adjustment to ensure window fits on screen
-    if (height > screenHeight * 0.9) {
-      height = screenHeight * 0.9;
+    if (height > availableHeight * 0.95) {
+      height = availableHeight * 0.95;
       width = height * _aspectRatio;
       width = width.clamp(_minWindowWidth, screenWidth * 0.95);
     }
@@ -150,9 +158,41 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
     return Size(width, height);
   }
 
+  Offset _calculatePosition(
+    BoxConstraints constraints,
+    Size windowSize,
+    double keyboardHeight,
+  ) {
+    final screenWidth = constraints.maxWidth;
+    final screenHeight = constraints.maxHeight;
+    final availableHeight = screenHeight - keyboardHeight;
+
+    // If no position is set, center it
+    if (_position == null) {
+      return Offset(
+        (screenWidth - windowSize.width) / 2,
+        (availableHeight - windowSize.height) / 2,
+      );
+    }
+
+    // Adjust existing position for keyboard
+    double newX = _position!.dx;
+    double newY = _position!.dy;
+
+    // Ensure window stays within bounds
+    newX = newX.clamp(0, screenWidth - windowSize.width);
+    newY = newY.clamp(0, availableHeight - windowSize.height);
+
+    // If keyboard is visible and window would be hidden, move it up
+    if (keyboardHeight > 0 && (newY + windowSize.height) > availableHeight) {
+      newY = availableHeight - windowSize.height;
+    }
+
+    return Offset(newX, newY);
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Si no está abierto, no renderizar nada
     if (!widget.isOpen) {
       return const SizedBox.shrink();
     }
@@ -161,19 +201,43 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
       type: MaterialType.transparency,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final size = _calculateWindowSize(constraints);
-          final width = size.width;
-          final height = size.height;
+          // Get keyboard height
+          final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+          final isKeyboardVisible = keyboardHeight > 0;
 
-          // Calculate initial centered position if not set
-          _position ??= Offset(
-            (constraints.maxWidth - width) / 2,
-            (constraints.maxHeight - height) / 2,
+          // Update keyboard state
+          if (_keyboardVisible != isKeyboardVisible) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted) {
+                setState(() {
+                  _keyboardVisible = isKeyboardVisible;
+                  _keyboardHeight = keyboardHeight;
+                });
+              }
+            });
+          }
+
+          final windowSize = _calculateWindowSize(constraints, keyboardHeight);
+          final position = _calculatePosition(
+            constraints,
+            windowSize,
+            keyboardHeight,
           );
+
+          // Update position if it changed due to keyboard
+          if (_position != position && !_isDragging) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted) {
+                setState(() {
+                  _position = position;
+                });
+              }
+            });
+          }
 
           return Stack(
             children: [
-              // Background overlay que solo captura gestos cuando está abierto
+              // Background overlay
               Positioned.fill(
                 child: GestureDetector(
                   onTap: widget.onClose,
@@ -182,9 +246,14 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
                 ),
               ),
               // Chat window
-              Positioned(
-                left: _position!.dx,
-                top: _position!.dy,
+              AnimatedPositioned(
+                duration:
+                    _isDragging
+                        ? Duration.zero
+                        : const Duration(milliseconds: 300),
+                curve: Curves.easeOut,
+                left: (_position ?? position).dx,
+                top: (_position ?? position).dy,
                 child: ScaleTransition(
                   scale: _scaleAnimation,
                   child: FadeTransition(
@@ -195,24 +264,26 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
                       },
                       onPanUpdate: (details) {
                         setState(() {
-                          _position = Offset(
+                          final newPosition = Offset(
                             (_position!.dx + details.delta.dx).clamp(
                               0,
-                              constraints.maxWidth - width,
+                              constraints.maxWidth - windowSize.width,
                             ),
                             (_position!.dy + details.delta.dy).clamp(
                               0,
-                              constraints.maxHeight - height,
+                              (constraints.maxHeight - keyboardHeight) -
+                                  windowSize.height,
                             ),
                           );
+                          _position = newPosition;
                         });
                       },
                       onPanEnd: (details) {
                         setState(() => _isDragging = false);
                       },
                       child: Container(
-                        width: width,
-                        height: height,
+                        width: windowSize.width,
+                        height: windowSize.height,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(24),

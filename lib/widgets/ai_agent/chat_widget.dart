@@ -49,6 +49,7 @@ class ChatWidgetState extends State<ChatWidget> {
           ),
         );
       });
+      _scrollToBottom();
     }
   }
 
@@ -58,16 +59,21 @@ class ChatWidgetState extends State<ChatWidget> {
         _isTyping = false;
         _messages.add(ChatMessage(text: message, type: MessageType.bot));
       });
+      _scrollToBottom();
+    }
+  }
 
-      // Scroll to bottom after receiving message
-      Future.delayed(const Duration(milliseconds: 50), () {
+  void _scrollToBottom() {
+    // Use a more reliable method for scrolling to bottom
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );
-      });
-    }
+      }
+    });
   }
 
   void _handleSubmitted(String text) {
@@ -79,16 +85,7 @@ class ChatWidgetState extends State<ChatWidget> {
       _isTyping = true;
     });
 
-    // Scroll to bottom
-    Future.delayed(const Duration(milliseconds: 50), () {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
-    });
-
-    // Call the callback
+    _scrollToBottom();
     widget.onSendMessage(text);
   }
 
@@ -105,6 +102,7 @@ class ChatWidgetState extends State<ChatWidget> {
       decoration: BoxDecoration(color: AppColors.mutedGreen),
       child: Column(
         children: [
+          // Messages list with flexible height
           Expanded(
             child: ListView.builder(
               controller: _scrollController,
@@ -118,6 +116,7 @@ class ChatWidgetState extends State<ChatWidget> {
               },
             ),
           ),
+          // Message input - will adjust based on keyboard
           _buildMessageInput(),
         ],
       ),
@@ -136,6 +135,9 @@ class ChatWidgetState extends State<ChatWidget> {
           if (!isUser) ...[_buildBotAvatar(), const SizedBox(width: 8)],
           Flexible(
             child: Container(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.75,
+              ),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               decoration: BoxDecoration(
                 color: isUser ? AppColors.background : Colors.white,
@@ -203,7 +205,7 @@ class ChatWidgetState extends State<ChatWidget> {
   Widget _buildDot(int index) {
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0.5, end: 1.0),
-      duration: Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 600),
       curve: Curves.easeInOut,
       builder: (context, value, child) {
         return Container(
@@ -221,7 +223,7 @@ class ChatWidgetState extends State<ChatWidget> {
 
   Widget _buildMessageInput() {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
@@ -233,63 +235,69 @@ class ChatWidgetState extends State<ChatWidget> {
           ),
         ],
       ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
+      child: SafeArea(
+        top: false,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(
+              child: Container(
+                constraints: const BoxConstraints(maxHeight: 120),
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(25),
+                  border: Border.all(color: Colors.grey[300]!, width: 1),
+                ),
+                child: TextField(
+                  controller: _controller,
+                  decoration: InputDecoration(
+                    hintText: 'Ask me anything about cooking...',
+                    hintStyle: TextStyle(color: Colors.grey[400], fontSize: 15),
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
+                  ),
+                  style: const TextStyle(fontSize: 15, height: 1.4),
+                  maxLines: null,
+                  textInputAction: TextInputAction.send,
+                  onSubmitted: _handleSubmitted,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Container(
+              margin: const EdgeInsets.only(bottom: 2),
               decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(25),
-                border: Border.all(color: Colors.grey[300]!, width: 1),
-              ),
-              child: TextField(
-                controller: _controller,
-                decoration: InputDecoration(
-                  hintText: 'Ask me anything about cooking...',
-                  hintStyle: TextStyle(color: Colors.grey[400], fontSize: 15),
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 12,
+                color: AppColors.background,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.mutedGreen.withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
                   ),
-                ),
-                style: const TextStyle(fontSize: 15, height: 1.4),
-                maxLines: null,
-                textInputAction: TextInputAction.send,
-                onSubmitted: _handleSubmitted,
+                ],
               ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.background,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.mutedGreen.withOpacity(0.3),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(20),
-                onTap: () => _handleSubmitted(_controller.text),
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  child: const Icon(
-                    Icons.send_rounded,
-                    color: Colors.white,
-                    size: 20,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: () => _handleSubmitted(_controller.text),
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    child: const Icon(
+                      Icons.send_rounded,
+                      color: Colors.white,
+                      size: 20,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

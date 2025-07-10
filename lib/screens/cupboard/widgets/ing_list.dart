@@ -5,13 +5,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class IngredientListView extends StatelessWidget {
   final List<UserIng> ingredients;
-  final double horizontalPadding;
   final void Function(UserIng) onTap;
 
   const IngredientListView({
     super.key,
     required this.ingredients,
-    required this.horizontalPadding,
     required this.onTap,
   });
 
@@ -58,25 +56,27 @@ class IngredientListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return ListView.builder(
       padding: EdgeInsets.symmetric(
-        horizontal: horizontalPadding,
-        vertical: 16,
+        horizontal: screenHeight * 0.025,
+        vertical: screenHeight * 0.01,
       ),
       itemCount: ingredients.length,
       itemBuilder: (context, index) {
         final userIng = ingredients[index];
         return Padding(
-          padding: const EdgeInsets.only(bottom: 20),
+          padding: const EdgeInsets.only(bottom: 10.0),
           child: Container(
             decoration: BoxDecoration(
               color: AppColors.white,
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(18),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.06),
-                  blurRadius: 20,
-                  offset: const Offset(0, 8),
+                  color: Colors.black.withOpacity(0.04),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
@@ -84,23 +84,23 @@ class IngredientListView extends StatelessWidget {
               color: Colors.transparent,
               child: InkWell(
                 onTap: () => onTap(userIng),
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(18),
                 child: Padding(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(12),
                   child: Row(
                     children: [
-                      // Elegant icon container
+                      // Icono más pequeño
                       Container(
-                        width: 44,
-                        height: 44,
+                        width: 32,
+                        height: 32,
                         decoration: BoxDecoration(
-                          color: AppColors.mutedGreen.withOpacity(0.08),
-                          borderRadius: BorderRadius.circular(18),
+                          color: AppColors.mutedGreen.withOpacity(0.10),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: Center(child: _getCategoryIcon(userIng)),
                       ),
-                      const SizedBox(width: 20),
-                      // Ingredient details
+                      const SizedBox(width: 14),
+                      // Detalles
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,33 +110,30 @@ class IngredientListView extends StatelessWidget {
                                   userIng.customIngredient?.name ??
                                   '',
                               style: TextStyle(
-                                color: AppColors.button.withOpacity(0.85),
+                                color: AppColors.button,
                                 fontFamily: 'Casta',
-                                fontSize: 24,
-                                letterSpacing: 0.3,
-                                fontWeight: FontWeight.w700,
-                                height: 1.2,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                height: 1.1,
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 4),
                             Text(
                               '${userIng.quantity} ${userIng.unit?.abbreviation ?? ''}',
                               style: TextStyle(
                                 color: AppColors.mutedGreen,
                                 fontFamily: 'Inter',
-                                fontSize: 15,
+                                fontSize: 13,
                                 fontWeight: FontWeight.w400,
-                                letterSpacing: 0.2,
                               ),
                             ),
                           ],
                         ),
                       ),
-                      // Subtle chevron
                       Icon(
                         Icons.arrow_forward_ios,
-                        color: AppColors.mutedGreen.withOpacity(0.6),
-                        size: 24,
+                        color: AppColors.mutedGreen.withOpacity(0.4),
+                        size: 18,
                       ),
                     ],
                   ),

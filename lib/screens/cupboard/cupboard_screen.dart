@@ -69,7 +69,6 @@ class _CupboardScreenState extends State<CupboardScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final horizontalPadding = screenWidth * 0.05;
     final resourceProvider = Provider.of<ResourceProvider>(context);
     void openAddIngredientDialog() {
       showDialog(context: context, builder: (_) => const AddGlobalIngDialog());
@@ -109,7 +108,6 @@ class _CupboardScreenState extends State<CupboardScreen> {
                 });
               },
             ),
-            SizedBox(height: screenHeight * 0.01),
             Expanded(
               child: Consumer<IngredientsProvider>(
                 builder: (context, ingredientsProvider, _) {
@@ -134,7 +132,6 @@ class _CupboardScreenState extends State<CupboardScreen> {
                       ? const EmptyIngredientListMessage()
                       : IngredientListView(
                         ingredients: filteredIngredients,
-                        horizontalPadding: horizontalPadding,
                         onTap: _showIngredientDialog,
                       );
                 },

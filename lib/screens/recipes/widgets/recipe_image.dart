@@ -17,7 +17,7 @@ class RecipeImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(15),
+      borderRadius: BorderRadius.circular(18),
       child:
           imageUrl != null && imageUrl!.isNotEmpty
               ? CachedNetworkImage(

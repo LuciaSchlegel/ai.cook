@@ -50,85 +50,88 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
     return Dialog(
       backgroundColor: AppColors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'Add Ingredients',
-              style: TextStyle(
-                color: AppColors.button,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Casta',
-                letterSpacing: 1.2,
-              ),
-            ),
-            const SizedBox(height: 28),
-            CupertinoTextField(
-              controller: searchController,
-              placeholder: 'Search ingredients...',
-              prefix: const Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: Icon(
-                  CupertinoIcons.search,
+      child: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Add Ingredients',
+                textAlign: TextAlign.center,
+                style: TextStyle(
                   color: AppColors.button,
-                  size: 20,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Casta',
+                  letterSpacing: 1.2,
                 ),
               ),
-              onChanged: (_) => setState(() {}),
-            ),
-            const SizedBox(height: 28),
-            SizedBox(
-              height: 40,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: categories.length + 1,
-                itemBuilder: (context, index) {
-                  final name = index == 0 ? 'All' : categories[index - 1].name;
-                  final selected = name == selectedCategory;
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 12),
-                    child: GestureDetector(
-                      onTap: () => setState(() => selectedCategory = name),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color:
-                              selected
-                                  ? AppColors.mutedGreen
-                                  : AppColors.mutedGreen.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          name,
-                          style: TextStyle(
+              const SizedBox(height: 20),
+              CupertinoTextField(
+                controller: searchController,
+                placeholder: 'Search ingredients...',
+                prefix: const Padding(
+                  padding: EdgeInsets.only(left: 8.0),
+                  child: Icon(
+                    CupertinoIcons.search,
+                    color: AppColors.button,
+                    size: 20,
+                  ),
+                ),
+                onChanged: (_) => setState(() {}),
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                height: 40,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: categories.length + 1,
+                  itemBuilder: (context, index) {
+                    final name =
+                        index == 0 ? 'All' : categories[index - 1].name;
+                    final selected = name == selectedCategory;
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 12),
+                      child: GestureDetector(
+                        onTap: () => setState(() => selectedCategory = name),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
                             color:
                                 selected
-                                    ? AppColors.white
-                                    : AppColors.button.withOpacity(0.9),
+                                    ? AppColors.mutedGreen
+                                    : AppColors.mutedGreen.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            name,
+                            style: TextStyle(
+                              color:
+                                  selected
+                                      ? AppColors.white
+                                      : AppColors.button.withOpacity(0.9),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-            const SizedBox(height: 28),
-            Flexible(
-              child: Container(
+              const SizedBox(height: 20),
+              ConstrainedBox(
                 constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height * 0.3,
-                  maxHeight: MediaQuery.of(context).size.height * 0.5,
+                  maxHeight: MediaQuery.of(context).size.height * 0.4,
                 ),
                 child:
                     searchFilteredIngredients.isEmpty
-                        ? EmptyList()
+                        ? const EmptyList()
                         : ListView.builder(
                           shrinkWrap: true,
                           itemCount: searchFilteredIngredients.length,
@@ -185,50 +188,52 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                           },
                         ),
               ),
-            ),
-            const SizedBox(height: 28),
-            CupertinoButton(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-              color:
-                  selectedIngredients.isNotEmpty
-                      ? AppColors.button
-                      : AppColors.button.withOpacity(0.4),
-              borderRadius: BorderRadius.circular(18),
-              onPressed:
-                  selectedIngredients.isNotEmpty
-                      ? () async {
-                        try {
-                          await Future.wait(
-                            selectedIngredients.map(
-                              (ing) => ingredientsProvider.addUserIngredient(
-                                ing.copyWith(id: 0),
-                                optimistic: false,
+              const SizedBox(height: 20),
+              CupertinoButton(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 32,
+                ),
+                color:
+                    selectedIngredients.isNotEmpty
+                        ? AppColors.button
+                        : AppColors.button.withOpacity(0.4),
+                borderRadius: BorderRadius.circular(18),
+                onPressed:
+                    selectedIngredients.isNotEmpty
+                        ? () async {
+                          try {
+                            await Future.wait(
+                              selectedIngredients.map(
+                                (ing) => ingredientsProvider.addUserIngredient(
+                                  ing.copyWith(id: 0),
+                                  optimistic: false,
+                                ),
                               ),
-                            ),
-                          );
-                          await ingredientsProvider
-                              .fetchUserIngredients(); // <-- Refresca la lista
-                          if (context.mounted) Navigator.pop(context);
-                        } catch (e) {
-                          final errorMsg = AppErrorHandler.handle(e);
-                          if (context.mounted) {
-                            showErrorDialog(context, message: errorMsg);
+                            );
+                            await ingredientsProvider.fetchUserIngredients();
+                            if (context.mounted) Navigator.pop(context);
+                          } catch (e) {
+                            final errorMsg = AppErrorHandler.handle(e);
+                            if (context.mounted) {
+                              showErrorDialog(context, message: errorMsg);
+                            }
                           }
                         }
-                      }
-                      : null,
-              child: const Text(
-                'Add Selected',
-                style: TextStyle(
-                  color: AppColors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                        : null,
+                child: const Text(
+                  'Add Selected',
+                  style: TextStyle(
+                    color: AppColors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 28),
-            const AddCustomIngredientButton(),
-          ],
+              const SizedBox(height: 8),
+              const AddCustomIngredientButton(),
+            ],
+          ),
         ),
       ),
     );
