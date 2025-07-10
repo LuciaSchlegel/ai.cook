@@ -16,9 +16,20 @@ import 'package:ai_cook_project/providers/search_provider.dart';
 import 'package:ai_cook_project/providers/user_provider.dart';
 import 'package:ai_cook_project/providers/recipes_provider.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, // Para que sea transparente
+      statusBarIconBrightness:
+          Brightness.light, // Íconos en blanco para Android
+      statusBarBrightness:
+          Brightness.dark, // Para iOS: fondo oscuro => texto blanco
+    ),
+  );
 
   // Captura errores globales de Flutter
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -76,6 +87,17 @@ class MyApp extends StatelessWidget {
       theme: appTheme,
       debugShowCheckedModeBanner: false,
       home: const FirebaseInitializer(),
+      builder: (context, child) {
+        // Ensure status bar is always white on iOS
+        SystemChrome.setSystemUIOverlayStyle(
+          const SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.light,
+            statusBarBrightness: Brightness.dark,
+          ),
+        );
+        return child!;
+      },
       routes: {
         '/first': (context) => const FirstScreen(),
         '/main': (context) => const MainScreen(),

@@ -118,8 +118,9 @@ class Recipe {
         (ui) => ui.ingredient?.id == recipeIng.ingredient.id,
         orElse: () => UserIng(id: -1, uid: '', quantity: 0),
       );
-      if (userIng.ingredient == null)
+      if (userIng.ingredient == null) {
         continue; // No está, no cuenta como warning de unidad
+      }
       if (userIng.unit == null || recipeIng.unit == null) continue;
       if (!userIng.unit!.isCompatibleWith(recipeIng.unit!)) {
         warnings++;

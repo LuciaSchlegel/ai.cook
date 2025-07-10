@@ -39,12 +39,9 @@ class _RecipeCardState extends State<RecipeCard> {
           const SizedBox(height: 16),
           GestureDetector(
             onTap: () => _showRecipeDetail(context),
-            child: SizedBox(
-              height: size.height * 0.16,
-              child: _RecipeCardContent(
-                recipe: widget.recipe,
-                userIngredients: widget.userIngredients,
-              ),
+            child: _RecipeCardContent(
+              recipe: widget.recipe,
+              userIngredients: widget.userIngredients,
             ),
           ),
         ],
@@ -69,7 +66,7 @@ class _RecipeCardContent extends StatelessWidget {
       return '${missingIngredients.length} missing';
     }
     if (unitWarnings > 0) {
-      return 'All available (${unitWarnings} warning${unitWarnings > 1 ? 's' : ''})';
+      return 'All available ($unitWarnings warning${unitWarnings > 1 ? 's' : ''})';
     }
     return 'All available';
   }
@@ -77,8 +74,8 @@ class _RecipeCardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final width = size.width * 0.24; // Ajusta el valor según tu diseño
-    final height = size.height * 0.22; // Ajusta el valor según tu diseño
+    final width = size.width * 0.24;
+    final height = size.width * 0.24;
     final unitWarnings = recipe.getUnitWarnings(userIngredients);
     final missingIngredients = recipe.getMissingIngredients(userIngredients);
     return Card(
@@ -95,15 +92,10 @@ class _RecipeCardContent extends StatelessWidget {
             RecipeImage(imageUrl: recipe.image, width: width, height: height),
             const SizedBox(width: 16),
             Expanded(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.14,
-                ),
-                child: _RecipeDetails(
-                  recipe: recipe,
-                  ingredientsStatusText: _getIngredientsStatusText(),
-                  warning: missingIngredients.isEmpty && unitWarnings > 0,
-                ),
+              child: _RecipeDetails(
+                recipe: recipe,
+                ingredientsStatusText: _getIngredientsStatusText(),
+                warning: missingIngredients.isEmpty && unitWarnings > 0,
               ),
             ),
           ],
@@ -128,50 +120,44 @@ class _RecipeDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(
-          flex: 2,
-          child: Text(
-            recipe.name,
-            style: const TextStyle(
-              fontFamily: 'Casta',
-              letterSpacing: 1.2,
-              fontSize: 20,
-              height: 1.1,
-              fontWeight: FontWeight.w600,
-              color: AppColors.button,
-            ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+        Text(
+          recipe.name,
+          style: const TextStyle(
+            fontFamily: 'Casta',
+            letterSpacing: 1.2,
+            fontSize: 20,
+            height: 1.1,
+            fontWeight: FontWeight.w600,
+            color: AppColors.button,
           ),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
-        Expanded(
-          flex: 3,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _DetailRow(
-                label: 'Est. time: ',
-                value: recipe.cookingTime ?? "N/A",
-              ),
-              _DetailRow(
-                label: 'Difficulty: ',
-                value: recipe.difficulty ?? "N/A",
-              ),
-              _DetailRow(
-                label: 'Ingredients: ',
-                value: ingredientsStatusText,
-                valueColor:
-                    warning
-                        ? AppColors.orange
-                        : (ingredientsStatusText.contains('missing')
-                            ? AppColors.orange
-                            : AppColors.mutedGreen),
-              ),
-            ],
-          ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _DetailRow(
+              label: 'Est. time: ',
+              value: recipe.cookingTime ?? "N/A",
+            ),
+            _DetailRow(
+              label: 'Difficulty: ',
+              value: recipe.difficulty ?? "N/A",
+            ),
+            _DetailRow(
+              label: 'Ingredients: ',
+              value: ingredientsStatusText,
+              valueColor:
+                  warning
+                      ? AppColors.orange
+                      : (ingredientsStatusText.contains('missing')
+                          ? AppColors.orange
+                          : AppColors.mutedGreen),
+            ),
+          ],
         ),
       ],
     );

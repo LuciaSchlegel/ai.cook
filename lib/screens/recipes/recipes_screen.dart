@@ -1,6 +1,6 @@
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_card.dart';
+import 'package:ai_cook_project/widgets/chips_dropd_card.dart';
 import 'package:ai_cook_project/widgets/floating_add_button.dart';
-import 'package:ai_cook_project/widgets/grey_card_chips.dart';
 import 'package:ai_cook_project/widgets/loading_indicator.dart';
 import 'package:ai_cook_project/widgets/screen_header.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +97,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Error:  [38;5;9m${recipesProvider.error} [0m',
+                            'Error: ${recipesProvider.error}',
                             style: const TextStyle(color: Colors.red),
                           ),
                           const SizedBox(height: 16),
