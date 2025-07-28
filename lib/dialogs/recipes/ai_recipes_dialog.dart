@@ -172,7 +172,7 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
                     progress: _apertureAnimation.value,
                     maxRadius: maxRadius,
                   ),
-                  child: Container(
+                  child: SizedBox(
                     width: double.infinity,
                     height: double.infinity,
                     child: DraggableScrollableSheet(
