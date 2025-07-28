@@ -1,11 +1,11 @@
-import 'package:ai_cook_project/widgets/ingredients_card.dart';
-import 'package:ai_cook_project/widgets/social_widget.dart';
-import 'package:ai_cook_project/widgets/weekly_card.dart';
+import 'package:ai_cook_project/widgets/cards/ingredients_card.dart';
+import 'package:ai_cook_project/widgets/utils/social_widget.dart';
+import 'package:ai_cook_project/widgets/cards/weekly_card.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/providers/user_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:ai_cook_project/widgets/screen_header.dart';
+import 'package:ai_cook_project/widgets/utils/screen_header.dart';
 
 class HomeScreen extends StatefulWidget {
   final VoidCallback? onProfileTap;
@@ -82,18 +82,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: child,
                                 );
                               },
-                              child: isLoading || name == null
-                                  ? const SizedBox(height: 48)
-                                  : Text(
-                                      name,
-                                      key: ValueKey(name),
-                                      style: const TextStyle(
-                                        fontFamily: 'Casta',
-                                        fontSize: 48,
-                                        color: Colors.white,
-                                        height: 1.1,
+                              child:
+                                  isLoading || name == null
+                                      ? const SizedBox(height: 48)
+                                      : Text(
+                                        name,
+                                        key: ValueKey(name),
+                                        style: const TextStyle(
+                                          fontFamily: 'Casta',
+                                          fontSize: 48,
+                                          color: Colors.white,
+                                          height: 1.1,
+                                        ),
                                       ),
-                                    ),
                             );
                           },
                         ),

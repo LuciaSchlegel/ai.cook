@@ -1,6 +1,6 @@
 import 'package:ai_cook_project/models/recipe_model.dart';
 import 'package:ai_cook_project/theme.dart';
-import 'package:ai_cook_project/widgets/recipe_ing_card.dart';
+import 'package:ai_cook_project/widgets/cards/recipe_ing_card.dart';
 import 'package:flutter/material.dart';
 
 class RecipeGlanceCard extends StatelessWidget {
@@ -63,18 +63,16 @@ class RecipeGlanceCard extends StatelessWidget {
               ),
             ],
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Info Cards Section
           _RecipeInfoCards(recipe: recipe),
-          
+
           const SizedBox(height: 20),
-          
+
           // Ingredients Section
-          Expanded(
-            child: _IngredientsSection(recipe: recipe, size: size),
-          ),
+          Expanded(child: _IngredientsSection(recipe: recipe, size: size)),
         ],
       ),
     );
@@ -144,11 +142,7 @@ class _InfoCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            icon,
-            size: 24,
-            color: AppColors.mutedGreen,
-          ),
+          Icon(icon, size: 24, color: AppColors.mutedGreen),
           const SizedBox(height: 8),
           Text(
             title,

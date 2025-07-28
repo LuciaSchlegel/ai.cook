@@ -9,7 +9,7 @@ export const getRecipesService = async (): Promise<Recipe[]> => {
         unit: true,
       },
       tags: true,
-    //   createdByUser: true,
+      createdByUser: true,
     },
   });
 };

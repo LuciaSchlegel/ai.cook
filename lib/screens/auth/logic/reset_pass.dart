@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ai_cook_project/widgets/error_dialog.dart';
-import 'package:ai_cook_project/widgets/loading_spinner.dart';
+import 'package:ai_cook_project/dialogs/error_dialog.dart';
+import 'package:ai_cook_project/widgets/status/loading_spinner.dart';
 import 'package:ai_cook_project/providers/auth_provider.dart';
 
 Future<void> handleExistingEmail({

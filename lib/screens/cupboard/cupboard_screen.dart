@@ -6,14 +6,14 @@ import 'package:ai_cook_project/screens/cupboard/logic/ingredients_filter.dart';
 import 'package:ai_cook_project/screens/cupboard/services/onboarding.dart';
 import 'package:ai_cook_project/screens/cupboard/widgets/empty_ing_list.dart';
 import 'package:ai_cook_project/screens/cupboard/widgets/ing_list.dart';
-import 'package:ai_cook_project/widgets/chips_dropd_card.dart';
-import 'package:ai_cook_project/widgets/floating_add_button.dart';
-import 'package:ai_cook_project/widgets/screen_header.dart';
+import 'package:ai_cook_project/widgets/selectors/chips_dropd_card.dart';
+import 'package:ai_cook_project/widgets/buttons/floating_add_button.dart';
+import 'package:ai_cook_project/widgets/utils/screen_header.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/providers/search_provider.dart';
-import 'package:ai_cook_project/widgets/loading_indicator.dart';
+import 'package:ai_cook_project/widgets/status/loading_indicator.dart';
 import 'package:provider/provider.dart';
 
 class CupboardScreen extends StatefulWidget {

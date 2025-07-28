@@ -6,7 +6,7 @@ import '../../../../theme.dart';
 import 'package:ai_cook_project/models/ext_recipe_prev.dart';
 import 'package:ai_cook_project/providers/api_rec_provider.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
-import 'package:ai_cook_project/widgets/dropdown_selector.dart';
+import 'package:ai_cook_project/widgets/selectors/dropdown_selector.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_image.dart';
 
 class AddExtRecipe extends StatefulWidget {

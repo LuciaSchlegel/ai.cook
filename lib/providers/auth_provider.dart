@@ -21,31 +21,33 @@ class FBAuthProvider with ChangeNotifier {
 
   bool get isAuth => user != null;
 
-Future<void> signInWithGoogle() async {
-  // Comentar temporalmente para pruebas
-  // throw UnimplementedError('Google Sign-In temporalmente deshabilitado');
-    
-  try {
-    // Inicializar GoogleSignIn si no se ha hecho antes
-    await GoogleSignIn.instance.initialize();
-    
-    // Autenticar con Google
-    final googleUser = await GoogleSignIn.instance.authenticate(); // User canceled
-    
-    // Obtener tokens de autorización
-    final authClient = googleUser.authorizationClient;
-    final auth = await authClient.authorizeScopes(['email', 'profile']);
-    
-    final credential = GoogleAuthProvider.credential(
-      accessToken: auth.accessToken,
-      idToken: googleUser.authentication.idToken,
-    );
-    
-    await _auth.signInWithCredential(credential);
-  } on FirebaseAuthException {
-    rethrow;
+  Future<void> signInWithGoogle() async {
+    // Comentar temporalmente para pruebas
+    // throw UnimplementedError('Google Sign-In temporalmente deshabilitado');
+
+    try {
+      // Inicializar GoogleSignIn si no se ha hecho antes
+      await GoogleSignIn.instance.initialize();
+
+      // Autenticar con Google
+      final googleUser =
+          await GoogleSignIn.instance.authenticate(); // User canceled
+
+      // Obtener tokens de autorización
+      final authClient = googleUser.authorizationClient;
+      final auth = await authClient.authorizeScopes(['email', 'profile']);
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: auth.accessToken,
+        idToken: googleUser.authentication.idToken,
+      );
+
+      await _auth.signInWithCredential(credential);
+    } on FirebaseAuthException {
+      rethrow;
+    }
   }
-}
+
   Future<void> signInWithApple() async {
     if (!Platform.isIOS) return;
 

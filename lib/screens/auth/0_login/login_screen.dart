@@ -5,8 +5,8 @@ import 'package:ai_cook_project/screens/main/main_screen.dart';
 import 'package:ai_cook_project/screens/auth/0_signup/signup_screen.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/utils/responsive_container.dart';
-import 'package:ai_cook_project/widgets/error_dialog.dart';
-import 'package:ai_cook_project/widgets/loading_spinner.dart';
+import 'package:ai_cook_project/dialogs/error_dialog.dart';
+import 'package:ai_cook_project/widgets/status/loading_spinner.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {

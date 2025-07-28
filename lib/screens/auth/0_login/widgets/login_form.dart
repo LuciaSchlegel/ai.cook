@@ -1,7 +1,7 @@
 import 'package:ai_cook_project/utils/field_validator.dart';
-import 'package:ai_cook_project/widgets/auth_button.dart';
-import 'package:ai_cook_project/widgets/custom_text_field.dart';
-import 'package:ai_cook_project/widgets/navigation_text_link.dart';
+import 'package:ai_cook_project/widgets/buttons/auth_button.dart';
+import 'package:ai_cook_project/widgets/utils/custom_text_field.dart';
+import 'package:ai_cook_project/widgets/buttons/navigation_text_link.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 

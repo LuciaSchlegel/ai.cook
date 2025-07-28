@@ -5,7 +5,7 @@ import 'package:ai_cook_project/models/category_model.dart';
 import 'package:ai_cook_project/models/custom_ing_model.dart';
 import 'package:ai_cook_project/models/tag_model.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
-import 'package:ai_cook_project/widgets/form_action_buttons.dart';
+import 'package:ai_cook_project/widgets/buttons/form_action_buttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
@@ -161,7 +161,9 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                         color: CupertinoColors.white,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: AppColors.button.withOpacity(0.12), // lighter border
+                          color: AppColors.button.withOpacity(
+                            0.12,
+                          ), // lighter border
                           width: 1,
                         ),
                       ),
@@ -175,7 +177,9 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                         color: CupertinoColors.white,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: AppColors.button.withOpacity(0.12), // lighter border
+                          color: AppColors.button.withOpacity(
+                            0.12,
+                          ), // lighter border
                           width: 1,
                         ),
                       ),

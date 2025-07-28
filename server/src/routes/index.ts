@@ -9,6 +9,7 @@ import ingredientsRouter from "./ingredients.router";
 import llmRouter from "./llm.router"; 
 import resourcesRouter from "./resources.router";
 import apiRouter from "./api.router";
+import aiRecommendationRouter from "./ai_recommendation.router";
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.use("/calendar", calendarRouter);
 router.use("/ingredients", ingredientsRouter);
 router.use("/recipes", recipesRouter);
 router.use("/llm", llmRouter); // Assuming llm.router exports a default router
+router.use("/ai-recommendations", aiRecommendationRouter);
 
 export default router;

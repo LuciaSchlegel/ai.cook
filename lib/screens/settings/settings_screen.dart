@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
-import 'package:ai_cook_project/widgets/screen_header.dart';
+import 'package:ai_cook_project/widgets/utils/screen_header.dart';
 
 class SettingsScreen extends StatelessWidget {
   final VoidCallback? onProfileTap;

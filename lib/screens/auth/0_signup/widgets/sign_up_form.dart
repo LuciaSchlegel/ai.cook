@@ -1,8 +1,8 @@
 import 'package:ai_cook_project/screens/auth/0_login/login_screen.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/utils/field_validator.dart';
-import 'package:ai_cook_project/widgets/custom_text_field.dart';
-import 'package:ai_cook_project/widgets/navigation_text_link.dart';
+import 'package:ai_cook_project/widgets/utils/custom_text_field.dart';
+import 'package:ai_cook_project/widgets/buttons/navigation_text_link.dart';
 import 'package:flutter/material.dart';
 
 class SignUpForm extends StatelessWidget {

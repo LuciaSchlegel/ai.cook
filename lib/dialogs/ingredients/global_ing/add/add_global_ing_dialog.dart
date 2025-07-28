@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../../../../theme.dart';
-import 'package:ai_cook_project/widgets/error_dialog.dart';
+import 'package:ai_cook_project/dialogs/error_dialog.dart';
 import 'package:ai_cook_project/utils/app_error_handler.dart';
 
 class AddGlobalIngDialog extends StatefulWidget {

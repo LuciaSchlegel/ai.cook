@@ -3,7 +3,7 @@ import 'package:ai_cook_project/screens/recipes/widgets/recipe_glance_card.dart'
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_header.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_tags.dart';
 import 'package:ai_cook_project/theme.dart';
-import 'package:ai_cook_project/widgets/swipe.dart';
+import 'package:ai_cook_project/widgets/utils/swipe.dart';
 import 'package:flutter/material.dart';
 import '../../../models/recipe_model.dart';
 
@@ -108,7 +108,10 @@ class _RecipeOverviewCardState extends State<RecipeOverviewCard>
                       ),
                       const SizedBox(height: 16),
                       Expanded(
-                        child: RecipeGlanceCard(recipe: widget.recipe, size: size),
+                        child: RecipeGlanceCard(
+                          recipe: widget.recipe,
+                          size: size,
+                        ),
                       ),
                     ],
                   ),

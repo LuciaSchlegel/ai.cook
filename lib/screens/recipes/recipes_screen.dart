@@ -1,13 +1,13 @@
+import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_image.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_ov_card.dart';
-import 'package:ai_cook_project/widgets/chips_dropd_card.dart';
-import 'package:ai_cook_project/widgets/floating_add_button.dart';
-import 'package:ai_cook_project/widgets/loading_indicator.dart';
-import 'package:ai_cook_project/widgets/screen_header.dart';
+import 'package:ai_cook_project/widgets/selectors/chips_dropd_card.dart';
+import 'package:ai_cook_project/widgets/buttons/floating_add_button.dart';
+import 'package:ai_cook_project/widgets/status/loading_indicator.dart';
+import 'package:ai_cook_project/widgets/utils/screen_header.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/recipe_model.dart';
-import '../../models/user_ing.dart';
 import '../../providers/recipes_provider.dart';
 import '../../providers/resource_provider.dart';
 import '../../providers/ingredients_provider.dart';
@@ -37,6 +37,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
     'All Recipes',
     'Available',
     'Missing Ingredients',
+    'Recommended',
   ];
 
   String selectedTag = 'All';
@@ -49,21 +50,21 @@ class _RecipesScreenState extends State<RecipesScreen> {
     );
   }
 
+  Future<void> _applyFilters() async {
+    await filterRecipesLogic(
+      context: context,
+      selectedFilter: selectedFilter,
+      selectedTag: selectedTag,
+      maxCookingTimeMinutes: null,
+      preferredDifficulty: null,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final resourceProvider = Provider.of<ResourceProvider>(context);
     final tagNames = ['All', ...resourceProvider.recipeTags.map((t) => t.name)];
-    final ingredientsProvider = Provider.of<IngredientsProvider>(
-      context,
-      listen: false,
-    );
-
-    void onSelected(String tag) {
-      setState(() {
-        selectedTag = tag;
-      });
-    }
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -80,16 +81,22 @@ class _RecipesScreenState extends State<RecipesScreen> {
             ChipsDropdownCard(
               dropdownValue: selectedFilter,
               dropdownItems: filterOptions,
-              onDropdownChanged: (value) {
+              onDropdownChanged: (value) async {
                 if (value != null) {
                   setState(() {
                     selectedFilter = value;
                   });
+                  await _applyFilters();
                 }
               },
               chipsItems: tagNames,
               chipsSelectedItem: selectedTag,
-              onChipSelected: onSelected,
+              onChipSelected: (tag) async {
+                setState(() {
+                  selectedTag = tag;
+                });
+                await _applyFilters();
+              },
             ),
             Expanded(
               child: Consumer<RecipesProvider>(
@@ -114,38 +121,16 @@ class _RecipesScreenState extends State<RecipesScreen> {
                   }
 
                   if (recipesProvider.isLoading) {
-                    return Center(child: LoadingIndicator());
+                    return const Center(child: LoadingIndicator());
                   }
 
-                  // --- FILTRADO SOLO POR INGREDIENTES DISPONIBLES ---
-                  final userIngredients = ingredientsProvider.userIngredients;
-                  final allRecipes = recipesProvider.recipes;
-                  List<Recipe> recipes;
-                  if (selectedFilter == 'Available') {
-                    recipes = filterByAvailableIngredients(
-                      allRecipes,
-                      userIngredients,
-                    );
-                  } else if (selectedFilter == 'Missing Ingredients') {
-                    recipes = filterByMissingIngredients(
-                      allRecipes,
-                      userIngredients,
-                    );
-                  } else {
-                    recipes = allRecipes;
-                  }
-                  // Aplicar filtro de tags si corresponde
-                  if (selectedTag != 'All' && selectedFilter != 'Recommended') {
-                    recipes = filterByTags(recipes, [selectedTag]);
-                  }
-                  // --- FIN FILTRADO ---
+                  final recipes = recipesProvider.recipes;
 
                   if (recipes.isEmpty) {
-                    String message = 'No recipes found';
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [Text(message, textAlign: TextAlign.center)],
+                    return const Center(
+                      child: Text(
+                        'No recipes found',
+                        textAlign: TextAlign.center,
                       ),
                     );
                   }
@@ -162,11 +147,6 @@ class _RecipesScreenState extends State<RecipesScreen> {
                         child: _ContainerRecipeCard(
                           key: ValueKey(recipes[index].id),
                           recipe: recipes[index],
-                          userIngredients:
-                              Provider.of<IngredientsProvider>(
-                                context,
-                                listen: false,
-                              ).userIngredients,
                         ),
                       );
                     },
@@ -192,13 +172,8 @@ class _RecipesScreenState extends State<RecipesScreen> {
 
 class _ContainerRecipeCard extends StatefulWidget {
   final Recipe recipe;
-  final List<UserIng> userIngredients;
 
-  const _ContainerRecipeCard({
-    super.key,
-    required this.recipe,
-    required this.userIngredients,
-  });
+  const _ContainerRecipeCard({super.key, required this.recipe});
 
   @override
   State<_ContainerRecipeCard> createState() => _ContainerRecipeCardState();
@@ -216,11 +191,16 @@ class _ContainerRecipeCardState extends State<_ContainerRecipeCard> {
 
   @override
   Widget build(BuildContext context) {
+    final ingredientsProvider = Provider.of<IngredientsProvider>(
+      context,
+      listen: false,
+    );
+
     return GestureDetector(
       onTap: () => _showRecipeDetail(context),
       child: _ContainerRecipeCardContent(
         recipe: widget.recipe,
-        userIngredients: widget.userIngredients,
+        userIngredients: ingredientsProvider.userIngredients,
       ),
     );
   }
@@ -297,7 +277,6 @@ class _ContainerRecipeDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           recipe.name,
@@ -312,29 +291,24 @@ class _ContainerRecipeDetails extends StatelessWidget {
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _ContainerDetailRow(
-              label: 'Est. time: ',
-              value: recipe.cookingTime ?? "N/A",
-            ),
-            _ContainerDetailRow(
-              label: 'Difficulty: ',
-              value: recipe.difficulty ?? "N/A",
-            ),
-            _ContainerDetailRow(
-              label: 'Ingredients: ',
-              value: ingredientsStatusText,
-              valueColor:
-                  warning
+        const SizedBox(height: 4),
+        _ContainerDetailRow(
+          label: 'Est. time: ',
+          value: recipe.cookingTime ?? "N/A",
+        ),
+        _ContainerDetailRow(
+          label: 'Difficulty: ',
+          value: recipe.difficulty ?? "N/A",
+        ),
+        _ContainerDetailRow(
+          label: 'Ingredients: ',
+          value: ingredientsStatusText,
+          valueColor:
+              warning
+                  ? AppColors.orange
+                  : (ingredientsStatusText.contains('missing')
                       ? AppColors.orange
-                      : (ingredientsStatusText.contains('missing')
-                          ? AppColors.orange
-                          : AppColors.mutedGreen),
-            ),
-          ],
+                      : AppColors.mutedGreen),
         ),
       ],
     );

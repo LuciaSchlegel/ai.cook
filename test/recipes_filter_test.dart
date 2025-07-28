@@ -12,7 +12,12 @@ import 'package:ai_cook_project/utils/recipes_filter.dart';
 void main() {
   // Units
   final gramUnit = Unit(id: 1, name: 'Gram', abbreviation: 'g', type: 'weight');
-  final pieceUnit = Unit(id: 2, name: 'Piece', abbreviation: 'pcs', type: 'count');
+  final pieceUnit = Unit(
+    id: 2,
+    name: 'Piece',
+    abbreviation: 'pcs',
+    type: 'count',
+  );
 
   // Ingredients
   final chicken = Ingredient(
@@ -75,16 +80,8 @@ void main() {
     description: 'Delicious high protein bowl',
     createdByUid: 'user1',
     ingredients: [
-      RecipeIngredient(
-        ingredient: chicken,
-        quantity: 250,
-        unit: gramUnit,
-      ),
-      RecipeIngredient(
-        ingredient: rice,
-        quantity: 150,
-        unit: gramUnit,
-      ),
+      RecipeIngredient(ingredient: chicken, quantity: 250, unit: gramUnit),
+      RecipeIngredient(ingredient: rice, quantity: 150, unit: gramUnit),
     ],
     steps: ['Cook rice', 'Grill chicken', 'Combine and serve'],
     createdAt: DateTime.now(),
@@ -102,16 +99,8 @@ void main() {
     description: 'Plant-based bowl',
     createdByUid: 'user2',
     ingredients: [
-      RecipeIngredient(
-        ingredient: tofu,
-        quantity: 200,
-        unit: gramUnit,
-      ),
-      RecipeIngredient(
-        ingredient: rice,
-        quantity: 150,
-        unit: gramUnit,
-      ),
+      RecipeIngredient(ingredient: tofu, quantity: 200, unit: gramUnit),
+      RecipeIngredient(ingredient: rice, quantity: 150, unit: gramUnit),
     ],
     steps: ['Cook rice', 'Fry tofu', 'Combine and serve'],
     createdAt: DateTime.now(),
@@ -258,6 +247,137 @@ void main() {
       );
 
       expect(recommended.length, 2);
+    });
+
+    // Nuevos tests para verificar la lógica mejorada
+    test('returns recipe when user has exactly enough ingredients', () {
+      final exactIngredients = [
+        UserIng(
+          id: 1,
+          uid: 'user1',
+          ingredient: chicken,
+          customIngredient: null,
+          quantity: 250, // Exact amount needed
+          unit: gramUnit,
+        ),
+        UserIng(
+          id: 2,
+          uid: 'user1',
+          ingredient: rice,
+          customIngredient: null,
+          quantity: 150, // Exact amount needed
+          unit: gramUnit,
+        ),
+      ];
+
+      final recommended = recommendRecipes(
+        allRecipes: allRecipes,
+        userIngredients: exactIngredients,
+        minMatchRatio: 0.5,
+        preferredTags: ['high protein'],
+        maxCookingTimeMinutes: 40,
+        preferredDifficulty: 'Easy',
+      );
+
+      expect(recommended.length, 1);
+      expect(recommended.first.name, 'Chicken Rice Bowl');
+    });
+
+    test('returns empty when units are incompatible', () {
+      final incompatibleUnits = [
+        UserIng(
+          id: 1,
+          uid: 'user1',
+          ingredient: chicken,
+          customIngredient: null,
+          quantity: 300,
+          unit: pieceUnit, // Incompatible with gram
+        ),
+        UserIng(
+          id: 2,
+          uid: 'user1',
+          ingredient: rice,
+          customIngredient: null,
+          quantity: 200,
+          unit: gramUnit,
+        ),
+      ];
+
+      final recommended = recommendRecipes(
+        allRecipes: allRecipes,
+        userIngredients: incompatibleUnits,
+        minMatchRatio: 0.5,
+        preferredTags: ['high protein'],
+        maxCookingTimeMinutes: 40,
+        preferredDifficulty: 'Easy',
+      );
+
+      expect(recommended.isEmpty, true);
+    });
+
+    test('returns recipe when user has more than enough ingredients', () {
+      final extraIngredients = [
+        UserIng(
+          id: 1,
+          uid: 'user1',
+          ingredient: chicken,
+          customIngredient: null,
+          quantity: 500, // More than needed
+          unit: gramUnit,
+        ),
+        UserIng(
+          id: 2,
+          uid: 'user1',
+          ingredient: rice,
+          customIngredient: null,
+          quantity: 300, // More than needed
+          unit: gramUnit,
+        ),
+      ];
+
+      final recommended = recommendRecipes(
+        allRecipes: allRecipes,
+        userIngredients: extraIngredients,
+        minMatchRatio: 0.5,
+        preferredTags: ['high protein'],
+        maxCookingTimeMinutes: 40,
+        preferredDifficulty: 'Easy',
+      );
+
+      expect(recommended.length, 1);
+      expect(recommended.first.name, 'Chicken Rice Bowl');
+    });
+
+    test('handles missing units gracefully', () {
+      final ingredientsWithoutUnits = [
+        UserIng(
+          id: 1,
+          uid: 'user1',
+          ingredient: chicken,
+          customIngredient: null,
+          quantity: 300,
+          unit: null, // Missing unit
+        ),
+        UserIng(
+          id: 2,
+          uid: 'user1',
+          ingredient: rice,
+          customIngredient: null,
+          quantity: 200,
+          unit: gramUnit,
+        ),
+      ];
+
+      final recommended = recommendRecipes(
+        allRecipes: allRecipes,
+        userIngredients: ingredientsWithoutUnits,
+        minMatchRatio: 0.5,
+        preferredTags: ['high protein'],
+        maxCookingTimeMinutes: 40,
+        preferredDifficulty: 'Easy',
+      );
+
+      expect(recommended.isEmpty, true);
     });
   });
 }

@@ -1,7 +1,7 @@
 import 'package:ai_cook_project/screens/main/helpers/tabs.dart';
 import 'package:ai_cook_project/screens/main/widgets/build_tab.dart';
 import 'package:ai_cook_project/theme.dart';
-import 'package:ai_cook_project/widgets/ai_button.dart';
+import 'package:ai_cook_project/widgets/buttons/ai_button.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
