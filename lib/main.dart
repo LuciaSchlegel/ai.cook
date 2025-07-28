@@ -1,6 +1,7 @@
 import 'package:ai_cook_project/providers/api_rec_provider.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
+import 'package:ai_cook_project/providers/ai_recommendations_provider.dart';
 import 'package:ai_cook_project/screens/auth/0_login/login_screen.dart';
 import 'package:ai_cook_project/screens/main/main_screen.dart';
 import 'package:ai_cook_project/screens/auth/0_signup/signup_screen.dart';
@@ -34,23 +35,23 @@ void main() async {
   // Captura errores globales de Flutter
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.presentError(details);
-    print('FlutterError: ${details.exception}');
-    print('Stacktrace: ${details.stack}');
+    debugPrint('FlutterError: ${details.exception}');
+    debugPrint('Stacktrace: ${details.stack}');
   };
 
   // Captura errores globales de la plataforma
   PlatformDispatcher.instance.onError = (error, stack) {
-    print('PlatformDispatcher error: $error');
-    print('Stacktrace: $stack');
+    debugPrint('PlatformDispatcher error: $error');
+    debugPrint('Stacktrace: $stack');
     return true;
   };
 
   // Cargar las variables de entorno primero
   try {
     await dotenv.load(fileName: '.env');
-    print('✅ Environment variables loaded successfully');
+    debugPrint('✅ Environment variables loaded successfully');
   } catch (e) {
-    print('❌ Error loading environment variables: $e');
+    debugPrint('❌ Error loading environment variables: $e');
   }
 
   runApp(
@@ -70,6 +71,9 @@ void main() async {
         ),
         ChangeNotifierProvider<ExtRecipesProvider>(
           create: (_) => ExtRecipesProvider(),
+        ),
+        ChangeNotifierProvider<AIRecommendationsProvider>(
+          create: (_) => AIRecommendationsProvider(),
         ),
       ],
       child: const MyApp(),
@@ -120,8 +124,8 @@ class FirebaseInitializer extends StatelessWidget {
       builder: (context, snapshot) {
         // Si hay error en la inicialización de Firebase
         if (snapshot.hasError) {
-          print('🔥 Firebase initialization error: ${snapshot.error}');
-          print('🔥 Stacktrace: ${snapshot.stackTrace}');
+          debugPrint('🔥 Firebase initialization error: ${snapshot.error}');
+          debugPrint('🔥 Stacktrace: ${snapshot.stackTrace}');
           return Scaffold(
             backgroundColor: Colors.red,
             body: SafeArea(
@@ -181,7 +185,7 @@ class FirebaseInitializer extends StatelessWidget {
 
         // Si Firebase se inicializó correctamente
         if (snapshot.connectionState == ConnectionState.done) {
-          print('🔥 Firebase initialized successfully');
+          debugPrint('🔥 Firebase initialized successfully');
           return const AuthWrapper();
         }
 

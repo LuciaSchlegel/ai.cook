@@ -1,5 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:ai_cook_project/providers/ai_recommendations_provider.dart';
+import 'package:ai_cook_project/providers/ingredients_provider.dart';
+import 'package:ai_cook_project/widgets/status/loading_indicator.dart';
+import 'package:ai_cook_project/theme.dart';
 import 'dart:math' as math;
 
 class AiRecipesDialog extends StatefulWidget {
@@ -22,6 +27,7 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
   late Animation<double> _apertureAnimation;
   late Animation<double> _contentOpacityAnimation;
   late Animation<double> _contentScaleAnimation;
+  bool _hasGeneratedRecommendations = false;
 
   @override
   void initState() {
@@ -70,10 +76,50 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
     if (widget.isOpen != oldWidget.isOpen) {
       if (widget.isOpen) {
         _controller.forward();
+        // Generate AI recommendations when dialog opens
+        if (!_hasGeneratedRecommendations) {
+          _generateAIRecommendations();
+          _hasGeneratedRecommendations = true;
+        }
       } else {
         _controller.reverse();
+        // Reset the flag when dialog closes
+        _hasGeneratedRecommendations = false;
       }
     }
+  }
+
+  void _generateAIRecommendations() {
+    debugPrint('🤖 AI Dialog: Starting recommendation generation...');
+
+    final ingredientsProvider = Provider.of<IngredientsProvider>(
+      context,
+      listen: false,
+    );
+
+    final aiProvider = Provider.of<AIRecommendationsProvider>(
+      context,
+      listen: false,
+    );
+
+    debugPrint(
+      '🥘 User ingredients count: ${ingredientsProvider.userIngredients.length}',
+    );
+
+    // Generate recommendations using the mock data from the provider
+    aiProvider.generateRecommendations(
+      userIngredients:
+          ingredientsProvider.userIngredients.isEmpty
+              ? userIngredientsMock // Use mock data if no user ingredients
+              : ingredientsProvider.userIngredients,
+      preferredTags: const ['quick', 'healthy'],
+      maxCookingTimeMinutes: 30,
+      preferredDifficulty: 'Easy',
+      userPreferences: 'I like Mediterranean cuisine',
+      numberOfRecipes: 5,
+    );
+
+    debugPrint('🚀 AI Dialog: Recommendation request sent!');
   }
 
   void _handleClose() {
@@ -205,59 +251,269 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
   }
 
   Widget _buildDialogContent() {
+    return Consumer<AIRecommendationsProvider>(
+      builder: (context, aiProvider, child) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'AI Recipe Recommendations',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Show loading, error, or recommendations based on provider state
+            if (aiProvider.isLoading)
+              _buildLoadingContent()
+            else if (aiProvider.error != null)
+              _buildErrorContent(aiProvider.error!)
+            else if (aiProvider.currentRecommendation != null)
+              _buildRecommendationsContent(aiProvider.currentRecommendation!)
+            else
+              _buildEmptyContent(),
+
+            const SizedBox(height: 20),
+
+            // Debug button to regenerate recommendations
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  debugPrint('🔄 AI Dialog: Manual regeneration triggered');
+                  _generateAIRecommendations();
+                },
+                icon: const Icon(Icons.refresh),
+                label: const Text('Regenerate AI Recommendations'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.button,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildLoadingContent() {
+    return Container(
+      height: 200,
+      decoration: BoxDecoration(
+        color: Colors.blue.shade50,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.blue.shade200),
+      ),
+      child: const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            LoadingIndicator(),
+            SizedBox(height: 16),
+            Text(
+              '🤖 AI is analyzing your ingredients...',
+              style: TextStyle(fontSize: 16, color: Colors.blue),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 8),
+            Text(
+              'This may take a few seconds',
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorContent(String error) {
+    return Container(
+      height: 200,
+      decoration: BoxDecoration(
+        color: Colors.red.shade50,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.red.shade200),
+      ),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error_outline, size: 48, color: Colors.red),
+              const SizedBox(height: 16),
+              const Text(
+                '❌ AI Error',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                error,
+                style: const TextStyle(fontSize: 14, color: Colors.red),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRecommendationsContent(AIRecommendation recommendation) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'AI Recipe Recommendations',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
+        // Success indicator with stats
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.green.shade50,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.green.shade200),
+          ),
+          child: Row(
+            children: [
+              const Icon(Icons.check_circle, color: Colors.green, size: 20),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  '✅ AI processed ${recommendation.totalRecipesConsidered} recipes in ${recommendation.processingTime}ms',
+                  style: const TextStyle(fontSize: 12, color: Colors.green),
+                ),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 16),
 
-        // Placeholder content - replace with your actual AI recipes content
+        // AI Recommendations text
         Container(
-          height: 200,
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Colors.grey[100],
             borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey[300]!),
           ),
-          child: const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(CupertinoIcons.sparkles, size: 48, color: Colors.blue),
-                SizedBox(height: 16),
-                Text(
-                  'AI Recipe Content Goes Here',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                '🤖 AI Recommendations:',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                recommendation.recommendations,
+                style: const TextStyle(
+                  fontSize: 14,
+                  height: 1.4,
+                  color: Colors.black87,
+                ),
+              ),
+            ],
           ),
         ),
 
-        const SizedBox(height: 20),
-
-        // Add more content as needed
-        for (int i = 0; i < 5; i++)
-          Container(
-            margin: const EdgeInsets.only(bottom: 12),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.grey[200]!),
-            ),
-            child: Text(
-              'Recipe suggestion ${i + 1} - This is where your AI-generated recipe recommendations would appear.',
-              style: const TextStyle(fontSize: 14),
+        // Filtered recipes info
+        if (recommendation.filteredRecipes.isNotEmpty) ...[
+          const SizedBox(height: 16),
+          Text(
+            '📖 ${recommendation.filteredRecipes.length} Recipes Considered:',
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          SizedBox(
+            height: 120,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: recommendation.filteredRecipes.length,
+              itemBuilder: (context, index) {
+                final recipe = recommendation.filteredRecipes[index];
+                return Container(
+                  width: 140,
+                  margin: const EdgeInsets.only(right: 8),
+                  child: Card(
+                    elevation: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            recipe['name'] ?? 'Unknown Recipe',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Time: ${recipe['cookingTime'] ?? 'N/A'}',
+                            style: const TextStyle(
+                              fontSize: 10,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          Text(
+                            'Difficulty: ${recipe['difficulty'] ?? 'N/A'}',
+                            style: const TextStyle(
+                              fontSize: 10,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
+        ],
       ],
+    );
+  }
+
+  Widget _buildEmptyContent() {
+    return Container(
+      height: 200,
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(CupertinoIcons.sparkles, size: 48, color: Colors.blue),
+            SizedBox(height: 16),
+            Text(
+              'Ready to generate AI recommendations!',
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Click the button below to start',
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

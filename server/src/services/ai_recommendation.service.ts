@@ -86,68 +86,68 @@ export class AIRecommendationService {
         .map(ri => `${ri.ingredient?.name} (${ri.quantity} ${ri.unit?.abbreviation})`)
         .join(', ');
       
-      const tags = recipe.tags?.map(tag => tag.name).join(', ') || 'Sin etiquetas';
+      const tags = recipe.tags?.map(tag => tag.name).join(', ') || 'No tags';
       
       return `
 📖 **${recipe.name}**
-- ⏱️ Tiempo: ${recipe.cookingTime || 'No especificado'}
-- 🎯 Dificultad: ${recipe.difficulty || 'No especificado'}
-- 🏷️ Etiquetas: ${tags}
-- 🥘 Ingredientes: ${ingredients}
-- 📝 Descripción: ${recipe.description}
+- ⏱️ Time: ${recipe.cookingTime || 'Not specified'}
+- 🎯 Difficulty: ${recipe.difficulty || 'Not specified'}
+- 🏷️ Tags: ${tags}
+- 🥘 Ingredients: ${ingredients}
+- 📝 Description: ${recipe.description}
       `.trim();
     }).join('\n\n');
 
     const preferences = options.userPreferences 
-      ? `\n\n**Preferencias adicionales del usuario:** ${options.userPreferences}`
+      ? `\n\n**Additional user preferences:** ${options.userPreferences}`
       : '';
 
     const prompt = `
-Eres un asistente culinario experto. Analiza las siguientes recetas y genera recomendaciones personalizadas para el usuario.
+You are an expert culinary assistant. Analyze the following recipes and generate personalized recommendations for the user.
 
-**Ingredientes disponibles del usuario:**
+**User's available ingredients:**
 ${userIngredientsList}
 
-**Preferencias del usuario:**
-- Tiempo máximo: ${options.maxCookingTimeMinutes ? `${options.maxCookingTimeMinutes} minutos` : 'Sin límite'}
-- Dificultad preferida: ${options.preferredDifficulty || 'Cualquiera'}
-- Etiquetas preferidas: ${options.preferredTags?.join(', ') || 'Cualquiera'}${preferences}
+**User preferences:**
+- Maximum time: ${options.maxCookingTimeMinutes ? `${options.maxCookingTimeMinutes} minutes` : 'No limit'}
+- Preferred difficulty: ${options.preferredDifficulty || 'Any'}
+- Preferred tags: ${options.preferredTags?.join(', ') || 'Any'}${preferences}
 
-**Recetas disponibles para recomendar:**
+**Available recipes to recommend:**
 ${recipesInfo}
 
-**Tarea:**
-Genera una respuesta personalizada que incluya:
+**Task:**
+Generate a personalized response that includes:
 
-1. **Análisis de las mejores opciones** basado en los ingredientes disponibles y preferencias
-2. **Top 3 recomendaciones** con explicación de por qué son ideales
-3. **Sugerencias de adaptación** si faltan algunos ingredientes
-4. **Consejos de preparación** para las recetas recomendadas
-5. **Alternativas** si ninguna receta es perfecta
+1. **Analysis of the best options** based on available ingredients and preferences
+2. **Top 3 recommendations** with explanation of why they are ideal
+3. **Adaptation suggestions** if some ingredients are missing
+4. **Preparation tips** for the recommended recipes
+5. **Alternatives** if no recipe is perfect
 
-**Formato de respuesta:**
-Responde de manera amigable y conversacional, como un chef experimentado aconsejando a un amigo. Incluye emojis y sé específico sobre por qué cada receta es buena para este usuario en particular.
+**Response format:**
+Respond in a friendly and conversational manner, like an experienced chef advising a friend. Include emojis and be specific about why each recipe is good for this particular user.
 
-**Ejemplo de estructura:**
-🍳 **Análisis de tus opciones:**
-[Análisis personalizado]
+**Structure example:**
+🍳 **Analysis of your options:**
+[Personalized analysis]
 
-🥇 **Mis top 3 recomendaciones:**
-1. [Receta] - [Razón específica]
-2. [Receta] - [Razón específica]  
-3. [Receta] - [Razón específica]
+🥇 **My top 3 recommendations:**
+1. [Recipe] - [Specific reason]
+2. [Recipe] - [Specific reason]  
+3. [Recipe] - [Specific reason]
 
-💡 **Consejos y adaptaciones:**
-[Sugerencias específicas]
+💡 **Tips and adaptations:**
+[Specific suggestions]
 
-¿Te gustaría que te ayude con alguna de estas recetas en particular?
+Would you like me to help you with any of these recipes in particular?
     `.trim();
 
     return prompt;
   }
 
   /**
-   * Genera una respuesta de fallback si la IA no está disponible
+   * Generates a fallback response if AI is not available
    */
   private static _generateFallbackResponse(
     recipes: RecipeDto[],
@@ -161,13 +161,13 @@ Responde de manera amigable y conversacional, como un chef experimentado aconsej
     }).join('\n\n');
 
     return `
-🍳 **Recomendaciones basadas en tus ingredientes:**
+🍳 **Recommendations based on your ingredients:**
 
 ${recommendations}
 
-💡 **Consejo:** Estas recetas son las que mejor se adaptan a los ingredientes que tienes disponibles. Te recomiendo empezar con la primera opción.
+💡 **Tip:** These recipes are the ones that best match the ingredients you have available. I recommend starting with the first option.
 
-¿Te gustaría ver más detalles de alguna de estas recetas?
+Would you like to see more details of any of these recipes?
     `.trim();
   }
 } 
