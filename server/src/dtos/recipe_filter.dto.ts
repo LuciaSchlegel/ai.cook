@@ -4,9 +4,8 @@ import { IsArray, IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
 
 export enum RecipeFilterEnum {
     ALL = 'All Recipes',
-    AVAILABLE = 'Available',
-    MISSING = 'Missing Ingredients',
-    RECOMMENDED = 'Recommended',
+    AVAILABLE = 'With Available Ingredients',
+    RECOMMENDED = 'Recommended Recipes',
   }
 
 export class FilterRecipesDto {
@@ -17,11 +16,9 @@ export class FilterRecipesDto {
       switch (value) {
         case 'All Recipes':
           return RecipeFilterEnum.ALL;
-        case 'Available':
+        case 'With Available Ingredients':
           return RecipeFilterEnum.AVAILABLE;
-        case 'Missing Ingredients':
-          return RecipeFilterEnum.MISSING;
-        case 'Recommended':
+        case 'Recommended Recipes':
           return RecipeFilterEnum.RECOMMENDED;
         default:
           return value;

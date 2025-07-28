@@ -89,7 +89,8 @@ class UserInfoService {
           );
         }
       }
-    } catch (_) {
+    } catch (e) {
+      debugPrint(e.toString());
       return UserInfoResult.error(
         'Unable to connect to the server. Please check your internet connection and try again.',
       );

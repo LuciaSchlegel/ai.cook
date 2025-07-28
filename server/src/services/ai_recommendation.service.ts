@@ -6,7 +6,7 @@ import { talk_to_llm_service } from "./llm.service";
 
 export interface AIRecommendationOptions {
   userIngredients: UserIngredientDto[];
-  preferredTags?: RecipeTagDto[];
+  preferredTags?: string[];
   maxCookingTimeMinutes?: number;
   preferredDifficulty?: string;
   userPreferences?: string; // Texto libre con preferencias del usuario
@@ -36,8 +36,8 @@ export class AIRecommendationService {
     const filteredRecipes = RecipeFilterService.filterRecipes({
       allRecipes,
       userIngredients: options.userIngredients,
-      filter: "Recommended", // Usar el filtro recomendado como base
-      preferredTags: options.preferredTags?.map(tag => tag.name) || [],
+      filter: "Recommended Recipes", // Usar el filtro recomendado como base
+      preferredTags: options.preferredTags || [],
       maxCookingTimeMinutes: options.maxCookingTimeMinutes,
       preferredDifficulty: options.preferredDifficulty,
     });

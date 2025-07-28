@@ -22,7 +22,7 @@ router.use("/api", apiRouter);
 router.use("/calendar", calendarRouter);
 router.use("/ingredients", ingredientsRouter);
 router.use("/recipes", recipesRouter);
-router.use("/llm", llmRouter); // Assuming llm.router exports a default router
+router.use("/llm", llmRouter); // LLM endpoints for AI integration
 router.use("/ai-recommendations", aiRecommendationRouter);
 
 export default router;

@@ -2,7 +2,6 @@ import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_image.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_ov_card.dart';
 import 'package:ai_cook_project/widgets/selectors/chips_dropd_card.dart';
-import 'package:ai_cook_project/widgets/buttons/floating_add_button.dart';
 import 'package:ai_cook_project/widgets/status/loading_indicator.dart';
 import 'package:ai_cook_project/widgets/utils/screen_header.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ import '../../models/recipe_model.dart';
 import '../../providers/recipes_provider.dart';
 import '../../providers/resource_provider.dart';
 import '../../providers/ingredients_provider.dart';
-import '../../dialogs/recipes/add_ext_recipe.dart';
 import 'logic/recipes_logic.dart';
 import '../../theme.dart';
 
@@ -35,9 +33,8 @@ class _RecipesScreenState extends State<RecipesScreen> {
   String selectedFilter = 'All Recipes';
   final List<String> filterOptions = [
     'All Recipes',
-    'Available',
-    'Missing Ingredients',
-    'Recommended',
+    'With Available Ingredients',
+    'Recommended Recipes',
   ];
 
   String selectedTag = 'All';
@@ -130,6 +127,12 @@ class _RecipesScreenState extends State<RecipesScreen> {
                     return const Center(
                       child: Text(
                         'No recipes found',
+                        style: TextStyle(
+                          fontFamily: 'Casta',
+                          fontSize: 28,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.white,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     );
@@ -156,15 +159,6 @@ class _RecipesScreenState extends State<RecipesScreen> {
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingAddButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) => const AddExtRecipe(),
-          );
-        },
-        heroTag: 'add_button_recipes',
       ),
     );
   }

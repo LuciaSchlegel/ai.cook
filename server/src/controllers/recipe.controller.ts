@@ -64,7 +64,7 @@ export const filterRecipesController = controllerWrapper(async (req) => {
     const serializedRecipes = serialize(RecipeDto, allRecipes) as RecipeDto[];
 
     const filterString = dto.filter === RecipeFilterEnum.RECOMMENDED
-      ? "Recommended"
+      ? "Recommended Recipes"
       : dto.filter;
 
     console.log('Filtering with:', {

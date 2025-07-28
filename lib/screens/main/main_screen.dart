@@ -1,3 +1,4 @@
+import 'package:ai_cook_project/dialogs/recipes/ai_recipes_dialog.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
 import 'package:ai_cook_project/providers/user_provider.dart';
@@ -25,6 +26,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = -1; // home screen index
+  // Main screen controls the state
   bool _isAiWindowOpen = false;
 
   bool _initialized = false;
@@ -68,6 +70,7 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
+  // Dialog responds to state changes
   void _toggleAiWindow() {
     setState(() => _isAiWindowOpen = !_isAiWindowOpen);
   }
@@ -144,7 +147,7 @@ class _MainScreenState extends State<MainScreen> {
                 onLogoutTap: _onLogoutTap,
               )
               : const SizedBox(),
-          if (_isAiWindowOpen)
+          if (_isAiWindowOpen && _currentIndex != 1)
             Positioned.fill(
               child: IgnorePointer(
                 ignoring: !_isAiWindowOpen,
@@ -154,6 +157,11 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
             ),
+          if (_isAiWindowOpen && _currentIndex == 1)
+            AiRecipesDialog(
+              onToggle: _toggleAiWindow, // Dialog calls this to close
+              isOpen: _isAiWindowOpen, // Dialog reacts to this state
+            ), //aqui implementaremos la nueva vista de ai en recipes
         ],
       ),
       bottomNavigationBar: NavBarBuilder(

@@ -14,7 +14,7 @@ export class AIRecommendationRequestDto {
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  preferredTags?: RecipeTagDto[];
+  preferredTags?: string[];
 
   @Expose()
   @IsOptional()
