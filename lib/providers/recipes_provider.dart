@@ -98,4 +98,12 @@ class RecipesProvider extends ChangeNotifier {
   void _clearError() {
     _error = null;
   }
+
+  // Utility
+  void clearAll() {
+    _recipes = [];
+    _error = null;
+    _isLoading = false;
+    notifyListeners();
+  }
 }

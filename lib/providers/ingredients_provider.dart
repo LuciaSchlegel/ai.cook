@@ -348,6 +348,13 @@ class IngredientsProvider with ChangeNotifier {
       final response = await http.get(
         Uri.parse('${dotenv.env['API_URL']}/ingredients/global'),
       );
+
+      if (response.statusCode != 200) {
+        throw Exception(
+          'Failed to fetch ingredients: HTTP ${response.statusCode}',
+        );
+      }
+
       final List<dynamic> decoded = json.decode(response.body);
       _ingredients = decoded.map((e) => Ingredient.fromJson(e)).toList();
 
@@ -404,6 +411,7 @@ class IngredientsProvider with ChangeNotifier {
     _error = null;
     _isLoading = false;
     _lastFetchTime = null;
+    _initialized = false;
     notifyListeners();
   }
 }

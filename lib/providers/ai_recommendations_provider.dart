@@ -182,9 +182,10 @@ class AIRecommendationsProvider extends ChangeNotifier {
     _error = null;
   }
 
-  void clearRecommendations() {
+  void clearAll() {
     _currentRecommendation = null;
     _error = null;
+    _isLoading = false;
     notifyListeners();
   }
 }

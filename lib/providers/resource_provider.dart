@@ -38,10 +38,17 @@ class ResourceProvider extends ChangeNotifier {
         Uri.parse('${dotenv.env['API_URL']}/resources/units'),
         headers: {'Content-Type': 'application/json'},
       );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to fetch units: HTTP ${response.statusCode}');
+      }
+
       final List<dynamic> decoded = json.decode(response.body);
       _units = decoded.map((e) => Unit.fromJson(e)).toList();
       notifyListeners();
-    } catch (e) {}
+    } catch (e) {
+      print('Error fetching units: $e');
+    }
   }
 
   Future<void> getCategories() async {
@@ -50,10 +57,19 @@ class ResourceProvider extends ChangeNotifier {
         Uri.parse('${dotenv.env['API_URL']}/resources/categories'),
         headers: {'Content-Type': 'application/json'},
       );
+
+      if (response.statusCode != 200) {
+        throw Exception(
+          'Failed to fetch categories: HTTP ${response.statusCode}',
+        );
+      }
+
       final List<dynamic> decoded = json.decode(response.body);
       _categories = decoded.map((e) => Category.fromJson(e)).toList();
       notifyListeners();
-    } catch (e) {}
+    } catch (e) {
+      print('Error fetching categories: $e');
+    }
   }
 
   Future<void> getTags() async {
@@ -62,10 +78,17 @@ class ResourceProvider extends ChangeNotifier {
         Uri.parse('${dotenv.env['API_URL']}/resources/tags'),
         headers: {'Content-Type': 'application/json'},
       );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to fetch tags: HTTP ${response.statusCode}');
+      }
+
       final List<dynamic> decoded = json.decode(response.body);
       _tags = decoded.map((e) => Tag.fromJson(e)).toList();
       notifyListeners();
-    } catch (e) {}
+    } catch (e) {
+      print('Error fetching tags: $e');
+    }
   }
 
   Future<void> getRecipeTags() async {
@@ -74,9 +97,28 @@ class ResourceProvider extends ChangeNotifier {
         Uri.parse('${dotenv.env['API_URL']}/resources/recipe_tags'),
         headers: {'Content-Type': 'application/json'},
       );
+
+      if (response.statusCode != 200) {
+        throw Exception(
+          'Failed to fetch recipe tags: HTTP ${response.statusCode}',
+        );
+      }
+
       final List<dynamic> decoded = json.decode(response.body);
       _recipeTags = decoded.map((e) => RecipeTag.fromJson(e)).toList();
       notifyListeners();
-    } catch (e) {}
+    } catch (e) {
+      print('Error fetching recipe tags: $e');
+    }
+  }
+
+  // Utility
+  void clearAll() {
+    _units = [];
+    _categories = [];
+    _tags = [];
+    _recipeTags = [];
+    _initialized = false;
+    notifyListeners();
   }
 }

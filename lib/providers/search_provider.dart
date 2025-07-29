@@ -34,6 +34,14 @@ class SearchProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // Utility
+  void clearAll() {
+    _searchController.clear();
+    _currentScreen = 'home';
+    _isMenuOpen = false;
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     _searchController.dispose();

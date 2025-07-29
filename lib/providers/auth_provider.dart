@@ -1,5 +1,10 @@
 import 'dart:io';
 import 'package:ai_cook_project/providers/user_provider.dart';
+import 'package:ai_cook_project/providers/resource_provider.dart';
+import 'package:ai_cook_project/providers/recipes_provider.dart';
+import 'package:ai_cook_project/providers/search_provider.dart';
+import 'package:ai_cook_project/providers/ai_recommendations_provider.dart';
+import 'package:ai_cook_project/providers/api_rec_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -99,15 +104,42 @@ class FBAuthProvider with ChangeNotifier {
 
   Future<void> signOut(BuildContext context) async {
     await _auth.signOut();
+
+    // Clear all providers with user-specific data
     Provider.of<UserProvider>(context, listen: false).clearUser();
     Provider.of<IngredientsProvider>(context, listen: false).clearAll();
+    Provider.of<ResourceProvider>(context, listen: false).clearAll();
+    Provider.of<RecipesProvider>(context, listen: false).clearAll();
+    Provider.of<SearchProvider>(context, listen: false).clearAll();
+    Provider.of<AIRecommendationsProvider>(context, listen: false).clearAll();
+    Provider.of<ExtRecipesProvider>(context, listen: false).clearAll();
+
     await clearUserCache();
   }
 
   Future<void> clearUserCache() async {
     final prefs = await SharedPreferences.getInstance();
+
+    // Clear all user-specific cache keys
     await prefs.remove('user_ingredients');
     await prefs.remove('global_ingredients');
     await prefs.remove('cached_user');
+
+    // Clear any other potential cache keys (be more comprehensive)
+    final keys = prefs.getKeys();
+    final userSpecificKeys =
+        keys
+            .where(
+              (key) =>
+                  key.contains('user_') ||
+                  key.contains('ingredients') ||
+                  key.contains('recipes') ||
+                  key.contains('recommendations'),
+            )
+            .toList();
+
+    for (final key in userSpecificKeys) {
+      await prefs.remove(key);
+    }
   }
 }

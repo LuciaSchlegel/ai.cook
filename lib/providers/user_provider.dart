@@ -67,6 +67,7 @@ class UserProvider with ChangeNotifier {
   void clearUser() async {
     _user = null;
     _error = null;
+    _isLoading = false;
     _hasFetched = false;
     notifyListeners();
 
