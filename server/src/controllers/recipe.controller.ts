@@ -40,7 +40,14 @@ export const getRecipesController = controllerWrapper(async () => {
 });
 
 export const filterRecipesController = controllerWrapper(async (req) => {
-  console.log('Filter request body:', JSON.stringify(req.body, null, 2));
+  console.log('=== RECIPE FILTER REQUEST ===');
+  console.log('Full request body:', JSON.stringify(req.body, null, 2));
+  console.log('Preferred tags specifically:', req.body.preferredTags);
+  console.log('Preferred tags type:', typeof req.body.preferredTags);
+  console.log('Preferred tags array?:', Array.isArray(req.body.preferredTags));
+  if (Array.isArray(req.body.preferredTags)) {
+    console.log('Preferred tags content:', req.body.preferredTags.map((tag: any, i: number) => `[${i}]: "${tag}" (${typeof tag})`));
+  }
   
   try {
     const dto = plainToInstance(FilterRecipesDto, req.body);
@@ -67,13 +74,13 @@ export const filterRecipesController = controllerWrapper(async (req) => {
       ? "Recommended Recipes"
       : dto.filter;
 
-    console.log('Filtering with:', {
-      filter: filterString,
-      userIngredientsCount: dto.userIngredients?.length || 0,
-      preferredTags: dto.preferredTags,
-      maxCookingTimeMinutes: dto.maxCookingTimeMinutes,
-      preferredDifficulty: dto.preferredDifficulty,
-    });
+    console.log('=== FILTERING PARAMETERS ===');
+    console.log('Filter type:', filterString);
+    console.log('User ingredients count:', dto.userIngredients?.length || 0);
+    console.log('Preferred tags from DTO:', dto.preferredTags);
+    console.log('Preferred tags count:', dto.preferredTags?.length || 0);
+    console.log('Max cooking time:', dto.maxCookingTimeMinutes);
+    console.log('Preferred difficulty:', dto.preferredDifficulty);
 
     const filteredRecipes = RecipeFilterService.filterRecipes({
       allRecipes: serializedRecipes,
@@ -84,6 +91,7 @@ export const filterRecipesController = controllerWrapper(async (req) => {
       preferredDifficulty: dto.preferredDifficulty,
     });
 
+    console.log(`=== FILTERING RESULT ===`);
     console.log(`Filtered ${serializedRecipes.length} recipes to ${filteredRecipes.length}`);
     return filteredRecipes;
   } catch (error: any) {

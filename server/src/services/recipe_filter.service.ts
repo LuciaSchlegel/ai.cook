@@ -23,54 +23,90 @@ export const RecipeFilterService = {
     
     console.log(`🔍 Starting filter: ${filter}`);
     console.log(`📊 Initial recipes: ${filtered.length}`);
-    
-    // Si el filtro es "All Recipes", retornar todas las recetas sin aplicar ningún filtro
-    if (filter === "All Recipes") {
-      console.log(`🎯 Filter is "All Recipes" - returning all recipes without any filtering`);
-      return filtered;
-    }
-    
     console.log(`🏷️ Preferred tags: ${preferredTags.join(', ')}`);
 
+    // Apply main filter based on type
     if (filter === "With Available Ingredients") {
       filtered = filtered.filter(recipe => this._hasAllIngredientsWithQuantity(recipe, userIngredients));
       console.log(`✅ After Available filter: ${filtered.length} recipes`);
     } else if (filter === "Recommended Recipes") {
       filtered = filtered.filter(recipe => this._hasRecommendedIngredients(recipe, userIngredients));
       console.log(`✅ After Recommended filter: ${filtered.length} recipes`);
+    } else if (filter === "All Recipes") {
+      console.log(`🎯 Filter is "All Recipes" - keeping all recipes for tag filtering`);
     }
 
+    // Apply tag filters regardless of main filter type
     if (preferredTags.length > 0) {
       const beforeTags = filtered.length;
+      console.log(`🔍 Starting tag filtering with ${preferredTags.length} preferred tags: [${preferredTags.join(', ')}]`);
+      
+      // Normalize preferred tags for comparison (trim whitespace and lowercase)
+      const normalizedPreferredTags = preferredTags.map(tag => tag.trim().toLowerCase());
+      console.log(`🔧 Normalized preferred tags: [${normalizedPreferredTags.join(', ')}]`);
+      
       filtered = filtered.filter(recipe => {
         const recipeTags = recipe.tags?.map(tag => tag.name) || [];
-        const hasMatchingTag = recipeTags.some(tag => preferredTags.includes(tag));
-        console.log(`🍳 Recipe "${recipe.name}" tags: [${recipeTags.join(', ')}] - Match: ${hasMatchingTag}`);
+        const normalizedRecipeTags = recipeTags.map(tag => tag.trim().toLowerCase());
+        
+        console.log(`🍳 Recipe "${recipe.name}" (ID: ${recipe.id}):`);
+        console.log(`  📋 Original recipe tags: [${recipeTags.join(', ')}] (${recipeTags.length} tags)`);
+        console.log(`  🔧 Normalized recipe tags: [${normalizedRecipeTags.join(', ')}]`);
+        console.log(`  🎯 Looking for normalized: [${normalizedPreferredTags.join(', ')}]`);
+        
+        if (recipeTags.length === 0) {
+          console.log(`  ❌ Recipe has no tags`);
+          return false;
+        }
+        
+        const hasMatchingTag = normalizedPreferredTags.every(preferredTag => {
+          const matches = normalizedRecipeTags.includes(preferredTag);
+          console.log(`    🔍 Checking for "${preferredTag}" -> ${matches ? '✅' : '❌'}`);
+          return matches;
+        });
+        
+        console.log(`  🎯 Final result for "${recipe.name}": ${hasMatchingTag ? '✅ INCLUDED' : '❌ EXCLUDED'}`);
         return hasMatchingTag;
       });
       console.log(`🏷️ After tags filter: ${beforeTags} -> ${filtered.length} recipes`);
+      
+      if (filtered.length === 0) {
+        console.log(`⚠️ WARNING: No recipes found with normalized tags [${normalizedPreferredTags.join(', ')}]`);
+        console.log(`📊 Available normalized tags in all recipes:`);
+        allRecipes.forEach(recipe => {
+          const recipeTags = recipe.tags?.map(tag => tag.name) || [];
+          const normalizedRecipeTags = recipeTags.map(tag => tag.trim().toLowerCase());
+          if (recipeTags.length > 0) {
+            console.log(`  - "${recipe.name}": original [${recipeTags.join(', ')}] -> normalized [${normalizedRecipeTags.join(', ')}]`);
+          }
+        });
+      }
     }
 
     // Apply personal preference filters ONLY for filters other than "With Available Ingredients"
     if (filter !== "With Available Ingredients") {
-      if (preferredDifficulty) {
+      if (preferredDifficulty && preferredDifficulty.trim() !== '') {
         const beforeDifficulty = filtered.length;
         filtered = filtered.filter(recipe =>
           recipe.difficulty?.toLowerCase() === preferredDifficulty.toLowerCase(),
         );
         console.log(`📊 After difficulty filter: ${beforeDifficulty} -> ${filtered.length} recipes`);
+      } else {
+        console.log(`📊 Skipping difficulty filter - no difficulty specified`);
       }
 
-      if (maxCookingTimeMinutes !== undefined) {
+      if (maxCookingTimeMinutes !== undefined && maxCookingTimeMinutes !== null && maxCookingTimeMinutes > 0) {
         const beforeTime = filtered.length;
         filtered = filtered.filter(recipe => {
           if (!recipe.cookingTime) return false;
           const cookingTime = this._extractCookingTime(recipe.cookingTime);
           const matches = cookingTime <= maxCookingTimeMinutes;
-          console.log(`⏰ Recipe "${recipe.name}" cooking time: ${recipe.cookingTime} (${cookingTime}min) - Match: ${matches}`);
+          console.log(`⏰ Recipe "${recipe.name}" cooking time: ${recipe.cookingTime} (${cookingTime}min) - Match: ${matches} (limit: ${maxCookingTimeMinutes}min)`);
           return matches;
         });
         console.log(`⏰ After time filter: ${beforeTime} -> ${filtered.length} recipes`);
+      } else {
+        console.log(`⏰ Skipping cooking time filter - no time limit specified (value: ${maxCookingTimeMinutes})`);
       }
     } else {
       console.log(`🚫 Skipping personal preference filters for "With Available Ingredients" filter`);

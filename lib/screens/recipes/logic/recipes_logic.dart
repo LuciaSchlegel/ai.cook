@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 Future<void> filterRecipesLogic({
   required BuildContext context,
   required String selectedFilter,
-  required String selectedTag,
+  required List<String> selectedTags,
   int? maxCookingTimeMinutes,
   String? preferredDifficulty,
 }) async {
@@ -19,7 +19,7 @@ Future<void> filterRecipesLogic({
   await recipesProvider.filterRecipesFromApi(
     userIngredients: ingredientsProvider.userIngredients,
     filter: selectedFilter,
-    preferredTags: selectedTag != 'All' ? [selectedTag] : [],
+    preferredTags: selectedTags,
     maxCookingTimeMinutes: maxCookingTimeMinutes,
     preferredDifficulty: preferredDifficulty,
   );

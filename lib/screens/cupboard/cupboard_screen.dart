@@ -36,7 +36,7 @@ class CupboardScreen extends StatefulWidget {
 
 class _CupboardScreenState extends State<CupboardScreen> {
   String _selectedCategory = 'All';
-  String _selectedProperty = 'All';
+  List<String> _selectedProperties = [];
   bool _hasShownOnboarding = false;
 
   @override
@@ -67,7 +67,6 @@ class _CupboardScreenState extends State<CupboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final resourceProvider = Provider.of<ResourceProvider>(context);
     void openAddIngredientDialog() {
@@ -78,7 +77,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
       'All',
       ...resourceProvider.categories.map((c) => c.name),
     ];
-    final tags = ['All', ...resourceProvider.tags.map((t) => t.name)];
+    final tags = resourceProvider.tags.map((t) => t.name).toList();
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -101,10 +100,10 @@ class _CupboardScreenState extends State<CupboardScreen> {
                 }
               },
               chipsItems: tags,
-              chipsSelectedItem: _selectedProperty,
-              onChipSelected: (value) {
+              chipsSelectedItems: _selectedProperties,
+              onChipsSelected: (selectedTags) {
                 setState(() {
-                  _selectedProperty = value;
+                  _selectedProperties = selectedTags;
                 });
               },
             ),
@@ -121,7 +120,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
                   final filteredIngredients = filterUserIngredients(
                     allIngredients: ingredientsProvider.userIngredients,
                     selectedCategory: _selectedCategory,
-                    selectedProperty: _selectedProperty,
+                    selectedProperties: _selectedProperties,
                     searchText:
                         Provider.of<SearchProvider>(
                           context,

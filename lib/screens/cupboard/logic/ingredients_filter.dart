@@ -3,7 +3,7 @@ import 'package:ai_cook_project/models/user_ing.dart';
 List<UserIng> filterUserIngredients({
   required List<UserIng> allIngredients,
   required String selectedCategory,
-  required String selectedProperty,
+  required List<String> selectedProperties,
   required String searchText,
 }) {
   return allIngredients.where((userIng) {
@@ -18,17 +18,20 @@ List<UserIng> filterUserIngredients({
     final matchesCategory =
         selectedCategory == 'All' || ingredientCategory == selectedCategory;
 
-    final matchesProperty =
-        selectedProperty == 'All' ||
-        (ingredientTags?.any(
-              (tag) => tag.name.toLowerCase() == selectedProperty.toLowerCase(),
-            ) ??
-            false);
+    final matchesProperties =
+        selectedProperties.isEmpty ||
+        selectedProperties.every((selectedProperty) {
+          return ingredientTags?.any(
+                (tag) =>
+                    tag.name.toLowerCase() == selectedProperty.toLowerCase(),
+              ) ??
+              false;
+        });
 
     final matchesSearch =
         ingredientName?.toLowerCase().contains(searchText.toLowerCase()) ??
         false;
 
-    return matchesCategory && matchesProperty && matchesSearch;
+    return matchesCategory && matchesProperties && matchesSearch;
   }).toList();
 }

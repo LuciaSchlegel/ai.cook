@@ -1,3 +1,4 @@
+import 'package:ai_cook_project/models/recipe_tag_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_image.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_ov_card.dart';
@@ -37,7 +38,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
     'Recommended Recipes',
   ];
 
-  String selectedTag = 'All';
+  List<RecipeTag> selectedTags = [];
 
   @override
   void initState() {
@@ -51,7 +52,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
     await filterRecipesLogic(
       context: context,
       selectedFilter: selectedFilter,
-      selectedTag: selectedTag,
+      selectedTags: selectedTags.map((t) => t.name).toList(),
       maxCookingTimeMinutes: null,
       preferredDifficulty: null,
     );
@@ -61,7 +62,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final resourceProvider = Provider.of<ResourceProvider>(context);
-    final tagNames = ['All', ...resourceProvider.recipeTags.map((t) => t.name)];
+    final tagNames = resourceProvider.recipeTags.map((t) => t.name).toList();
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -87,10 +88,13 @@ class _RecipesScreenState extends State<RecipesScreen> {
                 }
               },
               chipsItems: tagNames,
-              chipsSelectedItem: selectedTag,
-              onChipSelected: (tag) async {
+              chipsSelectedItems: selectedTags.map((t) => t.name).toList(),
+              onChipsSelected: (selectedTagNames) async {
                 setState(() {
-                  selectedTag = tag;
+                  selectedTags =
+                      resourceProvider.recipeTags
+                          .where((t) => selectedTagNames.contains(t.name))
+                          .toList();
                 });
                 await _applyFilters();
               },

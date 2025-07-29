@@ -4,17 +4,31 @@ import 'package:ai_cook_project/theme.dart';
 
 class GreyCardChips extends StatelessWidget {
   final List<String> items;
-  final String selectedItem;
-  final void Function(String) onSelected;
+  final List<String> selectedItems;
+  final void Function(List<String>) onSelected;
   final double horizontalPadding;
 
   const GreyCardChips({
     super.key,
     required this.items,
-    required this.selectedItem,
+    required this.selectedItems,
     required this.onSelected,
     this.horizontalPadding = 20.0,
   });
+
+  void _handleChipTap(String label) {
+    List<String> newSelectedItems = List.from(selectedItems);
+
+    if (newSelectedItems.contains(label)) {
+      // Deselect if already selected
+      newSelectedItems.remove(label);
+    } else {
+      // Select if not selected
+      newSelectedItems.add(label);
+    }
+
+    onSelected(newSelectedItems);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +71,7 @@ class GreyCardChips extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 final label = items[index];
-                final isSelected = label == selectedItem;
+                final isSelected = selectedItems.contains(label);
 
                 return Padding(
                   padding: EdgeInsets.only(
@@ -71,7 +85,7 @@ class GreyCardChips extends StatelessWidget {
                       color: Colors.transparent,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(22),
-                        onTap: () => onSelected(label),
+                        onTap: () => _handleChipTap(label),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 250),
                           curve: Curves.easeInOut,

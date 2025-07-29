@@ -1,14 +1,11 @@
-// index.ts starts the server
-
 import app, { initializeDatabase } from "./server";
 
-const port = process.env.PORT || 3000;
+const port = 3000;
 
-Promise.all([initializeDatabase() , 
-  // initializeLLMmicroservice()]).then(async () => {
-  // await 
-  //initializeIngredients()]).then(async () => {
-  app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-  })
-]);
+initializeDatabase().then(() => {
+  app.listen(port, '0.0.0.0', () => {
+    console.log(`Server is running on http://0.0.0.0:${port}`);
+  });
+}).catch((err) => {
+  console.error("Error initializing database", err);
+});

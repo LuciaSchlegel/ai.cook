@@ -7,9 +7,9 @@ class ChipsDropdownCard extends StatelessWidget {
   final String dropdownValue;
   final List<String> dropdownItems;
   final ValueChanged<String?> onDropdownChanged;
-  final String chipsSelectedItem;
+  final List<String> chipsSelectedItems;
   final List<String> chipsItems;
-  final ValueChanged<String> onChipSelected;
+  final ValueChanged<List<String>> onChipsSelected;
   final String? dropdownTitle;
 
   const ChipsDropdownCard({
@@ -17,9 +17,9 @@ class ChipsDropdownCard extends StatelessWidget {
     required this.dropdownValue,
     required this.dropdownItems,
     required this.onDropdownChanged,
-    required this.chipsSelectedItem,
+    required this.chipsSelectedItems,
     required this.chipsItems,
-    required this.onChipSelected,
+    required this.onChipsSelected,
     this.dropdownTitle,
   });
 
@@ -69,8 +69,8 @@ class ChipsDropdownCard extends StatelessWidget {
             const SizedBox(height: 8),
             GreyCardChips(
               items: chipsItems,
-              selectedItem: chipsSelectedItem,
-              onSelected: onChipSelected,
+              selectedItems: chipsSelectedItems,
+              onSelected: onChipsSelected,
               horizontalPadding: 0, // Ya hay padding en el contenedor principal
             ),
           ],
