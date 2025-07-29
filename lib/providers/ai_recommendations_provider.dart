@@ -1,70 +1,67 @@
 import 'dart:convert';
-import 'package:ai_cook_project/models/category_model.dart';
-import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
-import 'package:ai_cook_project/models/unit.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-final userIngredientsMock = [
-  UserIng(
-    id: 1,
-    uid: "test-user-123",
-    quantity: 1,
-    ingredient: Ingredient(
-      id: 1,
-      name: 'chicken',
-      category: Category(id: 1, name: 'Meat'),
-      tags: [],
-      isVegan: false,
-      isVegetarian: false,
-      isGlutenFree: false,
-      isLactoseFree: false,
-    ),
-    unit: Unit(id: 1, name: 'kilogram', abbreviation: 'kg', type: 'weight'),
-  ),
+// final userIngredientsMock = [
+//   UserIng(
+//     id: 1,
+//     uid: "test-user-123",
+//     quantity: 1,
+//     ingredient: Ingredient(
+//       id: 1,
+//       name: 'chicken',
+//       category: Category(id: 1, name: 'Meat'),
+//       tags: [],
+//       isVegan: false,
+//       isVegetarian: false,
+//       isGlutenFree: false,
+//       isLactoseFree: false,
+//     ),
+//     unit: Unit(id: 1, name: 'kilogram', abbreviation: 'kg', type: 'weight'),
+//   ),
 
-  UserIng(
-    id: 2,
-    uid: '2',
-    ingredient: Ingredient(
-      id: 2,
-      name: 'Onion',
-      category: Category(id: 2, name: 'Vegetable'),
-      tags: [],
-      isVegan: false,
-      isVegetarian: false,
-      isGlutenFree: false,
-      isLactoseFree: false,
-    ),
-    quantity: 1,
-    unit: Unit(id: 2, name: 'pcs', abbreviation: 'pcs', type: 'count'),
-  ),
+//   UserIng(
+//     id: 2,
+//     uid: '2',
+//     ingredient: Ingredient(
+//       id: 2,
+//       name: 'Onion',
+//       category: Category(id: 2, name: 'Vegetable'),
+//       tags: [],
+//       isVegan: false,
+//       isVegetarian: false,
+//       isGlutenFree: false,
+//       isLactoseFree: false,
+//     ),
+//     quantity: 1,
+//     unit: Unit(id: 2, name: 'pcs', abbreviation: 'pcs', type: 'count'),
+//   ),
 
-  UserIng(
-    id: 3,
-    uid: '3',
-    ingredient: Ingredient(
-      id: 3,
-      name: 'Chicken',
-      category: Category(id: 3, name: 'Meat'),
-      tags: [],
-      isVegan: false,
-      isVegetarian: false,
-      isGlutenFree: false,
-      isLactoseFree: false,
-    ),
-    quantity: 1,
-    unit: Unit(id: 3, name: 'pcs', abbreviation: 'pcs', type: 'count'),
-  ),
-];
+//   UserIng(
+//     id: 3,
+//     uid: '3',
+//     ingredient: Ingredient(
+//       id: 3,
+//       name: 'Chicken',
+//       category: Category(id: 3, name: 'Meat'),
+//       tags: [],
+//       isVegan: false,
+//       isVegetarian: false,
+//       isGlutenFree: false,
+//       isLactoseFree: false,
+//     ),
+//     quantity: 1,
+//     unit: Unit(id: 3, name: 'pcs', abbreviation: 'pcs', type: 'count'),
+//   ),
+// ];
 
-final preferredTagsMock = ['quick', 'healthy'];
-final maxCookingTimeMinutesMock = 30;
-final preferredDifficultyMock = 'Easy';
-final userPreferencesMock = 'I like Mediterranean cuisine';
-final numberOfRecipesMock = 5;
+// final preferredTagsMock = ['quick', 'healthy'];
+// final maxCookingTimeMinutesMock = 30;
+// final preferredDifficultyMock = 'Easy';
+// final userPreferencesMock = 'I like Mediterranean cuisine';
+// final numberOfRecipesMock = 5;
 
 class AIRecommendation {
   final String recommendations;
@@ -113,23 +110,23 @@ class AIRecommendationsProvider extends ChangeNotifier {
       final apiUrl =
           '${dotenv.env['API_URL']}/ai-recommendations/recommendations';
 
-      // final body = {
-      //   "userIngredients": userIngredients.map((u) => u.toJson()).toList(),
-      //   "preferredTags": preferredTags,
-      //   "maxCookingTimeMinutes": maxCookingTimeMinutes,
-      //   "preferredDifficulty": preferredDifficulty,
-      //   "userPreferences": userPreferences,
-      //   "numberOfRecipes": numberOfRecipes,
-      // };
-
       final body = {
-        "userIngredients": userIngredientsMock.map((u) => u.toJson()).toList(),
-        "preferredTags": preferredTagsMock,
-        "maxCookingTimeMinutes": maxCookingTimeMinutesMock,
-        "preferredDifficulty": preferredDifficultyMock,
-        "userPreferences": userPreferencesMock,
-        "numberOfRecipes": numberOfRecipesMock,
+        "userIngredients": userIngredients.map((u) => u.toJson()).toList(),
+        "preferredTags": preferredTags,
+        "maxCookingTimeMinutes": maxCookingTimeMinutes,
+        "preferredDifficulty": preferredDifficulty,
+        "userPreferences": userPreferences,
+        "numberOfRecipes": numberOfRecipes,
       };
+
+      // final mockBody = {
+      //   "userIngredients": userIngredientsMock.map((u) => u.toJson()).toList(),
+      //   "preferredTags": preferredTagsMock,
+      //   "maxCookingTimeMinutes": maxCookingTimeMinutesMock,
+      //   "preferredDifficulty": preferredDifficultyMock,
+      //   "userPreferences": userPreferencesMock,
+      //   "numberOfRecipes": numberOfRecipesMock,
+      // };
 
       debugPrint('🤖 Sending AI recommendation request: ${jsonEncode(body)}');
 

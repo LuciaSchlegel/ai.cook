@@ -1,27 +1,27 @@
 // controllers/llm.controller.ts
 import { Request, Response } from "express";
-import { generateRecipeFromKeywords, talk_to_llm_service, healthCheck } from "../services/llm.service";
+import { talk_to_llm_service, healthCheck } from "../services/llm.service";
 
-export async function generateLLMRecipe(req: Request, res: Response) {
-  try {
-    console.log("Received request to generate recipe:", req.body);
-    const { keywords } = req.body;
+// export async function generateLLMRecipe(req: Request, res: Response) {
+//   try {
+//     console.log("Received request to generate recipe:", req.body);
+//     const { keywords } = req.body;
     
-    if (!keywords || !Array.isArray(keywords) || keywords.length === 0) {
-      return res.status(400).json({ 
-        error: "Keywords array is required and must not be empty" 
-      });
-    }
+//     if (!keywords || !Array.isArray(keywords) || keywords.length === 0) {
+//       return res.status(400).json({ 
+//         error: "Keywords array is required and must not be empty" 
+//       });
+//     }
     
-    const recipe = await generateRecipeFromKeywords({ keywords });
-    res.json({ recipe });
-  } catch (error) {
-    console.error("Controller llm.controller Error generating recipe:", error);
-    res.status(500).json({ 
-      error: error instanceof Error ? error.message : "Error generating recipe" 
-    });
-  }
-}
+//     const recipe = await generateRecipeFromKeywords({ keywords });
+//     res.json({ recipe });
+//   } catch (error) {
+//     console.error("Controller llm.controller Error generating recipe:", error);
+//     res.status(500).json({ 
+//       error: error instanceof Error ? error.message : "Error generating recipe" 
+//     });
+//   }
+// }
 
 export async function talk_to_llm(req: Request, res: Response) {
   try {

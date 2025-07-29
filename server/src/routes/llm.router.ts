@@ -1,13 +1,13 @@
 // routes/llm.router.ts
 import { Router, Request, Response, NextFunction } from "express";
-import { generateLLMRecipe, talk_to_llm, llmHealthCheck } from "../controllers/llm.controller";
+import { talk_to_llm, llmHealthCheck } from "../controllers/llm.controller";
 
 const llmRouter = Router();
 
 // Generate recipe from keywords using LLM
-llmRouter.post("/generate", async (req: Request, res: Response, next: NextFunction) => {
-    await generateLLMRecipe(req, res);
-});
+// llmRouter.post("/generate", async (req: Request, res: Response, next: NextFunction) => {
+//     await generateLLMRecipe(req, res);
+// });
 
 // General chat with LLM
 llmRouter.post("/talk", async (req: Request, res: Response, next: NextFunction) => {

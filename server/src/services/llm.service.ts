@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Configuration for the Python LLM microservice
 const LLM_SERVICE_URL = process.env.LLM_SERVICE_URL || 'http://127.0.0.1:8000';
-const LLM_API_TIMEOUT = 30000; // 30 seconds
+const LLM_API_TIMEOUT = 60000; // 30 seconds
 
 export interface LLMConfig {
   timeout?: number;
@@ -105,71 +105,71 @@ export async function talk_to_llm_service(
  * @param request Recipe generation request with keywords
  * @returns Structured recipe response
  */
-export async function generateRecipeFromKeywords(
-  request: RecipeGenerationRequest
-): Promise<RecipeGenerationResponse> {
-  try {
-    console.log('🍳 Generating recipe from keywords via Python service:', request.keywords);
+// export async function generateRecipeFromKeywords(
+//   request: RecipeGenerationRequest
+// ): Promise<RecipeGenerationResponse> {
+//   try {
+//     console.log('🍳 Generating recipe from keywords via Python service:', request.keywords);
 
-    if (!request.keywords || request.keywords.length === 0) {
-      throw new Error('Keywords array cannot be empty');
-    }
+//     if (!request.keywords || request.keywords.length === 0) {
+//       throw new Error('Keywords array cannot be empty');
+//     }
 
-    const requestBody = {
-      keywords: request.keywords
-    };
+//     const requestBody = {
+//       keywords: request.keywords
+//     };
 
-    console.log(`📡 Calling ${LLM_SERVICE_URL}/api/get-recepies`);
+//     console.log(`📡 Calling ${LLM_SERVICE_URL}/api/get-recepies`);
 
-    const response = await axios.post(
-      `${LLM_SERVICE_URL}/api/get-recepies`,
-      requestBody,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Connection': 'close',
-        },
-        timeout: LLM_API_TIMEOUT,
-      }
-    );
+//     const response = await axios.post(
+//       `${LLM_SERVICE_URL}/api/get-recepies`,
+//       requestBody,
+//       {
+//         headers: {
+//           'Content-Type': 'application/json',
+//           'Connection': 'close',
+//         },
+//         timeout: LLM_API_TIMEOUT,
+//       }
+//     );
 
-    if (!response.data?.recipe) {
-      throw new Error('No recipe received from LLM service');
-    }
+//     if (!response.data?.recipe) {
+//       throw new Error('No recipe received from LLM service');
+//     }
 
-    // The Python service returns a JSON string, so we need to parse it
-    let recipe: RecipeGenerationResponse;
-    try {
-      if (typeof response.data.recipe === 'string') {
-        recipe = JSON.parse(response.data.recipe) as RecipeGenerationResponse;
-      } else {
-        recipe = response.data.recipe as RecipeGenerationResponse;
-      }
-    } catch (parseError) {
-      console.error('❌ Failed to parse recipe JSON from Python service:', parseError);
-      throw new Error('Invalid recipe format received from LLM service');
-    }
+//     // The Python service returns a JSON string, so we need to parse it
+//     let recipe: RecipeGenerationResponse;
+//     try {
+//       if (typeof response.data.recipe === 'string') {
+//         recipe = JSON.parse(response.data.recipe) as RecipeGenerationResponse;
+//       } else {
+//         recipe = response.data.recipe as RecipeGenerationResponse;
+//       }
+//     } catch (parseError) {
+//       console.error('❌ Failed to parse recipe JSON from Python service:', parseError);
+//       throw new Error('Invalid recipe format received from LLM service');
+//     }
 
-    // Validate that required fields are present
-    if (!recipe.title || !recipe.ingredients || !recipe.instructions) {
-      throw new Error('Invalid recipe structure received from LLM service');
-    }
+//     // Validate that required fields are present
+//     if (!recipe.title || !recipe.ingredients || !recipe.instructions) {
+//       throw new Error('Invalid recipe structure received from LLM service');
+//     }
 
-    console.log('✅ Recipe generated successfully:', recipe.title);
-    return recipe;
+//     console.log('✅ Recipe generated successfully:', recipe.title);
+//     return recipe;
 
-  } catch (error) {
-    console.error('❌ Error generating recipe:', error);
+//   } catch (error) {
+//     console.error('❌ Error generating recipe:', error);
     
-    if (axios.isAxiosError(error)) {
-      if (error.code === 'ECONNREFUSED') {
-        throw new Error('Recipe generation service is not available. Please make sure the Python microservice is running on ' + LLM_SERVICE_URL + '. Try: cd llm_microservice && python app.py');
-      }
-    }
+//     if (axios.isAxiosError(error)) {
+//       if (error.code === 'ECONNREFUSED') {
+//         throw new Error('Recipe generation service is not available. Please make sure the Python microservice is running on ' + LLM_SERVICE_URL + '. Try: cd llm_microservice && python app.py');
+//       }
+//     }
     
-    throw error;
-  }
-}
+//     throw error;
+//   }
+// }
 
 /**
  * Health check function to verify LLM service is working

@@ -110,9 +110,9 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
     aiProvider.generateRecommendations(
       userIngredients:
           ingredientsProvider.userIngredients.isEmpty
-              ? userIngredientsMock // Use mock data if no user ingredients
+              ? [] // Use mock data if no user ingredients
               : ingredientsProvider.userIngredients,
-      preferredTags: const ['quick', 'healthy'],
+      preferredTags: const ['proteic', 'healthy', 'keto', 'fresh'],
       maxCookingTimeMinutes: 30,
       preferredDifficulty: 'Easy',
       userPreferences: 'I like Mediterranean cuisine',

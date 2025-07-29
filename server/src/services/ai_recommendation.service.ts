@@ -47,17 +47,20 @@ export class AIRecommendationService {
     // Paso 2: Limitar el número de recetas para enviar a la IA
     const numberOfRecipes = options.numberOfRecipes || 10;
     const recipesForAI = filteredRecipes.slice(0, numberOfRecipes);
+    console.log('🎯 Recipes for AI:', recipesForAI);
 
     console.log(`🎯 Sending ${recipesForAI.length} recipes to AI for analysis`);
 
     // Paso 3: Generar el prompt para la IA
     const prompt = this._buildRecommendationPrompt(recipesForAI, options);
+    console.log('🤖 Prompt:', prompt);
 
     // Paso 4: Llamar a la IA
     let aiResponse: string;
     try {
       aiResponse = await talk_to_llm_service(prompt);
       console.log('✅ AI response generated successfully');
+      console.log('🤖 AI response:', aiResponse);
     } catch (error) {
       console.error('❌ Error calling AI service:', error);
       aiResponse = this._generateFallbackResponse(recipesForAI, options);
@@ -87,6 +90,8 @@ export class AIRecommendationService {
         .join(', ');
       
       const tags = recipe.tags?.map(tag => tag.name).join(', ') || 'No tags';
+
+      const steps = recipe.steps.map(step => `- ${step}`).join('\n');
       
       return `
 📖 **${recipe.name}**
@@ -95,6 +100,7 @@ export class AIRecommendationService {
 - 🏷️ Tags: ${tags}
 - 🥘 Ingredients: ${ingredients}
 - 📝 Description: ${recipe.description}
+- 📝 Steps: ${steps}
       `.trim();
     }).join('\n\n');
 
@@ -127,6 +133,15 @@ Generate a personalized response that includes:
 
 **Response format:**
 Respond in a friendly and conversational manner, like an experienced chef advising a friend. Include emojis and be specific about why each recipe is good for this particular user.
+Please respond with a valid JSON object with the following structure for each recipe:
+{{
+    "title": "Recipe Name",
+    "ingredients": ["ingredient 1", "ingredient 2", "..."],
+    "instructions": ["step 1", "step 2", "..."],
+    "cookingTime": "30 minutes",
+    "servings": "4 people",
+    "servingSuggestion": "Serve with..."
+}}
 
 **Structure example:**
 🍳 **Analysis of your options:**
@@ -134,8 +149,11 @@ Respond in a friendly and conversational manner, like an experienced chef advisi
 
 🥇 **My top 3 recommendations:**
 1. [Recipe] - [Specific reason]
+[Recipe 1 JSON Object]
 2. [Recipe] - [Specific reason]  
+[Recipe 2 JSON Object]
 3. [Recipe] - [Specific reason]
+[Recipe 3 JSON Object]
 
 💡 **Tips and adaptations:**
 [Specific suggestions]
