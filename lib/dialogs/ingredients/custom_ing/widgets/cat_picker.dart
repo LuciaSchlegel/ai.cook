@@ -72,27 +72,29 @@ class CategoryPickerModal extends StatelessWidget {
             ),
             // Picker
             Expanded(
-              child: CupertinoPicker(
-                magnification: 1.22,
-                squeeze: 1.2,
-                useMagnifier: true,
-                itemExtent: 32.0,
-                scrollController: controller,
-                onSelectedItemChanged: (_) {},
-                children:
-                    categories
-                        .map(
-                          (category) => Center(
-                            child: Text(
-                              category.name,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.button,
+              child: ExcludeSemantics(
+                child: CupertinoPicker(
+                  magnification: 1.22,
+                  squeeze: 1.2,
+                  useMagnifier: true,
+                  itemExtent: 32.0,
+                  scrollController: controller,
+                  onSelectedItemChanged: (_) {},
+                  children:
+                      categories
+                          .map(
+                            (category) => Center(
+                              child: Text(
+                                category.name,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: AppColors.button,
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                        .toList(),
+                          )
+                          .toList(),
+                ),
               ),
             ),
           ],

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, RequestHandler } from "express";
 import { BadRequestError } from "../types/AppError";
-import { seedIngredientsService, seedRecipesService, seedResourcesService, setAdminRoleService } from "../services/admin.service";
+import { seedIngredientsService, seedRecipesService, seedRecipesFromCSVService, seedResourcesService, setAdminRoleService } from "../services/admin.service";
 
 type ControllerFunction = (req: Request) => Promise<any>;
 
@@ -47,4 +47,15 @@ export const seedRecipesController = controllerWrapper(async (req) => {
     throw new BadRequestError("Recipe is required");
   }
   return await seedRecipesService(recipes);
+});
+
+export const seedRecipesFromCSVController = controllerWrapper(async (req) => {
+  const { recipes } = req.body;
+  if (!recipes) {
+    throw new BadRequestError("Recipes are required");
+  }
+  if (!Array.isArray(recipes) && typeof recipes !== 'object') {
+    throw new BadRequestError("Recipes must be an array or object");
+  }
+  return await seedRecipesFromCSVService(recipes);
 });

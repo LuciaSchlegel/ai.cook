@@ -20,7 +20,7 @@ export class UserIngredient {
   @ManyToOne(() => CustomIngredient, { nullable: true, onDelete: 'SET NULL' })
   customIngredient?: CustomIngredient;
 
-  @Column({ type: 'int', default: 1 })
+  @Column({ type: 'decimal', precision: 8, scale: 3, default: 1 })
   quantity!: number;
 
   @ManyToOne(() => Unit, { nullable: true })

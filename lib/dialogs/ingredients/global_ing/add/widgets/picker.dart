@@ -85,17 +85,19 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: AppColors.button.withOpacity(0.2)),
             ),
-            child: CupertinoPicker(
-              itemExtent: 32.0,
-              scrollController: FixedExtentScrollController(initialItem: 0),
-              onSelectedItemChanged:
-                  (index) => setState(() {
-                    selectedUnit = widget.units[index];
-                  }),
-              children:
-                  widget.units
-                      .map((unit) => Center(child: Text(unit.name)))
-                      .toList(),
+            child: ExcludeSemantics(
+              child: CupertinoPicker(
+                itemExtent: 32.0,
+                scrollController: FixedExtentScrollController(initialItem: 0),
+                onSelectedItemChanged:
+                    (index) => setState(() {
+                      selectedUnit = widget.units[index];
+                    }),
+                children:
+                    widget.units
+                        .map((unit) => Center(child: Text(unit.name)))
+                        .toList(),
+              ),
             ),
           ),
           const SizedBox(height: 32),

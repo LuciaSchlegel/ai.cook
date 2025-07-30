@@ -1,5 +1,5 @@
 import { RequestHandler, Router } from "express";
-import { setAdminRoleController, seedResourcesController, seedIngredientsController, seedRecipesController } from "../controllers/admin.controller";
+import { setAdminRoleController, seedResourcesController, seedIngredientsController, seedRecipesController, seedRecipesFromCSVController } from "../controllers/admin.controller";
 import { adminAuthMiddleware } from "../middlewares/admin_auth.middleware";
 
 const adminRouter = Router();
@@ -7,6 +7,7 @@ const adminRouter = Router();
 
 adminRouter.put("/:uid", setAdminRoleController as RequestHandler);
 adminRouter.post("/seed/recipes", seedRecipesController as RequestHandler);
+adminRouter.post("/seed/recipes/csv", seedRecipesFromCSVController as RequestHandler);
 adminRouter.post("/seed/ingredients", seedIngredientsController as RequestHandler);
 adminRouter.post("/seed/:resourceType", seedResourcesController as RequestHandler);
 

@@ -54,7 +54,8 @@ class _UnitPickerModalState extends State<UnitPickerModal> {
                     horizontal: 16,
                     vertical: 6,
                   ),
-                  onPressed: () => Navigator.pop(context), minimumSize: Size(0, 0),
+                  onPressed: () => Navigator.pop(context),
+                  minimumSize: Size(0, 0),
                   child: const Text(
                     'Cancel',
                     style: TextStyle(color: AppColors.mutedGreen, fontSize: 17),
@@ -68,7 +69,8 @@ class _UnitPickerModalState extends State<UnitPickerModal> {
                   onPressed: () {
                     widget.onSelected(_tempSelected);
                     Navigator.pop(context);
-                  }, minimumSize: Size(0, 0),
+                  },
+                  minimumSize: Size(0, 0),
                   child: const Text(
                     'Done',
                     style: TextStyle(
@@ -83,20 +85,22 @@ class _UnitPickerModalState extends State<UnitPickerModal> {
           ),
 
           Expanded(
-            child: CupertinoPicker(
-              itemExtent: 36.0,
-              scrollController: FixedExtentScrollController(
-                initialItem: widget.units.indexWhere(
-                  (u) => u.id == widget.selectedUnit.id,
+            child: ExcludeSemantics(
+              child: CupertinoPicker(
+                itemExtent: 36.0,
+                scrollController: FixedExtentScrollController(
+                  initialItem: widget.units.indexWhere(
+                    (u) => u.id == widget.selectedUnit.id,
+                  ),
                 ),
+                onSelectedItemChanged: (index) {
+                  _tempSelected = widget.units[index];
+                },
+                children:
+                    widget.units
+                        .map((unit) => Center(child: Text(unit.name)))
+                        .toList(),
               ),
-              onSelectedItemChanged: (index) {
-                _tempSelected = widget.units[index];
-              },
-              children:
-                  widget.units
-                      .map((unit) => Center(child: Text(unit.name)))
-                      .toList(),
             ),
           ),
         ],

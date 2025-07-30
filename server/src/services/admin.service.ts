@@ -51,6 +51,46 @@ export interface RecipeSeedInput {
     tags: string[];
 }
 
+// Enhanced interfaces for CSV-processed recipe data
+export interface CSVIngredientData {
+    name: string;
+    isVegan?: boolean;
+    isVegetarian?: boolean;
+    isGlutenFree?: boolean;
+    isLactoseFree?: boolean;
+    category?: {
+        id?: number;
+        name: string;
+    };
+    tags?: Array<{ name: string }>;
+}
+
+export interface CSVRecipeIngredientInput {
+    quantity: number;
+    ingredient: CSVIngredientData;
+    unit?: {
+        name: string;
+        abbreviation: string;
+        type?: string;
+    };
+    original_string?: string;
+    weight_grams?: number;
+}
+
+export interface CSVRecipeSeedInput {
+    name: string;
+    description: string;
+    steps?: string[];
+    cookingTime?: string;
+    difficulty?: string;
+    servings?: string;
+    image?: string;
+    ingredients: CSVRecipeIngredientInput[];
+    tags: Array<{ name: string }>;
+    source?: string;
+    sourceLink?: string;
+}
+
 async function handleEntitySave<T>(
     saveOperation: () => Promise<T>,
     entityName: string
@@ -414,4 +454,294 @@ export async function seedRecipesService(recipes: RecipeSeedInput | RecipeSeedIn
     }
 
     return results;
+}
+
+export async function seedRecipesFromCSVService(recipes: CSVRecipeSeedInput | CSVRecipeSeedInput[]) {
+    const recipeArray = Array.isArray(recipes) ? recipes : [recipes];
+    
+    if (recipeArray.length === 0) {
+        throw new BadRequestError("At least one recipe is required");
+    }
+
+    console.log(`Processing ${recipeArray.length} recipes from CSV data...`);
+
+    // Step 1: Extract all unique entities that need to be created
+    const uniqueCategories = new Set<string>();
+    const uniqueUnits = new Set<string>();
+    const uniqueIngredients = new Map<string, CSVIngredientData>();
+    const uniqueRecipeTags = new Set<string>();
+
+    for (const recipe of recipeArray) {
+        // Extract recipe tags
+        recipe.tags?.forEach(tag => uniqueRecipeTags.add(tag.name.toLowerCase()));
+
+        // Extract ingredients, units, and categories
+        recipe.ingredients.forEach(recipeIng => {
+            const ingredient = recipeIng.ingredient;
+            const ingredientKey = ingredient.name.toLowerCase();
+            
+            // Store the ingredient (keep the one with most complete data if duplicates)
+            if (!uniqueIngredients.has(ingredientKey) || 
+                (ingredient.category && !uniqueIngredients.get(ingredientKey)?.category)) {
+                uniqueIngredients.set(ingredientKey, ingredient);
+            }
+
+            // Extract category
+            if (ingredient.category?.name) {
+                uniqueCategories.add(ingredient.category.name.toLowerCase());
+            }
+
+            // Extract unit
+            if (recipeIng.unit?.name) {
+                uniqueUnits.add(recipeIng.unit.name.toLowerCase());
+            }
+        });
+    }
+
+    console.log(`Found ${uniqueIngredients.size} unique ingredients, ${uniqueCategories.size} categories, ${uniqueUnits.size} units, ${uniqueRecipeTags.size} recipe tags`);
+
+    // Step 2: Create missing categories
+    const categoryMap = new Map<string, any>();
+    for (const categoryName of uniqueCategories) {
+        const normalizedName = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
+        
+        let category = await CategoryRepository.findOne({ 
+            where: { name: ILike(normalizedName) } 
+        });
+        
+        if (!category) {
+            console.log(`Creating category: ${normalizedName}`);
+            category = await CategoryRepository.save({ name: normalizedName });
+        }
+        
+        categoryMap.set(categoryName, category);
+    }
+
+    // Step 3: Create missing units
+    const unitMap = new Map<string, any>();
+    for (const unitName of uniqueUnits) {
+        // Find existing unit by name or abbreviation
+        let unit = await UnitRepository.findOne({
+            where: [
+                { name: ILike(unitName) },
+                { abbreviation: ILike(unitName) }
+            ]
+        });
+
+        if (!unit) {
+            // Create unit based on CSV data
+            const sampleUnit = recipeArray
+                .flatMap(r => r.ingredients)
+                .find(ing => ing.unit?.name.toLowerCase() === unitName)?.unit;
+            
+            const unitData = {
+                name: sampleUnit?.name || unitName,
+                abbreviation: sampleUnit?.abbreviation || unitName,
+                type: sampleUnit?.type || 'general'
+            };
+
+            console.log(`Creating unit: ${unitData.name} (${unitData.abbreviation})`);
+            unit = await UnitRepository.save(unitData);
+        }
+
+        unitMap.set(unitName, unit);
+    }
+
+    // Step 4: Create missing recipe tags
+    const recipeTagMap = new Map<string, any>();
+    for (const tagName of uniqueRecipeTags) {
+        const normalizedName = tagName.charAt(0).toUpperCase() + tagName.slice(1);
+        
+        let tag = await RecipeTagRepository.findOne({ 
+            where: { name: ILike(normalizedName) } 
+        });
+        
+        if (!tag) {
+            console.log(`Creating recipe tag: ${normalizedName}`);
+            tag = await RecipeTagRepository.save({ name: normalizedName });
+        }
+        
+        recipeTagMap.set(tagName, tag);
+    }
+
+    // Step 5: Create missing ingredients
+    const ingredientMap = new Map<string, any>();
+    
+    for (const [ingredientKey, ingredientData] of uniqueIngredients) {
+        const normalizedName = ingredientData.name.charAt(0).toUpperCase() + ingredientData.name.slice(1);
+        
+        let ingredient = await IngredientRepository.findOne({
+            where: { name: ILike(normalizedName) }
+        });
+
+        if (!ingredient) {
+            // Get the category for this ingredient
+            let category = null;
+            if (ingredientData.category?.name) {
+                category = categoryMap.get(ingredientData.category.name.toLowerCase());
+            }
+
+            // Create ingredient tags if any
+            const ingredientTags = [];
+            if (ingredientData.tags) {
+                for (const tagData of ingredientData.tags) {
+                    let tag = await TagRepository.findOne({
+                        where: { name: ILike(tagData.name) }
+                    });
+                    
+                    if (!tag) {
+                        tag = await TagRepository.save({ name: tagData.name });
+                    }
+                    
+                    ingredientTags.push(tag);
+                }
+            }
+
+            const ingredientToCreate = {
+                name: normalizedName,
+                category: category,
+                tags: ingredientTags,
+                isVegan: ingredientData.isVegan ?? false,
+                isVegetarian: ingredientData.isVegetarian ?? false,
+                isGlutenFree: ingredientData.isGlutenFree ?? false,
+                isLactoseFree: ingredientData.isLactoseFree ?? false,
+            };
+
+            console.log(`Creating ingredient: ${normalizedName} (${category?.name || 'no category'})`);
+            ingredient = await IngredientRepository.save(ingredientToCreate);
+        }
+
+        ingredientMap.set(ingredientKey, ingredient);
+    }
+
+    // Step 6: Create recipes
+    const results = [];
+    let successCount = 0;
+    let errorCount = 0;
+
+    for (const recipeInput of recipeArray) {
+        try {
+            console.log(`Creating recipe: ${recipeInput.name}`);
+            
+            // Create the recipe first
+            const recipe = await RecipeRepository.save({
+                name: recipeInput.name,
+                description: recipeInput.description,
+                steps: recipeInput.steps || [],
+                cookingTime: recipeInput.cookingTime,
+                difficulty: recipeInput.difficulty,
+                servings: recipeInput.servings,
+                image: recipeInput.image
+            });
+
+            // Create recipe ingredients
+            await Promise.all(recipeInput.ingredients.map(async (ingInput) => {
+                const ingredient = ingredientMap.get(ingInput.ingredient.name.toLowerCase());
+                if (!ingredient) {
+                    throw new Error(`Ingredient '${ingInput.ingredient.name}' not found in map`);
+                }
+                
+                let unit = undefined;
+                if (ingInput.unit) {
+                    unit = unitMap.get(ingInput.unit.name.toLowerCase());
+                    if (!unit) {
+                        throw new Error(`Unit '${ingInput.unit.name}' not found in map`);
+                    }
+                }
+
+                return RecipeIngredientRepository.save({
+                    recipe,
+                    ingredient,
+                    quantity: ingInput.quantity,
+                    unit
+                });
+            }));
+
+            // Add recipe tags
+            const recipeTags = recipeInput.tags?.map(tag => {
+                const foundTag = recipeTagMap.get(tag.name.toLowerCase());
+                if (!foundTag) {
+                    throw new Error(`Recipe tag '${tag.name}' not found in map`);
+                }
+                return foundTag;
+            }) || [];
+
+            recipe.tags = recipeTags;
+            await RecipeRepository.save(recipe);
+
+            // Fetch the complete recipe
+            const savedRecipe = await RecipeRepository.findOne({
+                where: { id: recipe.id },
+                relations: ['ingredients', 'ingredients.ingredient', 'ingredients.ingredient.category', 'ingredients.unit', 'tags'],
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    steps: true,
+                    cookingTime: true,
+                    difficulty: true,
+                    servings: true,
+                    image: true,
+                    ingredients: {
+                        id: true,
+                        quantity: true,
+                        ingredient: {
+                            id: true,
+                            name: true,
+                            isVegan: true,
+                            isVegetarian: true,
+                            isGlutenFree: true,
+                            isLactoseFree: true,
+                            category: {
+                                id: true,
+                                name: true
+                            }
+                        },
+                        unit: {
+                            id: true,
+                            name: true,
+                            abbreviation: true,
+                            type: true
+                        }
+                    },
+                    tags: {
+                        id: true,
+                        name: true
+                    }
+                }
+            });
+
+            if (!savedRecipe) {
+                throw new Error('Failed to fetch saved recipe');
+            }
+
+            results.push(savedRecipe);
+            successCount++;
+
+        } catch (error: any) {
+            console.error(`Error creating recipe '${recipeInput.name}': ${error.message}`);
+            errorCount++;
+            
+            // Continue with other recipes instead of failing completely
+            results.push({
+                error: `Failed to create recipe '${recipeInput.name}': ${error.message}`,
+                recipeName: recipeInput.name
+            });
+        }
+    }
+
+    console.log(`Recipe seeding completed: ${successCount} successful, ${errorCount} failed`);
+
+    return {
+        success: successCount,
+        failed: errorCount,
+        results: results,
+        summary: {
+            recipesProcessed: recipeArray.length,
+            categoriesCreated: uniqueCategories.size,
+            unitsCreated: uniqueUnits.size,
+            ingredientsCreated: uniqueIngredients.size,
+            recipeTagsCreated: uniqueRecipeTags.size
+        }
+    };
 }
