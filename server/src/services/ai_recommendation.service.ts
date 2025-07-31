@@ -1,11 +1,10 @@
 import { RecipeDto } from "../dtos/recipe.dto";
-import { RecipeTagDto } from "../dtos/recipe_tag.dto";
-import { UserIngredientDto } from "../dtos/user_ing.dto";
+import { UserIngredientOptimizedDto } from "../dtos/user_ing_optimized.dto";
 import { RecipeFilterService } from "./recipe_filter.service";
 import { talk_to_llm_service } from "./llm.service";
 
 export interface AIRecommendationOptions {
-  userIngredients: UserIngredientDto[];
+  userIngredients: UserIngredientOptimizedDto[];
   preferredTags?: string[];
   maxCookingTimeMinutes?: number;
   preferredDifficulty?: string;

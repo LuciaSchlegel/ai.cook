@@ -2,33 +2,24 @@ import { Expose, Type, Transform } from 'class-transformer';
 import { IngredientDto } from './ingredient.dto';
 import { CustomIngredientDto } from './custom_ing.dto';
 import { UnitDto } from './unit.dto';
-import { UserBasicDto } from './user_basic.dto';
 
-export class UserIngredientDto {
+export class UserIngredientOptimizedDto {
   @Expose()
   id!: number;
 
   @Expose()
-  @Type(() => UserBasicDto)
-  @Transform(({ value, obj }) => {
-    // Si viene como objeto user, usarlo directamente
-    if (value && typeof value === 'object') {
-      return value;
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      const parsed = parseFloat(value);
+      return isNaN(parsed) ? 0 : parsed;
     }
-    // Si viene como uid directo, crear el objeto user
-    if (obj.uid) {
-      return { uid: obj.uid };
-    }
-    return value;
+    return typeof value === 'number' ? value : 0;
   })
-  user!: UserBasicDto;
-
-  @Expose()
   quantity!: number;
 
   @Expose()
   @Type(() => IngredientDto)
-  ingredient!: IngredientDto;
+  ingredient?: IngredientDto;
 
   @Expose()
   @Type(() => CustomIngredientDto)

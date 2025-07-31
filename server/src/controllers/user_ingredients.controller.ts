@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { BadRequestError } from "../types/AppError";
 import { addUserIngredientService, getUserIngredientsService, removeUserIngredientService, updateUserIngredientService } from "../services/user_ingredients.service";
-import { UserIngredientDto } from "../dtos/user_ing.dto";
+import { UserIngredientOptimizedDto } from "../dtos/user_ing_optimized.dto";
 import { serialize } from "../helpers/serialize";
 import { toSnakeCaseDeep } from "../helpers/toSnakeCase";
 import { toCamelCaseDeep } from "../helpers/toCamelCase";
@@ -13,8 +13,11 @@ export async function getUserIngredientsController(req: Request, res: Response, 
   }
   try {
     const ingredients = await getUserIngredientsService(uid);
-    const serialized = serialize(UserIngredientDto, ingredients);
+    console.log('ingredients: ', ingredients);
+    const serialized = serialize(UserIngredientOptimizedDto, ingredients);
+    console.log('serialized: ', serialized);
     const response = toSnakeCaseDeep(serialized);
+    console.log('response: ', response);
     return res.status(200).json(response);
   } catch (error) {
     next(error);
@@ -51,7 +54,7 @@ export async function addUserIngredientController(req: Request, res: Response, n
         unit: unit.id,  
       });
   
-      const serialized = serialize(UserIngredientDto, newUserIngredient);
+      const serialized = serialize(UserIngredientOptimizedDto, newUserIngredient);
       const response = toSnakeCaseDeep(serialized);
   
       return res.status(201).json(response);
@@ -79,7 +82,7 @@ export async function updateUserIngredientController(req: Request, res: Response
 
         const userIngredient = await updateUserIngredientService(uid, id, updateData);
         
-        const serialized = serialize(UserIngredientDto, userIngredient);
+        const serialized = serialize(UserIngredientOptimizedDto, userIngredient);
         const response = toSnakeCaseDeep(serialized);
         
         return res.status(200).json(response);

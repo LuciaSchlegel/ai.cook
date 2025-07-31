@@ -35,9 +35,14 @@ class IngredientsRepo {
       final List<UserIng> parsed =
           decoded
               .where((e) => e != null)
-              .map((e) => UserIng.fromJson(e as Map<String, dynamic>))
+              .map(
+                (e) => UserIng.fromJson(
+                  e as Map<String, dynamic>,
+                  currentUserUid: uid,
+                ),
+              )
               .toList();
-
+      debugPrint('parsed: $parsed');
       return parsed;
     } catch (e) {
       setError('Failed to fetch user ingredients: $e');
@@ -73,7 +78,7 @@ class IngredientsRepo {
         throw Exception('Received null response from server');
       }
 
-      return UserIng.fromJson(responseData);
+      return UserIng.fromJson(responseData, currentUserUid: uid);
     } catch (e) {
       setError('Failed to add ingredient: $e');
       return null;
@@ -105,8 +110,7 @@ class IngredientsRepo {
       throw Exception('Received null response from server');
     }
 
-    responseData['user'] ??= {'uid': uid};
-    return UserIng.fromJson(responseData);
+    return UserIng.fromJson(responseData, currentUserUid: uid);
   }
 
   static Future<void> deleteUserIngredient({

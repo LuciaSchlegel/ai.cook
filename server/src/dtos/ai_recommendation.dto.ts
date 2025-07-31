@@ -1,14 +1,13 @@
-import { Expose, Type, Transform } from 'class-transformer';
-import { UserIngredientDto } from './user_ing.dto';
+import { Expose, Type } from 'class-transformer';
+import { UserIngredientOptimizedDto } from './user_ing_optimized.dto';
 import { IsArray, IsInt, IsOptional, IsString } from 'class-validator';
-import { RecipeTagDto } from './recipe_tag.dto';
 import { RecipeDto } from './recipe.dto';
 
 export class AIRecommendationRequestDto {
   @Expose()
-  @Type(() => UserIngredientDto)
+  @Type(() => UserIngredientOptimizedDto)
   @IsOptional()
-  userIngredients?: UserIngredientDto[];
+  userIngredients?: UserIngredientOptimizedDto[];
 
   @Expose()
   @IsOptional()
@@ -42,7 +41,7 @@ export class AIRecommendationResponseDto {
   recommendations!: string; // Respuesta de la IA
 
   @Expose()
-  @Type(() => UserIngredientDto)
+  @Type(() => UserIngredientOptimizedDto)
   filteredRecipes!: RecipeDto[]; // Recetas que se enviaron a la IA
 
   @Expose()

@@ -1,5 +1,5 @@
 import { Expose, Type, Transform } from 'class-transformer';
-import { UserIngredientDto } from './user_ing.dto';
+import { UserIngredientOptimizedDto } from './user_ing_optimized.dto';
 import { IsArray, IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
 
 export enum RecipeFilterEnum {
@@ -30,9 +30,9 @@ export class FilterRecipesDto {
   filter?: RecipeFilterEnum;
 
   @Expose()
-  @Type(() => UserIngredientDto)
+  @Type(() => UserIngredientOptimizedDto)
   @IsOptional()
-  userIngredients?: UserIngredientDto[];
+  userIngredients?: UserIngredientOptimizedDto[];
 
   @Expose()
   @IsOptional()

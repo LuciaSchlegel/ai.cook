@@ -1,9 +1,9 @@
 import { RecipeDto } from "../dtos/recipe.dto";
-import { UserIngredientDto } from "../dtos/user_ing.dto";
+import { UserIngredientOptimizedDto } from "../dtos/user_ing_optimized.dto";
 
 export type FilterOptions = {
   allRecipes: RecipeDto[];
-  userIngredients: UserIngredientDto[];
+  userIngredients: UserIngredientOptimizedDto[];
   filter?: "All Recipes" | "With Available Ingredients" | "Recommended Recipes";
   preferredTags?: string[];
   maxCookingTimeMinutes?: number;
@@ -117,7 +117,7 @@ export const RecipeFilterService = {
   },
 
   // Nueva función que verifica ingredientes, cantidades y unidades (como en Flutter)
-  _hasAllIngredientsWithQuantity(recipe: RecipeDto, userIngredients: UserIngredientDto[]): boolean {
+  _hasAllIngredientsWithQuantity(recipe: RecipeDto, userIngredients: UserIngredientOptimizedDto[]): boolean {
     console.log(`🧪 Checking recipe "${recipe.name}" with ${recipe.ingredients.length} ingredients`);
     console.log(`👤 User has ${userIngredients.length} ingredients available`);
     
@@ -204,7 +204,7 @@ export const RecipeFilterService = {
   },
 
   // Función para "Recommended" que verifica ratio y cantidades (como en Flutter)
-  _hasRecommendedIngredients(recipe: RecipeDto, userIngredients: UserIngredientDto[]): boolean {
+  _hasRecommendedIngredients(recipe: RecipeDto, userIngredients: UserIngredientOptimizedDto[]): boolean {
     // Si no hay ingredientes del usuario, retornar todas las recetas como recomendadas
     if (!userIngredients || userIngredients.length === 0) {
       console.log(`  📝 No user ingredients provided - recommending all recipes`);
@@ -282,7 +282,7 @@ export const RecipeFilterService = {
     return hasEnoughMatched;
   },
 
-  _hasAllIngredients(recipe: RecipeDto, userIngredients: UserIngredientDto[]): boolean {
+  _hasAllIngredients(recipe: RecipeDto, userIngredients: UserIngredientOptimizedDto[]): boolean {
     return recipe.ingredients.every(ri => {
       // Verificar que el ingrediente de la receta existe
       if (!ri.ingredient) return false;
@@ -304,7 +304,7 @@ export const RecipeFilterService = {
     });
   },
 
-  _hasMissingIngredients(recipe: RecipeDto, userIngredients: UserIngredientDto[]): boolean {
+  _hasMissingIngredients(recipe: RecipeDto, userIngredients: UserIngredientOptimizedDto[]): boolean {
     return recipe.ingredients.some(ri => {
       // Verificar que el ingrediente de la receta existe
       if (!ri.ingredient) return false;
@@ -326,7 +326,7 @@ export const RecipeFilterService = {
     });
   },
 
-  _hasSomeIngredients(recipe: RecipeDto, userIngredients: UserIngredientDto[]): boolean {
+  _hasSomeIngredients(recipe: RecipeDto, userIngredients: UserIngredientOptimizedDto[]): boolean {
     // Para RECOMMENDED, mostramos recetas que tienen al menos 50% de los ingredientes
     const availableIngredients = recipe.ingredients.filter(ri => {
       // Verificar que el ingrediente de la receta existe

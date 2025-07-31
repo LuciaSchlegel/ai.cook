@@ -19,15 +19,40 @@ class UserIng {
     this.unit,
   });
 
-  factory UserIng.fromJson(Map<String, dynamic> json) {
+  // Helper method to parse quantity from various formats
+  static int _parseQuantity(dynamic value) {
+    if (value == null) return 0;
+
+    if (value is int) return value;
+
+    if (value is double) return value.round();
+
+    if (value is String) {
+      // Handle string numbers like "2.000", "3", "1.5"
+      final parsed = double.tryParse(value);
+      if (parsed != null) {
+        return parsed.round(); // Round to nearest int since model expects int
+      }
+    }
+
+    return 0; // Default fallback
+  }
+
+  factory UserIng.fromJson(
+    Map<String, dynamic> json, {
+    String? currentUserUid,
+  }) {
     try {
       final unit =
           json['unit'] != null
               ? Unit.fromJson(json['unit'] as Map<String, dynamic>)
               : Unit(id: -1, name: 'piece', abbreviation: 'pcs', type: 'count');
 
+      // Use provided uid, or extract from json, or fallback to empty string
       final String uid =
-          (json['user']?['uid'] ?? json['uid'])?.toString() ?? '';
+          currentUserUid ??
+          (json['user']?['uid'] ?? json['uid'])?.toString() ??
+          '';
 
       // Permitir tanto objeto como solo id (para compatibilidad)
       CustomIngredient? customIngredient;
@@ -66,7 +91,7 @@ class UserIng {
                 )
                 : null,
         customIngredient: customIngredient,
-        quantity: json['quantity'] as int? ?? 0,
+        quantity: _parseQuantity(json['quantity']),
         unit: unit,
       );
     } catch (e) {

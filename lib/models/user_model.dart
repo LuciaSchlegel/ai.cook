@@ -61,7 +61,7 @@ class User {
           [],
       userIngredients:
           (json['userIngredients'] as List<dynamic>?)
-              ?.map((e) => UserIng.fromJson(e))
+              ?.map((e) => UserIng.fromJson(e, currentUserUid: json['uid']))
               .toList() ??
           [],
       customIngredients:
