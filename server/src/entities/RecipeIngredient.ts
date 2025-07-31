@@ -19,4 +19,10 @@ export class RecipeIngredient {
 
   @ManyToOne(() => Unit, { nullable: true })
   unit?: Unit;
+
+  @Column({ nullable: true })
+  additionalInfo?: string;
+
+  @Column({ nullable: true })
+  relativeQuantity?: string;
 }

@@ -70,6 +70,8 @@ class IngredientsProvider with ChangeNotifier {
       clearError: _clearError,
     );
 
+    debugPrint('fetchedIngredients: $ingredients');
+
     _userIngredients = ingredients;
     _lastFetchTime = DateTime.now();
     await saveCachedData(

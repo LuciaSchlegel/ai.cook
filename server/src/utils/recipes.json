@@ -21,47 +21,47 @@
         "ingredients": [
           {
             "name": "Quinoa",
-            "quantity": 200,
+            "quantity": "200",
             "unit": "g"
           },
           {
             "name": "Tomato",
-            "quantity": 450,
+            "quantity": "450",
             "unit": "g"
           },
           {
             "name": "Cucumber",
-            "quantity": 1,
+            "quantity": "1",
             "unit": "u"
           },
           {
             "name": "Red bell pepper",
-            "quantity": 1,
+            "quantity": "1",
             "unit": "u"
           },
           {
             "name": "Onion",
-            "quantity": 2,
+            "quantity": "2",
             "unit": "u"
           },
           {
             "name": "Arugula",
-            "quantity": 3,
+            "quantity": "3",
             "unit": "cup"
           },
           {
             "name": "Lemon",
-            "quantity": 1,
+            "quantity": "1",
             "unit": "u"
           },
           {
             "name": "Garlic",
-            "quantity": 2,
+            "quantity": "2",
             "unit": "u"
           },
           {
             "name": "Sunflower seeds",
-            "quantity": 3,
+            "quantity": "3",
             "unit": "tbsp"
           }
         ],
@@ -92,22 +92,22 @@
         "ingredients": [
           {
             "name": "Salmon",
-            "quantity": 750,
+            "quantity": "750",
             "unit": "g"
           },
           {
             "name": "Asparagus",
-            "quantity": 500,
+            "quantity": "500",
             "unit": "g"
           },
           {
             "name": "Lemon",
-            "quantity": 2,
+            "quantity": "2",
             "unit": "u"
           },
           {
             "name": "Garlic",
-            "quantity": 3,
+            "quantity": "3",
             "unit": "u"
           }
         ],
@@ -140,42 +140,42 @@
         "ingredients": [
           {
             "name": "Chicken breast",
-            "quantity": 450,
+            "quantity": "450",
             "unit": "g"
           },
           {
             "name": "Brown rice",
-            "quantity": 200,
+            "quantity": "200",
             "unit": "g"
           },
           {
             "name": "Broccoli",
-            "quantity": 2,
+            "quantity": "2",
             "unit": "cup"
           },
           {
             "name": "Carrot",
-            "quantity": 2,
+            "quantity": "2",
             "unit": "u"
           },
           {
             "name": "Red bell pepper",
-            "quantity": 1,
+            "quantity": "1",
             "unit": "u"
           },
           {
             "name": "Green bell pepper",
-            "quantity": 1,
+            "quantity": "1",
             "unit": "u"
           },
           {
             "name": "Garlic",
-            "quantity": 3,
+            "quantity": "3",
             "unit": "u"
           },
           {
             "name": "Onion",
-            "quantity": 1,
+            "quantity": "1",
             "unit": "u"
           }
         ],
@@ -207,42 +207,42 @@
         "ingredients": [
           {
             "name": "Green lentils",
-            "quantity": 200,
+            "quantity": "200" ,
             "unit": "g"
           },
           {
             "name": "Sweet potato",
-            "quantity": 420,
+            "quantity": "420",
             "unit": "g"
           },
           {
             "name": "Carrot",
-            "quantity": 3,
+            "quantity": "3",
             "unit": "u"
           },
           {
             "name": "Beetroot",
-            "quantity": 270,
+            "quantity": "270",
             "unit": "g"
           },
           {
             "name": "Spinach",
-            "quantity": 4,
+            "quantity": "4",
             "unit": "cup"
           },
           {
             "name": "Cucumber",
-            "quantity": 1,
+            "quantity": "1",
             "unit": "u"
           },
           {
             "name": "Onion",
-            "quantity": 1,
+            "quantity": "1",
             "unit": "u"
           },
           {
             "name": "Lemon",
-            "quantity": 1,
+            "quantity": "1",
             "unit": "u"
           }
         ],
@@ -250,6 +250,2798 @@
           "Healthy",
           "Fresh",
           "Gluten-free"
+        ]
+      },
+      {
+        "name": "The Best Empanadas",
+        "description": "These buttery empanadas are stuffed with tender shreds of beef jerky and heaps of caramelized onions.",
+        "steps": [
+          "For the Dough: In a medium mixing bowl, whisk together flour and salt. Add the butter to the flour and salt mixture and toss to coat. Using clean hands, pinch the butter pieces flat. Gradually add water and mix with your hands until a slightly sticky dough forms. Transfer dough to a clean work surface and knead dough until it becomes soft and smooth, about 5 minutes. Place dough in a plastic bag or wrap in plastic and let rest at room temperature for at least 30 minutes and up to 1 hour.",
+          "Meanwhile, for the Filling: Working in 3 separate batches, place jerky in a blender and pulse several times to break it up. Turn blender to high speed and blend until jerky is soft, light, and fluffy, like coarse cotton candy, about 1 minute. Set aside.",
+          "In a 5-quart Dutch oven, heat oil over medium-high heat until shimmering. Add onion and stir until evenly coated with oil. Reduce heat to medium-low and cook, stirring occasionally to avoid scorching, until onion is soft and dark brown in color, about 20-30 minutes.",
+          "Increase heat to medium, stir in beef jerky and cook, stirring, for 1 minute. Stir in tomato purée, green bell pepper, red bell pepper, white pepper, smoked paprika, thyme, and oregano, bring to a simmer, then reduce heat to maintain a simmer and cook, stirring occasionally, until tomato sauce has reduced completely and bell peppers have softened, about 15 minutes. If tomato sauce reduces too much before bell peppers have cooked through completely, add water a tablespoon or two at a time to avoid scorching until pepper fully soften. Transfer mixture to a medium bowl and let cool. Once cool, stir in hard-boiled eggs and chives. Season with salt, if needed. Set aside.",
+          "To Make the Empanada: Adjust oven rack to middle position and preheat oven to 500°F (260°C). Grease a rimmed baking sheet with butter. Using the palms of your hands, roll rested dough into a roughly 9-inch (24cm) cylinder. Cut into 24 pieces, approximately 30g each; each piece should be about the size of your thumb. Cover the pieces with plastic wrap or a damp cloth to prevent drying out. Working with one piece at a time, shape each piece of dough into a flattened disc. Using a rolling pin, roll the dough disc into a roughly 4-inch (10cm) circle.",
+          "Holding the dough disc in the palm of one hand, place a tablespoon (approximately 35g) of meat filling in the center of the disc. Fold the dough over the filling to enclose it, forming a half-moon shape; use your fingers to gently seal the edges together while making sure to push out any air bubbles.",
+          "Fold the right corner of empanada in towards the center and pinch to crimp. Working from that corner, continue crimping with a slight twisting motion to form points along the edge, so that the empanada looks like a half-sun with rays, then finish by folding the left corner in and pinching to crimp; be sure to work the dough gently to avoid air bubbles or tearing. Place formed empanada on prepared baking sheet and repeat process with remaining empanada discs and filling.",
+          "Bake empanadas until dough is lightly browned on the exterior, about 25 minutes. Remove empanadas from oven and let cool for 10 to 15 minutes before serving."
+        ],
+        "cookingTime": "120min",
+        "difficulty": "Hard",
+        "servings": "24 empanadas",
+        "image": "https://www.seriouseats.com/thmb/lIx5GiXl4U-G4NjmwWjI1Clhjlg=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/20220629-beef-jerky-empanadas-kevin-vaughn-Hero-b838b8f801ad41e79c6c2f0f9af478b7.JPG",
+        "ingredients": [
+          {
+            "name": "All-purpose flour",
+            "quantity": "400",
+            "unit": "g"
+          },
+          {
+            "name": "Unsalted butter",
+            "quantity": "70",
+            "unit": "g"
+          },
+          {
+            "name": "Water",
+            "quantity": "170",
+            "unit": "ml"
+          },
+          {
+            "name": "Salt",
+            "additionalInfo": "to taste",
+            "relativeQuantity": "1 tsp",
+            "quantity": "8",
+            "unit": "g"
+          },
+          {
+            "name": "Beef jerky",
+            "additionalInfo": "torn into strips",
+            "quantity": "250",
+            "unit": "g"
+          },
+          {
+            "name": "Onions",
+            "additionalInfo": "sliced",
+            "relativeQuantity": "3 medium",
+            "quantity": "650",
+            "unit": "g"
+          },
+          {
+            "name": "Tomato purée",
+            "quantity": "225",
+            "unit": "ml"
+          },
+          {
+            "name": "Red bell pepper",
+            "quantity": "1",
+            "additionalInfo": "stemmed, seeded, and diced",
+            "relativeQuantity": "1 medium",
+            "unit": "u"
+          },
+          {
+            "name": "Green bell pepper",
+            "quantity": "1",
+            "additionalInfo": "stemmed, seeded, and diced",
+            "relativeQuantity": "1 medium",
+            "unit": "u"
+          },
+          {
+            "name": "White pepper",
+            "quantity": "1",
+            "additionalInfo": "freshly ground",
+            "relativeQuantity": "to taste",
+            "unit": "tsp"
+          },
+          {
+            "name": "Smoked paprika",
+            "quantity": "1",
+            "relativeQuantity": "to taste",
+            "unit": "tsp"
+          },
+          {
+            "name": "Thyme",
+            "quantity": "1",
+            "additionalInfo": "fresh chopped",
+            "relativeQuantity": "to taste",
+            "unit": "tsp"
+          },
+          {
+            "name": "Dried Oregano",
+            "quantity": "1",
+            "relativeQuantity": "to taste",
+            "unit": "tsp"
+          },
+          {
+            "name": "Eggs",
+            "quantity": "3",
+            "additionalInfo": "hard-boiled, peeled, and diced",
+            "relativeQuantity": "3 large",
+            "unit": "u"
+          },
+          {
+            "name": "Chives",
+            "quantity": "20",
+            "additionalInfo": "finely minced",
+            "unit": "g"
+          }
+        ],
+        "tags": [
+          "Latin American",
+          "Proteic",
+          "Oven"
+        ]
+      },
+      {
+        "name": "Sicilian-Style Spaghetti Alla Carrettiera (Fresh Tomato and Garlic Sauce)",
+        "description": "A classic Sicilian pasta dish featuring fresh grated tomatoes, garlic, and basil in a simple yet flavorful sauce topped with toasted breadcrumbs.",
+        "steps": [
+          "Grate tomatoes on largest holes of a box grater into a large heatproof mixing or serving bowl until only the skin remains in your hand; it's okay if some slightly larger pieces of tomatoes and some skin get through, though you can discard the large pieces of skin. Add olive oil, basil, garlic, and red pepper flakes. Stir well and season with salt to taste. Set aside.",
+          "In a pot of lightly salted boiling water, cook spaghetti, stirring frequently, until al dente. When pasta has almost finished cooking, transfer 1/4 cup (30ml) pasta cooking water to tomato mixture and whisk to form an emulsion.",
+          "Using tongs, transfer pasta to tomato mixture along with an additional 1/4 cup (60ml) pasta cooking water. Vigorously toss and stir pasta to emulsify sauce and coat noodles. Add half of the breadcrumbs and toss to combine. The pasta should be well coated with creamy, emulsified sauce. If it seems dry, add extra pasta water and olive oil, 1 tablespoon (15ml) at a time, until it reaches the desired consistency. Taste for seasoning.",
+          "Transfer pasta to warmed plates and sprinkle with remaining breadcrumbs. Top with cheese, if desired. Serve right away."
+        ],
+        "cookingTime": "25min",
+        "difficulty": "Easy",
+        "servings": "4 servings",
+        "image": "https://www.seriouseats.com/thmb/L04WQJWxF3Lk3FuURumYrmMGJbw=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__2020__03__20200224-carretteira-pasta-vicky-wasik-10-4b59a5d8c37a471e96371807ad2dc4c0.jpg",
+        "ingredients": [
+          {
+            "name": "Plum tomatoes",
+            "quantity": "566",
+            "unit": "g",
+            "additionalInfo": "about 5 tomatoes",
+            "relativeQuantity": "1 1/4 pounds"
+          },
+          {
+            "name": "Extra-virgin olive oil",
+            "quantity": "60",
+            "unit": "ml",
+            "additionalInfo": "plus more for drizzling if needed",
+            "relativeQuantity": "1/4 cup"
+          },
+          {
+            "name": "Fresh basil leaves",
+            "quantity": "1/4",
+            "unit": "cup",
+            "additionalInfo": "loosely packed, roughly chopped"
+          },
+          {
+            "name": "Garlic",
+            "quantity": "3",
+            "unit": "cloves",
+            "additionalInfo": "finely minced",
+            "relativeQuantity": "3 medium"
+          },
+          {
+            "name": "Red pepper flakes",
+            "quantity": "1",
+            "unit": "pinch",
+            "additionalInfo": "large"
+          },
+          {
+            "name": "Kosher salt",
+            "quantity": "1",
+            "unit": "pinch",
+            "additionalInfo": "to taste",
+            "relativeQuantity": "to taste"
+          },
+          {
+            "name": "Dried spaghetti",
+            "quantity": "450",
+            "unit": "g",
+            "relativeQuantity": "1 pound"
+          },
+          {
+            "name": "Panko breadcrumbs",
+            "quantity": "35",
+            "unit": "g",
+            "additionalInfo": "lightly toasted, divided",
+            "relativeQuantity": "1/2 cup"
+          },
+          {
+            "name": "Sicilian Pecorino or ricotta salata",
+            "quantity": "150",
+            "unit": "g",
+            "additionalInfo": "grated, for serving (optional)",
+            "relativeQuantity": "to taste"
+          }
+        ],
+        "tags": [
+          "Italian",
+          "Pasta",
+          "Vegetarian",
+          "Quick & Easy"
+        ]
+      },
+      {
+        "name": "Perfect Cacio e Pepe",
+        "description": "A classic Roman pasta dish featuring just three simple ingredients: pasta, Pecorino Romano cheese, and black pepper, combined to create a silky, creamy sauce.",
+        "steps": [
+          "In a large sauté pan, pasta pot, or Dutch oven, bring lightly salted water to a boil. Add spaghetti and cook, stirring, until al dente (according to your preference or package directions).",
+          "Meanwhile, in a small bowl, stir together cornstarch and water to make a slurry. In a small dry saucepan, heat pepper over medium-high heat until fragrant and very lightly toasted, about 1 minute. Stir starch slurry to combine if settled, then add to saucepan, stirring and swirling, until slurry thickens into a clear, viscous sauce. Remove from heat and let cool for 1 minute.",
+          "In a large mixing bowl, combine grated cheese with starch gel, stirring to fully combine and form a stiff but smooth paste. Transfer about 1/4 cup pasta water from the cooking pot to the small saucepan, swirling and stirring to pick up any additional starchy gel clinging to the sides, then stir into the cheese paste.",
+          "Reserve 1 cup pasta water, then drain pasta. Let pasta cool slightly for 1 minute, then add to the cheese paste along with about 1/4 cup reserved pasta water, stirring to combine. Continue to add reserved pasta water in 1/4-cup additions until the cheese sauce is creamy and smooth and coats all the pasta in an even, silky glaze; season with additional salt if needed. Serve right away on warmed plates, topping with additional grated cheese and black pepper, if desired."
+        ],
+        "cookingTime": "20min",
+        "difficulty": "Medium",
+        "servings": "2 to 3 servings",
+        "image": "https://www.seriouseats.com/thmb/I0dqrwHH9fGP4L1G968PK_4uRTg=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/20250124-CacioePepe-AmandaSuarez-20-1b7a2171ecda4cf9bbc904ca68580162.jpg",
+        "ingredients": [
+          {
+            "name": "Salt",
+            "quantity": "1",
+            "unit": "pinch",
+            "additionalInfo": "to taste",
+            "relativeQuantity": "to taste"
+          },
+          {
+            "name": "Dried spaghetti",
+            "quantity": "225",
+            "unit": "g",
+            "relativeQuantity": "1/2 pound"
+          },
+          {
+            "name": "Cornstarch",
+            "quantity": "4",
+            "unit": "g",
+            "relativeQuantity": "1 teaspoon"
+          },
+          {
+            "name": "Water",
+            "quantity": "45",
+            "unit": "ml",
+            "relativeQuantity": "1/4 cup"
+          },
+          {
+            "name": "Black pepper",
+            "quantity": "4",
+            "unit": "g",
+            "additionalInfo": "coarsely ground, plus more for serving",
+            "relativeQuantity": "1 teaspoon"
+          },
+          {
+            "name": "Pecorino Romano cheese",
+            "quantity": "140",
+            "unit": "g",
+            "additionalInfo": "finely grated, plus more for serving",
+            "relativeQuantity": "1 packed cup"
+          }
+        ],
+        "tags": [
+          "Italian",
+          "Pasta",
+          "Vegetarian",
+          "Roman Cuisine"
+        ]
+      },
+      {
+        "name": "Lasagna Alla Norma (Lasagna With Eggplant, Tomato, and Cheese)",
+        "description": "A Sicilian-inspired lasagna featuring layers of fried eggplant, rich tomato sauce, and creamy cheeses including ricotta, mozzarella, and ricotta salata.",
+        "steps": [
+          "Arrange eggplant slices in a single layer on wire racks set in rimmed baking sheets. Sprinkle lightly all over on both sides with salt, then let stand until eggplants look dewy with water and some water has dripped below, about 20 minutes. Blot well with clean towels to remove all excess water.",
+          "Meanwhile, in a small saucepan, heat olive oil with garlic clove over medium heat until garlic begins to sizzle. Reduce heat to medium low and continue to cook until garlic is just beginning to turn golden, about 4 minutes. Remove garlic clove and discard. Add blended canned tomatoes (or passata) along with the basil and bring to a simmer over medium-high heat. Reduce heat to maintain a gentle simmer and cook, stirring often, until thickened and no longer watery (this may take almost no time at all for some passata products, or up to 20 minutes for waterier canned tomatoes). Remove from heat and season with salt. Set aside.",
+          "In a 12-inch cast iron or stainless-steel skillet, heat about 1/4 inch of oil over medium-high heat until shimmering. Working in batches, fry eggplant, turning once, until golden on both sides. Carefully transfer to paper towels to drain well, blotting to soak up any excess oil as you go. Repeat with remaining eggplant, adding more oil to skillet if necessary. Set aside.",
+          "Bring a large pot of salted water to a boil. Prepare an ice bath in a large mixing bowl. Working in batches to avoid crowding the pot, boil lasagna noodles until just shy of al dente, about 2 minutes less than cooking instructions for fresh lasagna noodles or 3 minutes less than package instructions for dry lasagna noodles. Using a strainer and tongs, carefully transfer to ice bath to chill, then drain and blot lightly with towels. Repeat with remaining pasta.",
+          "Preheat oven to 375°F (190°C) and set rack in middle position. In a medium mixing bowl, whisk ricotta until very smooth and creamy. Season with salt.",
+          "In a 2-quart baking dish, spoon a thin layer of tomato sauce all over, spreading it evenly to coat bottom. Cutting cooked lasagna noodles as needed to fit the baking dish, arrange the pasta in a single, even layer. Dollop and gently spread a thin layer of ricotta all over pasta (it doesn't need to cover every inch, but should be evenly enough distributed that it will melt and spread when baked). Scatter a small handful of mozzarella all over, then pieces of fried eggplant in a single, even layer. Top with another thin layer of sauce, then a sprinkle of grated ricotta salata and a dusting of Parmigiano-Reggiano. Repeat this layering until the baking dish is full, making sure to top the final layer of pasta only with tomato sauce, ricotta, ricotta salata, and Parmigiano-Reggiano. (Note: You may not use up all the components, but you should make sure to use all the eggplant and ricotta when layering the dish.)",
+          "Set baking dish on a rimmed baking sheet (to catch any drips) and bake until fully heated through and lasagna is very lightly browned on top, about 30 minutes. Let rest for 15 minutes to cool and settle, then slice and serve, sprinkling torn fresh basil leaves on top."
+        ],
+        "cookingTime": "120min",
+        "difficulty": "Hard",
+        "servings": "6 to 8 servings",
+        "image": "https://www.seriouseats.com/thmb/mwcKnS0h1WS1C8us5CC_PKeDDHA=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/20241023-Lasagna-alla-Norma-AmandaSuarez-HERO-ff55fcb895e842c5a88f6e5f35b9bc63.jpg",
+        "ingredients": [
+          {
+            "name": "Italian eggplant",
+            "quantity": "900",
+            "unit": "g",
+            "additionalInfo": "about 2 medium eggplants, sliced into 1/4-inch-thick rounds",
+            "relativeQuantity": "2 pounds"
+          },
+          {
+            "name": "Kosher salt",
+            "quantity": "1",
+            "unit": "pinch",
+            "additionalInfo": "to taste",
+            "relativeQuantity": "to taste"
+          },
+          {
+            "name": "Extra-virgin olive oil",
+            "quantity": "30",
+            "unit": "ml",
+            "relativeQuantity": "2 tablespoons"
+          },
+          {
+            "name": "Garlic",
+            "quantity": "1",
+            "unit": "clove",
+            "additionalInfo": "lightly smashed",
+            "relativeQuantity": "1 medium"
+          },
+          {
+            "name": "Fresh basil",
+            "quantity": "1",
+            "unit": "sprig",
+            "additionalInfo": "large, plus basil leaves for garnish"
+          },
+          {
+            "name": "Whole peeled tomatoes",
+            "quantity": "794",
+            "unit": "g",
+            "additionalInfo": "in juices, blended, or tomato passata",
+            "relativeQuantity": "One 28-ounce can"
+          },
+          {
+            "name": "Vegetable or olive oil",
+            "quantity": "+200",
+            "unit": "ml",
+            "additionalInfo": "for frying",
+            "relativeQuantity": "as needed"
+          },
+          {
+            "name": "Lasagna noodles",
+            "quantity": "454",
+            "unit": "g",
+            "additionalInfo": "fresh or dried",
+            "relativeQuantity": "1 pound"
+          },
+          {
+            "name": "Fresh ricotta",
+            "quantity": "454",
+            "unit": "g",
+            "additionalInfo": "good-quality",
+            "relativeQuantity": "1 pound"
+          },
+          {
+            "name": "Fresh mozzarella",
+            "quantity": "140",
+            "unit": "g",
+            "additionalInfo": "cut into 1/4-inch pieces and blotted dry",
+            "relativeQuantity": "5 ounces"
+          },
+          {
+            "name": "Ricotta salata",
+            "quantity": "85",
+            "unit": "g",
+            "additionalInfo": "for grating",
+            "relativeQuantity": "3 ounces"
+          },
+          {
+            "name": "Parmigiano-Reggiano",
+            "quantity": "150",
+            "unit": "g",
+            "additionalInfo": "grated, to taste",
+            "relativeQuantity": "to taste"
+          }
+        ],
+        "tags": [
+          "Italian",
+          "Sicilian",
+          "Pasta",
+          "Vegetarian",
+          "Oven"
+        ]
+      },
+      {
+        "name": "Eggs in Purgatory",
+        "description": "A classic Italian dish featuring eggs poached in a spicy tomato sauce, served with crispy toasted bread for a hearty and flavorful meal.",
+        "steps": [
+          "Adjust oven rack to middle position and heat broiler. Arrange bread slices on baking sheet and drizzle first sides with 2 tablespoons oil; flip slices and drizzle with 2 more tablespoons oil. Broil the bread until deep golden brown, about 3 minutes per side. Set aside.",
+          "In a large bowl, use your finger to crush tomatoes until tomato pieces are no larger than 1/2 inch; set aside.",
+          "Heat remaining 3 tablespoons oil in a 12-inch skillet over medium heat until shimmering. Add onion and cook until softened, 3 to 5 minutes. Add garlic and cook until fragrant, about 30 seconds. Add tomato paste, oregano, salt, and pepper flakes, and cook, stirring occasionally, until rust-colored, about 2 minutes. Add basil leaves and cook until wilted, about 30 seconds. Stir in reserved crushed tomatoes and bring to a gentle simmer. Reduce heat to medium-low and continue to simmer, stirring occasionally, until slightly thickened, 5 to 10 minutes. The sauce should be thick enough that a spatula should leaves trail in the sauce that slowly fills in behind it, but the sauce should still move when the skillet is shaken.",
+          "Remove skillet from heat and let sit for 2 minutes to cool slightly. In a small bowl, crack 1 egg. Using a rubber spatula or large spoon, clear a 2-inch-diameter well in sauce. Immediately pour in the cracked egg. (The well will hold yolk in place but may not fully contain egg white; this is ok.) Repeat with remaining eggs, evenly spacing the remaining 7 eggs in total around the skillet (7 around perimeter and 1 in the center).",
+          "Season each egg lightly with salt and pepper. Bring to a simmer over medium heat, cover, and cook, reducing heat as needed to maintain gentle simmer, until yolks film over, 4 to 5 minutes. Continue to cook, covered, until whites are just set (if skillet is shaken lightly, each egg should jiggle), 1 to 2 minutes longer for slightly runny yolks or 3 to 4 minutes for soft-cooked yolks.",
+          "Off heat sprinkle with Parmesan and chopped basil and drizzle with extra oil. Serve immediately with toasted bread."
+        ],
+        "cookingTime": "40min",
+        "difficulty": "Medium",
+        "servings": "4 servings",
+        "image": "https://www.seriouseats.com/thmb/e3XYBH4xuxyOkD4Fsmnb8agZY9I=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/20240528-SEA-EggsinPurgatory-AmandaSuarez-hero-bfd61fc6c29f487f9e68224fa6c2b0d6.jpg",
+        "ingredients": [
+          {
+            "name": "Rustic Italian bread",
+            "quantity": "8",
+            "unit": "slices",
+            "additionalInfo": "3/4-inch-thick"
+          },
+          {
+            "name": "Extra-virgin olive oil",
+            "quantity": "105",
+            "unit": "ml",
+            "additionalInfo": "divided, plus extra for drizzling",
+            "relativeQuantity": "7 tablespoons"
+          },
+          {
+            "name": "Whole peeled tomatoes",
+            "quantity": "794",
+            "unit": "g",
+            "relativeQuantity": "1 (28-ounce) can"
+          },
+          {
+            "name": "Yellow onion",
+            "quantity": "85",
+            "unit": "g",
+            "additionalInfo": "finely chopped",
+            "relativeQuantity": "1/2 small"
+          },
+          {
+            "name": "Garlic",
+            "quantity": "20",
+            "unit": "g",
+            "additionalInfo": "minced",
+            "relativeQuantity": "4 cloves"
+          },
+          {
+            "name": "Tomato paste",
+            "quantity": "45",
+            "unit": "ml",
+            "relativeQuantity": "3 tablespoons"
+          },
+          {
+            "name": "Fresh oregano",
+            "quantity": "2",
+            "unit": "tsp",
+            "additionalInfo": "minced, or 3/4 teaspoon dried"
+          },
+          {
+            "name": "Diamond Crystal kosher salt",
+            "quantity": "3/4",
+            "unit": "tsp",
+            "additionalInfo": "if using table salt use half as much by volume"
+          },
+          {
+            "name": "Red pepper flakes",
+            "quantity": "1",
+            "unit": "tsp"
+          },
+          {
+            "name": "Fresh basil leaves",
+            "quantity": "1",
+            "unit": "cup",
+            "additionalInfo": "plus 2 tablespoons torn"
+          },
+          {
+            "name": "Large eggs",
+            "quantity": "8",
+            "unit": "u"
+          },
+          {
+            "name": "Parmigiano-Reggiano cheese",
+            "quantity": "1/4",
+            "unit": "cup",
+            "additionalInfo": "grated"
+          }
+        ],
+        "tags": [
+          "Italian",
+          "Eggs",
+          "Breakfast",
+          "Brunch",
+          "Skillet"
+        ]
+      },
+      {
+        "name": "Mozzarella in Carrozza (Italian Fried Mozzarella Sandwiches)",
+        "description": "Crispy golden fried sandwiches filled with melted mozzarella cheese, creating an irresistible cheese pull. A classic Italian comfort food perfect as an appetizer or snack.",
+        "steps": [
+          "If using fresh mozzarella, place slices in a single layer on a paper-towel lined plate and press dry with paper towels. If using, spread 1 teaspoon mayonnaise on one side of each slice of bread. Divide cheese in an even layer among 2 bread slices (cheese should measure about 1/4-inch thick). Then, top with the remaining bread slices, mayonnaise side down.",
+          "Use a serrated knife to neatly cut off crusts of bread to form a uniform square.",
+          "In a shallow bowl, whisk eggs and Pecorino together to combine. In a second shallow bowl, combine bread crumbs, salt, and pepper.",
+          "Working with 1 sandwich at a time, dip each sandwich on all sides in the egg mixture, letting excess egg drip back into bowl, then coat in the bread crumb mixture, making sure the entire sandwich is evenly coated with bread crumbs. Transfer the sandwich to a plate and repeat the dredging process with the remaining sandwich. Refrigerate sandwiches while oil is heating, about 20 minutes.",
+          "Line a large plate with paper towels; set aside. In a 10-inch cast iron skillet or Dutch oven, add oil until it measures 1 inch deep and heat over medium-high heat to 325ºF (160ºC). Using a spatula or spider skimmer, carefully transfer both sandwiches to the hot oil and fry until deep golden brown on the bottom, adjusting heat as needed to maintain oil temperature between 300 to 325ºF, about 2 minutes. Use 2 spatulas or tongs to flip sandwiches and continue to fry until deep golden brown on the second side, about 2 minutes longer.",
+          "Transfer sandwiches to the prepared paper towel-lined plate and let sit for 90 seconds. Transfer to a cutting board and use a serrated knife to cut halfway through the bread, stopping right before you hit the cheese. Flip the sandwich over and again cut through bread, stopping before slicing through the cheese. Slowly pull sandwich halves apart for an impressive cheese pull."
+        ],
+        "cookingTime": "35min",
+        "difficulty": "Medium",
+        "servings": "2 servings",
+        "image": "https://www.seriouseats.com/thmb/7bep0_WTT1OVsfkqc2YEfTinpZk=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/20240309-Mozzarella_in_carrozza-Qi-Ai-hero-1-SEA-060f006a4a404c4ca87c9bef2bde5a3d.jpg",
+        "ingredients": [
+          {
+            "name": "Fresh mozzarella cheese",
+            "quantity": "140",
+            "unit": "g",
+            "additionalInfo": "firm or low-moisture, cut into 1/4-inch-thick slices",
+            "relativeQuantity": "5 ounces"
+          },
+          {
+            "name": "Mayonnaise",
+            "quantity": "4",
+            "unit": "tsp",
+            "additionalInfo": "optional"
+          },
+          {
+            "name": "White sandwich bread",
+            "quantity": "4",
+            "unit": "slices"
+          },
+          {
+            "name": "Eggs",
+            "quantity": "3",
+            "additionalInfo": "large",
+            "relativeQuantity": "3 large",
+            "unit": "u"
+          },
+          {
+            "name": "Pecorino Romano cheese",
+            "quantity": "3",
+            "unit": "tbsp",
+            "additionalInfo": "finely grated"
+          },
+          {
+            "name": "Plain dried bread crumbs",
+            "quantity": "3/4",
+            "unit": "cup",
+            "additionalInfo": "store-bought"
+          },
+          {
+            "name": "Diamond Crystal kosher salt",
+            "quantity": "1/2",
+            "unit": "tsp",
+            "additionalInfo": "if using table salt, use 1/4 teaspoon"
+          },
+          {
+            "name": "Black pepper",
+            "quantity": "1/2",
+            "unit": "tsp",
+            "additionalInfo": "freshly ground"
+          },
+          {
+            "name": "Neutral oil",
+            "quantity": "+200",
+            "unit": "ml",
+            "additionalInfo": "such as vegetable or canola, for frying",
+            "relativeQuantity": "for frying"
+          }
+        ],
+        "tags": [
+          "Italian",
+          "Fried",
+          "Cheese",
+          "Sandwiches",
+          "Appetizer"
+        ]
+      },
+      {
+        "name": "Pappardelle With Tuscan Pork Ragù",
+        "description": "A rich and complex Tuscan pork ragù made with marinated St. Louis ribs, slow-cooked for hours until tender, then shredded and simmered with wine, vegetables, and herbs. Served over fresh pappardelle pasta.",
+        "steps": [
+          "For the Marinade: In a large bowl, mix together the wine, garlic, salt, juniper berries, peppercorns, and bay leaves. Add the rib pieces to the marinade, making sure they are fully submerged. Cover the bowl and refrigerate for at least 8 hours, or up to 24 hours.",
+          "For the Ragù: Remove ribs from marinade and pat dry with paper towels. Strain the marinade and discard solids. Set strained marinade aside.",
+          "In a large Dutch oven or deep sauté pan, heat 1 tablespoon (15ml) oil over medium-high heat until shimmering. Working in batches, brown the rib pieces, meaty side down, and cook until well browned, about 5 minutes. Transfer browned ribs to a clean plate and set aside.",
+          "In now-empty Dutch oven, add remaining 1 tablespoon (15ml) oil and heat over medium heat until shimmering. Add carrots, celery, and onion, and cook stirring occasionally until the vegetables begin to soften, about 5 minutes. Add tomato paste, garlic, sage, and rosemary and cook until the mixture is fragrant and the paste begins to brown, about 2 minutes. Stir in the reserved strained marinade, and bring to a boil over medium-high heat. Cook until mixture is reduced slightly and thickened, about 5 minutes. Stir in tomatoes and broth and return to a boil.",
+          "Nestle ribs and their juices, meaty side down, into the sauce, cover Dutch oven, reduce heat to low and cook until pork is fully tender and falls off the bones, 2 to 2 1/2 hours.",
+          "Remove and discard rosemary sprig. Transfer ribs to a clean plate and let cool slightly, about 5 minutes. Using 2 forks, shred meat, discard the bones, and return shredded meat to sauce. Simmer ragù over medium-high heat, stirring occasionally, until ragù is reduced to a saucy consistency, about 10 minutes.",
+          "For the Pappardelle: In a large pot of salted boiling water, cook pasta. If using fresh pasta, cook until noodles are barely cooked through. If using dry pasta, cook until just shy of al dente (1 to 2 minutes less than the package directs). Using tongs or a spider skimmer, transfer pasta to ragù in Dutch oven along with 1/2 cup (120ml) pasta cooking water. Alternatively, drain pasta using a colander or fine-mesh strainer, making sure to reserve at least 2 cups (500ml) pasta cooking water.",
+          "Return Dutch oven to medium-high heat and cook, stirring and tossing pasta until it is al dente and ragù clings to the noodles, about 1 minute. Add pasta cooking water in 1/4 cup (60ml) increments to thin sauce, if needed. Season with salt and pepper to taste. Divide pasta between individual serving bowls. Serve."
+        ],
+        "cookingTime": "215min",
+        "difficulty": "Hard",
+        "servings": "4 to 6 servings",
+        "image": "https://www.seriouseats.com/thmb/64ZP3sqV_1h5lORpboueuHnD1MQ=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/20230628-SEA-PappardellewithPorkRagu-LorenaMasso-hero-d82c2b736bd043d5bfcdf9736f0f78bd.jpg",
+        "ingredients": [
+          {
+            "name": "Red wine",
+            "quantity": "533",
+            "unit": "ml",
+            "additionalInfo": "preferably Chianti or other Tuscan wine",
+            "relativeQuantity": "2 1/4 cups"
+          },
+          {
+            "name": "Garlic",
+            "quantity": "15",
+            "unit": "g",
+            "additionalInfo": "smashed",
+            "relativeQuantity": "3 medium cloves"
+          },
+          {
+            "name": "Kosher salt",
+            "quantity": "1",
+            "unit": "tbsp"
+          },
+          {
+            "name": "Dried juniper berries",
+            "quantity": "1",
+            "unit": "tbsp"
+          },
+          {
+            "name": "Black peppercorns",
+            "quantity": "1",
+            "unit": "tbsp",
+            "additionalInfo": "whole"
+          },
+          {
+            "name": "Dried bay leaves",
+            "quantity": "2",
+            "unit": "u"
+          },
+          {
+            "name": "St. Louis–cut ribs",
+            "quantity": "1125",
+            "unit": "g",
+            "additionalInfo": "cut between bones into 3 equal pieces",
+            "relativeQuantity": "1 rack (2.5 to 3 lbs)"
+          },
+          {
+            "name": "Extra-virgin olive oil",
+            "quantity": "30",
+            "unit": "ml",
+            "additionalInfo": "divided",
+            "relativeQuantity": "2 tablespoons"
+          },
+          {
+            "name": "Carrots",
+            "quantity": "115",
+            "unit": "g",
+            "additionalInfo": "peeled and diced",
+            "relativeQuantity": "2 medium"
+          },
+          {
+            "name": "Celery",
+            "quantity": "110",
+            "unit": "g",
+            "additionalInfo": "diced",
+            "relativeQuantity": "2 stalks"
+          },
+          {
+            "name": "Onion",
+            "quantity": "225",
+            "unit": "g",
+            "additionalInfo": "diced",
+            "relativeQuantity": "1 medium"
+          },
+          {
+            "name": "Tomato paste",
+            "quantity": "30",
+            "unit": "g",
+            "relativeQuantity": "2 tablespoons"
+          },
+          {
+            "name": "Garlic",
+            "quantity": "20",
+            "unit": "g",
+            "additionalInfo": "minced",
+            "relativeQuantity": "4 medium cloves"
+          },
+          {
+            "name": "Sage",
+            "quantity": "6",
+            "unit": "g",
+            "additionalInfo": "freshly chopped",
+            "relativeQuantity": "1 tablespoon"
+          },
+          {
+            "name": "Rosemary",
+            "quantity": "1",
+            "unit": "sprig",
+            "additionalInfo": "freshly chopped"
+          },
+          {
+            "name": "Tomatoes",
+            "quantity": "450",
+            "unit": "g",
+            "additionalInfo": "crushed (or passata di pomodoro)",
+            "relativeQuantity": "2 cups"
+          },
+          {
+            "name": "Chicken stock",
+            "quantity": "450",
+            "unit": "g",
+            "additionalInfo": "homemade or low-sodium broth",
+            "relativeQuantity": "2 cups"
+          },
+          {
+            "name": "Pappardelle",
+            "quantity": "450",
+            "unit": "g",
+            "additionalInfo": "homemade pasta dough cut into 1- to 1 1/2–inch wide ribbons or store-bought",
+            "relativeQuantity": "1 pound"
+          },
+          {
+            "name": "Black pepper",
+            "quantity": "1",
+            "unit": "pinch",
+            "additionalInfo": "freshly ground, to taste",
+            "relativeQuantity": "to taste"
+          }
+        ],
+        "tags": [
+          "Italian",
+          "Tuscan",
+          "Pasta",
+          "Pork",
+          "Slow-cooked"
+        ]
+      },
+      {
+        "name": "Spaghetti allo Scoglio (Spaghetti With Mixed Seafood)",
+        "description": "A spectacular Italian seafood pasta featuring a medley of clams, mussels, shrimp, and squid cooked with white wine, garlic, and cherry tomatoes. The pasta is cooked directly in the seafood broth for maximum flavor.",
+        "steps": [
+          "Fill a large bowl with cold water and stir in enough salt to make it salty like the sea (a 3% salt solution, by weight, is a good ratio). Add clams and let stand for 30 minutes. Lift clams from bowl and discard sandy water. Rinse out bowl and repeat this purging process until clams no longer release sand into the water (usually 2 to 3 purging cycles). Discard any clams that are gaping open and refuse to close when tapped. Set clean clams aside.",
+          "Heat 3 tablespoons (45ml) oil in a deep 12-inch skillet over medium-high heat until shimmering. Add shallots, season lightly with salt, and cook, stirring occasionally, until shallots start to soften, about 5 minutes. Add garlic and red pepper flakes and cook, stirring constantly, until fragrant, about 30 seconds.",
+          "Add wine and clams, increase heat to high, cover, and cook, shaking pan frequently, for 4 minutes. Uncover and, using tongs, transfer any clams that have opened to a medium bowl; cover bowl with foil to keep warm. Add mussels to skillet, cover, and continue to cook, shaking pan frequently and uncovering to stir and check shellfish every 45 seconds, until clams and mussels have all opened, 3 to 4 minutes longer. Using tongs, quickly transfer shellfish to bowl, and cover; leave aromatics and liquid in pan. Discard any clams or mussels that do not open.",
+          "Add clam juice and 2 cups (475ml) water to skillet and bring mixture to a boil over high heat. Add spaghetti and cook, stirring constantly for the first 30 seconds to prevent noodles from sticking and then stirring occasionally, until pasta begins to have some flexibility and is softened on the exterior, but well shy of al dente and still uncooked in the center, about 3 minutes less than the package directions. Add water in 1/4 cup (60ml) increments as needed to ensure pasta cooks evenly and doesn't stick to the bottom of the pan.",
+          "Meanwhile, pull meat from about half of the clam shells and half of the mussel shells; discard empty shells and return shucked clams and mussels to bowl with remaining shell-on shellfish. Cover to keep warm.",
+          "When pasta is just softened on the exterior, add shrimp and squid to skillet. Continue to cook over high, stirring and tossing, until shrimp and squid are just cooked through, 2 to 4 minutes.",
+          "Add tomatoes and all of the mussels and clams, along with any accumulated juices, and continue to cook over high, stirring and tossing constantly, until all of the seafood is heated through, pasta is al dente, and sauce is creamy and coats the pasta, about 1 minute; add more water, 2 tablespoons (30ml) at a time, if sauce over-reduces and becomes dry or greasy. Remove from heat, add parsley and lemon juice, and toss rapidly to incorporate. Season with salt to taste.",
+          "Transfer to a large serving bowl or divide between individual serving bowls, arranging shell-on mussels and clams on top of pasta. Drizzle with remaining 1 tablespoon (15ml) oil, and serve."
+        ],
+        "cookingTime": "30min",
+        "difficulty": "Hard",
+        "servings": "4 to 6 servings",
+        "image": "https://www.seriouseats.com/thmb/nYz8jtnh-szYfrJqCz_wZlSpI4I=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__2021__03__20210301-Spaghetti-Allo-Scoglio-Tim-Chin-20-639123ce316c4dbc8c3f30984295d5fa.jpg",
+        "ingredients": [
+          {
+            "name": "Kosher salt",
+            "quantity": "1",
+            "unit": "pinch",
+            "additionalInfo": "to taste",
+            "relativeQuantity": "to taste"
+          },
+          {
+            "name": "Clams",
+            "quantity": "450",
+            "unit": "g",
+            "additionalInfo": "such as littlenecks, Manilas, or cockles, scrubbed",
+            "relativeQuantity": "1 pound"
+          },
+          {
+            "name": "Extra-virgin olive oil",
+            "quantity": "60",
+            "unit": "ml",
+            "additionalInfo": "divided, plus extra for drizzling",
+            "relativeQuantity": "1/4 cup"
+          },
+          {
+            "name": "Shallots",
+            "quantity": "120",
+            "unit": "g",
+            "additionalInfo": "thinly sliced",
+            "relativeQuantity": "3 medium"
+          },
+          {
+            "name": "Garlic",
+            "quantity": "20",
+            "unit": "g",
+            "additionalInfo": "minced",
+            "relativeQuantity": "4 cloves"
+          },
+          {
+            "name": "Red pepper flakes",
+            "quantity": "1/2",
+            "unit": "tsp"
+          },
+          {
+            "name": "Dry white wine",
+            "quantity": "240",
+            "unit": "ml",
+            "relativeQuantity": "1 cup"
+          },
+          {
+            "name": "Mussels",
+            "quantity": "450",
+            "unit": "g",
+            "additionalInfo": "scrubbed and debearded",
+            "relativeQuantity": "1 pound"
+          },
+          {
+            "name": "Clam juice",
+            "quantity": "240",
+            "unit": "ml",
+            "relativeQuantity": "1 (8-ounce) bottle"
+          },
+          {
+            "name": "Dried spaghetti",
+            "quantity": "340",
+            "unit": "g",
+            "additionalInfo": "spaghettoni, or linguine",
+            "relativeQuantity": "12 ounces"
+          },
+          {
+            "name": "Large shrimp",
+            "quantity": "225",
+            "unit": "g",
+            "additionalInfo": "peeled, deveined, and halved crosswise",
+            "relativeQuantity": "8 ounces"
+          },
+          {
+            "name": "Cleaned squid",
+            "quantity": "225",
+            "unit": "g",
+            "additionalInfo": "bodies sliced into 1/2-inch-thick rings, small tentacles left whole, larger ones halved",
+            "relativeQuantity": "8 ounces"
+          },
+          {
+            "name": "Cherry tomatoes",
+            "quantity": "225",
+            "unit": "g",
+            "additionalInfo": "halved",
+            "relativeQuantity": "8 ounces"
+          },
+          {
+            "name": "Parsley",
+            "quantity": "30",
+            "unit": "g",
+            "additionalInfo": "freshly chopped",
+            "relativeQuantity": "1/2 cup"
+          },
+          {
+            "name": "Lemon juice",
+            "quantity": "30",
+            "unit": "ml",
+            "additionalInfo": "from 1/2 medium lemon",
+            "relativeQuantity": "2 tablespoons"
+          }
+        ],
+        "tags": [
+          "Italian",
+          "Seafood",
+          "Pasta",
+          "Mediterranean",
+          "Special Occasion"
+        ]
+      },
+      {
+        "name": "Puntarelle Alla Romana (Puntarelle Salad With Anchovy and Garlic Dressing)",
+        "description": "A classic Roman salad featuring crisp, curled puntarelle (or endive) dressed with a punchy anchovy and garlic vinaigrette. The vegetables are soaked in ice water to achieve their characteristic curl and crisp texture.",
+        "steps": [
+          "Pluck the outer leaves off the heads of puntarelle, tear or cut into bite-sized pieces, and set aside. Remove the shoots from the heads and, if present, trim and discard the woody bottom end of each. Cut shoots into 1/4-inch-thick strips (you may need to halve or quarter them lengthwise first). If there's a fatter core, trim off the tougher base, cut it in half lengthwise, and then cut the halves into strips.",
+          "Alternatively, if using endive, quarter endive lengthwise without removing cores. Slice each quarter into 1/8-inch strips lengthwise, at an angle through core, so leaves remain attached.",
+          "Transfer prepared puntarelle or endive to a bowl and cover fully with cold water and a handful of ice cubes. Cover with a small plate or other similar object to keep pieces submerged. Refrigerate until curled, at least 2 hours (they may remain submerged for up to 18 hours).",
+          "Drain puntarelle or endive and dry in a salad spinner. Refrigerate until needed.",
+          "Meanwhile, place anchovies, garlic, and salt on a cutting board and mash with the back of a fork until a coarse paste forms. Transfer to a medium bowl. Add vinegar and whisk until uniform. Add oil in a thin stream, whisking constantly, until emulsified.",
+          "Add puntarelle or endive, parsley, and half of the capers to bowl and toss to coat with dressing. Season with pepper and salt to taste. Transfer to a serving platter, top with remaining capers, and serve."
+        ],
+        "cookingTime": "10min",
+        "difficulty": "Medium",
+        "servings": "4 to 6 servings",
+        "image": "https://www.seriouseats.com/thmb/-aFP9qoVXeUA7IF7rflHUJ16N1k=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/20221221-Punterelle-AndrewJanjigian-41-3deed02dabec417cac47747e4836fe7c.JPG",
+        "ingredients": [
+          {
+            "name": "Puntarelle",
+            "quantity": "570",
+            "unit": "g",
+            "additionalInfo": "1 to 2 heads, or Belgian endive (8 to 10 heads), trimmed",
+            "relativeQuantity": "20 ounces"
+          },
+          {
+            "name": "Oil-packed anchovies",
+            "quantity": "32",
+            "unit": "g",
+            "additionalInfo": "drained",
+            "relativeQuantity": "8 pieces"
+          },
+          {
+            "name": "Garlic",
+            "quantity": "10",
+            "unit": "g",
+            "relativeQuantity": "2 medium cloves"
+          },
+          {
+            "name": "Salt",
+            "quantity": "1/2",
+            "unit": "tsp",
+            "additionalInfo": "plus more to taste",
+            "relativeQuantity": "to taste"
+          },
+          {
+            "name": "Red wine vinegar",
+            "quantity": "45",
+            "unit": "ml",
+            "relativeQuantity": "3 tablespoons"
+          },
+          {
+            "name": "Extra-virgin olive oil",
+            "quantity": "75",
+            "unit": "ml",
+            "relativeQuantity": "5 tablespoons"
+          },
+          {
+            "name": "Parsley",
+            "quantity": "20",
+            "unit": "g",
+            "additionalInfo": "freshly chopped",
+            "relativeQuantity": "1/2 cup"
+          },
+          {
+            "name": "Capers",
+            "quantity": "45",
+            "unit": "g",
+            "additionalInfo": "drained and roughly chopped",
+            "relativeQuantity": "3 tablespoons"
+          },
+          {
+            "name": "Black pepper",
+            "quantity": "1",
+            "unit": "pinch",
+            "additionalInfo": "freshly ground, to taste",
+            "relativeQuantity": "to taste"
+          }
+        ],
+        "tags": [
+          "Italian",
+          "Roman",
+          "Salad",
+          "Appetizer",
+          "Raw"
+        ]
+      },
+      {
+        "name": "Garlic Fried Rice Recipe",
+        "description": "A simple and aromatic fried rice dish featuring crispy garlic-infused oil that coats every grain of rice. Quick to make and incredibly flavorful with just a few ingredients.",
+        "steps": [
+          "In a small saucepan, heat oil over medium heat until shimmering. Add garlic and cook, stirring constantly, until garlic softens, becomes very aromatic, and turns lightly golden, 30 seconds to 1 minute. Strain oil through a fine-mesh strainer directly into a wok; reserve cooked garlic and set aside.",
+          "Heat wok over high heat until oil is shimmering. Add rice, breaking up larger clumps with a spatula and tossing to coat with garlic-flavored oil. Cook, stirring and tossing frequently, until no clumps of rice remain and rice is warmed through, about 4 minutes. Add reserved garlic to rice and toss to combine. Serve immediately."
+        ],
+        "cookingTime": "5min",
+        "difficulty": "Easy",
+        "servings": "4 servings",
+        "image": "https://www.seriouseats.com/thmb/72wVYns0PAPeh2bQt8cU0eN5TxI=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__2019__10__20191023-chicken-adobo-vicky-wasik-22-80a92e45ce4941e4b114e28882aadadb.jpg",
+        "ingredients": [
+          {
+            "name": "Canola oil",
+            "quantity": "75",
+            "unit": "ml",
+            "additionalInfo": "or other neutral oil",
+            "relativeQuantity": "1/4 cup plus 1 tablespoon"
+          },
+          {
+            "name": "Garlic",
+            "quantity": "8",
+            "unit": "cloves",
+            "additionalInfo": "crushed and sliced thinly"
+          },
+          {
+            "name": "White rice",
+            "quantity": "700",
+            "unit": "g",
+            "additionalInfo": "cooked, preferably long-grain, but any variety will do",
+            "relativeQuantity": "4 cups"
+          }
+        ],
+        "tags": [
+          "Asian",
+          "Chinese",
+          "Rice",
+          "Quick & Easy",
+          "Vegetarian"
+        ]
+      },
+      {
+        "name": "Lamb Biryani With Saffron, Yogurt, and Caramelized Onions",
+        "description": "An aromatic and luxurious Pakistani/Indian rice dish featuring tender marinated lamb, fragrant basmati rice layered with saffron-infused milk, caramelized onions, and traditional spices. A special occasion centerpiece that requires time but delivers incredible flavors.",
+        "steps": [
+          "Place lamb in a 1 gallon (3.8L) zip-top bag. In a medium bowl, mix yogurt, garlic, ginger, and 1 1/2 teaspoons salt until combined, pour yogurt mixture over lamb, seal bag, and shake bag to coat lamb well. Leave zip-top bag in refrigerator to marinate overnight.",
+          "Heat 1/4 cup (60ml) ghee or oil in a Dutch oven or saucepan with a heavy bottom over medium heat. Add onions, season with a pinch of salt, and cook, stirring occasionally, until onions caramelize and turn dark brown (but not black), about 25 to 30 minutes.",
+          "Reduce heat to low. Remove half of the caramelized onions and reserve to use as garnish for biryani. Add 3 green cardamom pods, cinnamon, cloves, bay leaves, garam masala, Kashmiri chile, mace, and turmeric, and sauté just until spices become fragrant, 30 to 45 seconds. Add lamb along with yogurt marinade, water or stock, cilantro, mint, and green chile. Stir to mix well, increase heat to medium-high, and bring liquid to a boil. Reduce heat to low, cover with lid, and cook for 30 to 45 minutes, stirring occasionally, until lamb is completely tender.",
+          "Meanwhile, as lamb cooks, prepare rice. Pick over rice for any debris, then place it in a fine-mesh strainer and rinse under cold running water, until runoff is no longer cloudy; drain well. Place rice in a bowl and cover with 4 cups (960ml) water and let stand for 30 minutes. Strain rice, discarding soaking water. In a large saucepan, combine rice with 4 cups cold water, lemon juice, remaining 1 1/2 teaspoons kosher salt, remaining 2 green cardamom pods, and remaining 2 teaspoons of ghee or oil and bring to a boil over medium heat. Boil for 2 minutes and then strain rice; discard cooking water. It will be partially cooked—if you break a grain of rice, you will see an outer translucent ring and a tiny, opaque inner ring.",
+          "When lamb is tender, remove lid and increase heat to medium, stirring often to prevent scorching, and cook until liquid starts to thicken and reduces to about 1 1/2 cups (360ml), about 5 minutes. Remove from heat. Using a clean, large wooden spoon or spatula, spread rice out in an even layer over meat in Dutch oven.",
+          "Set oven rack at the middle position and heat oven to 350°F (180°C). Place half the saffron threads in a mortar and pestle and grind to a fine powder. In a small saucepan placed over low heat, warm milk just until it starts to bubble, then turn off heat. Add ground saffron and remaining saffron strands to hot milk and let steep for 10 minutes.",
+          "Sprinkle saffron-infused milk over rice, followed by rosewater and pandan water. Garnish top of the rice with reserved caramelized onions. Cover Dutch oven with two sheets of aluminum foil and crimp overhang to form tight seal, place lid over foil, and place Dutch oven in preheated oven for 20 minutes to let rice steam. Remove from oven and let stand for 5 minutes. Uncover pot and carefully peel off aluminum seal. Use a fork to loosen rice a little and serve immediately straight from Dutch oven. Alternatively, biryani can be transferred to a platter and served."
+        ],
+        "cookingTime": "125min",
+        "difficulty": "Hard",
+        "servings": "4 to 6 servings",
+        "image": "https://www.seriouseats.com/thmb/fydnEdP_13e75yvOtLlnBmMsHhU=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/lamb-biryani-hero-01-SEA-QIAi-hero-bc09dcc1348f4876bdd2fa1e1a5f918c.JPG",
+        "ingredients": [
+          {
+            "name": "Lamb",
+            "quantity": "910",
+            "unit": "g",
+            "additionalInfo": "boneless leg, trimmed and cut into 1-inch cubes",
+            "relativeQuantity": "2 pounds"
+          },
+          {
+            "name": "Yogurt",
+            "quantity": "240",
+            "unit": "ml",
+            "additionalInfo": "plain, unsweetened full-fat",
+            "relativeQuantity": "1 cup"
+          },
+          {
+            "name": "Garlic",
+            "quantity": "6",
+            "unit": "cloves",
+            "additionalInfo": "peeled and finely grated",
+            "relativeQuantity": "6 medium"
+          },
+          {
+            "name": "Ginger",
+            "quantity": "1",
+            "unit": "piece",
+            "additionalInfo": "2-inch piece, peeled and grated"
+          },
+          {
+            "name": "Salt",
+            "quantity": "3",
+            "unit": "tsp",
+            "additionalInfo": "divided",
+            "relativeQuantity": "to taste"
+          },
+          {
+            "name": "Ghee",
+            "quantity": "70",
+            "unit": "ml",
+            "additionalInfo": "or neutral oil, divided",
+            "relativeQuantity": "1/4 cup plus 2 tsp"
+          },
+          {
+            "name": "Onions",
+            "quantity": "750",
+            "unit": "g",
+            "additionalInfo": "large yellow or white, thinly sliced",
+            "relativeQuantity": "2 large"
+          },
+          {
+            "name": "Green cardamom pods",
+            "quantity": "5",
+            "unit": "u",
+            "additionalInfo": "lightly cracked, divided"
+          },
+          {
+            "name": "Cinnamon stick",
+            "quantity": "1",
+            "unit": "u"
+          },
+          {
+            "name": "Cloves",
+            "quantity": "4",
+            "unit": "u"
+          },
+          {
+            "name": "Bay leaves",
+            "quantity": "2",
+            "unit": "u",
+            "additionalInfo": "dried"
+          },
+          {
+            "name": "Garam masala",
+            "quantity": "1",
+            "unit": "tsp"
+          },
+          {
+            "name": "Kashmiri chile",
+            "quantity": "1",
+            "unit": "tsp",
+            "additionalInfo": "ground"
+          },
+          {
+            "name": "Mace",
+            "quantity": "1/2",
+            "unit": "tsp",
+            "additionalInfo": "ground"
+          },
+          {
+            "name": "Turmeric",
+            "quantity": "1/2",
+            "unit": "tsp",
+            "additionalInfo": "ground"
+          },
+          {
+            "name": "Water",
+            "quantity": "240",
+            "unit": "ml",
+            "additionalInfo": "or low-sodium stock",
+            "relativeQuantity": "1 cup"
+          },
+          {
+            "name": "Cilantro",
+            "quantity": "1",
+            "unit": "cup",
+            "additionalInfo": "freshly chopped leaves and tender stems"
+          },
+          {
+            "name": "Mint",
+            "quantity": "1",
+            "unit": "bunch",
+            "additionalInfo": "freshly chopped leaves"
+          },
+          {
+            "name": "Green chile",
+            "quantity": "1",
+            "unit": "u",
+            "additionalInfo": "such as serrano or Thai bird, minced"
+          },
+          {
+            "name": "Basmati rice",
+            "quantity": "400",
+            "unit": "g",
+            "relativeQuantity": "2 cups"
+          },
+          {
+            "name": "Lemon juice",
+            "quantity": "60",
+            "unit": "ml",
+            "additionalInfo": "or lime juice",
+            "relativeQuantity": "1/4 cup"
+          },
+          {
+            "name": "Whole milk",
+            "quantity": "60",
+            "unit": "ml",
+            "relativeQuantity": "1/4 cup"
+          },
+          {
+            "name": "Saffron",
+            "quantity": "20",
+            "unit": "strands",
+            "additionalInfo": "divided"
+          },
+          {
+            "name": "Rosewater",
+            "quantity": "2",
+            "unit": "tsp"
+          },
+          {
+            "name": "Pandan water",
+            "quantity": "2",
+            "unit": "tsp",
+            "additionalInfo": "kewra/screwpine water"
+          }
+        ],
+        "tags": [
+          "Pakistani",
+          "Indian",
+          "Rice",
+          "Lamb",
+          "Special Occasion"
+        ]
+      },
+      {
+        "name": "Spicy Warm Silken Tofu With Celery and Cilantro Salad Recipe",
+        "description": "A refreshing Sichuan-style dish featuring silky warm tofu topped with a spicy, numbing sauce and crisp vegetables. The combination of chili oil, Sichuan peppercorns, and fresh herbs creates a perfect balance of heat, texture, and flavor.",
+        "steps": [
+          "Combine celery, cilantro, and scallions in a medium bowl and cover with ice cold water. Add 4 to 5 ice cubes and set aside.",
+          "Combine peppercorns and cumin in a mortar and pestle and roughly grind. Transfer to a medium bowl. Add sesame paste, soy sauce, vinegar, chili bean paste, sugar, chili oil, and garlic. Whisk to combine and set aside.",
+          "Spoon tofu into a serving bowl and microwave until barely warmed through, about 1 minute. Cover with dressing. Drain celery, cilantro, and scallions carefully and add to bowl. Sprinkle with sesame seeds. Serve immediately."
+        ],
+        "cookingTime": "10min",
+        "difficulty": "Easy",
+        "servings": "2 to 4 servings",
+        "image": "https://www.seriouseats.com/thmb/Tgn7Yy--Ce8zCkg2G9oIvXvwZvI=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__recipes__images__2012__12__20121203-tofu-salad-black-vinegar-soy-sichuan-01-63463b5ccf09409ea7598ef5cddbaeea.jpg",
+        "ingredients": [
+          {
+            "name": "Celery",
+            "quantity": "50",
+            "unit": "g",
+            "additionalInfo": "cut into thin 2-inch matchsticks",
+            "relativeQuantity": "1 stalk"
+          },
+          {
+            "name": "Cilantro",
+            "quantity": "15",
+            "unit": "g",
+            "additionalInfo": "freshly chopped leaves and tender stems",
+            "relativeQuantity": "1/2 cup"
+          },
+          {
+            "name": "Scallions",
+            "quantity": "45",
+            "unit": "g",
+            "additionalInfo": "sliced into thin slivers at an acute bias",
+            "relativeQuantity": "3 whole"
+          },
+          {
+            "name": "Sichuan peppercorns",
+            "quantity": "1/2",
+            "unit": "tsp",
+            "additionalInfo": "toasted"
+          },
+          {
+            "name": "Cumin seed",
+            "quantity": "1/2",
+            "unit": "tsp",
+            "additionalInfo": "toasted whole"
+          },
+          {
+            "name": "Sesame paste",
+            "quantity": "15",
+            "unit": "g",
+            "additionalInfo": "such as tahini, or peanut butter",
+            "relativeQuantity": "1 tablespoon"
+          },
+          {
+            "name": "Soy sauce",
+            "quantity": "5",
+            "unit": "ml",
+            "relativeQuantity": "1 teaspoon"
+          },
+          {
+            "name": "Chinkiang vinegar",
+            "quantity": "10",
+            "unit": "ml",
+            "relativeQuantity": "2 teaspoons"
+          },
+          {
+            "name": "Chili broad bean paste",
+            "quantity": "10",
+            "unit": "g",
+            "additionalInfo": "fermented",
+            "relativeQuantity": "2 teaspoons"
+          },
+          {
+            "name": "Sugar",
+            "quantity": "8",
+            "unit": "g",
+            "relativeQuantity": "2 teaspoons"
+          },
+          {
+            "name": "Chinese roasted chili oil",
+            "quantity": "60",
+            "unit": "ml",
+            "relativeQuantity": "1/4 cup"
+          },
+          {
+            "name": "Garlic",
+            "quantity": "5",
+            "unit": "g",
+            "additionalInfo": "finely minced",
+            "relativeQuantity": "1 medium clove"
+          },
+          {
+            "name": "Silken tofu",
+            "quantity": "540",
+            "unit": "g",
+            "additionalInfo": "soft",
+            "relativeQuantity": "1 (19-ounce) block"
+          },
+          {
+            "name": "Sesame seeds",
+            "quantity": "3",
+            "unit": "g",
+            "additionalInfo": "toasted",
+            "relativeQuantity": "1 teaspoon"
+          }
+        ],
+        "tags": [
+          "Chinese",
+          "Sichuan",
+          "Tofu",
+          "Vegetarian",
+          "Spicy"
+        ]
+      },
+      {
+        "name": "Taiwanese Turkey Rice Recipe",
+        "description": "A comforting Taiwanese dish featuring tender steamed turkey shreds served over rice with a rich, aromatic sauce made from turkey drippings, fried shallots, and Sichuan peppercorns. A perfect example of Taiwanese comfort food.",
+        "steps": [
+          "Rub the turkey with 1/4 teaspoon each of the salt and white pepper. Choose a large pot with a lid, such as a Dutch oven, and place a steamer rack inside. Fill the pot with 2 cups (475ml) of water. Place the turkey on a dish that fits inside the pot and sits atop the steamer rack. (In order to save the turkey drippings, the turkey should not be placed directly on a rack with holes.) Bring water to a boil, then reduce to a simmer and cover the pot. Steam the turkey until its internal temperature close to the bone reaches 180°F (82°C), about 30 minutes. Let cool. Reserve the juices and drippings.",
+          "Once the turkey meat has cooled, pull the meat into bite-size shreds by hand and discard the bones and skin.",
+          "Heat the vegetable oil in a small pot over medium-high heat until shimmering. Add the sliced shallots and cook, stirring, until golden brown, about 3 minutes. Transfer immediately to a paper towel-lined plate. Reserve the cooking oil.",
+          "Combine the shallot cooking oil with 1/2 cup (120ml) of reserved juices and drippings from the steamed turkey. Add water, sugar, soy sauce, Sichuan peppercorns, and remaining 1/4 teaspoon each of salt and white pepper. Add half of the fried shallots, saving the rest for garnish. Whisk mixture over medium heat to dissolve sugar. Bring to a gentle boil and simmer, uncovered until sauce is reduced by half, about 30 minutes. Strain sauce and discard solids.",
+          "To serve, scoop rice into individual serving bowls and top with a mound of the shredded turkey meat. Spoon the sauce over each bowl. Finish with the fried shallots and cilantro for garnish."
+        ],
+        "cookingTime": "90min",
+        "difficulty": "Medium",
+        "servings": "4 to 6 servings",
+        "image": "https://www.seriouseats.com/thmb/bIn6g-Q--gd4WQ29bZ5_OwYZTUI=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/taiwan-eats-turkey-rice-with-or-without-leftovers-recipe-photo-06-1-FredHardy-be49c29d3a184275b60ab7bb9f793b7e.jpg",
+        "ingredients": [
+          {
+            "name": "Turkey",
+            "quantity": "900",
+            "unit": "g",
+            "additionalInfo": "bone-in pieces, such as breast or legs, cut into large chunks",
+            "relativeQuantity": "2 pounds"
+          },
+          {
+            "name": "Salt",
+            "quantity": "1/2",
+            "unit": "tsp",
+            "additionalInfo": "divided",
+            "relativeQuantity": "to taste"
+          },
+          {
+            "name": "White pepper",
+            "quantity": "1/2",
+            "unit": "tsp",
+            "additionalInfo": "divided"
+          },
+          {
+            "name": "Vegetable oil",
+            "quantity": "60",
+            "unit": "ml",
+            "relativeQuantity": "1/4 cup"
+          },
+          {
+            "name": "Shallots",
+            "quantity": "85",
+            "unit": "g",
+            "additionalInfo": "thinly sliced",
+            "relativeQuantity": "2 whole"
+          },
+          {
+            "name": "Water",
+            "quantity": "120",
+            "unit": "ml",
+            "relativeQuantity": "1/2 cup"
+          },
+          {
+            "name": "Sugar",
+            "quantity": "4",
+            "unit": "g",
+            "relativeQuantity": "1 teaspoon"
+          },
+          {
+            "name": "Soy sauce",
+            "quantity": "5",
+            "unit": "ml",
+            "relativeQuantity": "1 teaspoon"
+          },
+          {
+            "name": "Sichuan peppercorns",
+            "quantity": "7",
+            "unit": "g",
+            "relativeQuantity": "1 tablespoon"
+          },
+          {
+            "name": "Cilantro",
+            "quantity": "15",
+            "unit": "g",
+            "additionalInfo": "freshly chopped, for garnish",
+            "relativeQuantity": "for garnish"
+          },
+          {
+            "name": "White rice",
+            "quantity": "+1",
+            "unit": "cup",
+            "additionalInfo": "cooked, for serving",
+            "relativeQuantity": "for serving"
+          }
+        ],
+        "tags": [
+          "Taiwanese",
+          "Asian",
+          "Rice",
+          "Turkey",
+          "Comfort Food"
+        ]
+      },
+      {
+        "name": "Crispy Bánh Mì Spring Rolls With Creamy Chili Mayo Recipe",
+        "description": "Vietnamese-inspired crispy spring rolls filled with pickled vegetables, fresh herbs, and crunchy vegetables, served with a spicy chili mayonnaise. These bite-sized rolls capture all the flavors of a traditional bánh mì sandwich.",
+        "steps": [
+          "Combine carrots, daikon, sugar, salt, and vinegar in a large bowl and massage with hands until vegetables are softened and salt and sugar are dissolved. Set aside for 15 minutes at room temperature.",
+          "Lay one spring roll wrapper down with a corner pointed towards you. Cover remaining wrappers with plastic or a moist clean kitchen towel. Add a half dozen carrot/daikon sticks, 1 cucumber stick, 1 jalapeño stick, and a few leaves/stems of cilantro in a bundle in the lower third of the wrapper, keeping it in a nice, tight row. Roll from the bottom corner towards the top, keeping everything nice and tight. Roll until nearly half way up, then stop.",
+          "The next step is to fold the left and right corners towards the center. Start by first pressing in on the edges of the filling with your fingertips to make sure it's packed nice and tight. Fold the corners towards the center, again keeping everything tight. Moistening the edges of the wrapper with a bit of water will help it stick to itself and keep its shape. You want the bottom edge to form a 90° angle with the new edge you've just created by folding over the corner.",
+          "After both corners have been folded in, continue rolling towards the top of the paper. Moisten the top corner of the wrapper with a bit of water and continue rolling until the entire package is sealed. Repeat with remaining rolls until all the filling is used up. Finished rolls can be frozen for up to 3 months in a sealed container. If freezing, fry directly from the freezer, adding 1 minute to cook time.",
+          "To Make The Sauce: Combine mayonnaise, chili garlic sauce, lime juice, and cilantro. Set aside. Sauce will keep in a sealed container in the refrigerator for up to 1 week.",
+          "To Serve: Heat oil in a large wok or Dutch oven to 325°F as registered on an instant read thermometer. Add 10 to 15 rolls and cook, agitating occasionally with a wire mesh spider, until golden brown and crisp, about 4 minutes. Drain on paper towels and serve immediately with spicy mayonnaise."
+        ],
+        "cookingTime": "45min",
+        "difficulty": "Medium",
+        "servings": "30 to 40 spring rolls",
+        "image": "https://www.seriouseats.com/thmb/mCccn_COD2TTSx_Z_l6cmSlTXso=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__recipes__images__2012__02__20120202-superbowl-snack-vegan-2-bb5a5d6d524e4d3fa357b1a5bafec36d.jpeg",
+        "ingredients": [
+          {
+            "name": "Carrot",
+            "quantity": "300",
+            "unit": "g",
+            "additionalInfo": "cut into 3-inch matchsticks 1/8 inch thick",
+            "relativeQuantity": "1 large"
+          },
+          {
+            "name": "Daikon radish",
+            "quantity": "200",
+            "unit": "g",
+            "additionalInfo": "cut into 3-inch matchsticks 1/8 inch thick",
+            "relativeQuantity": "1 small"
+          },
+          {
+            "name": "Sugar",
+            "quantity": "50",
+            "unit": "g",
+            "relativeQuantity": "1/4 cup"
+          },
+          {
+            "name": "Salt",
+            "quantity": "15",
+            "unit": "g",
+            "relativeQuantity": "1 tablespoon"
+          },
+          {
+            "name": "White vinegar",
+            "quantity": "30",
+            "unit": "ml",
+            "additionalInfo": "distilled or rice wine vinegar",
+            "relativeQuantity": "2 tablespoons"
+          },
+          {
+            "name": "Spring roll wrappers",
+            "quantity": "35",
+            "unit": "pieces",
+            "additionalInfo": "5-inch frozen, thawed",
+            "relativeQuantity": "30 to 40"
+          },
+          {
+            "name": "Cucumber",
+            "quantity": "300",
+            "unit": "g",
+            "additionalInfo": "peeled, cored, cut into 3-inch sticks",
+            "relativeQuantity": "1 large"
+          },
+          {
+            "name": "Jalapeño peppers",
+            "quantity": "30",
+            "unit": "g",
+            "additionalInfo": "cored, seeded, cut into thin sticks",
+            "relativeQuantity": "2 whole"
+          },
+          {
+            "name": "Cilantro",
+            "quantity": "30",
+            "unit": "g",
+            "additionalInfo": "freshly chopped leaves and thin stems only",
+            "relativeQuantity": "1 bunch"
+          },
+          {
+            "name": "Vegan mayonnaise",
+            "quantity": "120",
+            "unit": "ml",
+            "relativeQuantity": "1/2 cup"
+          },
+          {
+            "name": "Chili garlic sauce",
+            "quantity": "30",
+            "unit": "ml",
+            "additionalInfo": "such as sambal oelek or sriracha",
+            "relativeQuantity": "2 tablespoons"
+          },
+          {
+            "name": "Lime juice",
+            "quantity": "5",
+            "unit": "ml",
+            "additionalInfo": "from 1 whole lime",
+            "relativeQuantity": "1 teaspoon"
+          },
+          {
+            "name": "Vegetable oil",
+            "quantity": "2",
+            "unit": "L",
+            "additionalInfo": "for frying",
+            "relativeQuantity": "2 quarts"
+          }
+        ],
+        "tags": [
+          "Vietnamese",
+          "Asian",
+          "Fried",
+          "Appetizer",
+          "Vegan"
+        ]
+      },
+      {
+        "name": "Taiwanese Fried and Braised Pork Chops",
+        "description": "A classic Taiwanese comfort dish featuring pork chops that are marinated, coated in sweet potato starch, deep-fried until crispy, then gently braised in an aromatic soy-based sauce. The result is tender meat with a crispy exterior and deeply savory flavors.",
+        "steps": [
+          "In a large bowl, whisk soy sauce, rice wine, sugar, sesame oil, white pepper, five-spice powder, salt, garlic, and egg white to combine; set aside.",
+          "Place one pork chop on a clean cutting board and, using the ridged side of a meat mallet or blunt side of a Chinese cleaver, pound pork chops gently to 1/2-inch thickness. Set aside and repeat with remaining pork chops.",
+          "Add pork chops to the soy sauce mixture, massaging and tossing the pork to evenly coat with marinade. Cover tightly with plastic wrap or a lid and refrigerate for at least 2 hours or up to 8 hours.",
+          "When ready to cook, set a wire rack inside a rimmed baking sheet and line rack with a double layer of paper towels; set aside. Heat oil in a wok or medium-size Dutch oven over medium-high heat until oil reaches 350˚F (175˚C) on an instant-read or fryer thermometer.",
+          "In a wide, shallow dish, add sweet potato starch. Working with 1 pork chop at a time, dredge both sides in sweet potato starch, pressing gently to adhere. Gently shake off excess sweet potato starch and transfer to a large plate. Repeat with remaining chops.",
+          "Using tongs, add 2 pork chops to hot oil, gently sliding them in as close to the oil's surface as possible to minimize splashing. Cook until pork is light golden brown, about 2 minutes, adjusting heat as needed to maintain an oil temperature of 350°F (175°C). Using tongs, transfer pork to prepared baking sheet. Using a skimmer or ladle, remove any leftover crumbs from oil. Repeat with the remaining pork chops.",
+          "In a medium pot, combine water, soy sauce, rice wine, sugar, ginger, garlic, scallions, star anise, tangerine or mandarin peel (if using), and Sichuan peppercorns (if using). Bring to a boil over high heat. Reduce heat to low and allow liquid to slow to a gentle simmer. Using tongs, carefully add 2 deep-fried pork chops, handling gently to ensure breading does not fall off. Cover and simmer until the pork chop is fully cooked and registers 145˚F (63˚C) on an instant thermometer, 4 to 8 minutes. Gently remove chop and set aside. Repeat with the remaining pork chops. Serve with cooked white rice."
+        ],
+        "cookingTime": "45min",
+        "difficulty": "Hard",
+        "servings": "4 servings",
+        "image": "https://www.seriouseats.com/thmb/605jujiCDOb_48im23xpGvVAbFg=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/20250114-TaiwaneseBraisedPorkChops-DeliStudios-09-da5c8f61c4b240fe903285d2a7fe0307.jpg",
+        "ingredients": [
+          {
+            "name": "Soy sauce",
+            "quantity": "15",
+            "unit": "ml",
+            "additionalInfo": "such as Kikkoman or Kimlan",
+            "relativeQuantity": "1 tablespoon"
+          },
+          {
+            "name": "Taiwanese rice wine",
+            "quantity": "15",
+            "unit": "ml",
+            "additionalInfo": "michiu or cooking sake",
+            "relativeQuantity": "1 tablespoon"
+          },
+          {
+            "name": "Sugar",
+            "quantity": "6",
+            "unit": "g",
+            "additionalInfo": "granulated",
+            "relativeQuantity": "1 1/2 teaspoons"
+          },
+          {
+            "name": "Sesame oil",
+            "quantity": "5",
+            "unit": "ml",
+            "additionalInfo": "toasted",
+            "relativeQuantity": "1 teaspoon"
+          },
+          {
+            "name": "White pepper",
+            "quantity": "1/4",
+            "unit": "tsp"
+          },
+          {
+            "name": "Five-spice powder",
+            "quantity": "1/4",
+            "unit": "tsp"
+          },
+          {
+            "name": "Salt",
+            "quantity": "1/4",
+            "unit": "tsp",
+            "relativeQuantity": "to taste"
+          },
+          {
+            "name": "Garlic",
+            "quantity": "5",
+            "unit": "g",
+            "additionalInfo": "minced",
+            "relativeQuantity": "1 medium clove"
+          },
+          {
+            "name": "Egg white",
+            "quantity": "1",
+            "unit": "u",
+            "additionalInfo": "large"
+          },
+          {
+            "name": "Pork loin chops",
+            "quantity": "400",
+            "unit": "g",
+            "additionalInfo": "small boneless, 3 to 4 ounces each",
+            "relativeQuantity": "4 chops"
+          },
+          {
+            "name": "Canola oil",
+            "quantity": "946",
+            "unit": "ml",
+            "additionalInfo": "or soybean oil, for frying",
+            "relativeQuantity": "4 cups"
+          },
+          {
+            "name": "Sweet potato starch",
+            "quantity": "160",
+            "unit": "g",
+            "additionalInfo": "thick",
+            "relativeQuantity": "1 cup"
+          },
+          {
+            "name": "Water",
+            "quantity": "475",
+            "unit": "ml",
+            "relativeQuantity": "2 cups"
+          },
+          {
+            "name": "Soy sauce",
+            "quantity": "75",
+            "unit": "ml",
+            "additionalInfo": "for braising",
+            "relativeQuantity": "1/4 cup plus 1 tablespoon"
+          },
+          {
+            "name": "Ginger",
+            "quantity": "10",
+            "unit": "g",
+            "additionalInfo": "1-inch piece, unpeeled and sliced",
+            "relativeQuantity": "1 piece"
+          },
+          {
+            "name": "Garlic",
+            "quantity": "15",
+            "unit": "g",
+            "additionalInfo": "peeled and smashed",
+            "relativeQuantity": "3 medium cloves"
+          },
+          {
+            "name": "Scallions",
+            "quantity": "30",
+            "unit": "g",
+            "relativeQuantity": "2 whole"
+          },
+          {
+            "name": "Star anise",
+            "quantity": "1",
+            "unit": "u"
+          },
+          {
+            "name": "Tangerine peel",
+            "quantity": "1",
+            "unit": "piece",
+            "additionalInfo": "dried, about quarter size, optional"
+          },
+          {
+            "name": "Peppercorns",
+            "quantity": "1/4",
+            "unit": "tsp",
+            "additionalInfo": "optional"
+          },
+          {
+            "name": "White rice",
+            "quantity": "+1",
+            "unit": "cup",
+            "additionalInfo": "cooked short-grain, for serving",
+            "relativeQuantity": "for serving"
+          }
+        ],
+        "tags": [
+          "Taiwanese",
+          "Asian",
+          "Pork",
+          "Fried",
+          "Braised"
+        ]
+      },
+      {
+        "name": "Taiwanese Three Cup Chicken (San Bei Ji) Recipe",
+        "description": "A classic Taiwanese dish named for its three key liquid ingredients: sesame oil, rice wine, and soy sauce. The chicken is braised in this aromatic mixture with ginger, garlic, and finished with fresh Thai basil for a deeply flavorful and fragrant dish.",
+        "steps": [
+          "Heat sesame oil in a large skillet or wok over medium-high heat until shimmering. Add ginger, garlic, and chiles and cook until very fragrant, about 1 minute.",
+          "Add chicken pieces to the skillet in a single layer and cook, tilting the pan if necessary to submerge all pieces in the oil, for 1 minute. Flip chicken pieces and cook for 1 minute longer.",
+          "Add rice wine, soy sauce, and sugar and bring to a boil, stirring to dissolve the sugar. Reduce heat to a simmer. Partially cover the skillet to prevent splashes of oil and cook, turning the chicken pieces every few minutes, until the chicken is cooked through, about 15 minutes. Stir in Thai basil and remove from heat. Serve immediately with rice."
+        ],
+        "cookingTime": "25min",
+        "difficulty": "Easy",
+        "servings": "4 to 6 servings",
+        "image": "https://www.seriouseats.com/thmb/xOWVaX-ekjzZzeQIHOCtpZTGS5g=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/taiwanese-three-cup-chicken-san-bei-gi-recipe-hero-03-withprop1-be057543176f45689d37c1f4287ec3c1.jpg",
+        "ingredients": [
+          {
+            "name": "Sesame oil",
+            "quantity": "60",
+            "unit": "ml",
+            "additionalInfo": "Asian",
+            "relativeQuantity": "1/4 cup"
+          },
+          {
+            "name": "Ginger",
+            "quantity": "10",
+            "unit": "g",
+            "additionalInfo": "1-inch piece, peeled and thinly sliced into rounds",
+            "relativeQuantity": "1 piece"
+          },
+          {
+            "name": "Garlic",
+            "quantity": "70",
+            "unit": "g",
+            "additionalInfo": "peeled",
+            "relativeQuantity": "12-15 medium cloves"
+          },
+          {
+            "name": "Thai red chiles",
+            "quantity": "10",
+            "unit": "g",
+            "additionalInfo": "stemmed and halved",
+            "relativeQuantity": "1-2 fresh"
+          },
+          {
+            "name": "Chicken",
+            "quantity": "900",
+            "unit": "g",
+            "additionalInfo": "skin-on drumsticks, thighs, and/or wings, chopped into 3-inch bone-in pieces",
+            "relativeQuantity": "2 pounds"
+          },
+          {
+            "name": "Rice wine",
+            "quantity": "120",
+            "unit": "ml",
+            "relativeQuantity": "1/2 cup"
+          },
+          {
+            "name": "Soy sauce",
+            "quantity": "60",
+            "unit": "ml",
+            "relativeQuantity": "1/4 cup"
+          },
+          {
+            "name": "Sugar",
+            "quantity": "12",
+            "unit": "g",
+            "relativeQuantity": "1 tablespoon"
+          },
+          {
+            "name": "Thai basil",
+            "quantity": "40",
+            "unit": "g",
+            "additionalInfo": "freshly chopped leaves",
+            "relativeQuantity": "2 cups"
+          },
+          {
+            "name": "White rice",
+            "quantity": "+1",
+            "unit": "cup",
+            "additionalInfo": "steamed, for serving",
+            "relativeQuantity": "for serving"
+          }
+        ],
+        "tags": [
+          "Taiwanese",
+          "Asian",
+          "Chicken",
+          "Quick & Easy",
+          "One Pan"
+        ]
+      },
+      {
+        "name": "Taiwanese Pan-Fried Rice Noodles Recipe",
+        "description": "A classic Taiwanese stir-fried noodle dish featuring tender marinated pork, rehydrated shiitake mushrooms, and crisp vegetables. The noodles absorb a flavorful pork stock and are finished with black vinegar for a perfect balance of savory and tangy flavors.",
+        "steps": [
+          "Combine pork, cornstarch, 1 teaspoon soy sauce, and sesame oil in a medium bowl and mix thoroughly. Cover and chill for at least 20 minutes, or up to overnight.",
+          "Meanwhile, cover dried shiitake mushrooms with warm water and let stand until soft throughout, about 20 minutes. Squeeze excess water out of mushrooms and trim off their stems. Slice thinly and set aside. (The soaking liquid may be reserved for making soups, stocks, or braises.)",
+          "Cook rice noodles according to the instructions on the package. Drain and set aside.",
+          "Add 1 tablespoon vegetable oil to a large wok or skillet and heat over high heat until shimmering. Add pork and cook, stirring, until no longer pink, about 2 minutes. Remove from pan and set aside.",
+          "Add remaining 2 tablespoons oil to same wok or skillet and heat over high heat until shimmering. Add mushrooms, carrots, and bamboo shoots, along with a pinch of salt. Cook, stirring occasionally, for 1 minute. Return pork to the pan.",
+          "Pour in warm stock and remaining 1/4 cup of soy sauce and bring to a boil. Add rice noodles and stir to combine. Stir in white pepper, season with salt, and cook, stirring frequently, until stock is mostly absorbed, about 2 minutes. If desired, add extra soy sauce, salt, or white pepper to taste. Remove from heat and sprinkle in black vinegar; toss to combine. Garnish with scallions and serve immediately."
+        ],
+        "cookingTime": "25min",
+        "difficulty": "Medium",
+        "servings": "4 to 6 servings",
+        "image": "https://www.seriouseats.com/thmb/XgXQpLLzi6OQH2wtrjZsGRxc8uI=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__recipes__images__2014__05__050214-taiwaneats-panfriednoodles-finished-863d2d2d9dd24f52b47bc67dc37adab4.jpg",
+        "ingredients": [
+          {
+            "name": "Pork shoulder",
+            "quantity": "225",
+            "unit": "g",
+            "additionalInfo": "boneless, cut into thin 2-inch strips",
+            "relativeQuantity": "1/2 pound"
+          },
+          {
+            "name": "Cornstarch",
+            "quantity": "2",
+            "unit": "g",
+            "relativeQuantity": "1/2 teaspoon"
+          },
+          {
+            "name": "Soy sauce",
+            "quantity": "65",
+            "unit": "ml",
+            "additionalInfo": "or more to taste",
+            "relativeQuantity": "1/4 cup plus 1 teaspoon"
+          },
+          {
+            "name": "Sesame oil",
+            "quantity": "5",
+            "unit": "ml",
+            "relativeQuantity": "1 teaspoon"
+          },
+          {
+            "name": "Dried shiitake mushrooms",
+            "quantity": "50",
+            "unit": "g",
+            "relativeQuantity": "6 to 8 pieces"
+          },
+          {
+            "name": "Dried rice noodles",
+            "quantity": "225",
+            "unit": "g",
+            "additionalInfo": "very thin",
+            "relativeQuantity": "1/2 pound"
+          },
+          {
+            "name": "Vegetable oil",
+            "quantity": "45",
+            "unit": "ml",
+            "additionalInfo": "or peanut oil",
+            "relativeQuantity": "3 tablespoons"
+          },
+          {
+            "name": "Carrot",
+            "quantity": "150",
+            "unit": "g",
+            "additionalInfo": "julienned",
+            "relativeQuantity": "1 large"
+          },
+          {
+            "name": "Bamboo shoots",
+            "quantity": "150",
+            "unit": "g",
+            "additionalInfo": "from 15-ounce can, rinsed and julienned",
+            "relativeQuantity": "1 cup"
+          },
+          {
+            "name": "Pork stock",
+            "quantity": "475",
+            "unit": "ml",
+            "additionalInfo": "warmed, or substitute with chicken/vegetable stock",
+            "relativeQuantity": "2 cups"
+          },
+          {
+            "name": "White pepper",
+            "quantity": "1/4",
+            "unit": "tsp",
+            "additionalInfo": "ground, or more to taste"
+          },
+          {
+            "name": "Salt",
+            "quantity": "1",
+            "unit": "pinch",
+            "additionalInfo": "to taste",
+            "relativeQuantity": "to taste"
+          },
+          {
+            "name": "Black vinegar",
+            "quantity": "30",
+            "unit": "ml",
+            "additionalInfo": "or more to taste",
+            "relativeQuantity": "2 tablespoons"
+          },
+          {
+            "name": "Scallions",
+            "quantity": "30",
+            "unit": "g",
+            "additionalInfo": "white and light green parts only, thinly sliced",
+            "relativeQuantity": "2 to 3 pieces"
+          }
+        ],
+        "tags": [
+          "Taiwanese",
+          "Asian",
+          "Noodles",
+          "Pork",
+          "Stir-fried"
+        ]
+      },
+      {
+        "name": "Taiwanese Beef Noodle Soup Recipe",
+        "description": "Taiwan's national dish featuring tender braised beef in a rich, aromatic broth perfumed with star anise, Sichuan peppercorns, and chili bean sauce. The beef is slow-cooked until melt-in-your-mouth tender and served over wheat noodles with fresh greens.",
+        "steps": [
+          "Heat 1 tablespoon vegetable oil in a large, heavy-bottomed pot or Dutch oven over medium-high heat until shimmering. Add the beef and cook without moving until well browned on first side, about 4 minutes. Stir and cook until well browned all over, about 10 minutes total. Transfer beef to a large bowl and repeat with 1 more tablespoon oil and remaining beef.",
+          "Add remaining tablespoon of oil to the same pan and heat until shimmering. Add the sliced ginger, garlic cloves, and chilies. Cook, stirring, until fragrant, about 30 seconds. Add the chopped tomato and stir stir for another minute. Add the sugar and stir until dissolved, about 30 seconds. Add the chili bean sauce, and stir until the mixture just begins to bubble.",
+          "Return the beef to the pot. Stir to warm up and coat the meat with the spices. Add the rice wine and cook for 1 minute, scraping up browned bits from bottom of pot. Add the star anise, Sichuan peppercorns, dark soy sauce, light soy sauce, and the water. Bring to a boil. Then reduce heat to a simmer and cover. Cook until beef is tender, about 2 1/2 hours.",
+          "Using tongs, carefully remove the beef cubes from the stew and set aside in a bowl. Carefully strain the soup over a colander or mesh strainer to catch the ginger, peppercorns, and other stray solids. Retain any solids or small beef pieces from the strained mixture that you may want to keep, and return to the soup. Return the beef to the soup and add greens to wilt if desired.",
+          "Cook the noodles according to the directions on their package. Strain noodles, and divide into serving bowls. Ladle the warm soup and beef chunks into each bowl and serve immediately."
+        ],
+        "cookingTime": "180min",
+        "difficulty": "Hard",
+        "servings": "6 to 8 servings",
+        "image": "https://www.seriouseats.com/thmb/7vI7aeFLibDoKkX44mpEtgRaM3w=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__recipes__images__2013__12__20131219-taiwan-eats-beef-noodle-soup-finished-38075b663810491fad31c06f7d9e22c5.jpg",
+        "ingredients": [
+          {
+            "name": "Vegetable oil",
+            "quantity": "45",
+            "unit": "ml",
+            "additionalInfo": "canola, or peanut oil",
+            "relativeQuantity": "3 tablespoons"
+          },
+          {
+            "name": "Beef",
+            "quantity": "900",
+            "unit": "g",
+            "additionalInfo": "boneless shank or chuck, cut into 1-inch cubes",
+            "relativeQuantity": "2 pounds"
+          },
+          {
+            "name": "Ginger",
+            "quantity": "30",
+            "unit": "g",
+            "additionalInfo": "6 large slices, fresh root",
+            "relativeQuantity": "6 slices"
+          },
+          {
+            "name": "Garlic",
+            "quantity": "30",
+            "unit": "g",
+            "additionalInfo": "smashed",
+            "relativeQuantity": "6 cloves"
+          },
+          {
+            "name": "Red chiles",
+            "quantity": "10",
+            "unit": "g",
+            "additionalInfo": "small, such as Thai chiles, roughly chopped",
+            "relativeQuantity": "2-3 small"
+          },
+          {
+            "name": "Plum tomato",
+            "quantity": "150",
+            "unit": "g",
+            "additionalInfo": "roughly chopped",
+            "relativeQuantity": "1 large"
+          },
+          {
+            "name": "Sugar",
+            "quantity": "24",
+            "unit": "g",
+            "relativeQuantity": "2 tablespoons"
+          },
+          {
+            "name": "Sichuan chili bean sauce",
+            "quantity": "15",
+            "unit": "ml",
+            "additionalInfo": "doubanjiang",
+            "relativeQuantity": "1 tablespoon"
+          },
+          {
+            "name": "Chinese rice wine",
+            "quantity": "240",
+            "unit": "ml",
+            "relativeQuantity": "1 cup"
+          },
+          {
+            "name": "Sichuan peppercorns",
+            "quantity": "7",
+            "unit": "g",
+            "relativeQuantity": "1 tablespoon"
+          },
+          {
+            "name": "Star anise",
+            "quantity": "2",
+            "unit": "u",
+            "additionalInfo": "whole cloves"
+          },
+          {
+            "name": "Dark soy sauce",
+            "quantity": "60",
+            "unit": "ml",
+            "relativeQuantity": "1/4 cup"
+          },
+          {
+            "name": "Light soy sauce",
+            "quantity": "120",
+            "unit": "ml",
+            "relativeQuantity": "1/2 cup"
+          },
+          {
+            "name": "Water",
+            "quantity": "2500",
+            "unit": "ml",
+            "relativeQuantity": "2 1/2 quarts"
+          },
+          {
+            "name": "Asian wheat flour noodles",
+            "quantity": "900",
+            "unit": "g",
+            "additionalInfo": "any width you like",
+            "relativeQuantity": "2 pounds"
+          },
+          {
+            "name": "Greens",
+            "quantity": "+1",
+            "unit": "cup",
+            "additionalInfo": "fresh spinach leaves, baby bok choy, broccolini, or other small greens, as desired",
+            "relativeQuantity": "as desired"
+          }
+        ],
+        "tags": [
+          "Taiwanese",
+          "Asian",
+          "Soup",
+          "Beef",
+          "Slow-cooked"
+        ]
+      },
+      {
+        "name": "Tom Kha Gai (Thai Chicken Soup with Coconut and Galangal)",
+        "description": "A classic Thai soup featuring tender chicken in a rich, aromatic coconut broth infused with galangal, lemongrass, and makrut lime leaves. The soup balances creamy coconut with bright lime juice and the heat of Thai chilies for an authentic taste of Thailand.",
+        "steps": [
+          "For the Galangal Stock: In a granite mortar and pestle, add galangal and pound until a coarse paste forms, about 30 seconds. Set aside.",
+          "In a 2-quart saucepan, bring chicken stock to a simmer over medium heat, then remove from heat. Pour one-third of the warmed chicken stock over galangal in mortar, then with the pestle, press on galangal to extract its flavor into the stock, about 1 minute. Repeat process with remaining chicken stock, pressing on galangal each time to continue to express its flavor, then set aside to let the galangal infuse the stock.",
+          "For the Soup: Meanwhile, in the now-empty saucepan, add chicken stock, galangal, lemongrass, shallots, and 1 tablespoon fish sauce, and bring to a boil over high heat. Add chicken, return to a boil, then lower heat to maintain a simmer. Cover and cook until chicken is tender and cooked through, about 20 minutes.",
+          "Pour galangal stock through a fine-mesh strainer into saucepan, pressing on solids to extract as much liquid as possible before discarding the fiber. Stir in makrut lime leaves, fresh chiles, and coconut cream then remove from heat. Stir in lime juice and remaining fish sauce.",
+          "To serve, divide between warmed soup bowls and garnish with cilantro."
+        ],
+        "cookingTime": "35min",
+        "difficulty": "Medium",
+        "servings": "4 servings",
+        "image": "https://www.seriouseats.com/thmb/1Bvnr0Yv7oUjzEkMgWHgTi_yIe4=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/20220913-Tom-Kha-Gai-vicky-wsik-Step1-Hero01-f034bd4eb374444582768d9d5fadea8a.JPG",
+        "ingredients": [
+          {
+            "name": "Chicken stock",
+            "quantity": "860",
+            "unit": "ml",
+            "additionalInfo": "homemade or store-bought, divided",
+            "relativeQuantity": "3 2/3 cups total"
+          },
+          {
+            "name": "Galangal",
+            "quantity": "100",
+            "unit": "g",
+            "additionalInfo": "fresh, peeled, divided between stock and soup",
+            "relativeQuantity": "2 (4-inch) pieces"
+          },
+          {
+            "name": "Lemongrass",
+            "quantity": "120",
+            "unit": "g",
+            "additionalInfo": "bottom 7 inches only, outer leaves discarded, tender core cut on bias into 2-inch lengths",
+            "relativeQuantity": "3 stalks"
+          },
+          {
+            "name": "Shallots",
+            "quantity": "40",
+            "unit": "g",
+            "additionalInfo": "peeled and roughly smashed in mortar and pestle",
+            "relativeQuantity": "2 medium"
+          },
+          {
+            "name": "Fish sauce",
+            "quantity": "60",
+            "unit": "ml",
+            "additionalInfo": "divided",
+            "relativeQuantity": "1/4 cup"
+          },
+          {
+            "name": "Chicken thighs",
+            "quantity": "1020",
+            "unit": "g",
+            "additionalInfo": "boneless skinless"
+          },
+          {
+            "name": "Makrut lime leaves",
+            "quantity": "4",
+            "unit": "g",
+            "additionalInfo": "fresh or frozen, middle ribs removed",
+            "relativeQuantity": "10 leaves"
+          },
+          {
+            "name": "Thai red chiles",
+            "quantity": "7",
+            "unit": "g",
+            "additionalInfo": "fresh, stemmed and lightly smashed",
+            "relativeQuantity": "5 to 9 chiles"
+          },
+          {
+            "name": "Coconut cream",
+            "quantity": "240",
+            "unit": "ml",
+            "additionalInfo": "full-fat, such as Aroy-D",
+            "relativeQuantity": "1 cup"
+          },
+          {
+            "name": "Lime juice",
+            "quantity": "60",
+            "unit": "ml",
+            "additionalInfo": "fresh, from 2 limes",
+            "relativeQuantity": "1/4 cup"
+          },
+          {
+            "name": "Cilantro",
+            "quantity": "15",
+            "unit": "g",
+            "additionalInfo": "freshly chopped leaves, for garnishing",
+            "relativeQuantity": "for garnish"
+          }
+        ],
+        "tags": [
+          "Thai",
+          "Asian",
+          "Soup",
+          "Chicken",
+          "Coconut"
+        ]
+      },
+      {
+        "name": "Erdäpfelsalat (Austrian-Style Potato Salad)",
+        "description": "A traditional Austrian potato salad featuring tender Yukon Gold potatoes dressed with a tangy vinaigrette made with chicken stock, white wine vinegar, and Dijon mustard. The potato skins are cooked alongside to add extra flavor to the cooking liquid.",
+        "steps": [
+          "Place sliced potatoes in a large saucier or Dutch oven and cover with water. Season generously with salt. Place potato skins in a fine-mesh strainer and place on top of pot. Add just enough water to submerge potato skins. Bring to a boil over high heat and simmer until potatoes are tender, about 15 minutes.",
+          "Discard potato skins, drain potatoes, and transfer to a rimmed baking sheet. Immediately sprinkle with 2 tablespoons (30ml) vinegar and set aside to cool. When they are cool enough to handle, transfer potatoes to a large bowl.",
+          "Add remaining vinegar, olive oil, mustard, red onion, chives, chicken stock, and sugar. Using a rubber spatula or wooden spoon, roughly stir and fold mixture so that potatoes release some starch and liquid begins to thicken a little. Season to taste with more salt and white or black pepper. Set aside to rest for at least 30 minutes and up to overnight. (If resting longer than 4 hours, cover bowl and transfer to refrigerator.) Stir again vigorously to thicken dressing; it should have a loose but not soupy consistency. If it's too thick, thin it out with a little extra water or chicken stock and re-season. Serve cold or at room temperature."
+        ],
+        "cookingTime": "35min",
+        "difficulty": "Medium",
+        "servings": "6 servings",
+        "image": "https://www.seriouseats.com/thmb/vTInwzzCaIZMFSkp2C5ck9COyLw=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__images__2017__07__20170630-austrian-potato-salad-erdapfelsalat-17-0c16fa8639d3488c9f187905d8b298d6.jpg",
+        "ingredients": [
+          {
+            "name": "Yukon Gold potatoes",
+            "quantity": "1000",
+            "unit": "g",
+            "additionalInfo": "peeled, quartered, cut into 1/2-inch slices, peels reserved",
+            "relativeQuantity": "2 pounds"
+          },
+          {
+            "name": "Salt",
+            "quantity": "1",
+            "unit": "pinch",
+            "additionalInfo": "to taste",
+            "relativeQuantity": "to taste"
+          },
+          {
+            "name": "White wine vinegar",
+            "quantity": "45",
+            "unit": "ml",
+            "additionalInfo": "divided, plus more to taste",
+            "relativeQuantity": "3 tablespoons"
+          },
+          {
+            "name": "Extra-virgin olive oil",
+            "quantity": "60",
+            "unit": "ml",
+            "relativeQuantity": "1/4 cup"
+          },
+          {
+            "name": "Dijon mustard",
+            "quantity": "15",
+            "unit": "ml",
+            "relativeQuantity": "1 tablespoon"
+          },
+          {
+            "name": "Red onion",
+            "quantity": "90",
+            "unit": "g",
+            "additionalInfo": "minced, from about 1 small onion",
+            "relativeQuantity": "3/4 cup"
+          },
+          {
+            "name": "Chives",
+            "quantity": "6",
+            "unit": "g",
+            "additionalInfo": "freshly minced",
+            "relativeQuantity": "2 tablespoons"
+          },
+          {
+            "name": "Chicken stock",
+            "quantity": "120",
+            "unit": "ml",
+            "additionalInfo": "homemade or store-bought low-sodium",
+            "relativeQuantity": "1/2 cup"
+          },
+          {
+            "name": "Sugar",
+            "quantity": "10",
+            "unit": "g",
+            "relativeQuantity": "2 teaspoons"
+          },
+          {
+            "name": "White pepper",
+            "quantity": "1",
+            "unit": "pinch",
+            "additionalInfo": "freshly ground, or black pepper, to taste",
+            "relativeQuantity": "to taste"
+          }
+        ],
+        "tags": [
+          "Austrian",
+          "European",
+          "Potato Salad",
+          "Side Dish",
+          "Cold Dish"
+        ]
+      },
+      {
+        "name": "Homemade Crepes",
+        "description": "A classic French crepe recipe that creates thin, delicate pancakes perfect for sweet or savory fillings. The batter is blended until silky-smooth and chilled before cooking to achieve the perfect texture.",
+        "steps": [
+          "Review my success tips and watch the video tutorial below before beginning.",
+          "Melt 3 Tablespoons of butter in the microwave or on the stove. Cool for about 5 minutes before using in the next step. The remaining butter is for the skillet.",
+          "Combine the cooled melted butter, flour, sugar, salt, milk, water, eggs, and vanilla in a blender or large food processor. If you don't have a blender or food processor, use a large mixing bowl and whisk by hand. Blend on medium-high speed for 20–30 seconds until everything is combined. The mixture will be silky-smooth and the consistency of cream. Cover the blender tightly or pour into a medium bowl, cover tightly, and chill in the refrigerator for 30–60 minutes and up to 1 day. (After refrigerating, if the batter looks separated, give it a quick stir before cooking in the next step.)",
+          "Cook the crepes: Use the remaining butter for greasing the pan between each crepe. Place an 8-inch skillet over medium heat and generously grease it with some of the reserved butter. If you don't have a skillet this size, use a larger one, but make sure you keep the crepes thin. Once the skillet is hot, pour 3–4 Tablespoons (closer to 3 is best) of batter into the center of the pan. Tilt/twirl the pan so the batter stretches as far as it will go. The thinner the crepe, the better the texture. Cook for 1–2 minutes, then flip as soon as the bottom is set. Don't wait too long to flip crepes or else they will taste rubbery. Cook the other side for 30 seconds until set. Transfer the cooked crepe to a large plate and repeat with the remaining batter, making sure to butter the pan between each crepe. If desired, separate each crepe with parchment paper so they do not stick together. If you're using enough butter in your pan, though, the crepes shouldn't stick.",
+          "Fill the crepes. I love serving them warm, but they're excellent at room temperature too. See my filling suggestions above this recipe or my recipe notes below. Place a few spoonfuls of your filling ingredient(s) in the center of the crepe. Fold both sides over the filling. Crepes are delicious with toppings, too, such as a drizzle of melted chocolate, melted peanut butter, or a dusting of confectioners' sugar. Or try a savory sauce like pesto or hollandaise.",
+          "Leftover unfilled crepes remain fresh in an airtight container in the refrigerator for 1 day or in the freezer for 1 month. Freeze each between small sheets of parchment paper so they don't stick. (I usually layer them with parchment and freeze in a large zipped-top bag.) Thaw at room temperature before filling/enjoying. See reheating instructions in the recipe Notes below."
+        ],
+        "cookingTime": "70min",
+        "difficulty": "Medium",
+        "servings": "14 crepes",
+        "image": "https://sallysbakingaddiction.com/wp-content/uploads/2015/02/crepes.jpg",
+        "ingredients": [
+          {
+            "name": "Unsalted butter",
+            "quantity": "86",
+            "unit": "g",
+            "additionalInfo": "3 Tablespoons plus 3-4 more for the pan",
+            "relativeQuantity": "6-7 Tablespoons total"
+          },
+          {
+            "name": "All-purpose flour",
+            "quantity": "125",
+            "unit": "g",
+            "additionalInfo": "spooned & leveled",
+            "relativeQuantity": "1 cup"
+          },
+          {
+            "name": "Sugar",
+            "quantity": "12",
+            "unit": "g",
+            "additionalInfo": "granulated",
+            "relativeQuantity": "1 Tablespoon"
+          },
+          {
+            "name": "Salt",
+            "quantity": "1/8",
+            "unit": "tsp"
+          },
+          {
+            "name": "Whole milk",
+            "quantity": "180",
+            "unit": "ml",
+            "additionalInfo": "at room temperature",
+            "relativeQuantity": "3/4 cup"
+          },
+          {
+            "name": "Water",
+            "quantity": "120",
+            "unit": "ml",
+            "additionalInfo": "at room temperature",
+            "relativeQuantity": "1/2 cup"
+          },
+          {
+            "name": "Eggs",
+            "quantity": "2",
+            "unit": "u",
+            "additionalInfo": "large, at room temperature"
+          },
+          {
+            "name": "Vanilla extract",
+            "quantity": "7.5",
+            "unit": "ml",
+            "additionalInfo": "pure",
+            "relativeQuantity": "1 and 1/2 teaspoons"
+          }
+        ],
+        "tags": [
+          "French",
+          "European",
+          "Breakfast",
+          "Dessert",
+          "Pancakes"
+        ]
+      },
+      {
+        "name": "Perfect Scones",
+        "description": "A classic British baking recipe for tender, flaky scones with endless customization options. The key to perfect scones is using frozen butter, cold ingredients, and minimal mixing to achieve the ideal texture.",
+        "steps": [
+          "Whisk flour, sugar, salt, and baking powder together in a large bowl. Grate the frozen butter using a box grater. Add it to the flour mixture and combine with a pastry cutter, two forks, or your fingers until the mixture comes together in pea-sized crumbs. See video above for a closer look at the texture. Place in the refrigerator or freezer as you mix the wet ingredients together.",
+          "Whisk 1/2 cup heavy cream, the egg, and vanilla extract together in a small bowl. Drizzle over the flour mixture, add the add-ins, then mix together until everything appears moistened.",
+          "To make triangle scones: Pour onto the counter and, with floured hands, work dough into a ball as best you can. Dough will be sticky. If it's too sticky, add a little more flour. If it seems too dry, add 1-2 more Tablespoons heavy cream. Press into an 8-inch disc and, with a sharp knife or bench scraper, cut into 8 wedges. For smaller scones, press dough into two 5-inch discs and cut each into 8 wedges. To make 10-12 drop scones: Keep mixing dough in the bowl until it comes together. Drop scones, about 1/4 cup of dough each, 3 inches apart on a lined baking sheet.",
+          "Brush scones with remaining heavy cream and for extra crunch, sprinkle with coarse sugar. (You can do this before or after refrigerating in the next step.)",
+          "Place scones on a plate or lined baking sheet (if your fridge has space!) and refrigerate for at least 15 minutes.",
+          "Meanwhile, preheat oven to 400°F (204°C).",
+          "Line a large baking sheet with parchment paper or silicone baking mat(s). If making mini or drop scones, use 2 baking sheets. After refrigerating, arrange scones 2-3 inches apart on the prepared baking sheet(s).",
+          "Bake for 18-26 minutes or until golden brown around the edges and lightly browned on top. Larger scones take closer to 25 minutes. Remove from the oven and cool for a few minutes. Feel free to top with any of the toppings listed in the recipe Note below.",
+          "Leftover scones keep well at room temperature for 2 days or in the refrigerator for 5 days."
+        ],
+        "cookingTime": "55min",
+        "difficulty": "Medium",
+        "servings": "8 large or 16 small scones",
+        "image": "https://i.pinimg.com/1200x/04/cb/4c/04cb4ce15efd72eaa014351b7ad9d74a.jpg",
+        "ingredients": [
+          {
+            "name": "All-purpose flour",
+            "quantity": "250",
+            "unit": "g",
+            "additionalInfo": "spooned & leveled, plus more for hands and work surface",
+            "relativeQuantity": "2 cups"
+          },
+          {
+            "name": "Sugar",
+            "quantity": "100",
+            "unit": "g",
+            "additionalInfo": "granulated",
+            "relativeQuantity": "1/2 cup"
+          },
+          {
+            "name": "Salt",
+            "quantity": "1/2",
+            "unit": "tsp"
+          },
+          {
+            "name": "Baking powder",
+            "quantity": "2.5",
+            "unit": "tsp",
+            "relativeQuantity": "2 and 1/2 teaspoons"
+          },
+          {
+            "name": "Unsalted butter",
+            "quantity": "113",
+            "unit": "g",
+            "additionalInfo": "frozen",
+            "relativeQuantity": "1/2 cup (8 Tbsp)"
+          },
+          {
+            "name": "Heavy cream",
+            "quantity": "150",
+            "unit": "ml",
+            "additionalInfo": "or buttermilk, plus 2 Tbsp for brushing",
+            "relativeQuantity": "1/2 cup plus 2 Tbsp"
+          },
+          {
+            "name": "Eggs",
+            "quantity": "1",
+            "unit": "u",
+            "additionalInfo": "large"
+          },
+          {
+            "name": "Vanilla extract",
+            "quantity": "7.5",
+            "unit": "ml",
+            "additionalInfo": "pure",
+            "relativeQuantity": "1 and 1/2 teaspoons"
+          },
+          {
+            "name": "Add-ins",
+            "quantity": "150",
+            "unit": "g",
+            "additionalInfo": "such as chocolate chips, berries, nuts, fruit, etc",
+            "relativeQuantity": "1–1.5 cups"
+          },
+          {
+            "name": "Coarse sugar",
+            "quantity": "1/2",
+            "unit": "cup",
+            "additionalInfo": "optional, for topping",
+            "relativeQuantity": "for topping"
+          }
+        ],
+        "tags": [
+          "British",
+          "European",
+          "Baking",
+          "Breakfast",
+          "Tea Time"
+        ]
+      },
+      {
+        "name": "Homemade Overnight Cinnamon Rolls",
+        "description": "Buttery soft, gooey cinnamon sweet, and extra fluffy homemade cinnamon rolls topped with tangy cream cheese icing. Perfect for special mornings, with an overnight preparation option for convenience.",
+        "steps": [
+          "Prepare the dough: Whisk the warm milk, 2 Tablespoons of sugar, and the yeast together in the bowl of your stand mixer fitted with a dough hook or paddle attachment. Cover and allow mixture to sit for 5–10 minutes or until foamy on the surface.",
+          "Add the remaining sugar and the butter and beat on medium speed until the butter is slightly broken up. Add about 1 cup (125g) of the flour, the eggs, and salt and beat on low speed for 30 seconds. Scrape down the sides of the bowl, then add the remaining flour. Beat on medium speed until the dough comes together and pulls away from the sides of the bowl, about 2 minutes. Dough will be soft.",
+          "Knead the dough: Keep the dough in the mixer and beat on low speed for an additional 5 full minutes, or knead by hand on a lightly floured surface for 5 full minutes. After kneading, the dough should feel smooth, supple, and elastic. Poke it with your finger—if it slowly bounces back, your dough is ready to rise.",
+          "1st Rise: Lightly grease a large bowl with oil or butter. Place the dough in the bowl, turning it to coat all sides in the oil. Cover the bowl with plastic wrap or a clean kitchen towel. Allow the dough to rise at room temperature for 1 and 1/2 to 2 hours or until doubled in size.",
+          "Grease the bottom and sides of a 9×13-inch baking dish or line it with parchment paper.",
+          "Roll out the dough: Punch down the dough to release the air. Place dough on a lightly floured work surface and using a lightly floured rolling pin, roll dough into a 12×18-inch rectangle. Make sure the dough is smooth and evenly thick.",
+          "For the filling: Spread the softened butter all over the dough. In a small bowl, mix the brown sugar and cinnamon together. Sprinkle evenly over the butter. Tightly roll up the dough to form an 18-inch-long log. With an extra-sharp knife, cut into 12 even rolls, about 1.5 inches thick. Arrange in the prepared baking pan.",
+          "2nd Rise: Cover the pan and allow the rolls to rise until puffy, about 1 hour. (Or use the overnight option in the Notes below.)",
+          "Preheat the oven to 350°F (177°C).",
+          "Bake for about 25–28 minutes or until they are lightly browned on top, rotating the pan halfway through. If the tops are browning too quickly, loosely tent a piece of aluminum foil over the top of the pan. Remove pan from the oven and place pan on a cooling rack for about 10 minutes while you make the icing.",
+          "Make the icing: In a large bowl using a handheld or stand mixer fitted with a paddle or whisk attachment, beat the cream cheese on medium speed until smooth and creamy. Add the confectioners' sugar, cream/milk, and vanilla. Beat on low speed for 30 seconds, then increase to high speed and beat for 1 minute. Spread the icing over the warm rolls and serve immediately."
+        ],
+        "cookingTime": "240min",
+        "difficulty": "Hard",
+        "servings": "12 rolls",
+        "image": "https://i.pinimg.com/1200x/50/86/7f/50867f465d6d774c2aa70890b9697641.jpg",
+        "ingredients": [
+          {
+            "name": "Whole milk",
+            "quantity": "240",
+            "unit": "ml",
+            "additionalInfo": "warmed to about 110°F (43°C)",
+            "relativeQuantity": "1 cup"
+          },
+          {
+            "name": "Sugar",
+            "quantity": "133",
+            "unit": "g",
+            "additionalInfo": "granulated, divided",
+            "relativeQuantity": "2/3 cup"
+          },
+          {
+            "name": "Dry yeast",
+            "quantity": "14",
+            "unit": "g",
+            "additionalInfo": "or instant yeast (2 standard packets)",
+            "relativeQuantity": "1 and 1/2 Tablespoons"
+          },
+          {
+            "name": "Unsalted butter",
+            "quantity": "113",
+            "unit": "g",
+            "additionalInfo": "for dough, softened and cut into pieces",
+            "relativeQuantity": "1/2 cup (8 Tbsp)"
+          },
+          {
+            "name": "All-purpose flour",
+            "quantity": "563",
+            "unit": "g",
+            "additionalInfo": "or bread flour, spooned & leveled, plus more as needed",
+            "relativeQuantity": "4 and 1/2 cups"
+          },
+          {
+            "name": "Eggs",
+            "quantity": "2",
+            "unit": "u",
+            "additionalInfo": "large, at room temperature"
+          },
+          {
+            "name": "Salt",
+            "quantity": "1/2",
+            "unit": "tsp"
+          },
+          {
+            "name": "Oil",
+            "quantity": "10",
+            "unit": "ml",
+            "additionalInfo": "or butter for the bowl",
+            "relativeQuantity": "2 teaspoons"
+          },
+          {
+            "name": "Unsalted butter",
+            "quantity": "113",
+            "unit": "g",
+            "additionalInfo": "for filling, softened",
+            "relativeQuantity": "1/2 cup (8 Tbsp)"
+          },
+          {
+            "name": "Brown sugar",
+            "quantity": "133",
+            "unit": "g",
+            "additionalInfo": "packed light or dark",
+            "relativeQuantity": "2/3 cup"
+          },
+          {
+            "name": "Ground cinnamon",
+            "quantity": "1.5",
+            "unit": "tbsp",
+            "relativeQuantity": "1 and 1/2 Tablespoons"
+          },
+          {
+            "name": "Cream cheese",
+            "quantity": "113",
+            "unit": "g",
+            "additionalInfo": "full-fat brick, softened",
+            "relativeQuantity": "4 ounces"
+          },
+          {
+            "name": "Confectioners' sugar",
+            "quantity": "120",
+            "unit": "g",
+            "relativeQuantity": "1 cup"
+          },
+          {
+            "name": "Heavy cream",
+            "quantity": "15",
+            "unit": "ml",
+            "additionalInfo": "or milk",
+            "relativeQuantity": "1 Tablespoon"
+          },
+          {
+            "name": "Vanilla extract",
+            "quantity": "2.5",
+            "unit": "ml",
+            "additionalInfo": "pure",
+            "relativeQuantity": "1/2 teaspoon"
+          }
+        ],
+        "tags": [
+          "American",
+          "Baking",
+          "Breakfast",
+          "Sweet",
+          "Overnight"
+        ]
+      },
+      {
+        "name": "Blueberry Oatmeal Muffins",
+        "description": "Simple, wholesome, and satisfying muffins made with blueberries, oats, and zero refined sugar. The oats are soaked in milk for extra moisture and texture, creating tender, flavorful muffins sweetened naturally with honey.",
+        "steps": [
+          "Combine milk and oats. Set aside for 20 minutes so the oats puff up and soak up some moisture. This is crucial to the recipe! (I usually melt the butter now so it has a few minutes to cool.) Don't do this the night before as that's too long for soaking. If you find the oats haven't soaked up any moisture after 20 minutes, give it a stir and wait 10 more minutes.",
+          "Preheat oven to 425°F (218°C). Spray a 12-count muffin pan with nonstick spray or use cupcake liners.",
+          "Whisk the flour, baking powder, baking soda, cinnamon, and salt together in a large bowl until combined. Set aside. Whisk the melted butter, honey, egg, and vanilla extract together in a medium bowl until combined. Pour the wet ingredients into the dry ingredients, stir a few times, then add the soaked oats (milk included, do not drain) and blueberries. Fold everything together gently just until combined.",
+          "Spoon the batter into liners, filling them all the way to the top. Top with oats and a light sprinkle of coconut sugar, if desired. Bake for 5 minutes at 425 then, keeping the muffins in the oven, reduce the oven temperature to 350°F (177°C). Bake for an additional 16-17 minutes or until a toothpick inserted in the center comes out clean. The total time these muffins take in the oven is about 22-23 minutes, give or take.",
+          "Allow the muffins to cool for 5 minutes in the muffin pan, then transfer to a wire rack to continue cooling.",
+          "Muffins stay fresh covered at room temperature for a few days, then transfer to the fridge for up to 1 week."
+        ],
+        "cookingTime": "70min",
+        "difficulty": "Medium",
+        "servings": "12 muffins",
+        "image": "https://i.pinimg.com/1200x/03/a3/c2/03a3c2c6700500ca8807df16bb1443b0.jpg",
+        "ingredients": [
+          {
+            "name": "Milk",
+            "quantity": "240",
+            "unit": "ml",
+            "relativeQuantity": "1 cup"
+          },
+          {
+            "name": "Old-fashioned rolled oats",
+            "quantity": "85",
+            "unit": "g",
+            "additionalInfo": "it can also be with regular rolled oats",
+            "relativeQuantity": "1 cup"
+          },
+          {
+            "name": "All-purpose flour",
+            "quantity": "156",
+            "unit": "g",
+            "additionalInfo": "spooned & leveled",
+            "relativeQuantity": "1 and 1/4 cups"
+          },
+          {
+            "name": "Baking powder",
+            "quantity": "1",
+            "unit": "tsp"
+          },
+          {
+            "name": "Baking soda",
+            "quantity": "1/2",
+            "unit": "tsp"
+          },
+          {
+            "name": "Ground cinnamon",
+            "quantity": "1/2",
+            "unit": "tsp"
+          },
+          {
+            "name": "Salt",
+            "quantity": "1/2",
+            "unit": "tsp"
+          },
+          {
+            "name": "Unsalted butter",
+            "quantity": "113",
+            "unit": "g",
+            "additionalInfo": "melted and slightly cooled",
+            "relativeQuantity": "1/2 cup (8 Tbsp)"
+          },
+          {
+            "name": "Honey",
+            "quantity": "170",
+            "unit": "g",
+            "relativeQuantity": "1/2 cup"
+          },
+          {
+            "name": "Eggs",
+            "quantity": "1",
+            "unit": "u",
+            "additionalInfo": "large, at room temperature"
+          },
+          {
+            "name": "Vanilla extract",
+            "quantity": "5",
+            "unit": "ml",
+            "additionalInfo": "pure",
+            "relativeQuantity": "1 teaspoon"
+          },
+          {
+            "name": "Blueberries",
+            "quantity": "140",
+            "unit": "g",
+            "additionalInfo": "fresh or frozen",
+            "relativeQuantity": "1 cup"
+          }
+        ],
+        "tags": [
+          "American",
+          "Baking",
+          "Muffins",
+          "Healthy",
+          "No Refined Sugar"
+        ]
+      },
+      {
+        "name": "Deliciously Moist Chocolate Layer Cake",
+        "description": "The ultimate homemade chocolate cake with a super moist crumb and fudgy, yet light texture. This rich chocolate layer cake is topped with decadent chocolate buttercream for 3x the chocolate flavor. Perfect for special occasions and chocolate lovers.",
+        "steps": [
+          "Preheat oven to 350°F (177°C). Grease two 9-inch cake pans, line with parchment paper rounds, then grease the parchment paper. Parchment paper helps the cakes seamlessly release from the pans.",
+          "Make the cake: Whisk the flour, cocoa powder, sugar, baking soda, baking powder, salt, and espresso powder (if using) together in a large bowl. Set aside. Using a handheld or stand mixer fitted with a whisk attachment (or you can use a whisk) mix the oil, eggs, and vanilla together on medium-high speed until combined. Add the buttermilk and mix until combined.",
+          "Pour the wet ingredients into the dry ingredients, add the hot water/coffee, and whisk or beat on low speed until the batter is completely combined. Batter is thin. Divide batter evenly between pans.",
+          "Bake for 23-26 minutes or until a toothpick inserted in the center comes out clean. Baking times vary, so keep an eye on yours. The cakes are done when a toothpick inserted in the center comes out clean.",
+          "Remove the cakes from the oven and set on a wire rack. Allow to cool completely in the pan.",
+          "Make the buttercream: With a handheld or stand mixer fitted with a paddle attachment, beat the butter on medium speed until creamy—about 2 minutes. Add confectioners' sugar, cocoa powder, 3 Tablespoons heavy cream, salt, and vanilla extract. Beat on low speed for 30 seconds, then increase to high speed and beat for 1 full minute. Do not over-whip.",
+          "Adjust consistency: Add 1/4 cup more confectioners' sugar or cocoa powder if frosting is too thin or 1-2 more Tablespoons of cream if frosting is too thick. Taste and add another pinch of salt if desired.",
+          "Assemble and frost: If cooled cakes are domed on top, use a large serrated knife to slice a thin layer off the tops to create a flat surface. This is called 'leveling' the cakes. Place 1 cake layer on your cake stand or serving plate. Evenly cover the top with frosting. Top with 2nd layer and spread remaining frosting all over the top and sides.",
+          "Refrigerate uncovered cake for at least 30-60 minutes before slicing to help set the shape. Garnish with chocolate chips, if desired. Cake can be served at room temperature or chilled."
+        ],
+        "cookingTime": "240min",
+        "difficulty": "Hard",
+        "servings": "12-16 servings",
+        "image": "https://i.pinimg.com/1200x/f9/5b/e6/f95be63075ea7fa4114699208a9a97d8.jpg",
+        "ingredients": [
+          {
+            "name": "All-purpose flour",
+            "quantity": "219",
+            "unit": "g",
+            "additionalInfo": "spooned & leveled",
+            "relativeQuantity": "1 and 3/4 cups"
+          },
+          {
+            "name": "Unsweetened cocoa powder",
+            "quantity": "62",
+            "unit": "g",
+            "additionalInfo": "natural",
+            "relativeQuantity": "3/4 cup"
+          },
+          {
+            "name": "Granulated sugar",
+            "quantity": "350",
+            "unit": "g",
+            "relativeQuantity": "1 and 3/4 cups"
+          },
+          {
+            "name": "Baking soda",
+            "quantity": "2",
+            "unit": "tsp"
+          },
+          {
+            "name": "Baking powder",
+            "quantity": "1",
+            "unit": "tsp"
+          },
+          {
+            "name": "Salt",
+            "quantity": "1",
+            "unit": "tsp"
+          },
+          {
+            "name": "Espresso powder",
+            "quantity": "2",
+            "unit": "tsp",
+            "additionalInfo": "optional"
+          },
+          {
+            "name": "Vegetable oil",
+            "quantity": "120",
+            "unit": "ml",
+            "additionalInfo": "or canola oil or melted coconut oil",
+            "relativeQuantity": "1/2 cup"
+          },
+          {
+            "name": "Eggs",
+            "quantity": "2",
+            "unit": "u",
+            "additionalInfo": "large, at room temperature"
+          },
+          {
+            "name": "Vanilla extract",
+            "quantity": "10",
+            "unit": "ml",
+            "additionalInfo": "pure",
+            "relativeQuantity": "2 teaspoons"
+          },
+          {
+            "name": "Buttermilk",
+            "quantity": "240",
+            "unit": "ml",
+            "additionalInfo": "at room temperature",
+            "relativeQuantity": "1 cup"
+          },
+          {
+            "name": "Hot coffee",
+            "quantity": "240",
+            "unit": "ml",
+            "additionalInfo": "freshly brewed strong",
+            "relativeQuantity": "1 cup"
+          },
+          {
+            "name": "Unsalted butter",
+            "quantity": "282",
+            "unit": "g",
+            "additionalInfo": "softened to room temperature, for buttercream",
+            "relativeQuantity": "1 and 1/4 cups"
+          },
+          {
+            "name": "Confectioners' sugar",
+            "quantity": "420",
+            "unit": "g",
+            "additionalInfo": "for buttercream",
+            "relativeQuantity": "3 and 1/2 cups"
+          },
+          {
+            "name": "Unsweetened cocoa powder",
+            "quantity": "62",
+            "unit": "g",
+            "additionalInfo": "natural or dutch process, for buttercream",
+            "relativeQuantity": "3/4 cup"
+          },
+          {
+            "name": "Heavy cream",
+            "quantity": "45-75",
+            "unit": "ml",
+            "additionalInfo": "at room temperature, for buttercream",
+            "relativeQuantity": "3-5 Tablespoons"
+          },
+          {
+            "name": "Salt",
+            "quantity": "1/4",
+            "unit": "tsp",
+            "additionalInfo": "for buttercream"
+          },
+          {
+            "name": "Vanilla extract",
+            "quantity": "5",
+            "unit": "ml",
+            "additionalInfo": "pure, for buttercream",
+            "relativeQuantity": "1 teaspoon"
+          },
+          {
+            "name": "Semi-sweet chocolate chips",
+            "quantity": "to taste",
+            "unit": "g",
+            "additionalInfo": "optional for decoration",
+            "relativeQuantity": "as desired"
+          }
+        ],
+        "tags": [
+          "American",
+          "Baking",
+          "Dessert",
+          "Chocolate",
+          "Layer Cake"
+        ]
+      },
+      {
+        "name": "Cream Cheese Pound Cake",
+        "description": "A perfect cream cheese pound cake with moist, dense, and flavorful texture. Made with 9 simple ingredients including cream cheese, butter, and cake flour, this recipe produces a rich, tender pound cake that's ideal for special occasions. Requires precise technique and temperature control.",
+        "steps": [
+          "Preheat oven to 325°F (163°C). Not 350°F. Generously grease a 10-12 cup Bundt pan with butter or nonstick spray.",
+          "Using a handheld or stand mixer fitted with a paddle or whisk attachment, beat the butter on high speed until smooth and creamy, about 2 minutes. Scrape down the sides and up the bottom of the bowl with a rubber spatula. Add the cream cheese and beat on high speed until completely smooth and combined, about 1 minute.",
+          "Add the sugar and beat on high speed until combined, about 1 minute, then add the sour cream and vanilla and beat on high speed until combined and creamy. Scrape down the sides and up the bottom of the bowl with a silicone spatula.",
+          "On low speed, beat the eggs in 1 at a time allowing each to fully mix in before adding the next. Careful not to overmix after the eggs have been added. Once the 6th egg is combined, stop the mixer and add the cake flour, baking powder, and salt. Beat on medium speed just until combined. Do not overmix.",
+          "Using a silicone spatula or sturdy whisk, give the batter a final turn to make sure there are no lumps at the bottom of the bowl. The batter will be a little thick and very creamy.",
+          "Pour/spoon batter evenly into prepared pan. Bang the pan on the counter once or twice to bring up any air bubbles. Bake for 75-95 minutes. Loosely tent the baking cake with aluminum foil halfway through bake time to ensure the surface does not over-brown.",
+          "The key to pound cake is a slow and low bake time. Use a toothpick to test for doneness. Once it comes out completely clean, the pound cake is done. This is a large heavy cake so don't be alarmed if it takes longer in your oven.",
+          "Remove cake from the oven and allow to cool for 2 hours inside the pan. Then invert the slightly cooled pound cake onto a wire rack or serving dish. Allow to cool completely.",
+          "Slice and serve with optional toppings like homemade whipped cream & fresh berries."
+        ],
+        "cookingTime": "240min",
+        "difficulty": "Hard",
+        "servings": "12-14 servings",
+        "image": "https://i.pinimg.com/1200x/3a/bf/10/3abf101215b94412f1491714b7eab2c9.jpg",
+        "ingredients": [
+          {
+            "name": "Unsalted butter",
+            "quantity": "340",
+            "unit": "g",
+            "additionalInfo": "softened to room temperature",
+            "relativeQuantity": "1 and 1/2 cups"
+          },
+          {
+            "name": "Cream cheese",
+            "quantity": "226",
+            "unit": "g",
+            "additionalInfo": "full-fat brick, softened to room temperature",
+            "relativeQuantity": "8 ounce"
+          },
+          {
+            "name": "Granulated sugar",
+            "quantity": "500",
+            "unit": "g",
+            "relativeQuantity": "2 and 1/2 cups"
+          },
+          {
+            "name": "Sour cream",
+            "quantity": "80",
+            "unit": "g",
+            "additionalInfo": "at room temperature",
+            "relativeQuantity": "1/3 cup"
+          },
+          {
+            "name": "Vanilla extract",
+            "quantity": "10",
+            "unit": "ml",
+            "additionalInfo": "pure",
+            "relativeQuantity": "2 teaspoons"
+          },
+          {
+            "name": "Eggs",
+            "quantity": "6",
+            "unit": "u",
+            "additionalInfo": "large, at room temperature"
+          },
+          {
+            "name": "Cake flour",
+            "quantity": "354",
+            "unit": "g",
+            "additionalInfo": "spooned & leveled",
+            "relativeQuantity": "3 cups"
+          },
+          {
+            "name": "Baking powder",
+            "quantity": "1/2",
+            "unit": "tsp"
+          },
+          {
+            "name": "Salt",
+            "quantity": "1/8",
+            "unit": "tsp"
+          },
+          {
+            "name": "Whipped cream",
+            "quantity": "to taste",
+            "unit": "ml",
+            "additionalInfo": "homemade, optional for serving",
+            "relativeQuantity": "as desired"
+          },
+          {
+            "name": "Fresh berries",
+            "quantity": "to taste",
+            "unit": "g",
+            "additionalInfo": "optional for serving",
+            "relativeQuantity": "as desired"
+          }
+        ],
+        "tags": [
+          "American",
+          "Baking",
+          "Dessert",
+          "Pound Cake",
+          "Cream Cheese"
         ]
       }
     ]

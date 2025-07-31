@@ -6,7 +6,13 @@
     "dev": "nodemon --watch src --exec ts-node src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "jest"
+    "test": "jest",
+    "migrate": "ts-node src/scripts/run-migration.ts",
+    "validate:recipes": "ts-node src/scripts/validate-recipes-data.ts",
+    "seed:basic": "ts-node src/scripts/seed-basic-entities.ts",
+    "seed:recipes": "ts-node src/scripts/seed-recipes-from-json.ts",
+    "seed:recipes:test": "ts-node src/scripts/seed-recipes-from-json.ts --limit=3",
+    "seed:all": "npm run seed:basic && npm run seed:recipes"
   },
   "keywords": [],
   "author": "",

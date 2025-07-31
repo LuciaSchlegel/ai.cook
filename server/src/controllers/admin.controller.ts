@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, RequestHandler } from "express";
 import { BadRequestError } from "../types/AppError";
-import { seedIngredientsService, seedRecipesService, seedRecipesFromCSVService, seedResourcesService, setAdminRoleService } from "../services/admin.service";
+import { seedIngredientsService, seedRecipesService, seedResourcesService, setAdminRoleService } from "../services/admin.service";
 
 type ControllerFunction = (req: Request) => Promise<any>;
 
@@ -49,13 +49,31 @@ export const seedRecipesController = controllerWrapper(async (req) => {
   return await seedRecipesService(recipes);
 });
 
-export const seedRecipesFromCSVController = controllerWrapper(async (req) => {
-  const { recipes } = req.body;
-  if (!recipes) {
-    throw new BadRequestError("Recipes are required");
+export const seedRecipesFromJsonController = controllerWrapper(async (req) => {
+  const { recipes, autoCreateIngredients = true } = req.body;
+  
+  if (!recipes || !Array.isArray(recipes)) {
+    throw new BadRequestError("Recipes array is required");
   }
-  if (!Array.isArray(recipes) && typeof recipes !== 'object') {
-    throw new BadRequestError("Recipes must be an array or object");
-  }
-  return await seedRecipesFromCSVService(recipes);
+
+  // Convert recipes.json format to expected format
+  const convertedRecipes = recipes.map((recipe: any) => ({
+    name: recipe.name,
+    description: recipe.description,
+    steps: recipe.steps,
+    cookingTime: recipe.cookingTime,
+    difficulty: recipe.difficulty,
+    servings: recipe.servings,
+    image: recipe.image || '',
+    ingredients: recipe.ingredients.map((ing: any) => ({
+      name: ing.name,
+      quantity: ing.quantity,
+      unit: ing.unit,
+      additionalInfo: ing.additionalInfo,
+      relativeQuantity: ing.relativeQuantity
+    })),
+    tags: recipe.tags
+  }));
+
+  return await seedRecipesService(convertedRecipes);
 });
