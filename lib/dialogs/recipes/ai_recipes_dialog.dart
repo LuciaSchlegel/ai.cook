@@ -1,9 +1,13 @@
+import 'package:ai_cook_project/models/recipe_tag_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ai_cook_project/providers/ai_recommendations_provider.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
+import 'package:ai_cook_project/providers/resource_provider.dart';
 import 'package:ai_cook_project/widgets/status/loading_indicator.dart';
+import 'package:ai_cook_project/widgets/selectors/grey_card_chips.dart';
+import 'package:ai_cook_project/widgets/selectors/dropdown_selector.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'dart:math' as math;
 
@@ -28,6 +32,19 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
   late Animation<double> _contentOpacityAnimation;
   late Animation<double> _contentScaleAnimation;
   bool _hasGeneratedRecommendations = false;
+
+  // Form state variables
+  List<RecipeTag> _selectedTags = [];
+  final TextEditingController _maxTimeController = TextEditingController(
+    text: '30',
+  );
+  String _selectedDifficulty = 'Easy';
+  final TextEditingController _preferencesController = TextEditingController(
+    text: 'I enjoy Mediterranean cuisine',
+  );
+
+  // Available options
+  final List<String> _difficultyLevels = ['Easy', 'Medium', 'Hard'];
 
   @override
   void initState() {
@@ -105,14 +122,27 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
     debugPrint(
       '🥘 User ingredients count: ${ingredientsProvider.userIngredients.length}',
     );
+    debugPrint(
+      '🏷️ Selected tags: ${_selectedTags.map((t) => t.name).join(', ')}',
+    );
+    debugPrint('⏱️ Max cooking time: ${_maxTimeController.text} minutes');
+    debugPrint('🎯 Difficulty: $_selectedDifficulty');
+    debugPrint('💭 User preferences: ${_preferencesController.text}');
+
+    final maxTime = int.tryParse(_maxTimeController.text) ?? 30;
 
     aiProvider.generateRecommendations(
-      userIngredients: ingredientsProvider.userIngredients,
-      preferredTags: [],
-      maxCookingTimeMinutes: null,
-      preferredDifficulty: null,
-      userPreferences: null,
-      numberOfRecipes: 3,
+      input: AIRecomendationInput(
+        userIngredients: ingredientsProvider.userIngredients,
+        preferredTags: _selectedTags, // Use selected RecipeTag objects directly
+        maxCookingTimeMinutes: maxTime,
+        preferredDifficulty: _selectedDifficulty,
+        userPreferences:
+            _preferencesController.text.trim().isEmpty
+                ? null
+                : _preferencesController.text.trim(),
+        numberOfRecipes: 5,
+      ),
     );
 
     debugPrint('🚀 AI Dialog: Recommendation request sent!');
@@ -125,6 +155,8 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
   @override
   void dispose() {
     _controller.dispose();
+    _maxTimeController.dispose();
+    _preferencesController.dispose();
     super.dispose();
   }
 
@@ -262,6 +294,10 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
             ),
             const SizedBox(height: 20),
 
+            // AI Recommendation Form Section
+            _buildFormSection(),
+            const SizedBox(height: 24),
+
             // Show loading, error, or recommendations based on provider state
             if (aiProvider.isLoading)
               _buildLoadingContent()
@@ -274,7 +310,7 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
 
             const SizedBox(height: 20),
 
-            // Debug button to regenerate recommendations
+            // Generate/Regenerate recommendations button
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
@@ -282,8 +318,12 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
                   debugPrint('🔄 AI Dialog: Manual regeneration triggered');
                   _generateAIRecommendations();
                 },
-                icon: const Icon(Icons.refresh),
-                label: const Text('Regenerate AI Recommendations'),
+                icon: const Icon(Icons.auto_awesome),
+                label: Text(
+                  aiProvider.currentRecommendation == null
+                      ? 'Generate AI Recommendations'
+                      : 'Update Recommendations',
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.button,
                   foregroundColor: Colors.white,
@@ -509,6 +549,186 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildFormSection() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey[50],
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey[200]!),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            '🎯 Customize Your AI Recommendations',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // Recipe Tags Selector
+          const Text(
+            'Preferred Recipe Tags',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Consumer<ResourceProvider>(
+            builder: (context, resourceProvider, child) {
+              if (!resourceProvider.isInitialized) {
+                return const SizedBox(
+                  height: 50,
+                  child: Center(child: CupertinoActivityIndicator()),
+                );
+              }
+
+              final availableTagNames =
+                  resourceProvider.recipeTags.map((t) => t.name).toList();
+              final selectedTagNames =
+                  _selectedTags.map((t) => t.name).toList();
+
+              return GreyCardChips(
+                items: availableTagNames,
+                selectedItems: selectedTagNames,
+                onSelected: (newSelectedNames) {
+                  setState(() {
+                    // Convert selected tag names back to RecipeTag objects
+                    _selectedTags =
+                        resourceProvider.recipeTags
+                            .where((tag) => newSelectedNames.contains(tag.name))
+                            .toList();
+                  });
+                },
+                horizontalPadding: 0,
+              );
+            },
+          ),
+          const SizedBox(height: 16),
+
+          // Max Cooking Time and Difficulty in a row
+          Row(
+            children: [
+              // Max Cooking Time
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Max Cooking Time (minutes)',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: CupertinoColors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: AppColors.button.withOpacity(0.2),
+                        ),
+                      ),
+                      child: CupertinoTextField(
+                        controller: _maxTimeController,
+                        keyboardType: TextInputType.number,
+                        placeholder: 'e.g. 30',
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        placeholderStyle: TextStyle(
+                          color: AppColors.button.withOpacity(0.5),
+                          fontSize: 16,
+                        ),
+                        style: const TextStyle(
+                          color: AppColors.button,
+                          fontSize: 16,
+                        ),
+                        decoration: null,
+                        cursorColor: AppColors.mutedGreen,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 16),
+
+              // Difficulty Selector
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Preferred Difficulty',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    DropdownSelector(
+                      value: _selectedDifficulty,
+                      items: _difficultyLevels,
+                      onChanged: (newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            _selectedDifficulty = newValue;
+                          });
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // User Preferences
+          const Text(
+            'Additional Preferences (optional)',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            decoration: BoxDecoration(
+              color: CupertinoColors.white,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.button.withOpacity(0.2)),
+            ),
+            child: CupertinoTextField(
+              controller: _preferencesController,
+              placeholder: 'e.g. I prefer spicy food, vegetarian dishes...',
+              maxLines: 3,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              placeholderStyle: TextStyle(
+                color: AppColors.button.withOpacity(0.5),
+                fontSize: 16,
+              ),
+              style: const TextStyle(color: AppColors.button, fontSize: 16),
+              decoration: null,
+              cursorColor: AppColors.mutedGreen,
+            ),
+          ),
+        ],
       ),
     );
   }

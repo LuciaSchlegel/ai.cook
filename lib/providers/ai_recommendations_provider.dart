@@ -1,8 +1,27 @@
 import 'dart:convert';
+import 'package:ai_cook_project/models/recipe_tag_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+class AIRecomendationInput {
+  final List<UserIng> userIngredients;
+  final List<RecipeTag> preferredTags;
+  final int? maxCookingTimeMinutes;
+  final String? preferredDifficulty;
+  final String? userPreferences;
+  final int numberOfRecipes;
+
+  AIRecomendationInput({
+    required this.userIngredients,
+    required this.preferredTags,
+    required this.maxCookingTimeMinutes,
+    required this.preferredDifficulty,
+    required this.userPreferences,
+    required this.numberOfRecipes,
+  });
+}
 
 class AIRecommendation {
   final String recommendations;
@@ -37,12 +56,7 @@ class AIRecommendationsProvider extends ChangeNotifier {
   String? get error => _error;
 
   Future<void> generateRecommendations({
-    required List<UserIng> userIngredients,
-    List<String> preferredTags = const [],
-    int? maxCookingTimeMinutes,
-    String? preferredDifficulty,
-    String? userPreferences,
-    int numberOfRecipes = 10,
+    required AIRecomendationInput input,
   }) async {
     _setLoading(true);
     _clearError();
@@ -52,12 +66,13 @@ class AIRecommendationsProvider extends ChangeNotifier {
           '${dotenv.env['API_URL']}/ai-recommendations/recommendations';
 
       final body = {
-        "userIngredients": userIngredients.map((u) => u.toJson()).toList(),
-        "preferredTags": preferredTags,
-        "maxCookingTimeMinutes": maxCookingTimeMinutes,
-        "preferredDifficulty": preferredDifficulty,
-        "userPreferences": userPreferences,
-        "numberOfRecipes": numberOfRecipes,
+        "userIngredients":
+            input.userIngredients.map((u) => u.toJson()).toList(),
+        "preferredTags": input.preferredTags.map((t) => t.name).toList(),
+        "maxCookingTimeMinutes": input.maxCookingTimeMinutes,
+        "preferredDifficulty": input.preferredDifficulty,
+        "userPreferences": input.userPreferences,
+        "numberOfRecipes": input.numberOfRecipes,
       };
 
       debugPrint('🤖 Sending AI recommendation request: ${jsonEncode(body)}');
