@@ -54,6 +54,82 @@ class IngredientListView extends StatelessWidget {
     );
   }
 
+  List<Widget> _getDietaryIcons(UserIng userIng) {
+    final icons = <Widget>[];
+
+    if (userIng.ingredient != null) {
+      // For regular ingredients, use boolean flags
+      final ingredient = userIng.ingredient!;
+
+      if (ingredient.isVegan) {
+        icons.add(
+          Icon(Icons.eco_outlined, size: 14, color: AppColors.mutedGreen),
+        );
+      }
+      if (ingredient.isVegetarian && !ingredient.isVegan) {
+        icons.add(
+          Icon(
+            Icons.local_dining_outlined,
+            size: 14,
+            color: AppColors.mutedGreen,
+          ),
+        );
+      }
+      if (ingredient.isGlutenFree) {
+        icons.add(
+          Icon(Icons.no_food_outlined, size: 14, color: AppColors.mutedGreen),
+        );
+      }
+      if (ingredient.isLactoseFree) {
+        icons.add(
+          Icon(Icons.block_outlined, size: 14, color: AppColors.mutedGreen),
+        );
+      }
+    } else if (userIng.customIngredient != null) {
+      // For custom ingredients, check tags
+      final tags = userIng.customIngredient!.tags ?? [];
+      final tagNames = tags.map((tag) => tag.name.toLowerCase()).toList();
+
+      if (tagNames.contains('vegan')) {
+        icons.add(
+          Icon(Icons.eco_outlined, size: 14, color: AppColors.mutedGreen),
+        );
+      }
+      if (tagNames.contains('vegetarian') && !tagNames.contains('vegan')) {
+        icons.add(
+          Icon(
+            Icons.local_dining_outlined,
+            size: 14,
+            color: AppColors.mutedGreen,
+          ),
+        );
+      }
+      if (tagNames.contains('gluten-free')) {
+        icons.add(
+          Icon(Icons.no_food_outlined, size: 14, color: AppColors.mutedGreen),
+        );
+      }
+      if (tagNames.contains('lactose-free')) {
+        icons.add(
+          Icon(Icons.block_outlined, size: 14, color: AppColors.mutedGreen),
+        );
+      }
+    }
+    return icons;
+  }
+
+  String _formatQuantity(double quantity) {
+    // Remove unnecessary decimal places
+    if (quantity == quantity.round()) {
+      return quantity.round().toString();
+    }
+    // Show up to 2 decimal places, removing trailing zeros
+    return quantity
+        .toStringAsFixed(2)
+        .replaceAll(RegExp(r'0*$'), '')
+        .replaceAll(RegExp(r'\.$'), '');
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -117,9 +193,27 @@ class IngredientListView extends StatelessWidget {
                                 height: 1.1,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            const SizedBox(height: 2),
+                            // Dietary icons
+                            if (_getDietaryIcons(userIng).isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 2),
+                                child: Row(
+                                  children:
+                                      _getDietaryIcons(userIng)
+                                          .map(
+                                            (icon) => Padding(
+                                              padding: const EdgeInsets.only(
+                                                right: 4,
+                                              ),
+                                              child: icon,
+                                            ),
+                                          )
+                                          .toList(),
+                                ),
+                              ),
                             Text(
-                              '${userIng.quantity} ${userIng.unit?.abbreviation ?? ''}',
+                              '${_formatQuantity(userIng.quantity)} ${userIng.unit?.abbreviation ?? ''}',
                               style: TextStyle(
                                 color: AppColors.mutedGreen,
                                 fontFamily: 'Inter',

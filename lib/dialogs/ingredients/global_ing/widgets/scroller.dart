@@ -46,7 +46,7 @@ class _IngListScrollerState extends State<IngListScroller> {
                   id: -1,
                   uid: '',
                   ingredient: ing,
-                  quantity: 0,
+                  quantity: 0.0,
                   unit:
                       resourceProvider.units.isNotEmpty
                           ? resourceProvider.units.first

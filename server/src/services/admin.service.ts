@@ -393,9 +393,50 @@ function parseQuantity(quantityStr: string): number {
     return parsed;
 }
 
+async function createDietaryTags(
+    dietaryFlags: Partial<IngredientSeedInput>,
+    tagMap: Map<string, any>
+): Promise<any[]> {
+    const dietaryTags = [];
+    const tagNames = [];
+    
+    // Define dietary tag names
+    if (dietaryFlags.isVegan) tagNames.push('vegan');
+    if (dietaryFlags.isVegetarian) tagNames.push('vegetarian');
+    if (dietaryFlags.isGlutenFree) tagNames.push('gluten-free');
+    if (dietaryFlags.isLactoseFree) tagNames.push('lactose-free');
+    
+    // Get or create each dietary tag
+    for (const tagName of tagNames) {
+        const normalizedTagName = tagName.toLowerCase().trim();
+        let tagEntity = tagMap.get(normalizedTagName);
+        
+        if (!tagEntity) {
+            try {
+                tagEntity = await TagRepository.save({ name: tagName });
+                tagMap.set(normalizedTagName, tagEntity);
+                console.log(`🏷️ Created dietary tag: ${tagName}`);
+            } catch (error: any) {
+                // Tag might already exist due to concurrent creation
+                tagEntity = await TagRepository.findOne({ where: { name: ILike(`%${tagName}%`) } });
+                if (tagEntity) {
+                    tagMap.set(normalizedTagName, tagEntity);
+                }
+            }
+        }
+        
+        if (tagEntity) {
+            dietaryTags.push(tagEntity);
+        }
+    }
+    
+    return dietaryTags;
+}
+
 async function createMissingIngredient(
     ingredientName: string,
-    categoryMap: Map<string, any>
+    categoryMap: Map<string, any>,
+    tagMap: Map<string, any>
 ): Promise<any> {
     const normalizedName = ingredientName.trim();
     const category = findIngredientCategory(normalizedName);
@@ -416,11 +457,14 @@ async function createMissingIngredient(
         }
     }
     
-    // Create ingredient with inferred properties
+    // Create dietary tags
+    const dietaryTags = await createDietaryTags(dietaryFlags, tagMap);
+    
+    // Create ingredient with inferred properties and dietary tags
     const ingredientData: IngredientSeedInput = {
         name: normalizedName,
         category: category,
-        tags: [], // Start with empty tags, can be enhanced later
+        tags: [], // Will be populated with dietary tags
         isVegan: dietaryFlags.isVegan ?? true,
         isVegetarian: dietaryFlags.isVegetarian ?? true,
         isGlutenFree: dietaryFlags.isGlutenFree ?? true,
@@ -431,7 +475,7 @@ async function createMissingIngredient(
         () => IngredientRepository.save({
             name: ingredientData.name,
             category: categoryEntity,
-            tags: [], // No tags initially
+            tags: dietaryTags, // Associate dietary tags
             isVegan: ingredientData.isVegan,
             isVegetarian: ingredientData.isVegetarian,
             isGlutenFree: ingredientData.isGlutenFree,
@@ -608,12 +652,12 @@ export async function seedRecipesService(recipes: RecipeSeedInput | RecipeSeedIn
     console.log(`📊 Found ${uniqueIngredientNames.size} unique ingredients, ${uniqueUnits.size} units, ${uniqueTagNames.size} tags`);
 
     // Fetch all existing entities
-    const [existingIngredients, existingUnits, existingTags, existingCategories] = await Promise.all([
+    const [existingIngredients, existingUnits, existingTags, existingCategories, existingDietaryTags] = await Promise.all([
         IngredientRepository.find({
             where: Array.from(uniqueIngredientNames).map(name => ({
                 name: ILike(`%${name}%`)
             })),
-            relations: ['category']
+            relations: ['category', 'tags']
         }),
         UnitRepository.find(),
         RecipeTagRepository.find({
@@ -621,7 +665,15 @@ export async function seedRecipesService(recipes: RecipeSeedInput | RecipeSeedIn
                 name: ILike(`%${tagName}%`)
             }))
         }),
-        CategoryRepository.find()
+        CategoryRepository.find(),
+        TagRepository.find({
+            where: [
+                { name: 'vegan' },
+                { name: 'vegetarian' },
+                { name: 'gluten-free' },
+                { name: 'lactose-free' }
+            ]
+        })
     ]);
 
     // Create maps for quick lookup
@@ -634,28 +686,31 @@ export async function seedRecipesService(recipes: RecipeSeedInput | RecipeSeedIn
             [u.abbreviation.toLowerCase().trim(), u]
         ])
     );
-    const tagMap = new Map(
+    const recipeTagMap = new Map(
         existingTags.map(t => [t.name.toLowerCase().trim(), t])
     );
     const categoryMap = new Map(
         existingCategories.map(c => [c.name, c])
     );
+    const dietaryTagMap = new Map(
+        existingDietaryTags.map(t => [t.name.toLowerCase().trim(), t])
+    );
 
     // Create missing recipe tags first
     for (const tagName of uniqueTagNames) {
         const normalizedTagName = tagName.toLowerCase().trim();
-        if (!tagMap.has(normalizedTagName)) {
+        if (!recipeTagMap.has(normalizedTagName)) {
             console.log(`🏷️ Creating missing recipe tag: ${tagName}`);
             try {
                 const newTag = await RecipeTagRepository.save({ name: tagName });
-                tagMap.set(normalizedTagName, newTag);
+                recipeTagMap.set(normalizedTagName, newTag);
             } catch (error: any) {
                 // Tag might already exist due to concurrent creation
                 const existingTag = await RecipeTagRepository.findOne({ 
                     where: { name: ILike(`%${tagName}%`) } 
                 });
                 if (existingTag) {
-                    tagMap.set(normalizedTagName, existingTag);
+                    recipeTagMap.set(normalizedTagName, existingTag);
                 }
             }
         }
@@ -668,14 +723,14 @@ export async function seedRecipesService(recipes: RecipeSeedInput | RecipeSeedIn
         if (!ingredientMap.has(normalizedName)) {
             console.log(`🥬 Creating missing ingredient: ${ingredientName}`);
             try {
-                const newIngredient = await createMissingIngredient(ingredientName, categoryMap);
+                const newIngredient = await createMissingIngredient(ingredientName, categoryMap, dietaryTagMap);
                 ingredientMap.set(normalizedName, newIngredient);
                 createdIngredients.push(ingredientName);
             } catch (error: any) {
                 // Ingredient might already exist due to concurrent creation
                 const existingIngredient = await IngredientRepository.findOne({ 
                     where: { name: ILike(`%${ingredientName}%`) },
-                    relations: ['category']
+                    relations: ['category', 'tags']
                 });
                 if (existingIngredient) {
                     ingredientMap.set(normalizedName, existingIngredient);
@@ -743,7 +798,7 @@ export async function seedRecipesService(recipes: RecipeSeedInput | RecipeSeedIn
 
             // Add tags
             const recipeTags = recipeInput.tags.map(tag => {
-                const foundTag = tagMap.get(tag.toLowerCase().trim());
+                const foundTag = recipeTagMap.get(tag.toLowerCase().trim());
                 if (!foundTag) {
                     throw new Error(`Tag '${tag}' not found in map after creation. This should never happen.`);
                 }

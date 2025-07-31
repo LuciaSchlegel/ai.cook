@@ -35,7 +35,6 @@ void main() async {
   // Captura errores globales de Flutter
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.presentError(details);
-    debugPrint('FlutterError: ${details.exception}');
     debugPrint('Stacktrace: ${details.stack}');
   };
 

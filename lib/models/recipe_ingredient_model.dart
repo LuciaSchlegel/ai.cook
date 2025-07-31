@@ -3,7 +3,7 @@ import 'package:ai_cook_project/models/unit.dart';
 
 class RecipeIngredient {
   final Ingredient ingredient;
-  final int quantity;
+  final double quantity;
   final Unit? unit;
 
   RecipeIngredient({
@@ -16,7 +16,7 @@ class RecipeIngredient {
     try {
       return RecipeIngredient(
         ingredient: Ingredient.fromJson(json['ingredient']),
-        quantity: (json['quantity'] as num).toInt(),
+        quantity: (json['quantity'] as num).toDouble(),
         unit: json['unit'] != null ? Unit.fromJson(json['unit']) : null,
       );
     } catch (e) {

@@ -9,10 +9,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 class IngredientSelectionTile extends StatelessWidget {
   final Ingredient ingredient;
   final bool selected;
-  final int quantity;
+  final double quantity;
   final Unit unit;
   final List<Unit> units;
-  final void Function(int quantity, Unit unit) onConfirm;
+  final void Function(double quantity, Unit unit) onConfirm;
   final VoidCallback onDeselect;
   final bool disabled;
 
@@ -156,14 +156,14 @@ class IngredientSelectionTile extends StatelessWidget {
                             onDeselect();
                           } else {
                             final result =
-                                await showCupertinoModalPopup<(int, Unit)?>(
+                                await showCupertinoModalPopup<(double, Unit)?>(
                                   context: context,
                                   builder:
                                       (_) => QuantityUnitPicker(units: units),
                                 );
                             if (result != null) {
                               final (qty, unit) = result;
-                              onConfirm(qty, unit);
+                              onConfirm(qty.toDouble(), unit);
                             }
                           }
                         },

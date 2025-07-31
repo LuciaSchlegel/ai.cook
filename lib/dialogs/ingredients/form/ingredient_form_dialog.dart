@@ -15,14 +15,14 @@ import 'package:provider/provider.dart';
 class IngredientFormDialog extends StatefulWidget {
   final Ingredient? ingredient;
   final CustomIngredient? customIngredient;
-  final int quantity;
+  final double quantity;
   final Unit? unit;
   final List<Category> categories;
   final Function(
     String name,
     Category category,
     List<Tag> tags,
-    int quantity,
+    double quantity,
     Unit unit,
   )
   onSave;
@@ -216,7 +216,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                             _nameController.text,
                             _selectedCategory,
                             _selectedTags.toList(),
-                            int.parse(_quantityController.text),
+                            double.parse(_quantityController.text),
                             _selectedUnit,
                           );
                         },

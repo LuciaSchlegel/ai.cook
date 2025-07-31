@@ -104,7 +104,7 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
           CupertinoButton(
             padding: EdgeInsets.zero,
             onPressed: () {
-              final parsedQty = int.tryParse(quantityInput);
+              final parsedQty = double.tryParse(quantityInput);
               if (parsedQty != null && parsedQty > 0) {
                 Navigator.pop(context, (parsedQty, selectedUnit));
               } else {

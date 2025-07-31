@@ -144,7 +144,7 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                                     id: -1,
                                     uid: '',
                                     ingredient: ing,
-                                    quantity: 0,
+                                    quantity: 0.0,
                                     unit: units.first,
                                   ),
                             );

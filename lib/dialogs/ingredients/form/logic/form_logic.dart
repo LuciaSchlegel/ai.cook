@@ -12,7 +12,7 @@ class IngredientFormUtils {
     required TextEditingController quantityController,
     required Ingredient? ingredient,
     required CustomIngredient? customIngredient,
-    required int quantity,
+    required double quantity,
     required List<Category> categories,
     required Set<Tag> selectedTags,
     required Function(Category) setCategory,
@@ -45,7 +45,7 @@ class IngredientFormUtils {
     if (name.isEmpty || tags.isEmpty || unit.name == 'Select unit') {
       return false;
     }
-    return int.tryParse(quantity) != null;
+    return double.tryParse(quantity) != null;
   }
 
   /// Encapsula la lógica de guardado

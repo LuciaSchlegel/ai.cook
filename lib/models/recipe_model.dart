@@ -33,6 +33,50 @@ class Recipe {
     required this.tags,
   });
 
+  static int? _parseServings(dynamic value) {
+    if (value == null) return null;
+
+    if (value is int) return value;
+
+    if (value is String) {
+      // Handle ranges like "2-4" or "2-4 servings"
+      if (value.contains('-')) {
+        final parts = value.split('-');
+        if (parts.isNotEmpty) {
+          // Extract just the number part from the first element
+          final firstPart = parts[0].trim();
+          final match = RegExp(r'\d+').firstMatch(firstPart);
+          if (match != null) {
+            return int.tryParse(match.group(0)!);
+          }
+        }
+      }
+
+      // Handle "X to Y" format like "4 to 6 servings"
+      if (value.toLowerCase().contains(' to ')) {
+        final parts = value.toLowerCase().split(' to ');
+        if (parts.isNotEmpty) {
+          // Extract number from first part
+          final match = RegExp(r'\d+').firstMatch(parts[0].trim());
+          if (match != null) {
+            return int.tryParse(match.group(0)!);
+          }
+        }
+      }
+
+      // Extract any number from the string (handles "4 servings", "24 empanadas", etc.)
+      final match = RegExp(r'\d+').firstMatch(value);
+      if (match != null) {
+        return int.tryParse(match.group(0)!);
+      }
+
+      return null;
+    }
+
+    // Try to convert other types to string first
+    return int.tryParse(value.toString());
+  }
+
   factory Recipe.fromJson(Map<String, dynamic> json) {
     try {
       return Recipe(
@@ -62,10 +106,7 @@ class Recipe {
         image: json['image'] as String?,
         cookingTime: json['cookingTime'] as String?,
         difficulty: json['difficulty'] as String?,
-        servings:
-            json['servings'] is int
-                ? json['servings'] as int
-                : int.tryParse(json['servings']?.toString() ?? ''),
+        servings: _parseServings(json['servings']),
         tags:
             (json['tags'] as List<dynamic>?)?.map((e) {
               try {

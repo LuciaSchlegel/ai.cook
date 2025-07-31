@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:ai_cook_project/models/user_ing.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,8 +19,6 @@ class IngredientsRepo {
         headers: {'Content-Type': 'application/json'},
       );
 
-      debugPrint('response: ${response.body}');
-
       if (response.statusCode != 200) {
         throw Exception(
           'Failed to fetch user ingredients: ${response.statusCode}',
@@ -29,7 +26,6 @@ class IngredientsRepo {
       }
 
       final decoded = json.decode(response.body);
-      debugPrint('decoded: $decoded');
       if (decoded is! List) throw Exception('Expected a list of ingredients');
 
       final List<UserIng> parsed =
@@ -42,7 +38,6 @@ class IngredientsRepo {
                 ),
               )
               .toList();
-      debugPrint('parsed: $parsed');
       return parsed;
     } catch (e) {
       setError('Failed to fetch user ingredients: $e');

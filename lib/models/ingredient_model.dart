@@ -27,10 +27,10 @@ class Ingredient {
       return Ingredient(
         id: json['id'] as int,
         name: json['name']?.toString() ?? '',
-        isVegan: json['isVegan'] ?? false,
-        isVegetarian: json['isVegetarian'] ?? false,
-        isGlutenFree: json['isGlutenFree'] ?? false,
-        isLactoseFree: json['isLactoseFree'] ?? false,
+        isVegan: json['is_vegan'] ?? false,
+        isVegetarian: json['is_vegetarian'] ?? false,
+        isGlutenFree: json['is_gluten_free'] ?? false,
+        isLactoseFree: json['is_lactose_free'] ?? false,
         category:
             json['category'] != null
                 ? model.Category.fromJson(json['category'])

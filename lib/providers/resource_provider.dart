@@ -57,7 +57,6 @@ class ResourceProvider extends ChangeNotifier {
         Uri.parse('${dotenv.env['API_URL']}/resources/categories'),
         headers: {'Content-Type': 'application/json'},
       );
-
       if (response.statusCode != 200) {
         throw Exception(
           'Failed to fetch categories: HTTP ${response.statusCode}',
@@ -78,7 +77,6 @@ class ResourceProvider extends ChangeNotifier {
         Uri.parse('${dotenv.env['API_URL']}/resources/tags'),
         headers: {'Content-Type': 'application/json'},
       );
-
       if (response.statusCode != 200) {
         throw Exception('Failed to fetch tags: HTTP ${response.statusCode}');
       }
@@ -86,9 +84,7 @@ class ResourceProvider extends ChangeNotifier {
       final List<dynamic> decoded = json.decode(response.body);
       _tags = decoded.map((e) => Tag.fromJson(e)).toList();
       notifyListeners();
-    } catch (e) {
-      print('Error fetching tags: $e');
-    }
+    } catch (e) {}
   }
 
   Future<void> getRecipeTags() async {
@@ -97,7 +93,6 @@ class ResourceProvider extends ChangeNotifier {
         Uri.parse('${dotenv.env['API_URL']}/resources/recipe_tags'),
         headers: {'Content-Type': 'application/json'},
       );
-
       if (response.statusCode != 200) {
         throw Exception(
           'Failed to fetch recipe tags: HTTP ${response.statusCode}',

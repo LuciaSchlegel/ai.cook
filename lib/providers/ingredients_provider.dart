@@ -70,8 +70,6 @@ class IngredientsProvider with ChangeNotifier {
       clearError: _clearError,
     );
 
-    debugPrint('fetchedIngredients: $ingredients');
-
     _userIngredients = ingredients;
     _lastFetchTime = DateTime.now();
     await saveCachedData(
@@ -250,7 +248,7 @@ class IngredientsProvider with ChangeNotifier {
 
   Future<void> addCustomIngredient(
     CustomIngredient customIngredient, {
-    int quantity = 1,
+    double quantity = 1.0,
     Unit? unit,
   }) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;

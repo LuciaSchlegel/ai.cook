@@ -7,7 +7,7 @@ class UserIng {
   final String uid;
   final Ingredient? ingredient;
   final CustomIngredient? customIngredient;
-  final int quantity;
+  final double quantity;
   final Unit? unit;
 
   UserIng({
@@ -20,22 +20,22 @@ class UserIng {
   });
 
   // Helper method to parse quantity from various formats
-  static int _parseQuantity(dynamic value) {
-    if (value == null) return 0;
+  static double _parseQuantity(dynamic value) {
+    if (value == null) return 0.0;
 
-    if (value is int) return value;
+    if (value is int) return value.toDouble();
 
-    if (value is double) return value.round();
+    if (value is double) return value;
 
     if (value is String) {
       // Handle string numbers like "2.000", "3", "1.5"
       final parsed = double.tryParse(value);
       if (parsed != null) {
-        return parsed.round(); // Round to nearest int since model expects int
+        return parsed; // Preserve decimal precision
       }
     }
 
-    return 0; // Default fallback
+    return 0.0; // Default fallback
   }
 
   factory UserIng.fromJson(
@@ -115,7 +115,7 @@ class UserIng {
     String? uid,
     Ingredient? ingredient,
     CustomIngredient? customIngredient,
-    int? quantity,
+    double? quantity,
     Unit? unit,
   }) {
     return UserIng(
