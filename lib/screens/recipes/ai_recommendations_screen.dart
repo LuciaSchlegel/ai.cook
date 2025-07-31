@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ai_cook_project/providers/ai_recommendations_provider.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
+import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:ai_cook_project/widgets/ai_recommendations/ai_recommendations_widget.dart';
 import 'package:ai_cook_project/widgets/utils/screen_header.dart';
 import 'package:ai_cook_project/theme.dart';
@@ -178,7 +179,7 @@ class _AIRecommendationsScreenState extends State<AIRecommendationsScreen> {
                   _availableTags.map((tag) {
                     final isSelected = _selectedTags.contains(tag);
                     return FilterChip(
-                      label: Text(tag),
+                      label: Text(TextUtils.capitalizeFirstLetter(tag)),
                       selected: isSelected,
                       onSelected: (selected) {
                         setState(() {

@@ -1,5 +1,6 @@
 import 'package:ai_cook_project/models/tag_model.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -47,7 +48,7 @@ class TagsPicker extends StatelessWidget {
                         'Tag ${tag.name}, ${isSelected ? "seleccionado" : "no seleccionado"}',
                     selected: isSelected,
                     child: FilterChip(
-                      label: Text(tag.name),
+                      label: Text(TextUtils.capitalizeFirstLetter(tag.name)),
                       selected: isSelected,
                       onSelected: (_) => onTagsSelected(tag),
                       backgroundColor:

@@ -1,3 +1,4 @@
+import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
@@ -135,7 +136,7 @@ class GreyCardChips extends StatelessWidget {
                                 const SizedBox(width: 8),
                               ],
                               Text(
-                                label,
+                                TextUtils.capitalizeFirstLetter(label),
                                 style: TextStyle(
                                   color:
                                       isSelected

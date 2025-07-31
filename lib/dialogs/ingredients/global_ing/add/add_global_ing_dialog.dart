@@ -48,6 +48,7 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
     );
 
     return Dialog(
+      insetPadding: const EdgeInsets.symmetric(horizontal: 24),
       backgroundColor: AppColors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: SingleChildScrollView(

@@ -1,4 +1,5 @@
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:flutter/material.dart';
 
 class RecipeTags extends StatelessWidget {
@@ -52,7 +53,7 @@ class _RecipeTag extends StatelessWidget {
         ),
       ),
       child: Text(
-        tag,
+        TextUtils.capitalizeFirstLetter(tag),
         style: const TextStyle(
           fontWeight: FontWeight.w600,
           fontSize: 13,

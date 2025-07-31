@@ -1,4 +1,5 @@
 import 'package:ai_cook_project/providers/resource_provider.dart';
+import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -142,7 +143,7 @@ class _AddExtRecipeState extends State<AddExtRecipe> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          tag,
+                          TextUtils.capitalizeFirstLetter(tag),
                           style: TextStyle(
                             color:
                                 selected

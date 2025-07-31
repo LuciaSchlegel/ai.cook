@@ -106,17 +106,13 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
       '🥘 User ingredients count: ${ingredientsProvider.userIngredients.length}',
     );
 
-    // Generate recommendations using the mock data from the provider
     aiProvider.generateRecommendations(
-      userIngredients:
-          ingredientsProvider.userIngredients.isEmpty
-              ? [] // Use mock data if no user ingredients
-              : ingredientsProvider.userIngredients,
-      preferredTags: const ['proteic', 'healthy', 'keto', 'fresh'],
-      maxCookingTimeMinutes: 30,
-      preferredDifficulty: 'Easy',
-      userPreferences: 'I like Mediterranean cuisine',
-      numberOfRecipes: 5,
+      userIngredients: ingredientsProvider.userIngredients,
+      preferredTags: [],
+      maxCookingTimeMinutes: null,
+      preferredDifficulty: null,
+      userPreferences: null,
+      numberOfRecipes: 3,
     );
 
     debugPrint('🚀 AI Dialog: Recommendation request sent!');

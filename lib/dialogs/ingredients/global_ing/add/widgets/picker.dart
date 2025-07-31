@@ -1,6 +1,7 @@
 // 📁 quantity_unit_picker.dart
 import 'package:ai_cook_project/models/unit.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:flutter/cupertino.dart';
 
 class QuantityUnitPicker extends StatefulWidget {
@@ -95,7 +96,13 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
                     }),
                 children:
                     widget.units
-                        .map((unit) => Center(child: Text(unit.name)))
+                        .map(
+                          (unit) => Center(
+                            child: Text(
+                              TextUtils.capitalizeFirstLetter(unit.name),
+                            ),
+                          ),
+                        )
                         .toList(),
               ),
             ),

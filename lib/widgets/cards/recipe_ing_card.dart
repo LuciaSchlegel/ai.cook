@@ -226,7 +226,7 @@ class _IngredientRow extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           Expanded(
-            flex: 3,
+            flex: 5,
             child: Text(
               ingredient.ingredient.name,
               style: const TextStyle(
@@ -240,11 +240,11 @@ class _IngredientRow extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 8),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Text(
-              '${ingredient.quantity} ${ingredient.unit?.name ?? ""}',
+              '${ingredient.quantity} ${ingredient.unit?.abbreviation ?? ""}',
               style: TextStyle(
                 color: _getQuantityTextColor(status),
                 fontSize: 12,

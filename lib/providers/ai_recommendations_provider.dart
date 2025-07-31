@@ -4,65 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-// final userIngredientsMock = [
-//   UserIng(
-//     id: 1,
-//     uid: "test-user-123",
-//     quantity: 1,
-//     ingredient: Ingredient(
-//       id: 1,
-//       name: 'chicken',
-//       category: Category(id: 1, name: 'Meat'),
-//       tags: [],
-//       isVegan: false,
-//       isVegetarian: false,
-//       isGlutenFree: false,
-//       isLactoseFree: false,
-//     ),
-//     unit: Unit(id: 1, name: 'kilogram', abbreviation: 'kg', type: 'weight'),
-//   ),
-
-//   UserIng(
-//     id: 2,
-//     uid: '2',
-//     ingredient: Ingredient(
-//       id: 2,
-//       name: 'Onion',
-//       category: Category(id: 2, name: 'Vegetable'),
-//       tags: [],
-//       isVegan: false,
-//       isVegetarian: false,
-//       isGlutenFree: false,
-//       isLactoseFree: false,
-//     ),
-//     quantity: 1,
-//     unit: Unit(id: 2, name: 'pcs', abbreviation: 'pcs', type: 'count'),
-//   ),
-
-//   UserIng(
-//     id: 3,
-//     uid: '3',
-//     ingredient: Ingredient(
-//       id: 3,
-//       name: 'Chicken',
-//       category: Category(id: 3, name: 'Meat'),
-//       tags: [],
-//       isVegan: false,
-//       isVegetarian: false,
-//       isGlutenFree: false,
-//       isLactoseFree: false,
-//     ),
-//     quantity: 1,
-//     unit: Unit(id: 3, name: 'pcs', abbreviation: 'pcs', type: 'count'),
-//   ),
-// ];
-
-// final preferredTagsMock = ['quick', 'healthy'];
-// final maxCookingTimeMinutesMock = 30;
-// final preferredDifficultyMock = 'Easy';
-// final userPreferencesMock = 'I like Mediterranean cuisine';
-// final numberOfRecipesMock = 5;
-
 class AIRecommendation {
   final String recommendations;
   final List<dynamic> filteredRecipes;
@@ -118,15 +59,6 @@ class AIRecommendationsProvider extends ChangeNotifier {
         "userPreferences": userPreferences,
         "numberOfRecipes": numberOfRecipes,
       };
-
-      // final mockBody = {
-      //   "userIngredients": userIngredientsMock.map((u) => u.toJson()).toList(),
-      //   "preferredTags": preferredTagsMock,
-      //   "maxCookingTimeMinutes": maxCookingTimeMinutesMock,
-      //   "preferredDifficulty": preferredDifficultyMock,
-      //   "userPreferences": userPreferencesMock,
-      //   "numberOfRecipes": numberOfRecipesMock,
-      // };
 
       debugPrint('🤖 Sending AI recommendation request: ${jsonEncode(body)}');
 

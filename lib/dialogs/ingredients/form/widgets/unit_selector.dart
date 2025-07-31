@@ -1,6 +1,7 @@
 import 'package:ai_cook_project/dialogs/ingredients/form/widgets/picker_modal.dart';
 import 'package:ai_cook_project/models/unit.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:flutter/cupertino.dart';
 
 class UnitSelectorButton extends StatelessWidget {
@@ -34,7 +35,7 @@ class UnitSelectorButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            selectedUnit.name,
+            TextUtils.capitalizeFirstLetter(selectedUnit.name),
             style: TextStyle(
               color:
                   selectedUnit.name == 'Select unit'
