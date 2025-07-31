@@ -1,10 +1,12 @@
 import 'package:ai_cook_project/dialogs/recipes/expanded_recipe_dialog.dart';
+import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_glance_card.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_header.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_tags.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/widgets/utils/swipe.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../models/recipe_model.dart';
 
 class RecipeOverviewCard extends StatefulWidget {
@@ -108,9 +110,15 @@ class _RecipeOverviewCardState extends State<RecipeOverviewCard>
                       ),
                       const SizedBox(height: 16),
                       Expanded(
-                        child: RecipeGlanceCard(
-                          recipe: widget.recipe,
-                          size: size,
+                        child: Consumer<IngredientsProvider>(
+                          builder: (context, ingredientsProvider, child) {
+                            return RecipeGlanceCard(
+                              recipe: widget.recipe,
+                              size: size,
+                              userIngredients:
+                                  ingredientsProvider.userIngredients,
+                            );
+                          },
                         ),
                       ),
                     ],

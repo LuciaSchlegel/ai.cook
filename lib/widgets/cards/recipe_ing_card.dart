@@ -1,5 +1,6 @@
 import 'package:ai_cook_project/models/recipe_ingredient_model.dart';
 import 'package:ai_cook_project/models/recipe_model.dart';
+import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,14 @@ import 'package:flutter/material.dart';
 class RecipeIngCard extends StatelessWidget {
   final Recipe recipe;
   final Size size;
+  final List<UserIng> userIngredients;
 
-  const RecipeIngCard({required this.recipe, required this.size, super.key});
+  const RecipeIngCard({
+    required this.recipe,
+    required this.size,
+    required this.userIngredients,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +24,10 @@ class RecipeIngCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.mutedGreen.withOpacity(0.3), width: 1.5),
+        border: Border.all(
+          color: AppColors.mutedGreen.withOpacity(0.3),
+          width: 1.5,
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.04),
@@ -74,8 +84,10 @@ class RecipeIngCard extends StatelessWidget {
                 itemCount: recipe.ingredients.length,
                 separatorBuilder: (context, idx) => const SizedBox(height: 8),
                 itemBuilder:
-                    (context, index) =>
-                        _IngredientRow(ingredient: recipe.ingredients[index]),
+                    (context, index) => _IngredientRow(
+                      ingredient: recipe.ingredients[index],
+                      userIngredients: userIngredients,
+                    ),
                 padding: EdgeInsets.zero,
               ),
             )
@@ -98,13 +110,99 @@ class RecipeIngCard extends StatelessWidget {
   }
 }
 
+enum IngredientAvailabilityStatus {
+  available, // Green checkmark - has sufficient quantity
+  insufficient, // Yellow warning - has ingredient but not enough quantity
+  incompatible, // Yellow warning - has ingredient but incompatible units
+  unavailable, // Red exclamation - doesn't have the ingredient
+}
+
 class _IngredientRow extends StatelessWidget {
   final RecipeIngredient ingredient;
+  final List<UserIng> userIngredients;
 
-  const _IngredientRow({required this.ingredient});
+  const _IngredientRow({
+    required this.ingredient,
+    required this.userIngredients,
+  });
+
+  IngredientAvailabilityStatus _getAvailabilityStatus() {
+    // Find the user ingredient that matches this recipe ingredient
+    final userIng = userIngredients.firstWhere(
+      (ui) => ui.ingredient?.id == ingredient.ingredient.id,
+      orElse: () => UserIng(id: -1, uid: '', quantity: 0),
+    );
+
+    // If user doesn't have this ingredient at all
+    if (userIng.ingredient == null) {
+      return IngredientAvailabilityStatus.unavailable;
+    }
+
+    // If either unit is null, we can't properly compare quantities
+    if (userIng.unit == null || ingredient.unit == null) {
+      return IngredientAvailabilityStatus.incompatible;
+    }
+
+    // Check if units are compatible
+    if (!userIng.unit!.isCompatibleWith(ingredient.unit!)) {
+      return IngredientAvailabilityStatus.incompatible;
+    }
+
+    try {
+      // Convert both quantities to base units for comparison
+      final userQuantityInBase = userIng.unit!.convertToBase(userIng.quantity);
+      final requiredQuantityInBase = ingredient.unit!.convertToBase(
+        ingredient.quantity,
+      );
+
+      // Check if user has sufficient quantity
+      if (userQuantityInBase >= requiredQuantityInBase) {
+        return IngredientAvailabilityStatus.available;
+      } else {
+        return IngredientAvailabilityStatus.insufficient;
+      }
+    } catch (e) {
+      // If conversion fails, treat as incompatible
+      return IngredientAvailabilityStatus.incompatible;
+    }
+  }
+
+  Widget _buildStatusIcon(IngredientAvailabilityStatus status) {
+    switch (status) {
+      case IngredientAvailabilityStatus.available:
+        return Icon(
+          CupertinoIcons.checkmark_circle_fill,
+          size: 18,
+          color: AppColors.mutedGreen.withOpacity(0.8),
+        );
+      case IngredientAvailabilityStatus.insufficient:
+      case IngredientAvailabilityStatus.incompatible:
+        return Icon(
+          Icons.warning,
+          size: 18,
+          color: const Color.fromARGB(255, 228, 209, 43),
+        );
+      case IngredientAvailabilityStatus.unavailable:
+        return Icon(Icons.error, size: 18, color: AppColors.orange);
+    }
+  }
+
+  Color _getQuantityTextColor(IngredientAvailabilityStatus status) {
+    switch (status) {
+      case IngredientAvailabilityStatus.available:
+        return AppColors.mutedGreen.withOpacity(0.8);
+      case IngredientAvailabilityStatus.insufficient:
+      case IngredientAvailabilityStatus.incompatible:
+        return const Color.fromARGB(255, 198, 183, 47);
+      case IngredientAvailabilityStatus.unavailable:
+        return AppColors.orange;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final status = _getAvailabilityStatus();
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       decoration: BoxDecoration(
@@ -122,7 +220,7 @@ class _IngredientRow extends StatelessWidget {
             width: 6,
             height: 6,
             decoration: BoxDecoration(
-              color: AppColors.mutedGreen,
+              color: _getQuantityTextColor(status),
               borderRadius: BorderRadius.circular(3),
             ),
           ),
@@ -148,7 +246,7 @@ class _IngredientRow extends StatelessWidget {
             child: Text(
               '${ingredient.quantity} ${ingredient.unit?.name ?? ""}',
               style: TextStyle(
-                color: AppColors.mutedGreen.withOpacity(0.8),
+                color: _getQuantityTextColor(status),
                 fontSize: 12,
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.w500,
@@ -161,11 +259,7 @@ class _IngredientRow extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          Icon(
-            CupertinoIcons.checkmark_circle_fill,
-            size: 18,
-            color: AppColors.mutedGreen.withOpacity(0.7),
-          ),
+          _buildStatusIcon(status),
         ],
       ),
     );

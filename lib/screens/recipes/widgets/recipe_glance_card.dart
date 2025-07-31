@@ -1,4 +1,5 @@
 import 'package:ai_cook_project/models/recipe_model.dart';
+import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/widgets/cards/recipe_ing_card.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +7,14 @@ import 'package:flutter/material.dart';
 class RecipeGlanceCard extends StatelessWidget {
   final Recipe recipe;
   final Size size;
+  final List<UserIng> userIngredients;
 
-  const RecipeGlanceCard({required this.recipe, required this.size, super.key});
+  const RecipeGlanceCard({
+    required this.recipe,
+    required this.size,
+    required this.userIngredients,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +79,13 @@ class RecipeGlanceCard extends StatelessWidget {
           const SizedBox(height: 20),
 
           // Ingredients Section
-          Expanded(child: _IngredientsSection(recipe: recipe, size: size)),
+          Expanded(
+            child: _IngredientsSection(
+              recipe: recipe,
+              size: size,
+              userIngredients: userIngredients,
+            ),
+          ),
         ],
       ),
     );
@@ -175,14 +188,20 @@ class _InfoCard extends StatelessWidget {
 class _IngredientsSection extends StatelessWidget {
   final Recipe recipe;
   final Size size;
+  final List<UserIng> userIngredients;
 
-  const _IngredientsSection({required this.recipe, required this.size});
+  const _IngredientsSection({
+    required this.recipe,
+    required this.size,
+    required this.userIngredients,
+  });
 
   @override
   Widget build(BuildContext context) {
     return RecipeIngCard(
       recipe: recipe,
       size: Size(size.width * 0.85, size.height * 0.25),
+      userIngredients: userIngredients,
     );
   }
 }

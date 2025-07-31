@@ -46,7 +46,12 @@ class UserIng {
       final unit =
           json['unit'] != null
               ? Unit.fromJson(json['unit'] as Map<String, dynamic>)
-              : Unit(id: -1, name: 'piece', abbreviation: 'pcs', type: 'count');
+              : Unit(
+                id: -1,
+                name: 'Unit',
+                abbreviation: 'u',
+                type: 'quantitative',
+              );
 
       // Use provided uid, or extract from json, or fallback to empty string
       final String uid =
