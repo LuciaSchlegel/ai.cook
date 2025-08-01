@@ -49,4 +49,13 @@ export class FilterRecipesDto {
   @IsOptional()
   @IsString()
   preferredDifficulty?: string;
+
+  @Expose()
+  @IsOptional()
+  dietaryRestrictions?: {
+    isVegan?: boolean;
+    isVegetarian?: boolean;
+    isGlutenFree?: boolean;
+    isLactoseFree?: boolean;
+  };
 }

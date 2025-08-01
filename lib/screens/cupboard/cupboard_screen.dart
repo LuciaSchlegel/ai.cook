@@ -69,6 +69,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final resourceProvider = Provider.of<ResourceProvider>(context);
+    final ingredientsProvider = Provider.of<IngredientsProvider>(context);
     void openAddIngredientDialog() {
       showDialog(context: context, builder: (_) => const AddGlobalIngDialog());
     }
@@ -77,7 +78,13 @@ class _CupboardScreenState extends State<CupboardScreen> {
       'All',
       ...resourceProvider.categories.map((c) => c.name),
     ];
-    final tags = resourceProvider.tags.map((t) => t.name).toList();
+    final dietaryFlags = resourceProvider.getDietaryFlagsFromIngredients(
+      ingredientsProvider.userIngredients,
+    );
+
+    print(
+      '🏠 CUPBOARD: Got ${dietaryFlags.length} dietary flags: $dietaryFlags',
+    );
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -99,7 +106,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
                   setState(() => _selectedCategory = value);
                 }
               },
-              chipsItems: tags,
+              chipsItems: dietaryFlags,
               chipsSelectedItems: _selectedProperties,
               onChipsSelected: (selectedTags) {
                 setState(() {

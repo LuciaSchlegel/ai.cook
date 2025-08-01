@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:ai_cook_project/models/category_model.dart';
 import 'package:ai_cook_project/models/recipe_tag_model.dart';
-import 'package:ai_cook_project/models/tag_model.dart';
 import 'package:ai_cook_project/models/unit.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -12,22 +11,15 @@ class ResourceProvider extends ChangeNotifier {
   bool get isInitialized => _initialized;
   List<Unit> _units = [];
   List<Category> _categories = [];
-  List<Tag> _tags = [];
   List<RecipeTag> _recipeTags = [];
 
   List<Unit> get units => _units;
   List<Category> get categories => _categories;
-  List<Tag> get tags => _tags;
   List<RecipeTag> get recipeTags => _recipeTags;
 
   Future<void> initializeResources() async {
     if (_initialized) return;
-    await Future.wait([
-      getUnits(),
-      getCategories(),
-      getTags(),
-      getRecipeTags(),
-    ]);
+    await Future.wait([getUnits(), getCategories(), getRecipeTags()]);
     _initialized = true;
     notifyListeners();
   }
@@ -71,22 +63,6 @@ class ResourceProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> getTags() async {
-    try {
-      final response = await http.get(
-        Uri.parse('${dotenv.env['API_URL']}/resources/tags'),
-        headers: {'Content-Type': 'application/json'},
-      );
-      if (response.statusCode != 200) {
-        throw Exception('Failed to fetch tags: HTTP ${response.statusCode}');
-      }
-
-      final List<dynamic> decoded = json.decode(response.body);
-      _tags = decoded.map((e) => Tag.fromJson(e)).toList();
-      notifyListeners();
-    } catch (e) {}
-  }
-
   Future<void> getRecipeTags() async {
     try {
       final response = await http.get(
@@ -107,11 +83,63 @@ class ResourceProvider extends ChangeNotifier {
     }
   }
 
+  /// Extracts unique dietary restrictions from user ingredients
+  /// Returns them as a list of strings for filter chips
+  List<String> getDietaryFlagsFromIngredients(List<dynamic> userIngredients) {
+    final Set<String> dietaryFlags = {};
+
+    print(
+      '🔍 DEBUG: getDietaryFlagsFromIngredients called with ${userIngredients.length} ingredients',
+    );
+
+    for (final userIng in userIngredients) {
+      // Check both regular and custom ingredients
+      final ingredient = userIng.ingredient;
+      final customIngredient = userIng.customIngredient;
+
+      if (ingredient != null) {
+        // Regular ingredient with boolean flags
+        print('🥬 Regular ingredient: ${ingredient.name}');
+        print('   - isVegan: ${ingredient.isVegan}');
+        print('   - isVegetarian: ${ingredient.isVegetarian}');
+        print('   - isGlutenFree: ${ingredient.isGlutenFree}');
+        print('   - isLactoseFree: ${ingredient.isLactoseFree}');
+
+        if (ingredient.isVegan) dietaryFlags.add('Vegan');
+        if (ingredient.isVegetarian) dietaryFlags.add('Vegetarian');
+        if (ingredient.isGlutenFree) dietaryFlags.add('Gluten-Free');
+        if (ingredient.isLactoseFree) dietaryFlags.add('Lactose-Free');
+      } else if (customIngredient != null) {
+        // Custom ingredient - check if it has dietary tags
+        final tags = customIngredient.tags ?? [];
+        print('🎨 Custom ingredient: ${customIngredient.name}');
+        print('   - tags: ${tags.map((t) => t.name).join(', ')}');
+
+        for (final tag in tags) {
+          final tagName = tag.name.toLowerCase();
+          if (tagName == 'vegan') dietaryFlags.add('Vegan');
+          if (tagName == 'vegetarian') dietaryFlags.add('Vegetarian');
+          if (tagName == 'gluten-free') dietaryFlags.add('Gluten-Free');
+          if (tagName == 'lactose-free') dietaryFlags.add('Lactose-Free');
+        }
+      }
+    }
+
+    // Return sorted list for consistent ordering
+    final sortedFlags = dietaryFlags.toList()..sort();
+    print('🏷️ DEBUG: Final dietary flags: $sortedFlags');
+    return sortedFlags;
+  }
+
+  /// Returns predefined dietary flags for custom ingredient forms
+  List<String> getPredefinedDietaryFlags() {
+    return ['Vegan', 'Vegetarian', 'Gluten-Free', 'Lactose-Free'];
+  }
+
   // Utility
   void clearAll() {
     _units = [];
     _categories = [];
-    _tags = [];
     _recipeTags = [];
     _initialized = false;
     notifyListeners();

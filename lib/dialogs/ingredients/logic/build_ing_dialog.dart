@@ -92,7 +92,6 @@ Widget buildIngredientDialog({
             id: userIng.ingredient!.id,
             name: name,
             category: category,
-            tags: tags,
             isVegan: userIng.ingredient!.isVegan,
             isVegetarian: userIng.ingredient!.isVegetarian,
             isGlutenFree: userIng.ingredient!.isGlutenFree,

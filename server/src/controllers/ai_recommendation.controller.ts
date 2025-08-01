@@ -33,9 +33,16 @@ const controllerWrapper = (handler: ControllerFunction): RequestHandler => {
 };
 
 export const generateAIRecommendationsController = controllerWrapper(async (req) => {
-  console.log('🤖 AI Recommendation request body:', JSON.stringify(req.body, null, 2));
-  
   const startTime = Date.now();
+  
+  // Log only essential info, not full body for performance
+  console.log('🤖 AI Recommendation request received:', {
+    userIngredientsCount: req.body.userIngredients?.length || 0,
+    preferredTagsCount: req.body.preferredTags?.length || 0,
+    maxCookingTimeMinutes: req.body.maxCookingTimeMinutes,
+    preferredDifficulty: req.body.preferredDifficulty,
+    numberOfRecipes: req.body.numberOfRecipes || 10,
+  });
   
   try {
     // Validar el DTO
@@ -43,7 +50,7 @@ export const generateAIRecommendationsController = controllerWrapper(async (req)
     const errors = await validate(dto);
 
     if (errors.length > 0) {
-      console.log('Validation errors:', errors);
+      console.log('❌ Validation errors:', errors);
       const errorResponse = {
         status: 400,
         message: "Invalid input",
@@ -56,6 +63,23 @@ export const generateAIRecommendationsController = controllerWrapper(async (req)
       throw errorResponse;
     }
 
+    // Additional business logic validation
+    if (!dto.userIngredients || dto.userIngredients.length === 0) {
+      console.log('⚠️ No user ingredients provided');
+      const errorResponse = {
+        status: 400,
+        message: "At least one ingredient is required to generate AI recommendations",
+        error: "NO_INGREDIENTS"
+      };
+      throw errorResponse;
+    }
+
+    // Limit numberOfRecipes to reasonable range
+    const numberOfRecipes = Math.min(Math.max(dto.numberOfRecipes || 10, 1), 20);
+    if (dto.numberOfRecipes && dto.numberOfRecipes !== numberOfRecipes) {
+      console.log(`⚠️ numberOfRecipes adjusted from ${dto.numberOfRecipes} to ${numberOfRecipes}`);
+    }
+
     // Obtener todas las recetas
     const allRecipes = await getRecipesService();
     const serializedRecipes = serialize(RecipeDto, allRecipes) as RecipeDto[];
@@ -66,8 +90,14 @@ export const generateAIRecommendationsController = controllerWrapper(async (req)
       maxCookingTimeMinutes: dto.maxCookingTimeMinutes,
       preferredDifficulty: dto.preferredDifficulty,
       userPreferences: dto.userPreferences,
-      numberOfRecipes: dto.numberOfRecipes,
+      numberOfRecipes: numberOfRecipes,
+      totalRecipesAvailable: serializedRecipes.length,
     });
+
+    // Don't log all recipes for performance - too verbose
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`📖 Total recipes available: ${serializedRecipes.length}`);
+    }
 
     // Generar recomendaciones con IA
     const aiResponse = await AIRecommendationService.generatePersonalizedRecommendations(
@@ -78,7 +108,8 @@ export const generateAIRecommendationsController = controllerWrapper(async (req)
         maxCookingTimeMinutes: dto.maxCookingTimeMinutes,
         preferredDifficulty: dto.preferredDifficulty,
         userPreferences: dto.userPreferences,
-        numberOfRecipes: dto.numberOfRecipes,
+        numberOfRecipes: numberOfRecipes, // Use validated value
+        dietaryRestrictions: dto.dietaryRestrictions,
       }
     );
 

@@ -57,64 +57,56 @@ class IngredientListView extends StatelessWidget {
   List<Widget> _getDietaryIcons(UserIng userIng) {
     final icons = <Widget>[];
 
-    if (userIng.ingredient != null) {
-      // For regular ingredients, use boolean flags
-      final ingredient = userIng.ingredient!;
+    // Unified approach using tag-based logic for both ingredient types
+    bool isVegan = false;
+    bool isVegetarian = false;
+    bool isGlutenFree = false;
+    bool isLactoseFree = false;
 
-      if (ingredient.isVegan) {
-        icons.add(
-          Icon(Icons.eco_outlined, size: 14, color: AppColors.mutedGreen),
-        );
-      }
-      if (ingredient.isVegetarian && !ingredient.isVegan) {
-        icons.add(
-          Icon(
-            Icons.local_dining_outlined,
-            size: 14,
-            color: AppColors.mutedGreen,
-          ),
-        );
-      }
-      if (ingredient.isGlutenFree) {
-        icons.add(
-          Icon(Icons.no_food_outlined, size: 14, color: AppColors.mutedGreen),
-        );
-      }
-      if (ingredient.isLactoseFree) {
-        icons.add(
-          Icon(Icons.block_outlined, size: 14, color: AppColors.mutedGreen),
-        );
-      }
+    if (userIng.ingredient != null) {
+      // For regular ingredients, use the new getter methods (which check tags)
+      final ingredient = userIng.ingredient!;
+      isVegan = ingredient.isVegan;
+      isVegetarian = ingredient.isVegetarian;
+      isGlutenFree = ingredient.isGlutenFree;
+      isLactoseFree = ingredient.isLactoseFree;
     } else if (userIng.customIngredient != null) {
-      // For custom ingredients, check tags
+      // For custom ingredients, check tags directly
       final tags = userIng.customIngredient!.tags ?? [];
       final tagNames = tags.map((tag) => tag.name.toLowerCase()).toList();
 
-      if (tagNames.contains('vegan')) {
-        icons.add(
-          Icon(Icons.eco_outlined, size: 14, color: AppColors.mutedGreen),
-        );
-      }
-      if (tagNames.contains('vegetarian') && !tagNames.contains('vegan')) {
-        icons.add(
-          Icon(
-            Icons.local_dining_outlined,
-            size: 14,
-            color: AppColors.mutedGreen,
-          ),
-        );
-      }
-      if (tagNames.contains('gluten-free')) {
-        icons.add(
-          Icon(Icons.no_food_outlined, size: 14, color: AppColors.mutedGreen),
-        );
-      }
-      if (tagNames.contains('lactose-free')) {
-        icons.add(
-          Icon(Icons.block_outlined, size: 14, color: AppColors.mutedGreen),
-        );
-      }
+      isVegan = tagNames.contains('vegan');
+      isVegetarian = tagNames.contains('vegetarian');
+      isGlutenFree = tagNames.contains('gluten-free');
+      isLactoseFree = tagNames.contains('lactose-free');
     }
+
+    // Add dietary icons based on unified logic
+    if (isVegan) {
+      icons.add(
+        Icon(Icons.eco_outlined, size: 14, color: AppColors.mutedGreen),
+      );
+    }
+    if (isVegetarian && !isVegan) {
+      icons.add(
+        Icon(
+          Icons.local_dining_outlined,
+          size: 14,
+          color: AppColors.mutedGreen,
+        ),
+      );
+    }
+    if (isGlutenFree) {
+      icons.add(
+        Icon(Icons.no_food_outlined, size: 14, color: AppColors.mutedGreen),
+      );
+    }
+    if (isLactoseFree) {
+      icons.add(
+        Icon(Icons.block_outlined, size: 14, color: AppColors.mutedGreen),
+      );
+    }
+
     return icons;
   }
 

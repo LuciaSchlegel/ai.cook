@@ -12,20 +12,36 @@ List<UserIng> filterUserIngredients({
     final ingredientCategory =
         userIng.ingredient?.category?.name ??
         userIng.customIngredient?.category?.name;
-    final ingredientTags =
-        userIng.ingredient?.tags ?? userIng.customIngredient?.tags;
-
     final matchesCategory =
         selectedCategory == 'All' || ingredientCategory == selectedCategory;
 
     final matchesProperties =
         selectedProperties.isEmpty ||
         selectedProperties.every((selectedProperty) {
-          return ingredientTags?.any(
-                (tag) =>
-                    tag.name.toLowerCase() == selectedProperty.toLowerCase(),
-              ) ??
-              false;
+          // Check dietary flags for both regular and custom ingredients
+          if (userIng.ingredient != null) {
+            // Regular ingredient - check boolean dietary flags
+            final ingredient = userIng.ingredient!;
+            switch (selectedProperty.toLowerCase()) {
+              case 'vegan':
+                return ingredient.isVegan;
+              case 'vegetarian':
+                return ingredient.isVegetarian;
+              case 'gluten-free':
+                return ingredient.isGlutenFree;
+              case 'lactose-free':
+                return ingredient.isLactoseFree;
+              default:
+                return false;
+            }
+          } else if (userIng.customIngredient != null) {
+            // Custom ingredient - check tags for dietary restrictions
+            final tags = userIng.customIngredient?.tags ?? [];
+            return tags.any(
+              (tag) => tag.name.toLowerCase() == selectedProperty.toLowerCase(),
+            );
+          }
+          return false;
         });
 
     final matchesSearch =

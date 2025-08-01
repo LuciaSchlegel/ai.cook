@@ -7,7 +7,6 @@ import { Recipe } from '../entities/Recipe';
 import { Event } from '../entities/Event';
 import { Ingredient } from '../entities/Ingredient';
 import dotenv from 'dotenv';
-import { Tag } from '../entities/Tag';
 import { User } from '../entities/User';
 import { RecipeIngredient } from '../entities/RecipeIngredient';
 import { Category } from '../entities/Category';
@@ -25,7 +24,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME || 'luciaschlegel',
   password: process.env.DB_PASSWORD ,
   database: process.env.DB_NAME,
-  entities: [ User, Ingredient, Tag, Recipe, Event, UserIngredient, Attribute, Subscription, RecipeIngredient, Category, RecipeTag, CustomIngredient, Unit, ExternalRecipe ],
+  entities: [ User, Ingredient, Recipe, Event, UserIngredient, Attribute, Subscription, RecipeIngredient, Category, RecipeTag, CustomIngredient, Unit, ExternalRecipe ],
   synchronize: true, // True solo para desarrollo (genera tablas automáticamente)
   logging: false,
   ssl: {

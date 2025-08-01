@@ -52,7 +52,7 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
   late TextEditingController _quantityController;
   late Category _selectedCategory;
   late Unit _selectedUnit;
-  late Set<Tag> _selectedTags = {};
+  late Set<String> _selectedTags = {};
 
   @override
   void initState() {
@@ -67,10 +67,11 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
         widget.customIngredient?.category ?? widget.categories.first;
     _selectedUnit = widget.unit!;
 
-    _selectedTags = widget.customIngredient?.tags?.toSet() ?? {};
+    _selectedTags =
+        widget.customIngredient?.tags?.map((t) => t.name).toSet() ?? {};
 
     if (widget.customIngredient?.tags != null) {
-      _selectedTags.addAll(widget.customIngredient!.tags!);
+      _selectedTags.addAll(widget.customIngredient!.tags!.map((t) => t.name));
     }
   }
 
@@ -119,6 +120,9 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
   Widget build(BuildContext context) {
     final resourceProvider = Provider.of<ResourceProvider>(context);
     final availableUnits = resourceProvider.units;
+
+    // Use predefined dietary flags for custom ingredient forms
+    final dietaryFlags = resourceProvider.getPredefinedDietaryFlags();
 
     return GestureDetector(
       onTap: () {
@@ -215,7 +219,7 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
               ),
               const SizedBox(height: 16),
               TagsPicker(
-                tags: resourceProvider.tags,
+                tags: dietaryFlags,
                 selectedTags: _selectedTags.toList(),
                 onTagsSelected: (tag) {
                   setState(() {
@@ -316,10 +320,35 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
                     return;
                   }
 
+                  // Convert selected dietary flag strings back to Tag objects
+                  final tagObjects =
+                      _selectedTags.map((tagName) {
+                        // Create Tag objects for dietary flags
+                        // Using simple ID mapping for dietary flags
+                        int tagId;
+                        switch (tagName.toLowerCase()) {
+                          case 'vegan':
+                            tagId = 1;
+                            break;
+                          case 'vegetarian':
+                            tagId = 2;
+                            break;
+                          case 'gluten-free':
+                            tagId = 3;
+                            break;
+                          case 'lactose-free':
+                            tagId = 4;
+                            break;
+                          default:
+                            tagId = 999; // fallback ID for custom tags
+                        }
+                        return Tag(id: tagId, name: tagName);
+                      }).toList();
+
                   widget.onSave(
                     _nameController.text,
                     _selectedCategory,
-                    _selectedTags.toList(),
+                    tagObjects,
                     quantity,
                     _selectedUnit,
                   );

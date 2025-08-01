@@ -1,6 +1,5 @@
 import { Expose, Type } from 'class-transformer';
 import { CategoryDto } from './category.dto';
-import { TagDto } from './tag.dto';
 
 export class IngredientDto {
   @Expose()
@@ -24,8 +23,4 @@ export class IngredientDto {
   @Expose()
   @Type(() => CategoryDto)
   category?: CategoryDto;
-
-  @Expose()
-  @Type(() => TagDto)
-  tags?: TagDto[];
-}   
+}

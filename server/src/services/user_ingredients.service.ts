@@ -74,11 +74,9 @@ export async function getUserIngredientsService(uid: string) {
       user: true,
       ingredient: {
         category: true,
-        tags: true
       },
       customIngredient: {
         category: true,
-        tags: true
       },
       unit: true
     }
@@ -135,11 +133,9 @@ export async function updateUserIngredientService(
       user: true,
       ingredient: {
         category: true,
-        tags: true
       },
       customIngredient: {
         category: true,
-        tags: true
       },
       unit: true
     }

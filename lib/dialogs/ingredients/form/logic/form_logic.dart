@@ -31,8 +31,8 @@ class IngredientFormUtils {
         Unit(id: -1, name: 'Select unit', abbreviation: '', type: '');
     setUnit(unit);
 
-    final tags = ingredient?.tags ?? customIngredient?.tags;
-    if (tags != null) selectedTags.addAll(tags);
+    // final tags = ingredient?.tags ?? customIngredient?.tags;
+    // if (tags != null) selectedTags.addAll(tags);
   }
 
   /// Valida si el formulario está completo y correcto

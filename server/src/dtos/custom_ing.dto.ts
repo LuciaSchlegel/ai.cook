@@ -1,6 +1,5 @@
 import { Expose, Type } from 'class-transformer';
 import { CategoryDto } from './category.dto';
-import { TagDto } from './tag.dto';
 import { UserBasicDto } from './user_basic.dto';
 
 export class CustomIngredientDto {
@@ -11,12 +10,20 @@ export class CustomIngredientDto {
   name!: string;
 
   @Expose()
-  @Type(() => CategoryDto)
-  category?: CategoryDto;
+  isVegan!: boolean;
 
   @Expose()
-  @Type(() => TagDto)
-  tags?: TagDto[];
+  isVegetarian!: boolean;
+
+  @Expose()
+  isGlutenFree!: boolean;
+
+  @Expose()
+  isLactoseFree!: boolean;
+
+  @Expose()
+  @Type(() => CategoryDto)
+  category?: CategoryDto;
 
   @Expose()
   @Type(() => UserBasicDto)

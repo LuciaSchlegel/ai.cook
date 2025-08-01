@@ -5,10 +5,13 @@ import 'package:provider/provider.dart';
 import 'package:ai_cook_project/providers/ai_recommendations_provider.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
-import 'package:ai_cook_project/widgets/status/loading_indicator.dart';
+
 import 'package:ai_cook_project/widgets/selectors/grey_card_chips.dart';
 import 'package:ai_cook_project/widgets/selectors/dropdown_selector.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/dialogs/recipes/widgets/ai_recipe_card.dart';
+import 'package:ai_cook_project/dialogs/recipes/widgets/skeleton_loader.dart';
+import 'package:ai_cook_project/dialogs/recipes/widgets/ai_response_sections.dart';
 import 'dart:math' as math;
 
 class AiRecipesDialog extends StatefulWidget {
@@ -35,13 +38,9 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
 
   // Form state variables
   List<RecipeTag> _selectedTags = [];
-  final TextEditingController _maxTimeController = TextEditingController(
-    text: '30',
-  );
+  final TextEditingController _maxTimeController = TextEditingController();
   String _selectedDifficulty = 'Easy';
-  final TextEditingController _preferencesController = TextEditingController(
-    text: 'I enjoy Mediterranean cuisine',
-  );
+  final TextEditingController _preferencesController = TextEditingController();
 
   // Available options
   final List<String> _difficultyLevels = ['Easy', 'Medium', 'Hard'];
@@ -220,33 +219,69 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
                                 ),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black26,
-                                    blurRadius: 20,
-                                    offset: const Offset(0, -5),
+                                    color: AppColors.button.withOpacity(0.08),
+                                    blurRadius: 32,
+                                    offset: const Offset(0, -8),
+                                    spreadRadius: 0,
+                                  ),
+                                  BoxShadow(
+                                    color: AppColors.mutedGreen.withOpacity(
+                                      0.04,
+                                    ),
+                                    blurRadius: 16,
+                                    offset: const Offset(0, -4),
+                                    spreadRadius: 2,
                                   ),
                                 ],
                               ),
                               child: Column(
                                 children: [
-                                  // Handle bar
+                                  // Handle bar - Enhanced
                                   Container(
                                     margin: const EdgeInsets.only(top: 12),
                                     width: 40,
                                     height: 4,
                                     decoration: BoxDecoration(
-                                      color: Colors.grey[300],
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          AppColors.mutedGreen.withOpacity(0.2),
+                                          AppColors.mutedGreen.withOpacity(0.4),
+                                          AppColors.mutedGreen.withOpacity(0.2),
+                                        ],
+                                      ),
                                       borderRadius: BorderRadius.circular(2),
                                     ),
                                   ),
 
-                                  // Close button
+                                  // Close button - Enhanced
                                   Align(
                                     alignment: Alignment.topRight,
-                                    child: IconButton(
-                                      onPressed: _handleClose,
-                                      icon: const Icon(
-                                        CupertinoIcons.xmark,
-                                        color: Colors.grey,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        top: 8,
+                                        right: 8,
+                                      ),
+                                      child: Container(
+                                        width: 36,
+                                        height: 36,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.mutedGreen
+                                              .withOpacity(0.08),
+                                          borderRadius: BorderRadius.circular(
+                                            18,
+                                          ),
+                                        ),
+                                        child: IconButton(
+                                          onPressed: _handleClose,
+                                          icon: Icon(
+                                            CupertinoIcons.xmark,
+                                            color: AppColors.button.withOpacity(
+                                              0.6,
+                                            ),
+                                            size: 16,
+                                          ),
+                                          padding: EdgeInsets.zero,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -284,15 +319,64 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'AI Recipe Recommendations',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
+            // Enhanced dialog title with gradient
+            Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        AppColors.mutedGreen.withOpacity(0.2),
+                        AppColors.lightYellow.withOpacity(0.3),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(14),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.mutedGreen.withOpacity(0.15),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    CupertinoIcons.sparkles,
+                    size: 24,
+                    color: AppColors.mutedGreen,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: ShaderMask(
+                    shaderCallback:
+                        (bounds) => LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            AppColors.button,
+                            AppColors.mutedGreen,
+                            AppColors.button,
+                          ],
+                          stops: const [0.0, 0.5, 1.0],
+                        ).createShader(bounds),
+                    child: const Text(
+                      'AI Recipe Recommendations',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
 
             // AI Recommendation Form Section
             _buildFormSection(),
@@ -310,24 +394,49 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
 
             const SizedBox(height: 20),
 
-            // Generate/Regenerate recommendations button
-            SizedBox(
+            // Generate/Regenerate recommendations button - Enhanced
+            Container(
               width: double.infinity,
+              height: 54,
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.button.withOpacity(0.15),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                    spreadRadius: 0,
+                  ),
+                ],
+              ),
               child: ElevatedButton.icon(
                 onPressed: () {
                   debugPrint('🔄 AI Dialog: Manual regeneration triggered');
                   _generateAIRecommendations();
                 },
-                icon: const Icon(Icons.auto_awesome),
+                icon: Icon(CupertinoIcons.sparkles, size: 18),
                 label: Text(
                   aiProvider.currentRecommendation == null
                       ? 'Generate AI Recommendations'
                       : 'Update Recommendations',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.3,
+                  ),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.button,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  foregroundColor: AppColors.white,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 16,
+                  ),
                 ),
               ),
             ),
@@ -338,68 +447,94 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
   }
 
   Widget _buildLoadingContent() {
-    return Container(
-      height: 200,
-      decoration: BoxDecoration(
-        color: Colors.blue.shade50,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.blue.shade200),
-      ),
-      child: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            LoadingIndicator(),
-            SizedBox(height: 16),
-            Text(
-              '🤖 AI is analyzing your ingredients...',
-              style: TextStyle(fontSize: 16, color: Colors.blue),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 8),
-            Text(
-              'This may take a few seconds',
-              style: TextStyle(fontSize: 12, color: Colors.grey),
-            ),
-          ],
-        ),
-      ),
-    );
+    return const SkeletonLoader();
   }
 
   Widget _buildErrorContent(String error) {
     return Container(
-      height: 200,
+      height: 220,
+      margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.red.shade50,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.red.shade200),
-      ),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.error_outline, size: 48, color: Colors.red),
-              const SizedBox(height: 16),
-              const Text(
-                '❌ AI Error',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                error,
-                style: const TextStyle(fontSize: 14, color: Colors.red),
-                textAlign: TextAlign.center,
-              ),
-            ],
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.orange.withOpacity(0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+            spreadRadius: 0,
           ),
-        ),
+        ],
+        border: Border.all(color: AppColors.orange.withOpacity(0.2), width: 1),
+      ),
+      child: Stack(
+        children: [
+          // Subtle gradient background
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  AppColors.orange.withOpacity(0.03),
+                  AppColors.lightYellow.withOpacity(0.03),
+                ],
+              ),
+            ),
+          ),
+          // Main content
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Error icon
+                  Container(
+                    width: 64,
+                    height: 64,
+                    decoration: BoxDecoration(
+                      color: AppColors.orange.withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      CupertinoIcons.exclamationmark_triangle,
+                      size: 32,
+                      color: AppColors.orange,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  // Title
+                  const Text(
+                    'AI Chef Unavailable',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.button,
+                      letterSpacing: 0.3,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 12),
+                  // Error message
+                  Text(
+                    error,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.button.withOpacity(0.7),
+                      height: 1.4,
+                      letterSpacing: 0.1,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -408,22 +543,51 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Success indicator with stats
+        // Success indicator with stats - Enhanced design
         Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(16),
+          margin: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
-            color: Colors.green.shade50,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.green.shade200),
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.mutedGreen.withOpacity(0.06),
+                blurRadius: 12,
+                offset: const Offset(0, 2),
+                spreadRadius: 0,
+              ),
+            ],
+            border: Border.all(
+              color: AppColors.mutedGreen.withOpacity(0.2),
+              width: 1,
+            ),
           ),
           child: Row(
             children: [
-              const Icon(Icons.check_circle, color: Colors.green, size: 20),
-              const SizedBox(width: 8),
+              Container(
+                width: 24,
+                height: 24,
+                decoration: BoxDecoration(
+                  color: AppColors.mutedGreen.withOpacity(0.15),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  CupertinoIcons.checkmark_alt,
+                  color: AppColors.mutedGreen,
+                  size: 14,
+                ),
+              ),
+              const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  '✅ AI processed ${recommendation.totalRecipesConsidered} recipes in ${recommendation.processingTime}ms',
-                  style: const TextStyle(fontSize: 12, color: Colors.green),
+                  'Successfully analyzed ${recommendation.totalRecipesConsidered} recipes in ${recommendation.processingTime}ms',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: AppColors.button.withOpacity(0.8),
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 0.1,
+                  ),
                 ),
               ),
             ],
@@ -431,95 +595,111 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
         ),
         const SizedBox(height: 16),
 
-        // AI Recommendations text
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey[300]!),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        // Structured AI Response Sections
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Greeting
+            AIGreetingSection(greeting: recommendation.parsedResponse.greeting),
+
+            // Almost ready recipes
+            AIAlmostReadySection(
+              content: recommendation.parsedResponse.almostReadySection,
+            ),
+
+            // Recipe cards with missing ingredient info - Moved here between sections
+            if (recommendation.recipesWithMissingInfo != null &&
+                recommendation.recipesWithMissingInfo!.isNotEmpty) ...[
+              const SizedBox(height: 20),
+              _buildRecipeCards(recommendation.recipesWithMissingInfo!),
+              const SizedBox(height: 20),
+            ],
+
+            // Shopping suggestions
+            AIShoppingSuggestionsSection(
+              suggestions: recommendation.parsedResponse.shoppingSuggestions,
+            ),
+
+            // Substitutions
+            AISubstitutionsSection(
+              substitutions: recommendation.parsedResponse.substitutions,
+            ),
+
+            // Conclusion
+            AIConclusionSection(
+              conclusion: recommendation.parsedResponse.conclusion,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRecipeCards(
+    List<RecipeWithMissingIngredients> recipesWithMissingInfo,
+  ) {
+    // Group recipes by missing count
+    final perfectMatches = <RecipeWithMissingIngredients>[];
+    final almostReady = <RecipeWithMissingIngredients>[];
+
+    for (final recipeData in recipesWithMissingInfo) {
+      if (recipeData.missingCount == 0) {
+        perfectMatches.add(recipeData);
+      } else {
+        almostReady.add(recipeData);
+      }
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Perfect matches section
+        if (perfectMatches.isNotEmpty) ...[
+          Row(
             children: [
-              const Text(
-                '🤖 AI Recommendations:',
-                style: TextStyle(
+              const Icon(Icons.check_circle, color: Colors.green, size: 20),
+              const SizedBox(width: 8),
+              Text(
+                'Ready to Cook (${perfectMatches.length})',
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                recommendation.recommendations,
-                style: const TextStyle(
-                  fontSize: 14,
-                  height: 1.4,
-                  color: Colors.black87,
+                  color: Colors.green,
                 ),
               ),
             ],
           ),
-        ),
+          const SizedBox(height: 8),
+          ...perfectMatches
+              .map(
+                (recipeData) => AIRecipeCard(recipeWithMissingInfo: recipeData),
+              )
+              .toList(),
+        ],
 
-        // Filtered recipes info
-        if (recommendation.filteredRecipes.isNotEmpty) ...[
+        // Almost ready section
+        if (almostReady.isNotEmpty) ...[
           const SizedBox(height: 16),
-          Text(
-            '📖 ${recommendation.filteredRecipes.length} Recipes Considered:',
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          Row(
+            children: [
+              const Icon(Icons.shopping_cart, color: Colors.orange, size: 20),
+              const SizedBox(width: 8),
+              Text(
+                'Almost Ready (${almostReady.length})',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.orange,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 8),
-          SizedBox(
-            height: 120,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: recommendation.filteredRecipes.length,
-              itemBuilder: (context, index) {
-                final recipe = recommendation.filteredRecipes[index];
-                return Container(
-                  width: 140,
-                  margin: const EdgeInsets.only(right: 8),
-                  child: Card(
-                    elevation: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            recipe['name'] ?? 'Unknown Recipe',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'Time: ${recipe['cookingTime'] ?? 'N/A'}',
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          Text(
-                            'Difficulty: ${recipe['difficulty'] ?? 'N/A'}',
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
+          ...almostReady
+              .map(
+                (recipeData) => AIRecipeCard(recipeWithMissingInfo: recipeData),
+              )
+              .toList(),
         ],
       ],
     );
@@ -527,60 +707,183 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
 
   Widget _buildEmptyContent() {
     return Container(
-      height: 200,
+      margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(CupertinoIcons.sparkles, size: 48, color: Colors.blue),
-            SizedBox(height: 16),
-            Text(
-              'Ready to generate AI recommendations!',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Click the button below to start',
-              style: TextStyle(fontSize: 12, color: Colors.grey),
-            ),
-          ],
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.mutedGreen.withOpacity(0.05),
+            blurRadius: 12,
+            offset: const Offset(0, 2),
+            spreadRadius: 0,
+          ),
+        ],
+        border: Border.all(
+          color: AppColors.mutedGreen.withOpacity(0.1),
+          width: 1,
         ),
+      ),
+      child: Stack(
+        children: [
+          // Subtle gradient background
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  AppColors.lightYellow.withOpacity(0.02),
+                  AppColors.mutedGreen.withOpacity(0.02),
+                ],
+              ),
+            ),
+          ),
+          // Main content with flexible layout
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Icon with background
+                Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    color: AppColors.mutedGreen.withOpacity(0.08),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    CupertinoIcons.sparkles,
+                    size: 28,
+                    color: AppColors.mutedGreen,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                // Title
+                const Text(
+                  'AI Chef Ready',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.button,
+                    letterSpacing: 0.3,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                // Subtitle with flexible text
+                Flexible(
+                  child: Text(
+                    'Set your preferences above and tap the button below to get personalized recipe recommendations',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: AppColors.button.withOpacity(0.7),
+                      height: 1.3,
+                      letterSpacing: 0.1,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildFormSection() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(24),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey[200]!),
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.mutedGreen.withOpacity(0.06),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+            spreadRadius: 0,
+          ),
+        ],
+        border: Border.all(
+          color: AppColors.mutedGreen.withOpacity(0.12),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            '🎯 Customize Your AI Recommendations',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
+          // Enhanced form header with gradients
+          Row(
+            children: [
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      AppColors.mutedGreen.withOpacity(0.2),
+                      AppColors.lightYellow.withOpacity(0.3),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.mutedGreen.withOpacity(0.15),
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  CupertinoIcons.slider_horizontal_3,
+                  size: 18,
+                  color: AppColors.mutedGreen,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: ShaderMask(
+                  shaderCallback:
+                      (bounds) => LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          AppColors.button,
+                          AppColors.mutedGreen.withOpacity(0.8),
+                        ],
+                      ).createShader(bounds),
+                  child: const Text(
+                    'Customize Your Preferences',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
 
           // Recipe Tags Selector
-          const Text(
+          Text(
             'Preferred Recipe Tags',
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 15,
               fontWeight: FontWeight.w600,
-              color: Colors.black87,
+              color: AppColors.button.withOpacity(0.9),
+              letterSpacing: 0.2,
             ),
           ),
           const SizedBox(height: 8),
@@ -624,16 +927,18 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Max Cooking Time (minutes)',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 15,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black87,
+                        color: AppColors.button.withOpacity(0.9),
+                        letterSpacing: 0.2,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Container(
+                      height: 48,
                       decoration: BoxDecoration(
                         color: CupertinoColors.white,
                         borderRadius: BorderRadius.circular(12),
@@ -671,25 +976,29 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Preferred Difficulty',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 15,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black87,
+                        color: AppColors.button.withOpacity(0.9),
+                        letterSpacing: 0.2,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    DropdownSelector(
-                      value: _selectedDifficulty,
-                      items: _difficultyLevels,
-                      onChanged: (newValue) {
-                        if (newValue != null) {
-                          setState(() {
-                            _selectedDifficulty = newValue;
-                          });
-                        }
-                      },
+                    SizedBox(
+                      height: 48,
+                      child: DropdownSelector(
+                        value: _selectedDifficulty,
+                        items: _difficultyLevels,
+                        onChanged: (newValue) {
+                          if (newValue != null) {
+                            setState(() {
+                              _selectedDifficulty = newValue;
+                            });
+                          }
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -699,12 +1008,13 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
           const SizedBox(height: 16),
 
           // User Preferences
-          const Text(
+          Text(
             'Additional Preferences (optional)',
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 15,
               fontWeight: FontWeight.w600,
-              color: Colors.black87,
+              color: AppColors.button.withOpacity(0.9),
+              letterSpacing: 0.2,
             ),
           ),
           const SizedBox(height: 8),

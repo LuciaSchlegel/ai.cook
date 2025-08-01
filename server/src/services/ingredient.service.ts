@@ -57,11 +57,21 @@ export const createCustomIngredientService = async (
 
     console.log('Creating custom ingredient with data:', customIngredientData);
 
+    // Auto-derive dietary flags from tags if tags are provided in the future
+    // For now, use the boolean flags directly from the DTO
+    const isVegan = customIngredientData.isVegan || false;
+    const isVegetarian = customIngredientData.isVegetarian || false;
+    const isGlutenFree = customIngredientData.isGlutenFree || false;
+    const isLactoseFree = customIngredientData.isLactoseFree || false;
+
     // Create the custom ingredient with the user reference
     const customIngredient = CustomIngredientRepository.create({
       name: customIngredientData.name,
       category: customIngredientData.category,
-      tags: customIngredientData.tags,
+      isVegan,
+      isVegetarian,
+      isGlutenFree,
+      isLactoseFree,
       createdBy: user
     });
 
@@ -75,7 +85,7 @@ export const createCustomIngredientService = async (
     // Reload the custom ingredient with all relations
     const reloadedCustomIngredient = await CustomIngredientRepository.findOne({
       where: { id: savedCustomIngredient.id },
-      relations: ['category', 'tags', 'createdBy']
+      relations: ['category', 'createdBy']
     });
 
     if (!reloadedCustomIngredient) {
