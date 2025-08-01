@@ -9,6 +9,7 @@ import 'package:ai_cook_project/models/category_model.dart';
 import 'package:ai_cook_project/models/custom_ing_model.dart';
 import 'package:ai_cook_project/models/tag_model.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
+import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
@@ -97,9 +98,18 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
   }
 
   bool _validateForm() {
+    // Safely parse the quantity
+    double? quantity;
+    try {
+      quantity = double.parse(_quantityController.text);
+    } catch (e) {
+      // If parsing fails, return false
+      return false;
+    }
+
     return isCustomIngFormValid(
       name: _nameController.text,
-      quantityText: _quantityController.text,
+      quantity: quantity,
       selectedTags: _selectedTags.toList(),
       unitName: _selectedUnit.name,
     );
@@ -268,7 +278,9 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              _selectedUnit.name,
+                              TextUtils.capitalizeFirstLetter(
+                                _selectedUnit.name,
+                              ),
                               style: TextStyle(
                                 color:
                                     _selectedUnit.name == 'Select unit'
@@ -295,11 +307,20 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
                 onDelete: widget.onDelete,
                 onCancel: () => Navigator.pop(context),
                 onSave: () {
+                  // Safely parse quantity (should be valid since button is only enabled when form is valid)
+                  double quantity;
+                  try {
+                    quantity = double.parse(_quantityController.text);
+                  } catch (e) {
+                    // This shouldn't happen since button is disabled when form is invalid
+                    return;
+                  }
+
                   widget.onSave(
                     _nameController.text,
                     _selectedCategory,
                     _selectedTags.toList(),
-                    double.parse(_quantityController.text),
+                    quantity,
                     _selectedUnit,
                   );
                   if (mounted) Navigator.pop(context);

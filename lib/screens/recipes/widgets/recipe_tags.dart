@@ -43,7 +43,7 @@ class _RecipeTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
         color: AppColors.mutedGreen.withOpacity(0.1),
         borderRadius: BorderRadius.circular(20),
@@ -51,15 +51,25 @@ class _RecipeTag extends StatelessWidget {
           color: AppColors.mutedGreen.withOpacity(0.3),
           width: 1,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.mutedGreen.withOpacity(0.05),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
-      child: Text(
-        TextUtils.capitalizeFirstLetter(tag),
-        style: const TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: 13,
-          color: AppColors.mutedGreen,
-          fontFamily: 'Inter',
-          letterSpacing: 0.2,
+      child: Center(
+        child: Text(
+          TextUtils.capitalizeFirstLetter(tag),
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 13,
+            color: AppColors.mutedGreen,
+            fontFamily: 'Inter',
+            letterSpacing: 0.2,
+            height: 1.0,
+          ),
         ),
       ),
     );

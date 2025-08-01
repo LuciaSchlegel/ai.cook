@@ -1,6 +1,6 @@
 bool isCustomIngFormValid({
   required String name,
-  required String quantityText,
+  required double quantity,
   required List selectedTags,
   required String unitName,
 }) {
@@ -8,8 +8,7 @@ bool isCustomIngFormValid({
   if (selectedTags.isEmpty) return false;
   if (unitName == 'Select unit') return false;
 
-  final quantity = int.tryParse(quantityText);
-  if (quantity == null || quantity <= 0) return false;
+  if (quantity <= 0) return false;
 
   return true;
 }
