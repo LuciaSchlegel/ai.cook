@@ -21,21 +21,6 @@ class Ingredient {
 
   factory Ingredient.fromJson(Map<String, dynamic> json) {
     try {
-      // Debug: Print raw JSON data for dietary flags
-      print('🔍 JSON DEBUG for ${json['name']}:');
-      print(
-        '   - camelCase isVegan: ${json['isVegan']} | snake_case is_vegan: ${json['is_vegan']}',
-      );
-      print(
-        '   - camelCase isVegetarian: ${json['isVegetarian']} | snake_case is_vegetarian: ${json['is_vegetarian']}',
-      );
-      print(
-        '   - camelCase isGlutenFree: ${json['isGlutenFree']} | snake_case is_gluten_free: ${json['is_gluten_free']}',
-      );
-      print(
-        '   - camelCase isLactoseFree: ${json['isLactoseFree']} | snake_case is_lactose_free: ${json['is_lactose_free']}',
-      );
-
       return Ingredient(
         id: json['id'] as int,
         name: json['name']?.toString() ?? '',

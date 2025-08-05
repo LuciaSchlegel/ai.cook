@@ -61,54 +61,54 @@ class ParsedAIResponse {
               .replaceAll(RegExp(r'---'), '')
               .trim();
 
-      // Extract greeting (content before first emoji section WITH colons)
+      // Extract greeting (content before first emoji section WITH colons) - made more flexible
       final greetingMatch = RegExp(
-        r'^(.*?)(?=🍳\s*\*\*Ready-to-cook recipes\*\*:|🛒\s*\*\*Almost-ready recipes\*\*:|💡\s*\*\*Smart shopping suggestions\*\*:|🔄\s*\*\*Possible substitutions\*\*:)',
+        r'^(.*?)(?=🍳\s*\*\*Ready-to-cook|🛒\s*\*\*Almost-ready|💡\s*\*\*Smart shopping|🔄\s*\*\*Possible substitutions)',
         dotAll: true,
         caseSensitive: false,
       ).firstMatch(cleanResponse);
       String greeting = greetingMatch?.group(1)?.trim() ?? '';
 
       debugPrint(
-        '🔍 DEBUG: Extracted greeting: "${greeting.length > 50 ? greeting.substring(0, 50) + "..." : greeting}"',
+        '🔍 DEBUG: Extracted greeting: "${greeting.length > 50 ? "${greeting.substring(0, 50)}..." : greeting}"',
       );
 
-      // Extract ready-to-cook recipes section (with colon)
+      // Extract ready-to-cook recipes section (flexible with/without colon)
       final readyToCookMatch = RegExp(
-        r'🍳\s*\*\*Ready-to-cook recipes\*\*:\s*(.*?)(?=🛒|💡|🔄|$)',
+        r'🍳\s*\*\*Ready-to-cook recipes?\*\*:?\s*(.*?)(?=🛒|💡|🔄|$)',
         dotAll: true,
         caseSensitive: false,
       ).firstMatch(cleanResponse);
       final readyToCookText = readyToCookMatch?.group(1)?.trim() ?? '';
       debugPrint(
-        '🔍 DEBUG: Ready-to-cook text: "${readyToCookText.length > 100 ? readyToCookText.substring(0, 100) + "..." : readyToCookText}"',
+        '🔍 DEBUG: Ready-to-cook text: "${readyToCookText.length > 100 ? "${readyToCookText.substring(0, 100)}..." : readyToCookText}"',
       );
       final readyToCookRecipes = _parseReadyToCookRecipes(readyToCookText);
       debugPrint(
         '🔍 DEBUG: Ready-to-cook recipes found: ${readyToCookRecipes.length}',
       );
 
-      // Extract almost-ready section (with colon)
+      // Extract almost-ready section (flexible with/without colon)
       final almostReadyMatch = RegExp(
-        r'🛒\s*\*\*Almost-ready recipes\*\*:\s*(.*?)(?=💡|🔄|$)',
+        r'🛒\s*\*\*Almost-ready recipes?\*\*:?\s*(.*?)(?=💡|🔄|$)',
         dotAll: true,
         caseSensitive: false,
       ).firstMatch(cleanResponse);
       final almostReadySection = almostReadyMatch?.group(1)?.trim() ?? '';
       debugPrint(
-        '🔍 DEBUG: Almost-ready section: "${almostReadySection.length > 100 ? almostReadySection.substring(0, 100) + "..." : almostReadySection}"',
+        '🔍 DEBUG: Almost-ready section: "${almostReadySection.length > 100 ? "${almostReadySection.substring(0, 100)}..." : almostReadySection}"',
       );
 
-      // Extract shopping suggestions (with colon)
+      // Extract shopping suggestions (flexible with/without colon)
       final shoppingSuggestionsMatch = RegExp(
-        r'💡\s*\*\*Smart shopping suggestions\*\*:\s*(.*?)(?=🔄|$)',
+        r'💡\s*\*\*Smart shopping suggestions?\*\*:?\s*(.*?)(?=🔄|$)',
         dotAll: true,
         caseSensitive: false,
       ).firstMatch(cleanResponse);
       final shoppingSuggestionsText =
           shoppingSuggestionsMatch?.group(1)?.trim() ?? '';
       debugPrint(
-        '🔍 DEBUG: Shopping suggestions text: "${shoppingSuggestionsText.length > 100 ? shoppingSuggestionsText.substring(0, 100) + "..." : shoppingSuggestionsText}"',
+        '🔍 DEBUG: Shopping suggestions text: "${shoppingSuggestionsText.length > 100 ? "${shoppingSuggestionsText.substring(0, 100)}..." : shoppingSuggestionsText}"',
       );
       final shoppingSuggestions = _parseShoppingSuggestions(
         shoppingSuggestionsText,
@@ -117,28 +117,28 @@ class ParsedAIResponse {
         '🔍 DEBUG: Shopping suggestions found: ${shoppingSuggestions.length}',
       );
 
-      // Extract substitutions (with colon)
+      // Extract substitutions (flexible with/without colon)
       final substitutionsMatch = RegExp(
-        r'🔄\s*\*\*Possible substitutions\*\*:\s*(.*?)(?=Happy cooking|Feel free|Enjoy|$)',
+        r'🔄\s*\*\*Possible substitutions?\*\*:?\s*(.*?)(?=Happy cooking|Feel free|Enjoy|Go ahead|$)',
         dotAll: true,
         caseSensitive: false,
       ).firstMatch(cleanResponse);
       final substitutionsText = substitutionsMatch?.group(1)?.trim() ?? '';
       debugPrint(
-        '🔍 DEBUG: Substitutions text: "${substitutionsText.length > 100 ? substitutionsText.substring(0, 100) + "..." : substitutionsText}"',
+        '🔍 DEBUG: Substitutions text: "${substitutionsText.length > 100 ? "${substitutionsText.substring(0, 100)}..." : substitutionsText}"',
       );
       final substitutions = _parseSubstitutions(substitutionsText);
       debugPrint('🔍 DEBUG: Substitutions found: ${substitutions.length}');
 
-      // Extract conclusion (common ending phrases)
+      // Extract conclusion (common ending phrases) - expanded patterns
       final conclusionMatch = RegExp(
-        r'((?:Happy cooking|Feel free|I hope you).*?)$',
+        r'((?:Happy cooking|Feel free|I hope you|Go ahead|Enjoy your cooking|Have fun).*?)$',
         dotAll: true,
         caseSensitive: false,
       ).firstMatch(cleanResponse);
       final conclusion = conclusionMatch?.group(1)?.trim() ?? '';
       debugPrint(
-        '🔍 DEBUG: Conclusion: "${conclusion.length > 50 ? conclusion.substring(0, 50) + "..." : conclusion}"',
+        '🔍 DEBUG: Conclusion: "${conclusion.length > 50 ? "${conclusion.substring(0, 50)}..." : conclusion}"',
       );
 
       return ParsedAIResponse(

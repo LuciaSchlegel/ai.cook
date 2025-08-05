@@ -279,17 +279,23 @@ Generate a personalized response that includes:
 Respond in a friendly and conversational manner, like an experienced chef advising a friend. Include emojis and be specific about ingredient availability and shopping suggestions.
 
 **Structure:**
-🍳 **Ready-to-cook recipes** (if any perfect matches):
-[List recipes user can make right now]
+🍳 **Ready-to-cook recipes**:
+[List recipes user can make right now with this format:]
+- **Recipe Name**
+  - **Time:** [time]
+  - **Difficulty:** [difficulty]
+  - **Description:** [brief description]
 
-🛒 **Almost-ready recipes** (if any with 1-2 missing ingredients):
+🛒 **Almost-ready recipes**:
 [List recipes with missing ingredients and what to buy]
 
-💡 **Smart shopping suggestions:**
-[Recommend specific ingredients that unlock multiple recipes]
+💡 **Smart shopping suggestions**:
+[Recommend specific ingredients that unlock multiple recipes with this format:]
+- **Ingredient Name**: Description of why it's useful
 
-🔄 **Possible substitutions:**
-[Suggest ingredient swaps using what they have]
+🔄 **Possible substitutions**:
+[Suggest ingredient swaps using what they have with this format:]
+- **Original Ingredient**: can be substituted with [alternatives]
     `.trim();
 
     return prompt;

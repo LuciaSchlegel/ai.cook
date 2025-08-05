@@ -39,7 +39,7 @@ class ResourceProvider extends ChangeNotifier {
       _units = decoded.map((e) => Unit.fromJson(e)).toList();
       notifyListeners();
     } catch (e) {
-      print('Error fetching units: $e');
+      ('Error fetching units: $e');
     }
   }
 
@@ -59,7 +59,7 @@ class ResourceProvider extends ChangeNotifier {
       _categories = decoded.map((e) => Category.fromJson(e)).toList();
       notifyListeners();
     } catch (e) {
-      print('Error fetching categories: $e');
+      ('Error fetching categories: $e');
     }
   }
 
@@ -79,7 +79,7 @@ class ResourceProvider extends ChangeNotifier {
       _recipeTags = decoded.map((e) => RecipeTag.fromJson(e)).toList();
       notifyListeners();
     } catch (e) {
-      print('Error fetching recipe tags: $e');
+      ('Error fetching recipe tags: $e');
     }
   }
 
@@ -88,7 +88,7 @@ class ResourceProvider extends ChangeNotifier {
   List<String> getDietaryFlagsFromIngredients(List<dynamic> userIngredients) {
     final Set<String> dietaryFlags = {};
 
-    print(
+    (
       '🔍 DEBUG: getDietaryFlagsFromIngredients called with ${userIngredients.length} ingredients',
     );
 
@@ -99,11 +99,11 @@ class ResourceProvider extends ChangeNotifier {
 
       if (ingredient != null) {
         // Regular ingredient with boolean flags
-        print('🥬 Regular ingredient: ${ingredient.name}');
-        print('   - isVegan: ${ingredient.isVegan}');
-        print('   - isVegetarian: ${ingredient.isVegetarian}');
-        print('   - isGlutenFree: ${ingredient.isGlutenFree}');
-        print('   - isLactoseFree: ${ingredient.isLactoseFree}');
+        ('🥬 Regular ingredient: ${ingredient.name}');
+        ('   - isVegan: ${ingredient.isVegan}');
+        ('   - isVegetarian: ${ingredient.isVegetarian}');
+        ('   - isGlutenFree: ${ingredient.isGlutenFree}');
+        ('   - isLactoseFree: ${ingredient.isLactoseFree}');
 
         if (ingredient.isVegan) dietaryFlags.add('Vegan');
         if (ingredient.isVegetarian) dietaryFlags.add('Vegetarian');
@@ -112,8 +112,8 @@ class ResourceProvider extends ChangeNotifier {
       } else if (customIngredient != null) {
         // Custom ingredient - check if it has dietary tags
         final tags = customIngredient.tags ?? [];
-        print('🎨 Custom ingredient: ${customIngredient.name}');
-        print('   - tags: ${tags.map((t) => t.name).join(', ')}');
+        ('🎨 Custom ingredient: ${customIngredient.name}');
+        ('   - tags: ${tags.map((t) => t.name).join(', ')}');
 
         for (final tag in tags) {
           final tagName = tag.name.toLowerCase();
@@ -127,7 +127,7 @@ class ResourceProvider extends ChangeNotifier {
 
     // Return sorted list for consistent ordering
     final sortedFlags = dietaryFlags.toList()..sort();
-    print('🏷️ DEBUG: Final dietary flags: $sortedFlags');
+    ('🏷️ DEBUG: Final dietary flags: $sortedFlags');
     return sortedFlags;
   }
 

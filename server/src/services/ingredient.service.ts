@@ -3,13 +3,12 @@ import { CustomIngredient } from "../entities/Custom_Ingredient";
 import { BadRequestError, ConflictError } from "../types/AppError";
 import { IngredientRepository } from "../repositories/ingredient.repository";
 import { CustomIngredientRepository } from "../repositories/custom_ingredient.repository";
-import { User } from "../entities/User";
 import { UserRepository } from "../repositories/user.repository";
 import { CustomIngredientDto } from "../dtos/custom_ing.dto";
 
 
 export async function listGlobalIngredientsService() {
-  return await IngredientRepository.find({ relations: ['category', 'tags'] });
+  return await IngredientRepository.find({ relations: ['category'] });
 }
 
 export async function createGlobalIngredientService(data: Partial<Ingredient>) {
@@ -33,7 +32,7 @@ export async function listCustomIngredientsService(userId?: number) {
     return await CustomIngredientRepository.find({ where: { createdBy: { id: userId } }, relations: ['createdBy'] });
   }
   // Si es admin o global, listar todos
-  return await CustomIngredientRepository.find({ relations: ['createdBy', 'tags'] });
+  return await CustomIngredientRepository.find({ relations: ['createdBy'] });
 }
 
 export const createCustomIngredientService = async (

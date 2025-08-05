@@ -82,9 +82,7 @@ class _CupboardScreenState extends State<CupboardScreen> {
       ingredientsProvider.userIngredients,
     );
 
-    print(
-      '🏠 CUPBOARD: Got ${dietaryFlags.length} dietary flags: $dietaryFlags',
-    );
+    ('🏠 CUPBOARD: Got ${dietaryFlags.length} dietary flags: $dietaryFlags',);
 
     return Scaffold(
       backgroundColor: AppColors.background,

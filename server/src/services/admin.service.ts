@@ -727,7 +727,7 @@ export async function seedRecipesService(recipes: RecipeSeedInput | RecipeSeedIn
             // Fetch the complete recipe without circular references
             const savedRecipe = await RecipeRepository.findOne({
                 where: { id: recipe.id },
-                relations: ['ingredients', 'ingredients.ingredient', 'ingredients.unit', 'tags'],
+                relations: ['ingredients', 'ingredients.ingredient', 'ingredients.unit'],
                 select: {
                     id: true,
                     name: true,

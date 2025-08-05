@@ -44,7 +44,7 @@ class TagsPicker extends StatelessWidget {
                   final isSelected = selectedTags.contains(tag);
                   return Semantics(
                     label:
-                        'Dietary restriction ${tag}, ${isSelected ? "selected" : "not selected"}',
+                        'Dietary restriction $tag, ${isSelected ? "selected" : "not selected"}',
                     selected: isSelected,
                     child: FilterChip(
                       label: Text(TextUtils.capitalizeFirstLetter(tag)),

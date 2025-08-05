@@ -1,4 +1,4 @@
-import 'package:ai_cook_project/dialogs/recipes/ai_recipes_dialog.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/ai_recipes_dialog.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
 import 'package:ai_cook_project/providers/user_provider.dart';
@@ -49,7 +49,6 @@ class _MainScreenState extends State<MainScreen> {
         await ingredientsProvider.initializeIngredients();
         await resourceProvider.initializeResources();
         await userProvider.getUser();
-
         if (!mounted) return;
 
         MainScreenInit.updateSearchScreen(
