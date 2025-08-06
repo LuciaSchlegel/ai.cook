@@ -1,5 +1,9 @@
-import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/ai_recipe_card.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/ai_response_sections.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_almostready_section.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_greeting_section.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_recipe_card.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_conclusion_section.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_shoppingsuggest_section.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_subst_section.dart';
 import 'package:ai_cook_project/providers/ai_recommendations_provider.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,17 +55,6 @@ class RecommendationsBuilder extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  'Successfully analyzed ${recommendation.totalRecipesConsidered} recipes in ${recommendation.processingTime}ms',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: AppColors.button.withOpacity(0.8),
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 0.1,
-                  ),
-                ),
-              ),
             ],
           ),
         ),

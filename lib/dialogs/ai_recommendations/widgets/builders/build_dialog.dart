@@ -1,8 +1,9 @@
-import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/build_empty.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/build_error.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/build_form_section.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/build_recommendations.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/skeleton_loader.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_recom_header.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_empty.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_error.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_form_section.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_recommendations.dart';
+import 'package:ai_cook_project/widgets/loader/skeleton_loader.dart';
 import 'package:ai_cook_project/models/recipe_tag_model.dart';
 import 'package:ai_cook_project/providers/ai_recommendations_provider.dart';
 import 'package:ai_cook_project/theme.dart';
@@ -38,62 +39,7 @@ class BuildDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Enhanced dialog title with gradient
-            Row(
-              children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        AppColors.mutedGreen.withOpacity(0.2),
-                        AppColors.lightYellow.withOpacity(0.3),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(14),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.mutedGreen.withOpacity(0.15),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Icon(
-                    CupertinoIcons.sparkles,
-                    size: 24,
-                    color: AppColors.mutedGreen,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: ShaderMask(
-                    shaderCallback:
-                        (bounds) => LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: [
-                            AppColors.button,
-                            AppColors.mutedGreen,
-                            AppColors.button,
-                          ],
-                          stops: const [0.0, 0.5, 1.0],
-                        ).createShader(bounds),
-                    child: const Text(
-                      'AI Recipe Recommendations',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            const AiRecomHeader(),
             const SizedBox(height: 24),
 
             // AI Recommendation Form Section

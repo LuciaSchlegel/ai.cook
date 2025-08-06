@@ -1,8 +1,8 @@
 import 'package:ai_cook_project/dialogs/ai_recommendations/utils/helpers.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/ai_dialog_scaffold.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/build_dialog.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/close_button.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/handle_bar.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_dialog.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/close_button.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/handle_bar.dart';
 import 'package:ai_cook_project/models/recipe_tag_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
