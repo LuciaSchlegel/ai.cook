@@ -5,8 +5,6 @@ import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_c
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_shoppingsuggest_section.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_subst_section.dart';
 import 'package:ai_cook_project/providers/ai_recommendations_provider.dart';
-import 'package:ai_cook_project/theme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RecommendationsBuilder extends StatelessWidget {
@@ -20,44 +18,6 @@ class RecommendationsBuilder extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Success indicator with stats - Enhanced design
-        Container(
-          padding: const EdgeInsets.all(16),
-          margin: const EdgeInsets.symmetric(vertical: 8),
-          decoration: BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.mutedGreen.withOpacity(0.06),
-                blurRadius: 12,
-                offset: const Offset(0, 2),
-                spreadRadius: 0,
-              ),
-            ],
-            border: Border.all(
-              color: AppColors.mutedGreen.withOpacity(0.2),
-              width: 1,
-            ),
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 24,
-                height: 24,
-                decoration: BoxDecoration(
-                  color: AppColors.mutedGreen.withOpacity(0.15),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  CupertinoIcons.checkmark_alt,
-                  color: AppColors.mutedGreen,
-                  size: 14,
-                ),
-              ),
-              const SizedBox(width: 12),
-            ],
-          ),
-        ),
         const SizedBox(height: 16),
 
         // Structured AI Response Sections
