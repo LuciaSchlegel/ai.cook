@@ -1,26 +1,14 @@
 [
     {
-    "name": "Low-fat"
+    "name": "Vegan"
     },
     {
-    "name": "Low-carb"
+    "name": "Vegetarian"
     },
     {
-    "name": "High-protein"
+    "name": "Gluten-free"
     },
     {
-    "name": "Low-calories"
-    },
-    {
-    "name": "High-fat"
-    },
-    {
-    "name": "High-carb"
-    },
-    {
-    "name": "High-calories"
-    },
-    {
-    "name": "High-sugar"
-    },
+    "name": "Lactose-free"
+    }
 ]

@@ -9,6 +9,7 @@ import { RecipeRepository } from "../repositories/recipe.repository";
 import { RecipeIngredientRepository } from "../repositories/recipe_ingredient.repository";
 import { UnitRepository } from "../repositories/unit.repository";
 import { ILike } from "typeorm";
+import { DietaryTagRepository } from "../repositories/dietary_tag.repository";
 
 // Ingredient categorization mapping
 const INGREDIENT_CATEGORIES: Record<string, string> = {
@@ -480,6 +481,12 @@ export async function seedResourcesService(resourceType: string, resources: Reso
                 "Recipe tag"
             ));
         }
+        else if (resourceType === "dietary_tags") {
+            results.push(await handleEntitySave(
+                () => DietaryTagRepository.save({ name }),
+                "Dietary tag"
+            ));
+        }
         else if (resourceType === "units") {
             results.push(await handleEntitySave(
                 () => UnitRepository.save({ name, abbreviation, type }),
@@ -514,8 +521,6 @@ export async function seedIngredientsService(ingredients: IngredientSeedInput | 
     });
     const categoryMap = new Map(categories.map(c => [c.name, c]));
 
-
-
     const results = [];
 
     for (const ingredientInput of ingredientArray) {
@@ -525,7 +530,6 @@ export async function seedIngredientsService(ingredients: IngredientSeedInput | 
             throw new NotFoundError(`Category '${ingredientInput.category}' not found`);
         }
         
-
         // Create ingredient
         const result = await handleEntitySave(
             () => IngredientRepository.save({

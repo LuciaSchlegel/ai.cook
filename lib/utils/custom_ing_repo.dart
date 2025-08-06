@@ -16,7 +16,10 @@ class CustomIngredientRepo {
       body: json.encode({
         'name': customIngredient.name,
         'category': customIngredient.category?.toJson(),
-        'tags': customIngredient.tags?.map((tag) => tag.toJson()).toList(),
+        'isVegan': customIngredient.isVegan,
+        'isVegetarian': customIngredient.isVegetarian,
+        'isGlutenFree': customIngredient.isGlutenFree,
+        'isLactoseFree': customIngredient.isLactoseFree,
         'uid': uid,
       }),
     );

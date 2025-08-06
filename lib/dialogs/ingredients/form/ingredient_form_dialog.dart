@@ -3,7 +3,7 @@ import 'package:ai_cook_project/dialogs/ingredients/form/widgets/fields.dart';
 import 'package:ai_cook_project/dialogs/ingredients/form/widgets/unit_selector.dart';
 import 'package:ai_cook_project/models/category_model.dart';
 import 'package:ai_cook_project/models/custom_ing_model.dart';
-import 'package:ai_cook_project/models/tag_model.dart';
+import 'package:ai_cook_project/models/dietary_tag_model.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
 import 'package:ai_cook_project/widgets/buttons/form_action_buttons.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,7 +21,10 @@ class IngredientFormDialog extends StatefulWidget {
   final Function(
     String name,
     Category category,
-    List<Tag> tags,
+    bool isVegan,
+    bool isVegetarian,
+    bool isGlutenFree,
+    bool isLactoseFree,
     double quantity,
     Unit unit,
   )
@@ -48,7 +51,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
   late TextEditingController _quantityController;
   late Category _selectedCategory;
   late Unit _selectedUnit;
-  final Set<Tag> _selectedTags = {};
+  final Set<DietaryTag> _selectedTags = {};
 
   @override
   void initState() {
@@ -211,15 +214,31 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                   onSave:
                       () => IngredientFormUtils.handleSave(
                         validateForm: _validateForm,
-                        onSave: () {
-                          widget.onSave(
-                            _nameController.text,
-                            _selectedCategory,
-                            _selectedTags.toList(),
-                            double.parse(_quantityController.text),
-                            _selectedUnit,
-                          );
-                        },
+                        onSave:
+                            () => IngredientFormUtils.handleSave(
+                              validateForm: _validateForm,
+                              onSave: () {
+                                widget.onSave(
+                                  _nameController.text,
+                                  _selectedCategory,
+                                  _selectedTags.any(
+                                    (tag) => tag.name == 'vegan',
+                                  ),
+                                  _selectedTags.any(
+                                    (tag) => tag.name == 'vegetarian',
+                                  ),
+                                  _selectedTags.any(
+                                    (tag) => tag.name == 'gluten_free',
+                                  ),
+                                  _selectedTags.any(
+                                    (tag) => tag.name == 'lactose_free',
+                                  ),
+                                  double.parse(_quantityController.text),
+                                  _selectedUnit,
+                                );
+                              },
+                              closeDialog: () => Navigator.pop(context),
+                            ),
                         closeDialog: () => Navigator.pop(context),
                       ),
                 ),

@@ -49,7 +49,11 @@ class AddCustomIngredientButton extends StatelessWidget {
               id: -1,
               name: userIng.customIngredient?.name ?? '',
               category: userIng.customIngredient?.category,
-              tags: userIng.customIngredient?.tags,
+              isVegan: userIng.customIngredient?.isVegan ?? false,
+              isVegetarian: userIng.customIngredient?.isVegetarian ?? false,
+              isGlutenFree: userIng.customIngredient?.isGlutenFree ?? false,
+              isLactoseFree: userIng.customIngredient?.isLactoseFree ?? false,
+
               uid: FirebaseAuth.instance.currentUser?.uid ?? '',
             );
 

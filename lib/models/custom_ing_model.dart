@@ -1,18 +1,25 @@
 import 'package:ai_cook_project/models/category_model.dart';
-import 'package:ai_cook_project/models/tag_model.dart';
+import 'package:ai_cook_project/models/dietary_tag_model.dart';
 
 class CustomIngredient {
   final int id;
   final String name;
   final Category? category;
-  final List<Tag>? tags;
+  final bool isVegan;
+  final bool isVegetarian;
+  final bool isGlutenFree;
+  final bool isLactoseFree;
+
   final String uid;
 
   CustomIngredient({
     required this.id,
     required this.name,
     this.category,
-    this.tags,
+    required this.isVegan,
+    required this.isVegetarian,
+    required this.isGlutenFree,
+    required this.isLactoseFree,
     required this.uid,
   });
 
@@ -26,10 +33,14 @@ class CustomIngredient {
             json['category'] != null
                 ? Category.fromJson(json['category'] as Map<String, dynamic>)
                 : null,
-        tags:
-            (json['tags'] as List<dynamic>?)
-                ?.map((tag) => Tag.fromJson(tag as Map<String, dynamic>))
-                .toList(),
+        isVegan: _parseBool(json['isVegan'] ?? json['is_vegan']),
+        isVegetarian: _parseBool(json['isVegetarian'] ?? json['is_vegetarian']),
+        isGlutenFree: _parseBool(
+          json['isGlutenFree'] ?? json['is_gluten_free'],
+        ),
+        isLactoseFree: _parseBool(
+          json['isLactoseFree'] ?? json['is_lactose_free'],
+        ),
         uid: rawUid?.toString() ?? '',
       );
     } catch (e) {
@@ -41,7 +52,10 @@ class CustomIngredient {
       'id': id,
       'name': name,
       'category': category?.toJson(),
-      'tags': tags?.map((tag) => tag.toJson()).toList(),
+      'isVegan': isVegan,
+      'isVegetarian': isVegetarian,
+      'isGlutenFree': isGlutenFree,
+      'isLactoseFree': isLactoseFree,
       'uid': uid,
     };
   }
@@ -50,15 +64,61 @@ class CustomIngredient {
     int? id,
     String? name,
     Category? category,
-    List<Tag>? tags,
+    bool? isVegan,
+    bool? isVegetarian,
+    bool? isGlutenFree,
+    bool? isLactoseFree,
     String? uid,
   }) {
     return CustomIngredient(
       id: id ?? this.id,
       name: name ?? this.name,
       category: category ?? this.category,
-      tags: tags ?? this.tags,
+      isVegan: isVegan ?? this.isVegan,
+      isVegetarian: isVegetarian ?? this.isVegetarian,
+      isGlutenFree: isGlutenFree ?? this.isGlutenFree,
+      isLactoseFree: isLactoseFree ?? this.isLactoseFree,
       uid: uid ?? this.uid,
+    );
+  }
+
+  /// Helper method to parse boolean values from JSON
+  static bool _parseBool(dynamic value) {
+    if (value == null) return false;
+    if (value is bool) return value;
+    if (value is String) {
+      return value.toLowerCase() == 'true' || value == '1';
+    }
+    if (value is int) return value == 1;
+    return false;
+  }
+
+  List<DietaryTag> get dietaryTags {
+    final tags = <DietaryTag>[];
+    if (isVegan) tags.add(DietaryTag(id: 1, name: 'Vegan'));
+    if (isVegetarian) tags.add(DietaryTag(id: 2, name: 'Vegetarian'));
+    if (isGlutenFree) tags.add(DietaryTag(id: 3, name: 'Gluten-Free'));
+    if (isLactoseFree) tags.add(DietaryTag(id: 4, name: 'Lactose-Free'));
+    return tags;
+  }
+
+  static CustomIngredient fromTags({
+    required int id,
+    required String name,
+    Category? category,
+    required List<DietaryTag> tags,
+    required String uid,
+  }) {
+    final tagNames = tags.map((t) => t.name.toLowerCase()).toSet();
+    return CustomIngredient(
+      id: id,
+      name: name,
+      category: category,
+      isVegan: tagNames.contains('vegan'),
+      isVegetarian: tagNames.contains('vegetarian'),
+      isGlutenFree: tagNames.contains('gluten-free'),
+      isLactoseFree: tagNames.contains('lactose-free'),
+      uid: uid,
     );
   }
 }

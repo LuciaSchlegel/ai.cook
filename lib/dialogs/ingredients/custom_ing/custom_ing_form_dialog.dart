@@ -1,17 +1,9 @@
 import 'package:ai_cook_project/dialogs/ingredients/custom_ing/utils/form_utils.dart';
-import 'package:ai_cook_project/dialogs/ingredients/custom_ing/widgets/buttons.dart';
-import 'package:ai_cook_project/dialogs/ingredients/custom_ing/widgets/cat_picker.dart';
-import 'package:ai_cook_project/dialogs/ingredients/custom_ing/widgets/tags_picker.dart';
-import 'package:ai_cook_project/dialogs/ingredients/form/widgets/fields.dart'
-    as custom_ing_fields;
-import 'package:ai_cook_project/dialogs/ingredients/form/widgets/picker_modal.dart';
+import 'package:ai_cook_project/dialogs/ingredients/custom_ing/widgets/custom_ing_layout.dart';
 import 'package:ai_cook_project/models/category_model.dart';
 import 'package:ai_cook_project/models/custom_ing_model.dart';
-import 'package:ai_cook_project/models/tag_model.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
-import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/unit.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +17,10 @@ class CustomIngFormDialog extends StatefulWidget {
   final Function(
     String name,
     Category category,
-    List<Tag> tags,
+    bool isVegan,
+    bool isVegetarian,
+    bool isGlutenFree,
+    bool isLactoseFree,
     double quantity,
     Unit unit,
   )
@@ -68,11 +63,7 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
     _selectedUnit = widget.unit!;
 
     _selectedTags =
-        widget.customIngredient?.tags?.map((t) => t.name).toSet() ?? {};
-
-    if (widget.customIngredient?.tags != null) {
-      _selectedTags.addAll(widget.customIngredient!.tags!.map((t) => t.name));
-    }
+        widget.customIngredient?.dietaryTags.map((e) => e.name).toSet() ?? {};
   }
 
   @override
@@ -99,12 +90,10 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
   }
 
   bool _validateForm() {
-    // Safely parse the quantity
     double? quantity;
     try {
       quantity = double.parse(_quantityController.text);
     } catch (e) {
-      // If parsing fails, return false
       return false;
     }
 
@@ -116,251 +105,68 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
     );
   }
 
+  void _handleSave() {
+    double quantity;
+    try {
+      quantity = double.parse(_quantityController.text);
+    } catch (e) {
+      return;
+    }
+
+    final tagNames = _selectedTags.map((tag) => tag.toLowerCase()).toSet();
+
+    widget.onSave(
+      _nameController.text,
+      _selectedCategory,
+      tagNames.contains('vegan'),
+      tagNames.contains('vegetarian'),
+      tagNames.contains('gluten-free'),
+      tagNames.contains('lactose-free'),
+      quantity,
+      _selectedUnit,
+    );
+
+    if (mounted) Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final resourceProvider = Provider.of<ResourceProvider>(context);
     final availableUnits = resourceProvider.units;
 
-    // Use predefined dietary flags for custom ingredient forms
-    final dietaryFlags = resourceProvider.getPredefinedDietaryFlags();
-
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
+    return CustomIngLayout(
+      isEditing: widget.customIngredient != null,
+      nameController: _nameController,
+      quantityController: _quantityController,
+      selectedCategory: _selectedCategory,
+      categories: widget.categories,
+      onCategoryChanged: (Category newCategory) {
+        setState(() {
+          _selectedCategory = newCategory;
+        });
       },
-      child: Container(
-        padding: EdgeInsets.fromLTRB(
-          24,
-          16,
-          24,
-          MediaQuery.of(context).viewInsets.bottom + 24,
-        ),
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-          // No shadow at all
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.only(bottom: 24),
-                decoration: BoxDecoration(
-                  color: AppColors.button.withOpacity(0.15), // softer
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              Text(
-                widget.customIngredient == null
-                    ? 'Add Custom Ingredient'
-                    : 'Edit Custom Ingredient',
-                style: const TextStyle(
-                  fontSize: 30,
-                  fontFamily: 'Casta',
-                  color: AppColors.button,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.2,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 28),
-              custom_ing_fields.ControlledIngNameField(
-                controller: _nameController,
-              ),
-              const SizedBox(height: 16),
-              Container(
-                decoration: BoxDecoration(
-                  color: CupertinoColors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.button.withOpacity(0.3)),
-                ),
-                child: CupertinoButton(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  onPressed: () {
-                    showCupertinoModalPopup(
-                      context: context,
-                      builder:
-                          (BuildContext context) => CategoryPickerModal(
-                            categories: widget.categories,
-                            selectedCategory: _selectedCategory,
-                            onSelected: (newCategory) {
-                              setState(() {
-                                _selectedCategory = newCategory;
-                              });
-                            },
-                          ),
-                    );
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        _selectedCategory.name,
-                        style: const TextStyle(
-                          color: AppColors.button,
-                          fontSize: 16,
-                        ),
-                      ),
-                      const Icon(
-                        CupertinoIcons.chevron_down,
-                        color: AppColors.button,
-                        size: 20,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TagsPicker(
-                tags: dietaryFlags,
-                selectedTags: _selectedTags.toList(),
-                onTagsSelected: (tag) {
-                  setState(() {
-                    if (_selectedTags.contains(tag)) {
-                      _selectedTags.remove(tag);
-                    } else {
-                      _selectedTags.add(tag);
-                    }
-                  });
-                },
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: CupertinoColors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppColors.button.withOpacity(0.3),
-                        ),
-                      ),
-                      child: custom_ing_fields.QuantityField(
-                        controller: _quantityController,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: CupertinoColors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppColors.button.withOpacity(0.3),
-                        ),
-                      ),
-                      child: CupertinoButton(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        onPressed: () {
-                          showCupertinoModalPopup(
-                            context: context,
-                            builder:
-                                (context) => UnitPickerModal(
-                                  selectedUnit: _selectedUnit,
-                                  units: availableUnits,
-                                  onSelected: (Unit selected) {
-                                    setState(() {
-                                      _selectedUnit = selected;
-                                    });
-                                  },
-                                ),
-                          );
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              TextUtils.capitalizeFirstLetter(
-                                _selectedUnit.name,
-                              ),
-                              style: TextStyle(
-                                color:
-                                    _selectedUnit.name == 'Select unit'
-                                        ? AppColors.button.withOpacity(0.5)
-                                        : AppColors.button,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const Icon(
-                              CupertinoIcons.chevron_down,
-                              color: AppColors.button,
-                              size: 20,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 36),
-              SaveButtonsRow(
-                isEditing: widget.customIngredient != null,
-                onDelete: widget.onDelete,
-                onCancel: () => Navigator.pop(context),
-                onSave: () {
-                  // Safely parse quantity (should be valid since button is only enabled when form is valid)
-                  double quantity;
-                  try {
-                    quantity = double.parse(_quantityController.text);
-                  } catch (e) {
-                    // This shouldn't happen since button is disabled when form is invalid
-                    return;
-                  }
-
-                  // Convert selected dietary flag strings back to Tag objects
-                  final tagObjects =
-                      _selectedTags.map((tagName) {
-                        // Create Tag objects for dietary flags
-                        // Using simple ID mapping for dietary flags
-                        int tagId;
-                        switch (tagName.toLowerCase()) {
-                          case 'vegan':
-                            tagId = 1;
-                            break;
-                          case 'vegetarian':
-                            tagId = 2;
-                            break;
-                          case 'gluten-free':
-                            tagId = 3;
-                            break;
-                          case 'lactose-free':
-                            tagId = 4;
-                            break;
-                          default:
-                            tagId = 999; // fallback ID for custom tags
-                        }
-                        return Tag(id: tagId, name: tagName);
-                      }).toList();
-
-                  widget.onSave(
-                    _nameController.text,
-                    _selectedCategory,
-                    tagObjects,
-                    quantity,
-                    _selectedUnit,
-                  );
-                  if (mounted) Navigator.pop(context);
-                },
-                isFormValid: _validateForm(),
-              ),
-              const SizedBox(height: 16),
-            ],
-          ),
-        ),
-      ),
+      selectedTags: _selectedTags,
+      onTagToggle: (String tag) {
+        setState(() {
+          if (_selectedTags.contains(tag)) {
+            _selectedTags.remove(tag);
+          } else {
+            _selectedTags.add(tag);
+          }
+        });
+      },
+      selectedUnit: _selectedUnit,
+      availableUnits: availableUnits,
+      onUnitChanged: (Unit newUnit) {
+        setState(() {
+          _selectedUnit = newUnit;
+        });
+      },
+      onCancel: () => Navigator.pop(context),
+      onSave: _handleSave,
+      onDelete: widget.onDelete,
+      isFormValid: _validateForm(),
+      resourceProvider: resourceProvider,
     );
   }
 }

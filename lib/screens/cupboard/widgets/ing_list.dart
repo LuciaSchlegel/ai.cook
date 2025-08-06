@@ -72,7 +72,7 @@ class IngredientListView extends StatelessWidget {
       isLactoseFree = ingredient.isLactoseFree;
     } else if (userIng.customIngredient != null) {
       // For custom ingredients, check tags directly
-      final tags = userIng.customIngredient!.tags ?? [];
+      final tags = userIng.customIngredient!.dietaryTags;
       final tagNames = tags.map((tag) => tag.name.toLowerCase()).toList();
 
       isVegan = tagNames.contains('vegan');

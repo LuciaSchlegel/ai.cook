@@ -78,7 +78,10 @@ class UserIng {
             id: (json['custom_ingredient']['id'] as int?) ?? -1,
             name: '',
             category: null,
-            tags: [],
+            isVegan: false,
+            isVegetarian: false,
+            isGlutenFree: false,
+            isLactoseFree: false,
             uid: '',
           );
         }

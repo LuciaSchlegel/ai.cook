@@ -1,4 +1,3 @@
-import 'package:ai_cook_project/models/custom_ing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,24 +28,8 @@ Future<void> showIngredientDialog({
       orElse: () => userIng!,
     );
 
-    // ✅ Buscar el customIngredient completo para asegurar que tenga tags
-    if (updated.customIngredient != null) {
-      final fullCustom = ingredientsProvider.userIngredients
-          .map((u) => u.customIngredient)
-          .whereType<CustomIngredient>()
-          .firstWhere(
-            (c) => c.id == updated.customIngredient!.id,
-            orElse: () => updated.customIngredient!,
-          );
-
-      userIng = updated.copyWith(
-        customIngredient: updated.customIngredient!.copyWith(
-          tags: fullCustom.tags,
-        ),
-      );
-    } else {
-      userIng = updated;
-    }
+    // ✅ Ya no hace falta copiar tags manualmente (se derivan de bools)
+    userIng = updated;
   }
 
   final dialogs = IngredientDialogs();
@@ -90,11 +73,7 @@ Future<void> showIngredientDialog({
       if (userIng == null) {
         await ingredientsProvider.addUserIngredient(updatedUserIng);
       } else {
-        // ⚠️ Guardamos la versión retornada con las tags del formulario
-        final saved = await ingredientsProvider.updateUserIngredient(
-          updatedUserIng,
-        );
-        userIng = saved;
+        await ingredientsProvider.updateUserIngredient(updatedUserIng);
       }
       onChanged();
     },

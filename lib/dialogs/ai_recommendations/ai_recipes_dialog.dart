@@ -1,4 +1,4 @@
-import 'package:ai_cook_project/dialogs/ai_recommendations/utils/recommendations_function.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/utils/helpers.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/ai_dialog_scaffold.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/build_dialog.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/close_button.dart';

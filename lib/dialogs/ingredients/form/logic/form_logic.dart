@@ -1,4 +1,4 @@
-import 'package:ai_cook_project/models/tag_model.dart';
+import 'package:ai_cook_project/models/dietary_tag_model.dart';
 import 'package:ai_cook_project/models/unit.dart';
 import 'package:ai_cook_project/models/category_model.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
@@ -14,7 +14,7 @@ class IngredientFormUtils {
     required CustomIngredient? customIngredient,
     required double quantity,
     required List<Category> categories,
-    required Set<Tag> selectedTags,
+    required Set<DietaryTag> selectedTags,
     required Function(Category) setCategory,
     required Function(Unit) setUnit,
     required Unit? providedUnit,
@@ -38,7 +38,7 @@ class IngredientFormUtils {
   /// Valida si el formulario está completo y correcto
   static bool isFormValid({
     required String name,
-    required Set<Tag> tags,
+    required Set<DietaryTag> tags,
     required String quantity,
     required Unit unit,
   }) {

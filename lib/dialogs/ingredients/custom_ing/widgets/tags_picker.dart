@@ -1,11 +1,12 @@
+import 'package:ai_cook_project/models/dietary_tag_model.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TagsPicker extends StatelessWidget {
-  final List<String> tags;
-  final List<String> selectedTags;
+  final List<DietaryTag> tags;
+  final List<DietaryTag> selectedTags;
   final ValueChanged<String> onTagsSelected;
 
   const TagsPicker({
@@ -47,9 +48,9 @@ class TagsPicker extends StatelessWidget {
                         'Dietary restriction $tag, ${isSelected ? "selected" : "not selected"}',
                     selected: isSelected,
                     child: FilterChip(
-                      label: Text(TextUtils.capitalizeFirstLetter(tag)),
+                      label: Text(TextUtils.capitalizeFirstLetter(tag.name)),
                       selected: isSelected,
-                      onSelected: (_) => onTagsSelected(tag),
+                      onSelected: (_) => onTagsSelected(tag.name),
                       backgroundColor:
                           isSelected
                               ? AppColors.mutedGreen

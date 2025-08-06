@@ -18,11 +18,11 @@ List<UserIng> filterUserIngredients({
     final matchesProperties =
         selectedProperties.isEmpty ||
         selectedProperties.every((selectedProperty) {
-          // Check dietary flags for both regular and custom ingredients
+          final lowerProperty = selectedProperty.toLowerCase();
+
           if (userIng.ingredient != null) {
-            // Regular ingredient - check boolean dietary flags
             final ingredient = userIng.ingredient!;
-            switch (selectedProperty.toLowerCase()) {
+            switch (lowerProperty) {
               case 'vegan':
                 return ingredient.isVegan;
               case 'vegetarian':
@@ -35,12 +35,11 @@ List<UserIng> filterUserIngredients({
                 return false;
             }
           } else if (userIng.customIngredient != null) {
-            // Custom ingredient - check tags for dietary restrictions
-            final tags = userIng.customIngredient?.tags ?? [];
-            return tags.any(
-              (tag) => tag.name.toLowerCase() == selectedProperty.toLowerCase(),
+            return userIng.customIngredient!.dietaryTags.any(
+              (tag) => tag.name.toLowerCase() == lowerProperty,
             );
           }
+
           return false;
         });
 

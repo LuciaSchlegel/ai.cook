@@ -191,12 +191,20 @@ class IngredientsProvider with ChangeNotifier {
       // ✅ Aplicar las tags actualizadas (del formulario)
       final fullUpdatedUserIng = savedUserIng.copyWith(
         customIngredient: mergedCustomIngredient?.copyWith(
-          tags:
-              userIngredient.customIngredient?.tags ??
-              mergedCustomIngredient.tags,
+          isVegan:
+              userIngredient.customIngredient?.isVegan ??
+              mergedCustomIngredient.isVegan,
+          isVegetarian:
+              userIngredient.customIngredient?.isVegetarian ??
+              mergedCustomIngredient.isVegetarian,
+          isGlutenFree:
+              userIngredient.customIngredient?.isGlutenFree ??
+              mergedCustomIngredient.isGlutenFree,
+          isLactoseFree:
+              userIngredient.customIngredient?.isLactoseFree ??
+              mergedCustomIngredient.isLactoseFree,
         ),
       );
-
       // 🧠 Guardar versión final
       _userIngredients[tempIndex] = fullUpdatedUserIng;
 
@@ -305,10 +313,12 @@ class IngredientsProvider with ChangeNotifier {
 
       final mergedUserIng = savedUserIng.copyWith(
         customIngredient: savedUserIng.customIngredient?.copyWith(
-          tags: customIngredient.tags,
+          isVegan: customIngredient.isVegan,
+          isVegetarian: customIngredient.isVegetarian,
+          isGlutenFree: customIngredient.isGlutenFree,
+          isLactoseFree: customIngredient.isLactoseFree,
         ),
       );
-
       // 🔹 Reemplazar temporal por real
       final index = _userIngredients.indexWhere((ing) => ing.id == tempId);
       if (index != -1) {
