@@ -2,8 +2,8 @@ import { Expose, Type } from 'class-transformer';
 import { UserIngredientOptimizedDto } from './user_ing_optimized.dto';
 import { IsArray, IsInt, IsOptional, IsString } from 'class-validator';
 import { RecipeDto } from './recipe.dto';
-import { RecipeTagDto } from './recipe_tag.dto';
 
+// Request DTO remains the same
 export class AIRecommendationRequestDto {
   @Expose()
   @Type(() => UserIngredientOptimizedDto)
@@ -14,7 +14,7 @@ export class AIRecommendationRequestDto {
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  preferredTags?: string[]; // Tag names as strings (matches Flutter client)
+  preferredTags?: string[];
 
   @Expose()
   @IsOptional()
@@ -29,12 +29,12 @@ export class AIRecommendationRequestDto {
   @Expose()
   @IsOptional()
   @IsString()
-  userPreferences?: string; // Texto libre con preferencias adicionales
+  userPreferences?: string;
 
   @Expose()
   @IsOptional()
   @IsInt()
-  numberOfRecipes?: number; // Cuántas recetas enviar a la IA (default: 10)
+  numberOfRecipes?: number;
 
   @Expose()
   @IsOptional()
@@ -46,6 +46,71 @@ export class AIRecommendationRequestDto {
   };
 }
 
+// New structured response DTOs
+export class IngredientQuantityDto {
+  @Expose()
+  name!: string;
+
+  @Expose()
+  quantity!: string;
+}
+
+export class AIRecipeMinimalDto {
+  @Expose()
+  title!: string;
+
+  @Expose()
+  time_minutes!: number;
+
+  @Expose()
+  difficulty!: string;
+
+  @Expose()
+  tags!: string[];
+
+  @Expose()
+  description!: string;
+
+  @Expose()
+  @Type(() => IngredientQuantityDto)
+  ingredients!: IngredientQuantityDto[];
+
+  @Expose()
+  steps!: string[];
+}
+
+export class AIShoppingSuggestionDto {
+  @Expose()
+  name!: string;
+
+  @Expose()
+  reason!: string;
+}
+
+export class AIAlmostReadyRecipeDto {
+  @Expose()
+  title!: string;
+
+  @Expose()
+  description!: string;
+
+  @Expose()
+  missing_ingredients!: string[];
+
+  @Expose()
+  @Type(() => AIShoppingSuggestionDto)
+  shopping_suggestions!: AIShoppingSuggestionDto[];
+}
+
+export class AISubstitutionDto {
+  @Expose()
+  original!: string;
+
+  @Expose()
+  alternatives!: string[];
+}
+
+// Keep legacy DTO for backward compatibility
 export class RecipeWithMissingIngredientsDto {
   @Expose()
   recipe!: RecipeDto;
@@ -70,21 +135,36 @@ export class RecipeWithMissingIngredientsDto {
   matchPercentage!: number;
 }
 
+// New primary response DTO
 export class AIRecommendationResponseDto {
   @Expose()
-  recommendations!: string; // Respuesta de la IA
+  @Type(() => AIRecipeMinimalDto)
+  ready_to_cook!: AIRecipeMinimalDto[];
 
   @Expose()
-  @Type(() => UserIngredientOptimizedDto)
-  filteredRecipes!: RecipeDto[]; // Recetas que se enviaron a la IA
+  @Type(() => AIAlmostReadyRecipeDto)
+  almost_ready!: AIAlmostReadyRecipeDto[];
+
+  @Expose()
+  @Type(() => AIShoppingSuggestionDto)
+  shopping_suggestions!: AIShoppingSuggestionDto[];
+
+  @Expose()
+  @Type(() => AISubstitutionDto)
+  possible_substitutions!: AISubstitutionDto[];
+
+  @Expose()
+  processingTime?: number;
+
+  // Keep legacy fields for backward compatibility
+  @Expose()
+  @Type(() => RecipeDto)
+  filteredRecipes?: RecipeDto[];
 
   @Expose()
   @Type(() => RecipeWithMissingIngredientsDto)
-  recipesWithMissingInfo?: RecipeWithMissingIngredientsDto[]; // Detailed missing ingredient info
+  recipesWithMissingInfo?: RecipeWithMissingIngredientsDto[];
 
   @Expose()
-  totalRecipesConsidered!: number; // Total de recetas antes del filtrado
-
-  @Expose()
-  processingTime?: number; // Tiempo de procesamiento en ms
-} 
+  totalRecipesConsidered?: number;
+}

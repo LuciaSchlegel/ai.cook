@@ -13,11 +13,8 @@ export async function getUserIngredientsController(req: Request, res: Response, 
   }
   try {
     const ingredients = await getUserIngredientsService(uid);
-    console.log('ingredients: ', ingredients);
     const serialized = serialize(UserIngredientOptimizedDto, ingredients);
-    console.log('serialized: ', serialized);
     const response = toSnakeCaseDeep(serialized);
-    console.log('response: ', response);
     return res.status(200).json(response);
   } catch (error) {
     next(error);
@@ -26,21 +23,12 @@ export async function getUserIngredientsController(req: Request, res: Response, 
 
 export async function addUserIngredientController(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log('Request body:', JSON.stringify(req.body, null, 2));
       const { uid } = req.params;
       const camelBody = toCamelCaseDeep(req.body);
       const { ingredient, customIngredient, quantity, unit } = camelBody;
   
-      console.log('Destructured values:', {
-        ingredient,
-        customIngredient,
-        quantity,
-        unit
-      });
-  
       if (!uid) return next(new BadRequestError("User ID is required"));
       if (!ingredient?.id && !customIngredient?.id) {
-        console.log('Missing ingredient IDs:', { ingredientId: ingredient?.id, customIngredientId: customIngredient?.id });
         return next(new BadRequestError("Either ingredient ID or custom ingredient ID is required"));
       }
       if (!quantity) return next(new BadRequestError("Quantity is required"));

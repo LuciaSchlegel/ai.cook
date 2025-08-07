@@ -114,7 +114,7 @@ class AIShoppingSuggestionsSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  suggestion.ingredient,
+                  suggestion.name,
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -123,7 +123,7 @@ class AIShoppingSuggestionsSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  suggestion.description,
+                  suggestion.reason,
                   style: TextStyle(
                     fontSize: 14,
                     height: 1.4,

@@ -23,7 +23,7 @@ import { talk_to_llm_service, healthCheck } from "../services/llm.service";
 //   }
 // }
 
-export async function talk_to_llm(req: Request, res: Response) {
+export async function talk_to_llm(req: Request, res: Response ) {
   try {
     console.log("Received request to talk to LLM:", req.body);
     const { prompt } = req.body;

@@ -3,6 +3,7 @@ import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/buil
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_error.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_form_section.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_recommendations.dart';
+import 'package:ai_cook_project/models/ai_response_model.dart';
 import 'package:ai_cook_project/widgets/loader/skeleton_loader.dart';
 import 'package:ai_cook_project/models/recipe_tag_model.dart';
 import 'package:ai_cook_project/providers/ai_recommendations_provider.dart';
@@ -126,7 +127,7 @@ Widget _buildErrorContent(String error) {
   return ErrorBuild(error: error);
 }
 
-Widget _buildRecommendationsContent(AIRecommendation recommendation) {
+Widget _buildRecommendationsContent(StructuredAIRecommendation recommendation) {
   return RecommendationsBuilder(recommendation: recommendation);
 }
 

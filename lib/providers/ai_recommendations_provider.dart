@@ -55,53 +55,13 @@ class RecipeWithMissingIngredients {
   }
 }
 
-class AIRecommendation {
-  final String recommendations;
-  final ParsedAIResponse parsedResponse;
-  final List<dynamic> filteredRecipes;
-  final List<RecipeWithMissingIngredients>? recipesWithMissingInfo;
-  final int totalRecipesConsidered;
-  final int? processingTime;
-
-  AIRecommendation({
-    required this.recommendations,
-    required this.parsedResponse,
-    required this.filteredRecipes,
-    this.recipesWithMissingInfo,
-    required this.totalRecipesConsidered,
-    this.processingTime,
-  });
-
-  factory AIRecommendation.fromJson(Map<String, dynamic> json) {
-    final rawRecommendations = json['recommendations'] as String;
-    final parsedResponse = ParsedAIResponse.parse(rawRecommendations);
-
-    return AIRecommendation(
-      recommendations: rawRecommendations,
-      parsedResponse: parsedResponse,
-      filteredRecipes: json['filteredRecipes'] as List<dynamic>,
-      recipesWithMissingInfo:
-          json['recipesWithMissingInfo'] != null
-              ? (json['recipesWithMissingInfo'] as List<dynamic>)
-                  .map(
-                    (item) => RecipeWithMissingIngredients.fromJson(
-                      item as Map<String, dynamic>,
-                    ),
-                  )
-                  .toList()
-              : null,
-      totalRecipesConsidered: json['totalRecipesConsidered'] as int,
-      processingTime: json['processingTime'] as int?,
-    );
-  }
-}
-
 class AIRecommendationsProvider extends ChangeNotifier {
-  AIRecommendation? _currentRecommendation;
+  StructuredAIRecommendation? _currentRecommendation;
   bool _isLoading = false;
   String? _error;
 
-  AIRecommendation? get currentRecommendation => _currentRecommendation;
+  StructuredAIRecommendation? get currentRecommendation =>
+      _currentRecommendation;
   bool get isLoading => _isLoading;
   String? get error => _error;
 
@@ -114,7 +74,6 @@ class AIRecommendationsProvider extends ChangeNotifier {
     try {
       final apiUrl =
           '${dotenv.env['API_URL']}/ai-recommendations/recommendations';
-
       final body = {
         "userIngredients":
             input.userIngredients.map((u) => u.toJson()).toList(),
@@ -125,15 +84,8 @@ class AIRecommendationsProvider extends ChangeNotifier {
         "numberOfRecipes": input.numberOfRecipes,
       };
 
-      debugPrint(
-        '🤖 Sending AI recommendation request: \n'
-        'Tags: ${input.preferredTags.map((t) => t.name).toList()}\n'
-        'User Ingredients: ${input.userIngredients.map((u) => u.toJson()).toList()}\n'
-        'Max Cooking Time: ${input.maxCookingTimeMinutes}\n'
-        'Preferred Difficulty: ${input.preferredDifficulty}\n'
-        'User Preferences: ${input.userPreferences}\n'
-        'Number of Recipes: ${input.numberOfRecipes}',
-      );
+      debugPrint('🤖 Sending AI recommendation request (JSON mode)');
+      debugPrint('📊 Request details: ${body.toString()}');
 
       final response = await http.post(
         Uri.parse(apiUrl),
@@ -143,11 +95,22 @@ class AIRecommendationsProvider extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
-        _currentRecommendation = AIRecommendation.fromJson(responseData);
+        _currentRecommendation = StructuredAIRecommendation.fromJson(
+          responseData,
+        );
 
-        debugPrint('✅ AI recommendations received successfully');
+        debugPrint('✅ Structured AI recommendations received successfully');
         debugPrint(
-          '📊 Processed ${_currentRecommendation!.totalRecipesConsidered} recipes',
+          '🍽️ Ready to cook: ${_currentRecommendation!.readyToCook.length} recipes',
+        );
+        debugPrint(
+          '🛒 Almost ready: ${_currentRecommendation!.almostReady.length} recipes',
+        );
+        debugPrint(
+          '💡 Shopping suggestions: ${_currentRecommendation!.shoppingSuggestions.length} items',
+        );
+        debugPrint(
+          '🔄 Substitutions: ${_currentRecommendation!.possibleSubstitutions.length} options',
         );
         debugPrint(
           '⏱️ Processing time: ${_currentRecommendation!.processingTime}ms',
@@ -155,9 +118,7 @@ class AIRecommendationsProvider extends ChangeNotifier {
 
         notifyListeners();
       } else {
-        // Handle different error types from server
         String errorMessage = 'Error generating AI recommendations';
-
         try {
           final errorData = json.decode(response.body);
           if (errorData['error'] == 'NO_INGREDIENTS') {
@@ -173,10 +134,10 @@ class AIRecommendationsProvider extends ChangeNotifier {
           errorMessage =
               'Server error (${response.statusCode}). Please try again.';
         }
-
         _setError(errorMessage);
       }
     } catch (e) {
+      debugPrint('❌ Error in generateRecommendations: $e');
       _setError('Error generating AI recommendations: $e');
     } finally {
       _setLoading(false);
@@ -207,4 +168,19 @@ class AIRecommendationsProvider extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
   }
+
+  // Convenience methods for accessing data
+  List<AIRecipeMinimal> get readyToCookRecipes =>
+      _currentRecommendation?.readyToCook ?? [];
+  List<AIAlmostReadyRecipe> get almostReadyRecipes =>
+      _currentRecommendation?.almostReady ?? [];
+  List<AIShoppingSuggestion> get shoppingSuggestions =>
+      _currentRecommendation?.shoppingSuggestions ?? [];
+  List<AISubstitution> get substitutions =>
+      _currentRecommendation?.possibleSubstitutions ?? [];
+
+  bool get hasAnyRecommendations =>
+      _currentRecommendation?.hasAnyRecommendations ?? false;
+  int get totalRecommendations =>
+      _currentRecommendation?.totalRecommendations ?? 0;
 }

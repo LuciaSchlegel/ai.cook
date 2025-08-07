@@ -121,7 +121,7 @@ class AISubstitutionsSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  substitution.ingredient,
+                  substitution.original,
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -130,7 +130,7 @@ class AISubstitutionsSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  substitution.substitutes,
+                  substitution.alternatives.join(', '),
                   style: TextStyle(
                     fontSize: 14,
                     height: 1.4,

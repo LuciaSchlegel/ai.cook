@@ -54,8 +54,6 @@ export const createCustomIngredientService = async (
       throw new BadRequestError('User not found');
     }
 
-    console.log('Creating custom ingredient with data:', customIngredientData);
-
     // Auto-derive dietary flags from tags if tags are provided in the future
     // For now, use the boolean flags directly from the DTO
     const isVegan = customIngredientData.isVegan || false;
@@ -74,12 +72,8 @@ export const createCustomIngredientService = async (
       createdBy: user
     });
 
-    console.log('Created custom ingredient object:', customIngredient);
-
     // Save the custom ingredient
     const savedCustomIngredient = await CustomIngredientRepository.save(customIngredient);
-
-    console.log('Saved custom ingredient:', savedCustomIngredient);
 
     // Reload the custom ingredient with all relations
     const reloadedCustomIngredient = await CustomIngredientRepository.findOne({
@@ -90,8 +84,6 @@ export const createCustomIngredientService = async (
     if (!reloadedCustomIngredient) {
       throw new Error('Failed to reload custom ingredient after save');
     }
-
-    console.log('Reloaded custom ingredient:', reloadedCustomIngredient);
 
     return reloadedCustomIngredient;
   } catch (error) {

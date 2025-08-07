@@ -1,8 +1,10 @@
+import 'package:ai_cook_project/models/ai_response_model.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class AIAlmostReadySection extends StatelessWidget {
-  final String content;
+  final List<AIAlmostReadyRecipe> content;
 
   const AIAlmostReadySection({super.key, required this.content});
 
@@ -74,14 +76,40 @@ class AIAlmostReadySection extends StatelessWidget {
           const SizedBox(height: 16),
 
           // Content
-          Text(
-            content,
-            style: TextStyle(
-              fontSize: 15,
-              height: 1.6,
-              color: AppColors.button.withOpacity(0.85),
-              fontWeight: FontWeight.w400,
-            ),
+          Column(
+            children:
+                content.map((recipe) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          recipe.title,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          recipe.description,
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                        Text(
+                          'Missing: ${recipe.missingIngredients.join(', ')}',
+                          style: const TextStyle(fontSize: 13),
+                        ),
+                        Text(
+                          '${recipe.timeMinutes} | ${recipe.difficulty}',
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
           ),
         ],
       ),
