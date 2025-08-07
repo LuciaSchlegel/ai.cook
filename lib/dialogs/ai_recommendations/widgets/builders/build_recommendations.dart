@@ -1,14 +1,16 @@
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_almostready_section.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_almostrecipe_card.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_greeting_section.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_recipe_card.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_readyrecipe_card.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_conclusion_section.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_shoppingsuggest_section.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_subst_section.dart';
-import 'package:ai_cook_project/providers/ai_recommendations_provider.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/recipe_finder.dart';
+import 'package:ai_cook_project/models/ai_response_model.dart';
 import 'package:flutter/material.dart';
 
 class RecommendationsBuilder extends StatelessWidget {
-  final AIRecommendation recommendation;
+  final StructuredAIRecommendation recommendation;
 
   const RecommendationsBuilder({super.key, required this.recommendation});
 
@@ -25,35 +27,29 @@ class RecommendationsBuilder extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Greeting
-            AIGreetingSection(greeting: recommendation.parsedResponse.greeting),
+            AIGreetingSection(greeting: 'Hi there!'),
 
-            // Almost ready recipes
-            AIAlmostReadySection(
-              content: recommendation.parsedResponse.almostReadySection,
+            _buildRecipeCards(
+              context,
+              recommendation.readyToCook,
+              recommendation.almostReady,
             ),
 
-            // Recipe cards with missing ingredient info - Moved here between sections
-            if (recommendation.recipesWithMissingInfo != null &&
-                recommendation.recipesWithMissingInfo!.isNotEmpty) ...[
-              const SizedBox(height: 20),
-              _buildRecipeCards(recommendation.recipesWithMissingInfo!),
-              const SizedBox(height: 20),
-            ],
+            // Almost ready recipes
+            AIAlmostReadySection(content: recommendation.almostReady),
 
             // Shopping suggestions
             AIShoppingSuggestionsSection(
-              suggestions: recommendation.parsedResponse.shoppingSuggestions,
+              suggestions: recommendation.shoppingSuggestions,
             ),
 
             // Substitutions
             AISubstitutionsSection(
-              substitutions: recommendation.parsedResponse.substitutions,
+              substitutions: recommendation.possibleSubstitutions,
             ),
 
             // Conclusion
-            AIConclusionSection(
-              conclusion: recommendation.parsedResponse.conclusion,
-            ),
+            AIConclusionSection(conclusion: 'see you soon'),
           ],
         ),
       ],
@@ -62,31 +58,49 @@ class RecommendationsBuilder extends StatelessWidget {
 }
 
 Widget _buildRecipeCards(
-  List<RecipeWithMissingIngredients> recipesWithMissingInfo,
+  BuildContext context,
+  List<AIRecipeMinimal> readyToCook,
+  List<AIAlmostReadyRecipe> almostReadyList,
 ) {
-  // Group recipes by missing count
-  final perfectMatches = <RecipeWithMissingIngredients>[];
-  final almostReady = <RecipeWithMissingIngredients>[];
+  final readyModels =
+      readyToCook.map((aiRecipe) {
+        final recipe = RecipeFinderService.findOrThrow(
+          context: context,
+          id: aiRecipe.id,
+        );
+        return CombinedRecipeViewModel(
+          recipe: recipe,
+          description: aiRecipe.description,
+        );
+      }).toList();
 
-  for (final recipeData in recipesWithMissingInfo) {
-    if (recipeData.missingCount == 0) {
-      perfectMatches.add(recipeData);
-    } else {
-      almostReady.add(recipeData);
-    }
-  }
+  final almostModels =
+      almostReadyList.map((aiRecipe) {
+        final recipe = RecipeFinderService.findOrThrow(
+          context: context,
+          id: aiRecipe.id,
+        );
+        return CombinedRecipeViewModel(
+          recipe: recipe,
+          description: aiRecipe.description,
+          missingIngredients:
+              aiRecipe.missingIngredients
+                  .map((name) => MissingIngredientInfo(name: name))
+                  .toList(),
+          missingCount: aiRecipe.missingIngredients.length,
+        );
+      }).toList();
 
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      // Perfect matches section
-      if (perfectMatches.isNotEmpty) ...[
+      if (readyModels.isNotEmpty) ...[
         Row(
           children: [
             const Icon(Icons.check_circle, color: Colors.green, size: 20),
             const SizedBox(width: 8),
             Text(
-              'Ready to Cook (${perfectMatches.length})',
+              'Ready to Cook (${readyModels.length})',
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -96,20 +110,16 @@ Widget _buildRecipeCards(
           ],
         ),
         const SizedBox(height: 8),
-        ...perfectMatches.map(
-          (recipeData) => AIRecipeCard(recipeWithMissingInfo: recipeData),
-        ),
+        ...readyModels.map((vm) => AIReadyToCookCard(viewModel: vm)),
       ],
-
-      // Almost ready section
-      if (almostReady.isNotEmpty) ...[
+      if (almostModels.isNotEmpty) ...[
         const SizedBox(height: 16),
         Row(
           children: [
             const Icon(Icons.shopping_cart, color: Colors.orange, size: 20),
             const SizedBox(width: 8),
             Text(
-              'Almost Ready (${almostReady.length})',
+              'Almost Ready (${almostModels.length})',
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -119,9 +129,7 @@ Widget _buildRecipeCards(
           ],
         ),
         const SizedBox(height: 8),
-        ...almostReady.map(
-          (recipeData) => AIRecipeCard(recipeWithMissingInfo: recipeData),
-        ),
+        ...almostModels.map((vm) => AIAlmostReadyCard(viewModel: vm)),
       ],
     ],
   );

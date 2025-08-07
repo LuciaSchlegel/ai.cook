@@ -1,16 +1,10 @@
+import 'package:ai_cook_project/models/ai_response_model.dart';
 import 'package:flutter/material.dart';
 
 class DetailsContainer extends StatelessWidget {
-  final Map<String, dynamic> recipe;
-  final int missingCount;
-  final double matchPercentage;
+  final CombinedRecipeViewModel viewModel;
 
-  const DetailsContainer({
-    super.key,
-    required this.recipe,
-    required this.missingCount,
-    required this.matchPercentage,
-  });
+  const DetailsContainer({super.key, required this.viewModel});
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +12,14 @@ class DetailsContainer extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color:
-            missingCount == 0
+            viewModel.missingCount == 0
                 ? Colors.green.shade50
-                : missingCount == 1
+                : viewModel.missingCount == 1
                 ? Colors.orange.shade50
                 : Colors.red.shade50,
         borderRadius:
-            recipe['image'] != null && recipe['image'].toString().isNotEmpty
+            viewModel.recipe.image != null &&
+                    viewModel.recipe.image.toString().isNotEmpty
                 ? null // No top border radius if image is present
                 : const BorderRadius.only(
                   topLeft: Radius.circular(16),
@@ -34,15 +29,15 @@ class DetailsContainer extends StatelessWidget {
       child: Row(
         children: [
           Icon(
-            missingCount == 0
+            viewModel.missingCount == 0
                 ? Icons.check_circle
-                : missingCount == 1
+                : viewModel.missingCount == 1
                 ? Icons.shopping_cart
                 : Icons.add_shopping_cart,
             color:
-                missingCount == 0
+                viewModel.missingCount == 0
                     ? Colors.green
-                    : missingCount == 1
+                    : viewModel.missingCount == 1
                     ? Colors.orange
                     : Colors.red,
             size: 20,
@@ -53,7 +48,7 @@ class DetailsContainer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  recipe['name'] ?? 'Unknown Recipe',
+                  viewModel.recipe.name,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -62,17 +57,17 @@ class DetailsContainer extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  missingCount == 0
+                  viewModel.missingCount == 0
                       ? '✅ Ready to cook!'
-                      : missingCount == 1
+                      : viewModel.missingCount == 1
                       ? '🛒 Need 1 ingredient'
-                      : '🛒 Need $missingCount ingredients',
+                      : '🛒 Need `${viewModel.missingCount}` ingredients',
                   style: TextStyle(
                     fontSize: 12,
                     color:
-                        missingCount == 0
+                        viewModel.missingCount == 0
                             ? Colors.green.shade700
-                            : missingCount == 1
+                            : viewModel.missingCount == 1
                             ? Colors.orange.shade700
                             : Colors.red.shade700,
                     fontWeight: FontWeight.w500,
@@ -89,22 +84,9 @@ class DetailsContainer extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color:
-                    missingCount == 0
+                    viewModel.missingCount == 0
                         ? Colors.green
-                        : missingCount == 1
-                        ? Colors.orange
-                        : Colors.red,
-              ),
-            ),
-            child: Text(
-              '${matchPercentage.toInt()}%',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color:
-                    missingCount == 0
-                        ? Colors.green
-                        : missingCount == 1
+                        : viewModel.missingCount == 1
                         ? Colors.orange
                         : Colors.red,
               ),

@@ -1,3 +1,5 @@
+import 'package:ai_cook_project/models/recipe_model.dart';
+
 class IngredientQuantity {
   final String name;
   final String quantity;
@@ -13,6 +15,7 @@ class IngredientQuantity {
 }
 
 class AIRecipeMinimal {
+  final int id;
   final String title;
   final int timeMinutes;
   final String difficulty;
@@ -22,6 +25,7 @@ class AIRecipeMinimal {
   final List<String> steps;
 
   AIRecipeMinimal({
+    required this.id,
     required this.title,
     required this.timeMinutes,
     required this.difficulty,
@@ -33,6 +37,7 @@ class AIRecipeMinimal {
 
   factory AIRecipeMinimal.fromJson(Map<String, dynamic> json) {
     return AIRecipeMinimal(
+      id: json['id'] as int,
       title: json['title'] as String,
       timeMinutes: json['time_minutes'] as int,
       difficulty: json['difficulty'] as String,
@@ -65,6 +70,7 @@ class AIShoppingSuggestion {
 }
 
 class AIAlmostReadyRecipe {
+  final int id;
   final String title;
   final String description;
   final List<String> missingIngredients;
@@ -74,6 +80,7 @@ class AIAlmostReadyRecipe {
   final List<String> tags;
 
   AIAlmostReadyRecipe({
+    required this.id,
     required this.title,
     required this.description,
     required this.missingIngredients,
@@ -85,6 +92,7 @@ class AIAlmostReadyRecipe {
 
   factory AIAlmostReadyRecipe.fromJson(Map<String, dynamic> json) {
     return AIAlmostReadyRecipe(
+      id: json['id'] as int,
       title: json['title'] as String,
       description: json['description'] as String,
       timeMinutes: json['time_minutes'] as int,
@@ -127,7 +135,6 @@ class StructuredAIRecommendation {
 
   // Legacy fields for backward compatibility
   final List<dynamic>? filteredRecipes;
-  final List<RecipeWithMissingIngredients>? recipesWithMissingInfo;
   final int? totalRecipesConsidered;
 
   StructuredAIRecommendation({
@@ -137,7 +144,6 @@ class StructuredAIRecommendation {
     required this.possibleSubstitutions,
     this.processingTime,
     this.filteredRecipes,
-    this.recipesWithMissingInfo,
     this.totalRecipesConsidered,
   });
 
@@ -172,16 +178,6 @@ class StructuredAIRecommendation {
               .toList(),
       processingTime: json['processingTime'] as int?,
       filteredRecipes: json['filteredRecipes'] as List<dynamic>?,
-      recipesWithMissingInfo:
-          json['recipesWithMissingInfo'] != null
-              ? (json['recipesWithMissingInfo'] as List<dynamic>)
-                  .map(
-                    (item) => RecipeWithMissingIngredients.fromJson(
-                      item as Map<String, dynamic>,
-                    ),
-                  )
-                  .toList()
-              : null,
       totalRecipesConsidered: json['totalRecipesConsidered'] as int?,
     );
   }
@@ -197,37 +193,59 @@ class StructuredAIRecommendation {
   int get totalRecommendations => readyToCook.length + almostReady.length;
 }
 
-// Keep the original models for backward compatibility
-class RecipeWithMissingIngredients {
-  final Map<String, dynamic> recipe;
-  final List<Map<String, dynamic>> missingIngredients;
+class CombinedRecipeViewModel {
+  final Recipe recipe;
+  final String? description;
   final int missingCount;
-  final int availableCount;
-  final int totalCount;
-  final double matchPercentage;
+  final List<MissingIngredientInfo>? missingIngredients;
 
-  RecipeWithMissingIngredients({
+  const CombinedRecipeViewModel({
     required this.recipe,
-    required this.missingIngredients,
-    required this.missingCount,
-    required this.availableCount,
-    required this.totalCount,
-    required this.matchPercentage,
+    this.description,
+    this.missingCount = 0,
+    this.missingIngredients,
   });
-
-  factory RecipeWithMissingIngredients.fromJson(Map<String, dynamic> json) {
-    return RecipeWithMissingIngredients(
-      recipe: json['recipe'] as Map<String, dynamic>,
-      missingIngredients:
-          (json['missingIngredients'] as List<dynamic>)
-              .cast<Map<String, dynamic>>(),
-      missingCount: json['missingCount'] as int,
-      availableCount: json['availableCount'] as int,
-      totalCount: json['totalCount'] as int,
-      matchPercentage: (json['matchPercentage'] as num).toDouble(),
-    );
-  }
 }
+
+class MissingIngredientInfo {
+  final String name;
+  final double? quantity;
+  final String? unit;
+
+  const MissingIngredientInfo({required this.name, this.quantity, this.unit});
+}
+
+// deprecated - original models for backward compatibility
+// class RecipeWithMissingIngredients {
+//   final Map<String, dynamic> recipe;
+//   final List<Map<String, dynamic>> missingIngredients;
+//   final int missingCount;
+//   final int availableCount;
+//   final int totalCount;
+//   final double matchPercentage;
+
+//   RecipeWithMissingIngredients({
+//     required this.recipe,
+//     required this.missingIngredients,
+//     required this.missingCount,
+//     required this.availableCount,
+//     required this.totalCount,
+//     required this.matchPercentage,
+//   });
+
+//   factory RecipeWithMissingIngredients.fromJson(Map<String, dynamic> json) {
+//     return RecipeWithMissingIngredients(
+//       recipe: json['recipe'] as Map<String, dynamic>,
+//       missingIngredients:
+//           (json['missingIngredients'] as List<dynamic>)
+//               .cast<Map<String, dynamic>>(),
+//       missingCount: json['missingCount'] as int,
+//       availableCount: json['availableCount'] as int,
+//       totalCount: json['totalCount'] as int,
+//       matchPercentage: (json['matchPercentage'] as num).toDouble(),
+//     );
+//   }
+// }
 
 // Legacy model - deprecated
 // class AIRecommendation {

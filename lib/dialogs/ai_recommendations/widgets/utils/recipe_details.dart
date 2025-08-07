@@ -1,20 +1,17 @@
-import 'package:ai_cook_project/providers/ai_recommendations_provider.dart';
+import 'package:ai_cook_project/models/ai_response_model.dart';
 import 'package:flutter/material.dart';
 
 class RecipeDetails extends StatelessWidget {
-  final Map<String, dynamic> recipe;
-  final int missingCount;
-  final RecipeWithMissingIngredients recipeWithMissingInfo;
+  final CombinedRecipeViewModel viewModel;
 
-  const RecipeDetails({
-    super.key,
-    required this.recipe,
-    required this.missingCount,
-    required this.recipeWithMissingInfo,
-  });
+  const RecipeDetails({super.key, required this.viewModel});
 
   @override
   Widget build(BuildContext context) {
+    final recipe = viewModel.recipe;
+    final description = viewModel.description ?? recipe.description;
+    final missingIngredients = viewModel.missingIngredients;
+    final missingCount = viewModel.missingCount;
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -23,36 +20,31 @@ class RecipeDetails extends StatelessWidget {
           // Basic recipe info
           Row(
             children: [
-              if (recipe['cookingTime'] != null) ...[
-                const Icon(Icons.timer, size: 16, color: Colors.grey),
-                const SizedBox(width: 4),
-                Text(
-                  recipe['cookingTime'],
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-                const SizedBox(width: 16),
-              ],
-              if (recipe['difficulty'] != null) ...[
-                const Icon(Icons.bar_chart, size: 16, color: Colors.grey),
-                const SizedBox(width: 4),
-                Text(
-                  recipe['difficulty'],
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-              ],
+              const Icon(Icons.timer, size: 16, color: Colors.grey),
+              const SizedBox(width: 4),
+              Text(
+                recipe.cookingTime ?? 'N/A',
+                style: const TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+              const SizedBox(width: 16),
+              const Icon(Icons.bar_chart, size: 16, color: Colors.grey),
+              const SizedBox(width: 4),
+              Text(
+                recipe.difficulty ?? 'N/A',
+                style: const TextStyle(fontSize: 12, color: Colors.grey),
+              ),
             ],
           ),
 
           const SizedBox(height: 8),
 
           // Description
-          if (recipe['description'] != null)
-            Text(
-              recipe['description'],
-              style: const TextStyle(fontSize: 13, color: Colors.black87),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
+          Text(
+            description,
+            style: const TextStyle(fontSize: 13, color: Colors.black87),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
 
           // Missing ingredients section
           if (missingCount > 0) ...[
@@ -76,15 +68,11 @@ class RecipeDetails extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 6),
-                  ...recipeWithMissingInfo.missingIngredients.map((missing) {
-                    final ingredient = missing['ingredient'];
-                    final quantity = missing['quantity'];
-                    final unit = missing['unit'];
-
+                  ...missingIngredients!.map((missing) {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 2),
                       child: Text(
-                        '• ${ingredient['name']} ($quantity ${unit?['abbreviation'] ?? 'units'})',
+                        '• ${missing.name} (${missing.quantity ?? ''} ${missing.unit ?? 'units'})',
                         style: TextStyle(
                           fontSize: 11,
                           color: Colors.grey.shade600,
@@ -98,14 +86,13 @@ class RecipeDetails extends StatelessWidget {
           ],
 
           // Tags if available
-          if (recipe['tags'] != null &&
-              (recipe['tags'] as List).isNotEmpty) ...[
+          if (recipe.tags.isNotEmpty) ...[
             const SizedBox(height: 8),
             Wrap(
               spacing: 4,
               runSpacing: 4,
               children:
-                  (recipe['tags'] as List).take(3).map((tag) {
+                  (recipe.tags).take(3).map((tag) {
                     return Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 6,
@@ -116,7 +103,7 @@ class RecipeDetails extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
-                        tag['name'] ?? '',
+                        tag.name,
                         style: const TextStyle(
                           fontSize: 10,
                           color: Colors.blue,

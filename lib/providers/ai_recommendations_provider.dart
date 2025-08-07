@@ -24,37 +24,6 @@ class AIRecomendationInput {
   });
 }
 
-class RecipeWithMissingIngredients {
-  final Map<String, dynamic> recipe;
-  final List<Map<String, dynamic>> missingIngredients;
-  final int missingCount;
-  final int availableCount;
-  final int totalCount;
-  final double matchPercentage;
-
-  RecipeWithMissingIngredients({
-    required this.recipe,
-    required this.missingIngredients,
-    required this.missingCount,
-    required this.availableCount,
-    required this.totalCount,
-    required this.matchPercentage,
-  });
-
-  factory RecipeWithMissingIngredients.fromJson(Map<String, dynamic> json) {
-    return RecipeWithMissingIngredients(
-      recipe: json['recipe'] as Map<String, dynamic>,
-      missingIngredients:
-          (json['missingIngredients'] as List<dynamic>)
-              .cast<Map<String, dynamic>>(),
-      missingCount: json['missingCount'] as int,
-      availableCount: json['availableCount'] as int,
-      totalCount: json['totalCount'] as int,
-      matchPercentage: (json['matchPercentage'] as num).toDouble(),
-    );
-  }
-}
-
 class AIRecommendationsProvider extends ChangeNotifier {
   StructuredAIRecommendation? _currentRecommendation;
   bool _isLoading = false;
@@ -92,6 +61,9 @@ class AIRecommendationsProvider extends ChangeNotifier {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(body),
       );
+
+      debugPrint('RESPUESTA: ${json.decode(response.body)}');
+      debugPrint('RAW: ${response.body}');
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);

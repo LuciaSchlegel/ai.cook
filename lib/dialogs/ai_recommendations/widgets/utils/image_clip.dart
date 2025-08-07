@@ -1,12 +1,15 @@
+import 'package:ai_cook_project/models/ai_response_model.dart';
 import 'package:flutter/material.dart';
 
 class ImageClip extends StatelessWidget {
-  final Map<String, dynamic> recipe;
+  final CombinedRecipeViewModel viewModel;
 
-  const ImageClip({super.key, required this.recipe});
+  const ImageClip({super.key, required this.viewModel});
 
   @override
   Widget build(BuildContext context) {
+    final imageUrl = viewModel.recipe.image;
+    if (imageUrl == null || imageUrl.isEmpty) return const SizedBox.shrink();
     return ClipRRect(
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(16),
@@ -17,7 +20,7 @@ class ImageClip extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(color: Colors.grey[200]),
         child: Image.network(
-          recipe['image'],
+          imageUrl,
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
             return Container(

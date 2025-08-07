@@ -57,6 +57,9 @@ export class IngredientQuantityDto {
 
 export class AIRecipeMinimalDto {
   @Expose()
+  id!: number;
+
+  @Expose()
   title!: string;
 
   @Expose()
@@ -89,6 +92,9 @@ export class AIShoppingSuggestionDto {
 
 export class AIAlmostReadyRecipeDto {
   @Expose()
+  id!: number;
+
+  @Expose()
   title!: string;
 
   @Expose()
@@ -110,30 +116,30 @@ export class AISubstitutionDto {
   alternatives!: string[];
 }
 
-// Keep legacy DTO for backward compatibility
-export class RecipeWithMissingIngredientsDto {
-  @Expose()
-  recipe!: RecipeDto;
+// // deprecated - Keep legacy DTO for backward compatibility
+// export class RecipeWithMissingIngredientsDto {
+//   @Expose()
+//   recipe!: RecipeDto;
 
-  @Expose()
-  missingIngredients!: Array<{
-    ingredient: any;
-    quantity: number;
-    unit: any;
-  }>;
+//   @Expose()
+//   missingIngredients!: Array<{
+//     ingredient: any;
+//     quantity: number;
+//     unit: any;
+//   }>;
 
-  @Expose()
-  missingCount!: number;
+//   @Expose()
+//   missingCount!: number;
 
-  @Expose()
-  availableCount!: number;
+//   @Expose()
+//   availableCount!: number;
 
-  @Expose()
-  totalCount!: number;
+//   @Expose()
+//   totalCount!: number;
 
-  @Expose()
-  matchPercentage!: number;
-}
+//   @Expose()
+//   matchPercentage!: number;
+// }
 
 // New primary response DTO
 export class AIRecommendationResponseDto {
@@ -156,15 +162,15 @@ export class AIRecommendationResponseDto {
   @Expose()
   processingTime?: number;
 
-  // Keep legacy fields for backward compatibility
-  @Expose()
-  @Type(() => RecipeDto)
-  filteredRecipes?: RecipeDto[];
+  // deprecated - Keep legacy fields for backward compatibility
+  // @Expose()
+  // @Type(() => RecipeDto)
+  // filteredRecipes?: RecipeDto[];
 
-  @Expose()
-  @Type(() => RecipeWithMissingIngredientsDto)
-  recipesWithMissingInfo?: RecipeWithMissingIngredientsDto[];
+  // @Expose()
+  // @Type(() => RecipeWithMissingIngredientsDto)
+  // recipesWithMissingInfo?: RecipeWithMissingIngredientsDto[];
 
-  @Expose()
-  totalRecipesConsidered?: number;
+  // @Expose()
+  // totalRecipesConsidered?: number;
 }

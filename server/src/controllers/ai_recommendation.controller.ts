@@ -116,7 +116,6 @@ export const generateAIRecommendationsController = controllerWrapper(async (req)
     const processingTime = Date.now() - startTime;
 
     console.log(`✅ AI recommendations generated in ${processingTime}ms`);
-    console.log(`📊 Processed ${aiResponse.totalRecipesConsidered} recipes, sent ${aiResponse.filteredRecipes?.length} to AI`);
 
     // Serializar la respuesta
     const response = serialize(AIRecommendationResponseDto, {

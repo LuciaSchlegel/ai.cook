@@ -66,8 +66,9 @@ export class AIRecommendationService {
         console.log('⚠️ No recipes found after filtering - generating fallback JSON response');
         aiResponse = this._generateNoRecipesJSONResponse(options);
       } else {
+        console.log(`ai prompt req: ${prompt}`)
         const rawResponse = await talk_to_llm_service(prompt);
-        console.log('✅ AI JSON response generated successfully');
+        console.log(`✅ AI JSON response generated successfully: ${rawResponse}`);
         
         // Parse the JSON response from AI
         try {
@@ -81,6 +82,7 @@ export class AIRecommendationService {
               totalRecipesConsidered: allRecipes.length,
               recipesWithMissingInfo: topRecipesWithData,
             };
+
           } else {
             throw new Error('No valid JSON found in AI response');
           }
@@ -101,7 +103,6 @@ export class AIRecommendationService {
         aiResponse = this._generateNoRecipesJSONResponse(options);
       }
     }
-
     return aiResponse;
   }
 
@@ -123,6 +124,7 @@ export class AIRecommendationService {
     const recipesData = recipesWithData.map(recipeData => {
       const recipe = recipeData.recipe;
       return {
+        id: recipe.id,
         name: recipe.name,
         cookingTime: recipe.cookingTime,
         difficulty: recipe.difficulty,
@@ -165,6 +167,7 @@ ${JSON.stringify(recipesData, null, 2)}
 {
   "ready_to_cook": [
     {
+      "id": 123,
       "title": "Recipe Name",
       "time_minutes": 30,
       "difficulty": "Easy",
@@ -178,6 +181,7 @@ ${JSON.stringify(recipesData, null, 2)}
   ],
   "almost_ready": [
     {
+      "id": 456,
       "title": "Recipe Name",
       "description": "Brief description and why it's good for the user",
       "time_minutes": 30,
@@ -200,7 +204,7 @@ ${JSON.stringify(recipesData, null, 2)}
       "original": "original ingredient",
       "alternatives": ["alternative1", "alternative2", "alternative3"]
     }
-  ]
+  ],
 }
 
 **Instructions:**
@@ -211,7 +215,8 @@ ${JSON.stringify(recipesData, null, 2)}
 5. Focus on recipes that match user preferences (time, difficulty, tags)
 6. Keep descriptions concise but personalized
 7. Convert cooking times to minutes (numbers only)
-8. Extract actual recipe steps from the provided data
+8. Every recipe object must include the field "id" as an integer that matches the original recipe from the provided list.
+9. Extract actual recipe steps from the provided data
 
 **IMPORTANT: Return ONLY the JSON object, no additional text, markdown, or explanations.**
     `.trim();
@@ -232,6 +237,7 @@ ${JSON.stringify(recipesData, null, 2)}
     const ready_to_cook: AIRecipeMinimalDto[] = perfectMatches.map(recipeData => {
       const recipe = recipeData.recipe;
       return {
+        id: recipe.id,
         title: recipe.name,
         time_minutes: this._extractTimeInMinutes(recipe.cookingTime || ''),
         difficulty: recipe.difficulty || 'Not specified',
@@ -250,6 +256,7 @@ ${JSON.stringify(recipesData, null, 2)}
       const missingList = recipeData.missingIngredients.map(mi => mi.ingredient.name);
       
       return {
+        id: recipe.id,
         title: recipe.name,
         description: `${recipeData.matchPercentage.toFixed(0)}% ingredient match - just need a few items from the store!`,
         missing_ingredients: missingList,
@@ -292,9 +299,6 @@ ${JSON.stringify(recipesData, null, 2)}
       almost_ready,
       shopping_suggestions,
       possible_substitutions,
-      filteredRecipes: recipesWithData.map(r => r.recipe),
-      totalRecipesConsidered: 0,
-      recipesWithMissingInfo: recipesWithData
     };
   }
 
@@ -327,8 +331,6 @@ ${JSON.stringify(recipesData, null, 2)}
           alternatives: ["Olive oil", "Coconut oil", "Margarine"]
         }
       ],
-      filteredRecipes: [],
-      totalRecipesConsidered: 0
     };
   }
 
