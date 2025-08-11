@@ -1,11 +1,12 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
-import { getRecipesService } from "../services/recipe.service";
+import { getMissingIngredientsByRecipeService, getRecipesService } from "../services/recipe.service";
 import { RecipeDto } from "../dtos/recipe.dto";
 import { serialize } from "../helpers/serialize";
 import { RecipeFilterService } from "../services/recipe_filter.service";
 import { FilterRecipesDto, RecipeFilterEnum } from "../dtos/recipe_filter.dto";
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
+import { UserIngredientOptimizedDto } from "../dtos/user_ing_optimized.dto";
 
 type ControllerFunction = (req: Request) => Promise<any>;
 
@@ -39,6 +40,33 @@ export const getRecipesController = controllerWrapper(async () => {
   return serialize(RecipeDto, recipes);
 });
 
+export const getMissingIngredientsController = controllerWrapper(async (req) => {
+  try {
+    const recipes = await getRecipesService();
+    const serializedRecipes = serialize(RecipeDto, recipes) as RecipeDto[]
+    const serializedUserIng = serialize(
+      UserIngredientOptimizedDto,
+      Array.isArray(req.body?.userIngredients) ? req.body.userIngredients : []
+    ) as UserIngredientOptimizedDto[];
+
+    // Return detailed missing ingredients per recipe
+    const result = await getMissingIngredientsByRecipeService(serializedRecipes, serializedUserIng);
+    return result;
+  } catch (error: any) {
+    // Si ya es un error de validación, re-lanzarlo
+    if (error.status === 400) {
+      throw error;
+    }
+    // Para otros errores, crear un error 500
+    console.error('Unexpected error:', error);
+    throw {
+      status: 500,
+      message: "Internal server error",
+      error: error.message
+    };
+  }
+})
+
 export const filterRecipesController = controllerWrapper(async (req) => {
   console.log('=== RECIPE FILTER REQUEST ===');
   console.log('Full request body:', JSON.stringify(req.body, null, 2));
@@ -48,7 +76,7 @@ export const filterRecipesController = controllerWrapper(async (req) => {
   if (Array.isArray(req.body.preferredTags)) {
     console.log('Preferred tags content:', req.body.preferredTags.map((tag: any, i: number) => `[${i}]: "${tag}" (${typeof tag})`));
   }
-  
+
   try {
     const dto = plainToInstance(FilterRecipesDto, req.body);
     const errors = await validate(dto);
@@ -99,7 +127,7 @@ export const filterRecipesController = controllerWrapper(async (req) => {
     if (error.status === 400) {
       throw error;
     }
-    
+
     // Para otros errores, crear un error 500
     console.error('Unexpected error:', error);
     throw {

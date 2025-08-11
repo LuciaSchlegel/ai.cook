@@ -27,7 +27,10 @@ class RecommendationsBuilder extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Greeting
-            AIGreetingSection(greeting: 'Hi there!'),
+            AIGreetingSection(
+              greeting:
+                  'Welcome back 👋 Pantry is ready 🧺. Say the vibe—fast ⏱️, vegan 🌱, or high‑protein 💪—and I’ll serve up recipes you’ll love 🍳✨',
+            ),
 
             _buildRecipeCards(
               context,
@@ -49,7 +52,10 @@ class RecommendationsBuilder extends StatelessWidget {
             ),
 
             // Conclusion
-            AIConclusionSection(conclusion: 'see you soon'),
+            AIConclusionSection(
+              conclusion:
+                  'Bon appétit 😋 I’m here if you want tweaks or another round ✨',
+            ),
           ],
         ),
       ],

@@ -24,3 +24,15 @@ Future<void> filterRecipesLogic({
     preferredDifficulty: preferredDifficulty,
   );
 }
+
+Future<void> getMissingIngredientsLogic({required BuildContext context}) async {
+  final recipesProvider = Provider.of<RecipesProvider>(context, listen: false);
+  final ingredientsProvider = Provider.of<IngredientsProvider>(
+    context,
+    listen: false,
+  );
+
+  await recipesProvider.getMissingIngredients(
+    userIngredients: ingredientsProvider.userIngredients,
+  );
+}

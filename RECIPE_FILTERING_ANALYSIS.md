@@ -1,8 +1,16 @@
-# Análisis de la Lógica de Filtrado de Recetas
+# Recipe filtering logic
 
-## ✅ Estado Actual: CORRECTO
+## ✅ Status: On review
 
 La lógica de filtrado de recetas en tu aplicación Flutter está **correctamente implementada**. Sin embargo, he identificado y corregido algunas inconsistencias entre el servidor y Flutter para mejorar la experiencia del usuario.
+
+## 🔍 Filtering parameters
+
+### 1. **"With available ingredients"**
+- **Server**: Strictly reviews that the user has ALL of the ingredients required for the recipe
+- **Problem**: Inconsistency between what's shown as available but with incompatibilities and with what the api filters.
+- **Flutter**: Verificaba ingredientes, cantidades y compatibilidad de unidades
+- **Resultado**: El servidor podía mostrar recetas como "disponibles" aunque el usuario no tuviera suficiente cantidad
 
 ## 🔍 Problemas Identificados
 
@@ -25,8 +33,8 @@ La lógica de filtrado de recetas en tu aplicación Flutter está **correctament
 
 ### 1. **Nueva Función `_hasAllIngredientsWithQuantity`**
 ```typescript
-// Verifica ingredientes, cantidades y compatibilidad de unidades
-_hasAllIngredientsWithQuantity(recipe: RecipeDto, userIngredients: UserIngredientDto[]): boolean {
+// Filtra recetas that match 100% con userIng, cantidades y unidades disponibles
+_hasAllIngredientsWithQuantity(recipe: RecipeDto, userIngredients: UserIngredientOptimizedDto[]): boolean {
   return recipe.ingredients.every(ri => {
     // 1. Verificar que el usuario tenga el ingrediente
     // 2. Verificar que tenga cantidad y unidad definida
@@ -38,21 +46,132 @@ _hasAllIngredientsWithQuantity(recipe: RecipeDto, userIngredients: UserIngredien
 
 ### 2. **Nueva Función `_hasRecommendedIngredients`**
 ```typescript
-// Verifica ratio de ingredientes (60%) Y cantidades para los que tiene
-_hasRecommendedIngredients(recipe: RecipeDto, userIngredients: UserIngredientDto[]): boolean {
-  // Paso 1: Verificar ratio de ingredientes (mínimo 60%)
-  // Paso 2: Verificar cantidades para los ingredientes que tiene
+// FIltra recetas por ratio de usering(60%). Cantidad de each ingredients y unit incompatibility no son parametros para este filtro.
+_hasRecommendedIngredients(recipe: RecipeDto, userIngredients: UserIngredientOptimizedDto[]): boolean {
 }
 ```
 
-### 3. **Funciones Auxiliares de Conversión**
+### 3. **Nueva Función `_hasAllIngredients`**
+```typescript
+// Filtra recetas por disponibilidad (100%) de userings
+_hasAllIngredients(recipe: RecipeDto, userIngredients: UserIngredientOptimizedDto[]): boolean {
+  // Itera sobre las recetas para encontrar coincidencia de ingredients (por id para userIng ; por coincidencia de nombres para customIng)
+  // Devuelve un boolean
+}
+```
+
+### 4. **Nueva Función `_hasMissingIngredients`**
+```typescript
+// Verifica el faltante de usering
+_hasMissingIngredients(recipe: RecipeDto, userIngredients: UserIngredientOptimizedDto[]): boolean {
+  // Itera sobre las recetas para encontrar userIngredients faltantes (por id para userIng ; por coincidencia de nombres para customIng)
+  // Devuelve un boolean
+}
+```
+
+### 5. **Nueva Función `_hasSomeIngredients`**
+```typescript
+// Filtra recetas cuyo ratio de userIng disponibles es igual o mayor a 50% (if r=> 50 true)
+_hasSomeIngredients(recipe: RecipeDto, userIngredients: UserIngredientOptimizedDto[]): boolean {
+
+}
+```
+
+-------------AI FILTERING METHODS--------------------
+
+### 1. **Nueva Función `_hasAlmostAllIngredients`**
+```typescript
+// Filtra recetas cuya cantidad de userIng faltantes sea igual o menor a 2
+_hasAlmostAllIngredients(recipe: RecipeDto, userIngredients: UserIngredientOptimizedDto[], maxMissing: number = 2): boolean {
+}
+```
+
+
+### 2. **Nueva Función `_hasFlexibleRecommendedIngredients`**
+```typescript
+// More flexible version of recommended ingredients for AI. Lower threshold and more permissive with missing ingredients
+_hasFlexibleRecommendedIngredients(recipe: RecipeDto, userIngredients: UserIngredientOptimizedDto[]): boolean {
+    // For AI flexible mode: accept if either:
+    // 1. Has at least 30% of ingredients (lower than strict 40%), OR
+    // 2. Missing 2 or fewer ingredients regardless of ratio (for small recipes)
+}
+```
+
+### 3. **Metodo `filterRecipesWithMissingData`**
+```typescript
+//Special method for AI recommendations that returns detailed missing ingredient information. This allows the AI to suggest recipes with missing ingredients and provide shopping recommendations
+filterRecipesWithMissingData({    
+  allRecipes,
+  userIngredients,
+  filter = "Recommended Recipes",
+  preferredTags = [],
+  maxCookingTimeMinutes,
+  preferredDifficulty,
+  dietaryRestrictions,
+  maxMissingIngredients = 2,
+}: FilterOptions & { maxMissingIngredients?: number }): RecipeWithMissingIngredients[]{
+  // Step 1: Analyze each recipe for missing ingredients (:missingIngredients)
+  // Step 2: Applies flexible filtering criteria for ai by calling _shouldIncludeForAI method
+  // Step 3: Applies tags, time, difficulty, and dietary restrictions normalization and filtering
+  // Step 4: Sorts the recipes by match percentage (best matches first)
+    // First sort by missing count (fewer missing = better)
+    // Then by match percentage (higher percentage = better)
+}
+```
+
+### 4. **Funcion `_shouldIncludeForAI`**
+```typescript
+// Helper function to determine if a recipe should be included in AI recommendations
+  _shouldIncludeForAI(
+    missingCount: number, 
+    matchPercentage: number, 
+    maxMissingIngredients: number, 
+    totalIngredients: number
+  ): boolean {
+  // Doesn't include recipes with too many missing ingredients
+    if (missingCount > maxMissingIngredients) return false;
+  // For recipes with missing ingredients, apply percentage thresholds
+    if (missingCount === 1) {
+  // Allow 1 missing if we have at least 60% of ingredients
+      return matchPercentage >= 60;
+    } else if (missingCount === 2) {
+  // Allow 2 missing if we have at least 70% of ingredients
+      return matchPercentage >= 70;
+    }
+}
+```
+
+### 5. **Funciones Auxiliares de Conversión**
 ```typescript
 // Verificar compatibilidad de unidades
 _areUnitsCompatible(unit1: any, unit2: any): boolean
 
 // Convertir a unidades base para comparación
 _convertToBase(quantity: number, unit: any): number
+
+// Verificar compatibilidad de tipos de unidad (count, quantitative - measure, weight, volume)
+_areTypesCompatible(type1: string, type2: string): boolean
+
+// Allows weight-volume compatibility for common seasonings and small amounts
+// This is specifically for ingredients that are commonly used in small quantities where users might have large amounts (kg) but recipes call for small measures (tsp)
+_isCommonSeasoningCompatibility(unit1Abbr: string, unit2Abbr: string): boolean
 ```
+
+### 6. **Funciones Auxiliares**
+```typescript
+  // Checks if a recipe meets dietary restrictions based on all its ingredients
+  _meetsDietaryRestrictions(recipe: RecipeDto, restrictions: {
+    isVegan?: boolean;
+    isVegetarian?: boolean;
+    isGlutenFree?: boolean;
+    isLactoseFree?: boolean;
+  }): boolean {
+  // Checks each dietary restriction
+  // All ingredients in the recipe must meet this dietary requirement
+  }
+
+```
+
 
 ## 📊 Comparación Antes vs Después
 

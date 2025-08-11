@@ -58,7 +58,7 @@ class DetailsContainer extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   viewModel.missingCount == 0
-                      ? '✅ Ready to cook!'
+                      ? 'Ready to cook!'
                       : viewModel.missingCount == 1
                       ? '🛒 Need 1 ingredient'
                       : '🛒 Need `${viewModel.missingCount}` ingredients',
@@ -74,22 +74,6 @@ class DetailsContainer extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-          ),
-          // Match percentage badge
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color:
-                    viewModel.missingCount == 0
-                        ? Colors.green
-                        : viewModel.missingCount == 1
-                        ? Colors.orange
-                        : Colors.red,
-              ),
             ),
           ),
         ],

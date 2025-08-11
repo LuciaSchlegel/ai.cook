@@ -175,7 +175,7 @@ export const RecipeFilterService = {
     return lookup;
   },
 
-  // Nueva función que verifica ingredientes, cantidades y unidades (como en Flutter)
+  // Function for verifying ingredients, quantities, and units
   _hasAllIngredientsWithQuantity(recipe: RecipeDto, userIngredients: UserIngredientOptimizedDto[]): boolean {
     if (this.DEBUG_MODE) {
       console.log(`🧪 Checking recipe "${recipe.name}" with ${recipe.ingredients.length} ingredients`);

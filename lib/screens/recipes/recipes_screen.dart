@@ -43,9 +43,21 @@ class _RecipesScreenState extends State<RecipesScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-      () => Provider.of<RecipesProvider>(context, listen: false).getRecipes(),
-    );
+    Future.microtask(() async {
+      final recipesProvider = Provider.of<RecipesProvider>(
+        context,
+        listen: false,
+      );
+      final ingredientsProvider = Provider.of<IngredientsProvider>(
+        context,
+        listen: false,
+      );
+      await recipesProvider.getRecipes();
+      // Also fetch missing ingredients using current user ingredients
+      await recipesProvider.getMissingIngredients(
+        userIngredients: ingredientsProvider.userIngredients,
+      );
+    });
   }
 
   Future<void> _applyFilters() async {
@@ -55,6 +67,18 @@ class _RecipesScreenState extends State<RecipesScreen> {
       selectedTags: selectedTags.map((t) => t.name).toList(),
       maxCookingTimeMinutes: null,
       preferredDifficulty: null,
+    );
+    // Refresh backend-computed missing counts for the current (filtered) recipes
+    final recipesProvider = Provider.of<RecipesProvider>(
+      context,
+      listen: false,
+    );
+    final ingredientsProvider = Provider.of<IngredientsProvider>(
+      context,
+      listen: false,
+    );
+    await recipesProvider.getMissingIngredients(
+      userIngredients: ingredientsProvider.userIngredients,
     );
   }
 
@@ -213,11 +237,15 @@ class _ContainerRecipeCardContent extends StatelessWidget {
     required this.userIngredients,
   });
 
-  String _getIngredientsStatusText() {
-    final missingIngredients = recipe.getMissingIngredients(userIngredients);
+  String _getIngredientsStatusText(BuildContext context) {
+    final recipesProvider = Provider.of<RecipesProvider>(
+      context,
+      listen: false,
+    );
+    final missingCount = recipesProvider.missingCountFor(recipe.id);
     final unitWarnings = recipe.getUnitWarnings(userIngredients);
-    if (missingIngredients.isNotEmpty) {
-      return '${missingIngredients.length} missing';
+    if (missingCount > 0) {
+      return '$missingCount missing';
     }
     if (unitWarnings > 0) {
       return 'All available ($unitWarnings warning${unitWarnings > 1 ? 's' : ''})';
@@ -231,7 +259,11 @@ class _ContainerRecipeCardContent extends StatelessWidget {
     final width = size.width * 0.24;
     final height = size.width * 0.24;
     final unitWarnings = recipe.getUnitWarnings(userIngredients);
-    final missingIngredients = recipe.getMissingIngredients(userIngredients);
+    final recipesProvider = Provider.of<RecipesProvider>(
+      context,
+      listen: false,
+    );
+    final missingCount = recipesProvider.missingCountFor(recipe.id);
 
     return Card(
       elevation: 2,
@@ -249,8 +281,8 @@ class _ContainerRecipeCardContent extends StatelessWidget {
             Expanded(
               child: _ContainerRecipeDetails(
                 recipe: recipe,
-                ingredientsStatusText: _getIngredientsStatusText(),
-                warning: missingIngredients.isEmpty && unitWarnings > 0,
+                ingredientsStatusText: _getIngredientsStatusText(context),
+                warning: missingCount == 0 && unitWarnings > 0,
               ),
             ),
           ],

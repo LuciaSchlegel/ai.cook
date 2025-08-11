@@ -140,17 +140,6 @@ class Recipe {
     };
   }
 
-  List<RecipeIngredient> getMissingIngredients(List<UserIng> userIngredients) {
-    return ingredients
-        .where(
-          (recipeIng) =>
-              !userIngredients.any(
-                (userIng) => userIng.ingredient?.id == recipeIng.ingredient.id,
-              ),
-        )
-        .toList();
-  }
-
   /// Devuelve la cantidad de advertencias por incompatibilidad de unidades entre los ingredientes del usuario y los de la receta.
   int getUnitWarnings(List<UserIng> userIngredients) {
     int warnings = 0;
@@ -168,5 +157,38 @@ class Recipe {
       }
     }
     return warnings;
+  }
+
+  /// Returns the list of missing ingredients for this recipe based on user's ingredients.
+  /// Matches by global ingredient id or, if provided as custom ingredient, by fuzzy name match.
+  List<RecipeIngredient> getMissingIngredients(List<UserIng> userIngredients) {
+    final List<RecipeIngredient> missing = [];
+
+    for (final recipeIng in ingredients) {
+      final recipeName = recipeIng.ingredient.name.toLowerCase().trim();
+
+      final hasIngredient = userIngredients.any((ui) {
+        // Match global ingredient by id
+        if (ui.ingredient?.id != null &&
+            ui.ingredient!.id == recipeIng.ingredient.id) {
+          return true;
+        }
+        // Match custom ingredient by name (exact or partial)
+        final customName = ui.customIngredient?.name.toLowerCase().trim();
+        if (customName != null && customName.isNotEmpty) {
+          if (customName == recipeName) return true;
+          if (customName.contains(recipeName) ||
+              recipeName.contains(customName))
+            return true;
+        }
+        return false;
+      });
+
+      if (!hasIngredient) {
+        missing.add(recipeIng);
+      }
+    }
+
+    return missing;
   }
 }
