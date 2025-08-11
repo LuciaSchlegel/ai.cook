@@ -243,12 +243,8 @@ class _ContainerRecipeCardContent extends StatelessWidget {
       listen: false,
     );
     final missingCount = recipesProvider.missingCountFor(recipe.id);
-    final unitWarnings = recipe.getUnitWarnings(userIngredients);
     if (missingCount > 0) {
       return '$missingCount missing';
-    }
-    if (unitWarnings > 0) {
-      return 'All available ($unitWarnings warning${unitWarnings > 1 ? 's' : ''})';
     }
     return 'All available';
   }
@@ -258,12 +254,6 @@ class _ContainerRecipeCardContent extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final width = size.width * 0.24;
     final height = size.width * 0.24;
-    final unitWarnings = recipe.getUnitWarnings(userIngredients);
-    final recipesProvider = Provider.of<RecipesProvider>(
-      context,
-      listen: false,
-    );
-    final missingCount = recipesProvider.missingCountFor(recipe.id);
 
     return Card(
       elevation: 2,
@@ -282,7 +272,7 @@ class _ContainerRecipeCardContent extends StatelessWidget {
               child: _ContainerRecipeDetails(
                 recipe: recipe,
                 ingredientsStatusText: _getIngredientsStatusText(context),
-                warning: missingCount == 0 && unitWarnings > 0,
+                warning: false,
               ),
             ),
           ],

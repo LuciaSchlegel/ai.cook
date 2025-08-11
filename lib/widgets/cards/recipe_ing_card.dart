@@ -127,14 +127,26 @@ class _IngredientRow extends StatelessWidget {
   });
 
   IngredientAvailabilityStatus _getAvailabilityStatus() {
-    // Find the user ingredient that matches this recipe ingredient
-    final userIng = userIngredients.firstWhere(
+    // Find the user ingredient that matches this recipe ingredient (global id or custom name fuzzy)
+    UserIng? userIng = userIngredients.firstWhere(
       (ui) => ui.ingredient?.id == ingredient.ingredient.id,
       orElse: () => UserIng(id: -1, uid: '', quantity: 0),
     );
 
-    // If user doesn't have this ingredient at all
     if (userIng.ingredient == null) {
+      // Try matching by custom ingredient name (fuzzy)
+      final recipeName = ingredient.ingredient.name.toLowerCase().trim();
+      userIng = userIngredients.firstWhere((ui) {
+        final customName = ui.customIngredient?.name.toLowerCase().trim();
+        if (customName == null || customName.isEmpty) return false;
+        return customName == recipeName ||
+            customName.contains(recipeName) ||
+            recipeName.contains(customName);
+      }, orElse: () => UserIng(id: -1, uid: '', quantity: 0));
+    }
+
+    // If user doesn't have this ingredient at all
+    if (userIng.ingredient == null && userIng.customIngredient == null) {
       return IngredientAvailabilityStatus.unavailable;
     }
 
@@ -213,55 +225,174 @@ class _IngredientRow extends StatelessWidget {
           width: 1,
         ),
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 6,
-            height: 6,
-            decoration: BoxDecoration(
-              color: _getQuantityTextColor(status),
-              borderRadius: BorderRadius.circular(3),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            flex: 5,
-            child: Text(
-              ingredient.ingredient.name,
-              style: const TextStyle(
-                color: AppColors.button,
-                fontSize: 14,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w500,
-                height: 1.3,
-              ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            flex: 3,
-            child: Text(
-              '${ingredient.quantity} ${ingredient.unit?.abbreviation ?? ""}',
-              style: TextStyle(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () => _showIngredientDetailDialog(context, status),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 6,
+              height: 6,
+              decoration: BoxDecoration(
                 color: _getQuantityTextColor(status),
-                fontSize: 12,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w500,
-                height: 1.2,
-                letterSpacing: 0.2,
+                borderRadius: BorderRadius.circular(3),
               ),
-              textAlign: TextAlign.end,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
-          ),
-          const SizedBox(width: 8),
-          _buildStatusIcon(status),
-        ],
+            const SizedBox(width: 12),
+            Expanded(
+              flex: 5,
+              child: Text(
+                ingredient.ingredient.name,
+                style: const TextStyle(
+                  color: AppColors.button,
+                  fontSize: 14,
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w500,
+                  height: 1.3,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              flex: 3,
+              child: Text(
+                '${ingredient.quantity} ${ingredient.unit?.abbreviation ?? ""}',
+                style: TextStyle(
+                  color: _getQuantityTextColor(status),
+                  fontSize: 12,
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w500,
+                  height: 1.2,
+                  letterSpacing: 0.2,
+                ),
+                textAlign: TextAlign.end,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(width: 8),
+            _buildStatusIcon(status),
+          ],
+        ),
       ),
+    );
+  }
+
+  void _showIngredientDetailDialog(
+    BuildContext context,
+    IngredientAvailabilityStatus status,
+  ) {
+    String title;
+    String message;
+    IconData icon;
+    Color iconColor;
+
+    switch (status) {
+      case IngredientAvailabilityStatus.available:
+        title = 'Ingredient available';
+        message = 'Nothing to worry about. You have enough for this recipe.';
+        icon = CupertinoIcons.check_mark_circled_solid;
+        iconColor = AppColors.mutedGreen;
+        break;
+      case IngredientAvailabilityStatus.insufficient:
+        title = 'Insufficient quantity';
+        message =
+            'You have this ingredient, but not enough. Consider topping it up or asking AI for substitutions.';
+        icon = Icons.warning_amber_rounded;
+        iconColor = const Color.fromARGB(255, 198, 183, 47);
+        break;
+      case IngredientAvailabilityStatus.incompatible:
+        title = 'Unit compatibility issue';
+        message =
+            'Units are incompatible or cannot be compared. You may adjust manually or ask AI for help.';
+        icon = Icons.swap_horiz;
+        iconColor = const Color.fromARGB(255, 198, 183, 47);
+        break;
+      case IngredientAvailabilityStatus.unavailable:
+        title = 'Unavailable ingredient';
+        message =
+            'Please buy it, top it up, or check with AI for substitutions.';
+        icon = Icons.error_outline;
+        iconColor = AppColors.orange;
+        break;
+    }
+
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
+          title: Row(
+            children: [
+              Icon(icon, color: iconColor, size: 24),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontFamily: 'Casta',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 22,
+                    color: AppColors.button,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                ingredient.ingredient.name,
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                  color: AppColors.button,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                message,
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 14,
+                  color: AppColors.button,
+                  height: 1.3,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Recipe requires: ${ingredient.quantity} ${ingredient.unit?.abbreviation ?? ''}',
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 13,
+                  color: AppColors.mutedGreen,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: const Text(
+                'Close',
+                style: TextStyle(
+                  color: AppColors.orange,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
