@@ -20,7 +20,9 @@ class IngredientFormUtils {
     required Unit? providedUnit,
   }) {
     nameController.text = ingredient?.name ?? customIngredient?.name ?? '';
-    quantityController.text = quantity.toString();
+    final bool isEditing = ingredient != null || customIngredient != null;
+    quantityController.text =
+        isEditing && quantity > 0 ? quantity.toString() : '';
 
     final category =
         ingredient?.category ?? customIngredient?.category ?? categories.first;

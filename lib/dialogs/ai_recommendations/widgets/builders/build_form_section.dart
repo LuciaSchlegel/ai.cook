@@ -87,7 +87,7 @@ class SectionBuilder extends StatelessWidget {
                           .toList();
                   onTagSelectionChanged(newTags);
                 },
-                horizontalPadding: 0,
+                horizontalPadding: 10,
               );
             },
           ),

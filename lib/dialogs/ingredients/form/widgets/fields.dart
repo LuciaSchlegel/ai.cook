@@ -20,9 +20,6 @@ class QuantityField extends StatelessWidget {
       style: const TextStyle(color: AppColors.button, fontSize: 16),
       decoration: null,
       cursorColor: AppColors.mutedGreen,
-      onTap: () {
-        if (controller.text == '0') controller.clear();
-      },
     );
   }
 }
