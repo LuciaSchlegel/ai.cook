@@ -55,8 +55,11 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
     _nameController = TextEditingController(
       text: widget.customIngredient?.name ?? '',
     );
+
+    final bool isEditing =
+        widget.customIngredient != null || widget.ingredient != null;
     _quantityController = TextEditingController(
-      text: widget.quantity.toString(),
+      text: isEditing && widget.quantity > 0 ? widget.quantity.toString() : '',
     );
     _selectedCategory =
         widget.customIngredient?.category ?? widget.categories.first;

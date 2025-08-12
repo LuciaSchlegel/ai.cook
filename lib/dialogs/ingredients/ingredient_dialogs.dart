@@ -25,6 +25,7 @@ class IngredientDialogs {
     return showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
+      useSafeArea: true,
       isScrollControlled: true,
       enableDrag: false,
       builder:
