@@ -2,6 +2,7 @@ import 'package:ai_cook_project/dialogs/ingredients/global_ing/widgets/scroller.
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
+import 'package:ai_cook_project/widgets/utils/safe_constrained_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,6 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
   }
   final globalIngredients = ingredientsProvider.ingredients;
   final selectedIngredients = <UserIng>[];
-  final categories = resourceProvider.categories;
   String selectedCategory = 'All';
   String searchText = '';
 
@@ -69,123 +69,40 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
               );
             }
 
-            return Dialog(
+            return SafeConstrainedDialog(
               backgroundColor: CupertinoColors.systemGrey6,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Container(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const Text(
-                      'Start Your Cupboard',
-                      style: TextStyle(
-                        color: AppColors.button,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Casta',
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                    const SizedBox(height: 28),
-                    // Category Filters
-                    SizedBox(
-                      height: 40,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          ...categories.map((category) {
-                            final isSelected =
-                                selectedCategory == category.name;
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: ChoiceChip(
-                                label: Text(category.name),
-                                selected: isSelected,
-                                onSelected: (selected) {
-                                  if (selected) {
-                                    setState(() {
-                                      selectedCategory = category.name;
-                                    });
-                                  }
-                                },
-                                backgroundColor: CupertinoColors.systemGrey5,
-                                selectedColor: AppColors.mutedGreen,
-                                labelStyle: TextStyle(
-                                  color:
-                                      isSelected
-                                          ? AppColors.white
-                                          : AppColors.button,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                checkmarkColor: AppColors.white,
-                                shape: StadiumBorder(
-                                  side: BorderSide(
-                                    color:
-                                        isSelected
-                                            ? AppColors.mutedGreen
-                                            : CupertinoColors.systemGrey4,
-                                    width: 1,
-                                  ),
-                                ),
-                              ),
-                            );
-                          }),
-                          // Agregamos 'All' como una opción más
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: ChoiceChip(
-                              label: const Text('All'),
-                              selected: selectedCategory == 'All',
-                              onSelected: (selected) {
-                                if (selected) {
-                                  setState(() {
-                                    selectedCategory = 'All';
-                                  });
-                                }
-                              },
-                              backgroundColor: CupertinoColors.systemGrey5,
-                              selectedColor: AppColors.mutedGreen,
-                              labelStyle: TextStyle(
-                                color:
-                                    selectedCategory == 'All'
-                                        ? AppColors.white
-                                        : AppColors.button,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              shape: StadiumBorder(
-                                side: BorderSide(
-                                  color:
-                                      selectedCategory == 'All'
-                                          ? AppColors.mutedGreen
-                                          : CupertinoColors.systemGrey4,
-                                  width: 1,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    // Search Bar
-                    CupertinoSearchTextField(
-                      placeholder: 'Search ingredients',
-                      onChanged: (value) {
-                        setState(() {
-                          searchText = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 28),
-                    Flexible(
-                      child: Container(
-                        constraints: BoxConstraints(
-                          maxHeight: MediaQuery.of(context).size.height * 0.6,
+              child: SingleChildScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text(
+                        'Start Your Cupboard',
+                        style: TextStyle(
+                          color: AppColors.button,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Casta',
+                          letterSpacing: 1.2,
                         ),
+                      ),
+                      const SizedBox(height: 28),
+                      // … tus chips de categorías …
+                      const SizedBox(height: 20),
+                      CupertinoSearchTextField(
+                        placeholder: 'Search ingredients',
+                        onChanged:
+                            (value) => setState(() => searchText = value),
+                      ),
+                      const SizedBox(height: 28),
+
+                      // Lista con altura acotada
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(maxHeight: 380),
                         child: IngListScroller(
                           filteredIngredients: filteredIngredients,
                           selectedIngredients: selectedIngredients,
@@ -198,36 +115,37 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                               ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 28),
-                    CupertinoButton(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      color:
-                          selectedIngredients.isNotEmpty
-                              ? AppColors.button
-                              : AppColors.button.withOpacity(0.4),
-                      borderRadius: BorderRadius.circular(18),
-                      onPressed:
-                          selectedIngredients.isNotEmpty
-                              ? () async {
-                                for (var ing in selectedIngredients) {
-                                  await ingredientsProvider.addUserIngredient(
-                                    ing,
-                                  );
+
+                      const SizedBox(height: 28),
+                      CupertinoButton(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        color:
+                            selectedIngredients.isNotEmpty
+                                ? AppColors.button
+                                : AppColors.button.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(18),
+                        onPressed:
+                            selectedIngredients.isNotEmpty
+                                ? () async {
+                                  for (var ing in selectedIngredients) {
+                                    await ingredientsProvider.addUserIngredient(
+                                      ing,
+                                    );
+                                  }
+                                  Navigator.pop(context);
                                 }
-                                Navigator.pop(context);
-                              }
-                              : null,
-                      child: const Text(
-                        'Add Selected',
-                        style: TextStyle(
-                          color: AppColors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                                : null,
+                        child: const Text(
+                          'Add Selected',
+                          style: TextStyle(
+                            color: AppColors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             );

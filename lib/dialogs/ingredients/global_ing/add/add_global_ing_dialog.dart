@@ -5,8 +5,8 @@ import 'package:ai_cook_project/dialogs/ingredients/global_ing/widgets/ing_selec
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
+import 'package:ai_cook_project/widgets/utils/safe_constrained_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../../../../theme.dart';
@@ -47,10 +47,8 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
       searchText: searchText,
     );
 
-    return Dialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 24),
+    return SafeConstrainedDialog(
       backgroundColor: AppColors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Padding(
@@ -127,9 +125,7 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
               ),
               const SizedBox(height: 20),
               ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.4,
-                ),
+                constraints: const BoxConstraints(maxHeight: 320),
                 child:
                     searchFilteredIngredients.isEmpty
                         ? const EmptyList()

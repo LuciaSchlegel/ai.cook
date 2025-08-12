@@ -82,8 +82,6 @@ class _CupboardScreenState extends State<CupboardScreen> {
       ingredientsProvider.userIngredients,
     );
 
-    ('🏠 CUPBOARD: Got ${dietaryFlags.length} dietary flags: $dietaryFlags',);
-
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(

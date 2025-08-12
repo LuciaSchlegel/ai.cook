@@ -216,7 +216,8 @@ class _IngredientRow extends StatelessWidget {
     final status = _getAvailabilityStatus();
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      constraints: const BoxConstraints(minHeight: 48),
+      padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 12),
       decoration: BoxDecoration(
         color: AppColors.background.withOpacity(0.02),
         borderRadius: BorderRadius.circular(12),

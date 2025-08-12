@@ -178,8 +178,9 @@ class Recipe {
         if (customName != null && customName.isNotEmpty) {
           if (customName == recipeName) return true;
           if (customName.contains(recipeName) ||
-              recipeName.contains(customName))
+              recipeName.contains(customName)) {
             return true;
+          }
         }
         return false;
       });

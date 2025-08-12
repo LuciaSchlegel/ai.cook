@@ -117,70 +117,92 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
       contentOpacityAnimation: _contentOpacityAnimation,
       contentScaleAnimation: _contentScaleAnimation,
       onClose: _handleClose,
-      scrollContentBuilder:
-          (scrollController) => Container(
-            decoration: BoxDecoration(
-              color: CupertinoColors.white,
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(30),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.primary.withOpacity(0.08),
-                  blurRadius: 32,
-                  offset: const Offset(0, -8),
-                  spreadRadius: 0,
-                ),
-                BoxShadow(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.secondary.withOpacity(0.04),
-                  blurRadius: 16,
-                  offset: const Offset(0, -4),
-                  spreadRadius: 2,
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                const HandleBar(),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8, right: 8),
-                    child: CloseButtonExt(handleClose: _handleClose),
+      scrollContentBuilder: (scrollController) {
+        final mq = MediaQuery.of(context);
+        final safeHeight = mq.size.height - mq.padding.top - mq.padding.bottom;
+        final maxH = safeHeight * 0.9; // o 0.88–0.95 según diseño
+
+        return SafeArea(
+          // evita notch y home indicator
+          top: true,
+          bottom: true,
+          child: AnimatedPadding(
+            // sube el contenido con teclado
+            duration: const Duration(milliseconds: 180),
+            curve: Curves.easeOut,
+            padding: EdgeInsets.only(bottom: mq.viewInsets.bottom),
+            child: Center(
+              // centra y limita alto máx
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: maxH),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: CupertinoColors.white,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(30),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.primary.withOpacity(0.08),
+                        blurRadius: 32,
+                        offset: const Offset(0, -8),
+                      ),
+                      BoxShadow(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.secondary.withOpacity(0.04),
+                        blurRadius: 16,
+                        offset: const Offset(0, -4),
+                        spreadRadius: 2,
+                      ),
+                    ],
                   ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () => FocusScope.of(context).unfocus(),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: SingleChildScrollView(
-                        controller: scrollController,
-                        child: BuildDialog(
-                          selectedTags: _selectedTags,
-                          onTagSelectionChanged: (tags) {
-                            setState(() => _selectedTags = tags);
-                          },
-                          maxTimeController: _maxTimeController,
-                          preferencesController: _preferencesController,
-                          selectedDifficulty: _selectedDifficulty,
-                          onDifficultyChanged: (value) {
-                            setState(() => _selectedDifficulty = value);
-                          },
-                          generateAiRecommendations: _generateAIRecommendations,
+                  child: Column(
+                    children: [
+                      const HandleBar(),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 8, right: 8),
+                          child: CloseButtonExt(handleClose: _handleClose),
                         ),
                       ),
-                    ),
+                      Expanded(
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () => FocusScope.of(context).unfocus(),
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: SingleChildScrollView(
+                              controller: scrollController,
+                              child: BuildDialog(
+                                selectedTags: _selectedTags,
+                                onTagSelectionChanged: (tags) {
+                                  setState(() => _selectedTags = tags);
+                                },
+                                maxTimeController: _maxTimeController,
+                                preferencesController: _preferencesController,
+                                selectedDifficulty: _selectedDifficulty,
+                                onDifficultyChanged: (value) {
+                                  setState(() => _selectedDifficulty = value);
+                                },
+                                generateAiRecommendations:
+                                    _generateAIRecommendations,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
           ),
+        );
+      },
     );
   }
 }
