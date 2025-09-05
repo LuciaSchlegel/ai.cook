@@ -38,8 +38,10 @@ class RecommendationsBuilder extends StatelessWidget {
               recommendation.almostReady,
             ),
 
+            const SizedBox(height: 20),
+
             // Almost ready recipes
-            AIAlmostReadySection(content: recommendation.almostReady),
+            // AIAlmostReadySection(content: recommendation.almostReady),
 
             // Shopping suggestions
             AIShoppingSuggestionsSection(

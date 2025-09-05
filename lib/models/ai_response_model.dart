@@ -8,8 +8,8 @@ class IngredientQuantity {
 
   factory IngredientQuantity.fromJson(Map<String, dynamic> json) {
     return IngredientQuantity(
-      name: json['name'] as String,
-      quantity: json['quantity'] as String,
+      name: (json['name'] ?? '').toString(),
+      quantity: (json['quantity'] ?? '').toString(),
     );
   }
 }
@@ -37,20 +37,26 @@ class AIRecipeMinimal {
 
   factory AIRecipeMinimal.fromJson(Map<String, dynamic> json) {
     return AIRecipeMinimal(
-      id: json['id'] as int,
-      title: json['title'] as String,
-      timeMinutes: json['time_minutes'] as int,
-      difficulty: json['difficulty'] as String,
-      tags: (json['tags'] as List<dynamic>).cast<String>(),
-      description: json['description'] as String,
+      id: _asInt(json['id']),
+      title: (json['title'] ?? '').toString(),
+      timeMinutes: _asInt(json['time_minutes']),
+      difficulty: (json['difficulty'] ?? '').toString(),
+      tags:
+          ((json['tags'] as List?)?.map((e) => e.toString()).toList()) ??
+          const [],
+      description: (json['description'] ?? '').toString(),
       ingredients:
-          (json['ingredients'] as List<dynamic>)
-              .map(
-                (item) =>
-                    IngredientQuantity.fromJson(item as Map<String, dynamic>),
+          ((json['ingredients'] as List?)
+              ?.map(
+                (item) => IngredientQuantity.fromJson(
+                  (item as Map?)?.cast<String, dynamic>() ?? const {},
+                ),
               )
-              .toList(),
-      steps: (json['steps'] as List<dynamic>).cast<String>(),
+              .toList()) ??
+          const [],
+      steps:
+          ((json['steps'] as List?)?.map((e) => e.toString()).toList()) ??
+          const [],
     );
   }
 }
@@ -63,8 +69,8 @@ class AIShoppingSuggestion {
 
   factory AIShoppingSuggestion.fromJson(Map<String, dynamic> json) {
     return AIShoppingSuggestion(
-      name: json['name'] as String,
-      reason: json['reason'] as String,
+      name: (json['name'] ?? '').toString(),
+      reason: (json['reason'] ?? '').toString(),
     );
   }
 }
@@ -92,21 +98,28 @@ class AIAlmostReadyRecipe {
 
   factory AIAlmostReadyRecipe.fromJson(Map<String, dynamic> json) {
     return AIAlmostReadyRecipe(
-      id: json['id'] as int,
-      title: json['title'] as String,
-      description: json['description'] as String,
-      timeMinutes: json['time_minutes'] as int,
-      difficulty: json['difficulty'] as String,
-      tags: (json['tags'] as List<dynamic>).cast<String>(),
+      id: _asInt(json['id']),
+      title: (json['title'] ?? '').toString(),
+      description: (json['description'] ?? '').toString(),
+      timeMinutes: _asInt(json['time_minutes']),
+      difficulty: (json['difficulty'] ?? '').toString(),
+      tags:
+          ((json['tags'] as List?)?.map((e) => e.toString()).toList()) ??
+          const [],
       missingIngredients:
-          (json['missing_ingredients'] as List<dynamic>).cast<String>(),
+          ((json['missing_ingredients'] as List?)
+              ?.map((e) => e.toString())
+              .toList()) ??
+          const [],
       shoppingSuggestions:
-          (json['shopping_suggestions'] as List<dynamic>)
-              .map(
-                (item) =>
-                    AIShoppingSuggestion.fromJson(item as Map<String, dynamic>),
+          ((json['shopping_suggestions'] as List?)
+              ?.map(
+                (item) => AIShoppingSuggestion.fromJson(
+                  (item as Map?)?.cast<String, dynamic>() ?? const {},
+                ),
               )
-              .toList(),
+              .toList()) ??
+          const [],
     );
   }
 }
@@ -119,8 +132,12 @@ class AISubstitution {
 
   factory AISubstitution.fromJson(Map<String, dynamic> json) {
     return AISubstitution(
-      original: json['original'] as String,
-      alternatives: (json['alternatives'] as List<dynamic>).cast<String>(),
+      original: (json['original'] ?? '').toString(),
+      alternatives:
+          ((json['alternatives'] as List?)
+              ?.map((e) => e.toString())
+              .toList()) ??
+          const [],
     );
   }
 }
@@ -150,35 +167,47 @@ class StructuredAIRecommendation {
   factory StructuredAIRecommendation.fromJson(Map<String, dynamic> json) {
     return StructuredAIRecommendation(
       readyToCook:
-          (json['ready_to_cook'] as List<dynamic>)
-              .map(
-                (item) =>
-                    AIRecipeMinimal.fromJson(item as Map<String, dynamic>),
+          ((json['ready_to_cook'] as List?)
+              ?.map(
+                (item) => AIRecipeMinimal.fromJson(
+                  (item as Map?)?.cast<String, dynamic>() ?? const {},
+                ),
               )
-              .toList(),
+              .toList()) ??
+          const [],
       almostReady:
-          (json['almost_ready'] as List<dynamic>)
-              .map(
-                (item) =>
-                    AIAlmostReadyRecipe.fromJson(item as Map<String, dynamic>),
+          ((json['almost_ready'] as List?)
+              ?.map(
+                (item) => AIAlmostReadyRecipe.fromJson(
+                  (item as Map?)?.cast<String, dynamic>() ?? const {},
+                ),
               )
-              .toList(),
+              .toList()) ??
+          const [],
       shoppingSuggestions:
-          (json['shopping_suggestions'] as List<dynamic>)
-              .map(
-                (item) =>
-                    AIShoppingSuggestion.fromJson(item as Map<String, dynamic>),
+          ((json['shopping_suggestions'] as List?)
+              ?.map(
+                (item) => AIShoppingSuggestion.fromJson(
+                  (item as Map?)?.cast<String, dynamic>() ?? const {},
+                ),
               )
-              .toList(),
+              .toList()) ??
+          const [],
       possibleSubstitutions:
-          (json['possible_substitutions'] as List<dynamic>)
-              .map(
-                (item) => AISubstitution.fromJson(item as Map<String, dynamic>),
+          ((json['possible_substitutions'] as List?)
+              ?.map(
+                (item) => AISubstitution.fromJson(
+                  (item as Map?)?.cast<String, dynamic>() ?? const {},
+                ),
               )
-              .toList(),
-      processingTime: json['processingTime'] as int?,
-      filteredRecipes: json['filteredRecipes'] as List<dynamic>?,
-      totalRecipesConsidered: json['totalRecipesConsidered'] as int?,
+              .toList()) ??
+          const [],
+      processingTime: _asNullableInt(json['processingTime']),
+      filteredRecipes:
+          json['filteredRecipes'] is List
+              ? (json['filteredRecipes'] as List).toList()
+              : null,
+      totalRecipesConsidered: _asNullableInt(json['totalRecipesConsidered']),
     );
   }
 
@@ -213,6 +242,22 @@ class MissingIngredientInfo {
   final String? unit;
 
   const MissingIngredientInfo({required this.name, this.quantity, this.unit});
+}
+
+// Helpers
+int _asInt(dynamic value, {int defaultValue = 0}) {
+  if (value is int) return value;
+  if (value is double) return value.round();
+  if (value is String) return int.tryParse(value) ?? defaultValue;
+  return defaultValue;
+}
+
+int? _asNullableInt(dynamic value) {
+  if (value == null) return null;
+  if (value is int) return value;
+  if (value is double) return value.round();
+  if (value is String) return int.tryParse(value);
+  return null;
 }
 
 // deprecated - original models for backward compatibility
