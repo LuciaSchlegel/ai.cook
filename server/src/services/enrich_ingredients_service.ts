@@ -26,7 +26,6 @@ export class IngredientEnrichmentService {
         ingredient.isVegetarian = enrichment.isVegetarian;
         ingredient.isGlutenFree = enrichment.isGlutenFree;
         ingredient.isLactoseFree = enrichment.isLactoseFree;
-        ingredient.tags = enrichment.tags;
         ingredient.category ??= enrichment.category;
 
         await IngredientRepository.save(ingredient);
@@ -60,7 +59,6 @@ export class IngredientEnrichmentService {
       allergens: allergens.map( (tag: string) => tag.split(':').pop()),
       description,
       category,
-      tags: labels.map( (tag: string) => tag.split(':').pop()),
     };
   }
 }
