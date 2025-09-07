@@ -25,12 +25,12 @@ class RecipeIngCard extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.mutedGreen.withOpacity(0.3),
+          color: AppColors.mutedGreen.withValues(alpha: 0.3),
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -62,7 +62,7 @@ class RecipeIngCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.mutedGreen.withOpacity(0.1),
+                  color: AppColors.mutedGreen.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
@@ -185,7 +185,7 @@ class _IngredientRow extends StatelessWidget {
         return Icon(
           CupertinoIcons.checkmark_circle_fill,
           size: 18,
-          color: AppColors.mutedGreen.withOpacity(0.8),
+          color: AppColors.mutedGreen.withValues(alpha: 0.8),
         );
       case IngredientAvailabilityStatus.insufficient:
       case IngredientAvailabilityStatus.incompatible:
@@ -202,7 +202,7 @@ class _IngredientRow extends StatelessWidget {
   Color _getQuantityTextColor(IngredientAvailabilityStatus status) {
     switch (status) {
       case IngredientAvailabilityStatus.available:
-        return AppColors.mutedGreen.withOpacity(0.8);
+        return AppColors.mutedGreen.withValues(alpha: 0.8);
       case IngredientAvailabilityStatus.insufficient:
       case IngredientAvailabilityStatus.incompatible:
         return const Color.fromARGB(255, 198, 183, 47);
@@ -219,10 +219,10 @@ class _IngredientRow extends StatelessWidget {
       constraints: const BoxConstraints(minHeight: 48),
       padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 12),
       decoration: BoxDecoration(
-        color: AppColors.background.withOpacity(0.02),
+        color: AppColors.background.withValues(alpha: 0.02),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.mutedGreen.withOpacity(0.1),
+          color: AppColors.mutedGreen.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -323,77 +323,78 @@ class _IngredientRow extends StatelessWidget {
 
     showDialog(
       context: context,
-      builder: (ctx) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-          ),
-          title: Row(
-            children: [
-              Icon(icon, color: iconColor, size: 24),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
+      barrierDismissible: true,
+      builder:
+          (BuildContext dialogContext) => CupertinoAlertDialog(
+            title: Icon(icon, color: iconColor, size: 40),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 16),
+                Text(
                   title,
                   style: const TextStyle(
-                    fontFamily: 'Casta',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 22,
-                    color: AppColors.button,
+                    color: AppColors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  ingredient.ingredient.name,
+                  style: const TextStyle(
+                    color: AppColors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  message,
+                  style: const TextStyle(
+                    color: AppColors.black,
+                    fontSize: 14,
+                    height: 1.4,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.mutedGreen.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    'Recipe requires: ${ingredient.quantity} ${ingredient.unit?.abbreviation ?? ''}',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: AppColors.mutedGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              CupertinoDialogAction(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: const Text(
+                  'Close',
+                  style: TextStyle(
+                    color: AppColors.orange,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
             ],
           ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                ingredient.ingredient.name,
-                style: const TextStyle(
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15,
-                  color: AppColors.button,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                message,
-                style: const TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 14,
-                  color: AppColors.button,
-                  height: 1.3,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                'Recipe requires: ${ingredient.quantity} ${ingredient.unit?.abbreviation ?? ''}',
-                style: const TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 13,
-                  color: AppColors.mutedGreen,
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: const Text(
-                'Close',
-                style: TextStyle(
-                  color: AppColors.orange,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 }

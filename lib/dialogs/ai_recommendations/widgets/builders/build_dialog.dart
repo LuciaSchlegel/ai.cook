@@ -75,7 +75,7 @@ class BuildDialog extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.button.withOpacity(0.15),
+                    color: AppColors.button.withValues(alpha: 0.15),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                     spreadRadius: 0,

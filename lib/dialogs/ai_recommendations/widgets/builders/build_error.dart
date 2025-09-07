@@ -16,13 +16,13 @@ class ErrorBuild extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.orange.withOpacity(0.08),
+            color: AppColors.orange.withValues(alpha: 0.08),
             blurRadius: 16,
             offset: const Offset(0, 4),
             spreadRadius: 0,
           ),
         ],
-        border: Border.all(color: AppColors.orange.withOpacity(0.2), width: 1),
+        border: Border.all(color: AppColors.orange.withValues(alpha: 0.2), width: 1),
       ),
       child: Stack(
         children: [
@@ -34,8 +34,8 @@ class ErrorBuild extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  AppColors.orange.withOpacity(0.03),
-                  AppColors.lightYellow.withOpacity(0.03),
+                  AppColors.orange.withValues(alpha: 0.03),
+                  AppColors.lightYellow.withValues(alpha: 0.03),
                 ],
               ),
             ),
@@ -52,7 +52,7 @@ class ErrorBuild extends StatelessWidget {
                     width: 64,
                     height: 64,
                     decoration: BoxDecoration(
-                      color: AppColors.orange.withOpacity(0.1),
+                      color: AppColors.orange.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
@@ -79,7 +79,7 @@ class ErrorBuild extends StatelessWidget {
                     error,
                     style: TextStyle(
                       fontSize: 14,
-                      color: AppColors.button.withOpacity(0.7),
+                      color: AppColors.button.withValues(alpha: 0.7),
                       height: 1.4,
                       letterSpacing: 0.1,
                     ),

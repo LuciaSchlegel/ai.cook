@@ -12,7 +12,7 @@ class FormComments extends StatelessWidget {
       decoration: BoxDecoration(
         color: CupertinoColors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.button.withOpacity(0.2)),
+        border: Border.all(color: AppColors.button.withValues(alpha: 0.2)),
       ),
       child: CupertinoTextField(
         controller: preferencesController,
@@ -21,7 +21,7 @@ class FormComments extends StatelessWidget {
         textInputAction: TextInputAction.done,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         placeholderStyle: TextStyle(
-          color: AppColors.button.withOpacity(0.5),
+          color: AppColors.button.withValues(alpha: 0.5),
           fontSize: 16,
         ),
         style: const TextStyle(color: AppColors.button, fontSize: 16),

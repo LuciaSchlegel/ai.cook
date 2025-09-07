@@ -12,14 +12,14 @@ class CloseButtonExt extends StatelessWidget {
       width: 36,
       height: 36,
       decoration: BoxDecoration(
-        color: AppColors.mutedGreen.withOpacity(0.08),
+        color: AppColors.mutedGreen.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(18),
       ),
       child: IconButton(
         onPressed: handleClose,
         icon: Icon(
           CupertinoIcons.xmark,
-          color: AppColors.button.withOpacity(0.6),
+          color: AppColors.button.withValues(alpha: 0.6),
           size: 16,
         ),
         padding: EdgeInsets.zero,

@@ -18,19 +18,22 @@ class AISubstitutionsSection extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [AppColors.white, AppColors.mutedGreen.withOpacity(0.04)],
+          colors: [
+            AppColors.white,
+            AppColors.mutedGreen.withValues(alpha: 0.04),
+          ],
         ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.mutedGreen.withOpacity(0.06),
+            color: AppColors.mutedGreen.withValues(alpha: 0.06),
             blurRadius: 16,
             offset: const Offset(0, 4),
             spreadRadius: 0,
           ),
         ],
         border: Border.all(
-          color: AppColors.mutedGreen.withOpacity(0.2),
+          color: AppColors.mutedGreen.withValues(alpha: 0.2),
           width: 1.5,
         ),
       ),
@@ -46,8 +49,8 @@ class AISubstitutionsSection extends StatelessWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.mutedGreen.withOpacity(0.2),
-                      AppColors.lightYellow.withOpacity(0.2),
+                      AppColors.mutedGreen.withValues(alpha: 0.2),
+                      AppColors.lightYellow.withValues(alpha: 0.2),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(16),
@@ -91,10 +94,10 @@ class AISubstitutionsSection extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.white.withOpacity(0.7),
+        color: AppColors.white.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.mutedGreen.withOpacity(0.15),
+          color: AppColors.mutedGreen.withValues(alpha: 0.15),
           width: 1,
         ),
       ),
@@ -106,7 +109,7 @@ class AISubstitutionsSection extends StatelessWidget {
             height: 20,
             margin: const EdgeInsets.only(top: 2),
             decoration: BoxDecoration(
-              color: AppColors.mutedGreen.withOpacity(0.1),
+              color: AppColors.mutedGreen.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(
@@ -134,7 +137,7 @@ class AISubstitutionsSection extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     height: 1.4,
-                    color: AppColors.button.withOpacity(0.8),
+                    color: AppColors.button.withValues(alpha: 0.8),
                   ),
                 ),
               ],
@@ -149,10 +152,10 @@ class AISubstitutionsSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.mutedGreen.withOpacity(0.05),
+        color: AppColors.mutedGreen.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.mutedGreen.withOpacity(0.2),
+          color: AppColors.mutedGreen.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -161,7 +164,7 @@ class AISubstitutionsSection extends StatelessWidget {
           Icon(
             CupertinoIcons.arrow_2_circlepath,
             size: 40,
-            color: AppColors.mutedGreen.withOpacity(0.6),
+            color: AppColors.mutedGreen.withValues(alpha: 0.6),
           ),
           const SizedBox(height: 12),
           Text(
@@ -178,7 +181,7 @@ class AISubstitutionsSection extends StatelessWidget {
             'You have all the ingredients you need! I\'ll suggest smart substitutions when needed to help you adapt recipes to your taste or dietary preferences.',
             style: TextStyle(
               fontSize: 14,
-              color: AppColors.button.withOpacity(0.7),
+              color: AppColors.button.withValues(alpha: 0.7),
               height: 1.4,
             ),
             textAlign: TextAlign.center,

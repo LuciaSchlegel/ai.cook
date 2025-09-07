@@ -30,7 +30,7 @@ class FormOptions extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.button.withOpacity(0.9),
+                  color: AppColors.button.withValues(alpha: 0.9),
                   letterSpacing: 0.2,
                 ),
               ),
@@ -40,7 +40,7 @@ class FormOptions extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: CupertinoColors.white,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.button.withOpacity(0.2)),
+                  border: Border.all(color: AppColors.button.withValues(alpha: 0.2)),
                 ),
                 child: CupertinoTextField(
                   controller: maxTimeController,
@@ -52,7 +52,7 @@ class FormOptions extends StatelessWidget {
                     vertical: 12,
                   ),
                   placeholderStyle: TextStyle(
-                    color: AppColors.button.withOpacity(0.5),
+                    color: AppColors.button.withValues(alpha: 0.5),
                     fontSize: 16,
                   ),
                   style: const TextStyle(color: AppColors.button, fontSize: 16),
@@ -79,7 +79,7 @@ class FormOptions extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.button.withOpacity(0.9),
+                  color: AppColors.button.withValues(alpha: 0.9),
                   letterSpacing: 0.2,
                 ),
               ),

@@ -18,13 +18,13 @@ class AIGreetingSection extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.lightYellow.withOpacity(0.1),
-            AppColors.mutedGreen.withOpacity(0.05),
+            AppColors.lightYellow.withValues(alpha: 0.1),
+            AppColors.mutedGreen.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.mutedGreen.withOpacity(0.1),
+          color: AppColors.mutedGreen.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -37,8 +37,8 @@ class AIGreetingSection extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.mutedGreen.withOpacity(0.2),
-                  AppColors.lightYellow.withOpacity(0.3),
+                  AppColors.mutedGreen.withValues(alpha: 0.2),
+                  AppColors.lightYellow.withValues(alpha: 0.3),
                 ],
               ),
               borderRadius: BorderRadius.circular(14),
@@ -56,7 +56,7 @@ class AIGreetingSection extends StatelessWidget {
               style: TextStyle(
                 fontSize: 15,
                 height: 1.5,
-                color: AppColors.button.withOpacity(0.85),
+                color: AppColors.button.withValues(alpha: 0.85),
                 fontWeight: FontWeight.w400,
               ),
             ),

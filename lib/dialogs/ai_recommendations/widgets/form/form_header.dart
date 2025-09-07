@@ -17,14 +17,14 @@ class FormHeader extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                AppColors.mutedGreen.withOpacity(0.2),
-                AppColors.lightYellow.withOpacity(0.3),
+                AppColors.mutedGreen.withValues(alpha: 0.2),
+                AppColors.lightYellow.withValues(alpha: 0.3),
               ],
             ),
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
-                color: AppColors.mutedGreen.withOpacity(0.15),
+                color: AppColors.mutedGreen.withValues(alpha: 0.15),
                 blurRadius: 6,
                 offset: const Offset(0, 2),
               ),
@@ -45,7 +45,7 @@ class FormHeader extends StatelessWidget {
                   end: Alignment.centerRight,
                   colors: [
                     AppColors.button,
-                    AppColors.mutedGreen.withOpacity(0.8),
+                    AppColors.mutedGreen.withValues(alpha: 0.8),
                   ],
                 ).createShader(bounds),
             child: const Text(

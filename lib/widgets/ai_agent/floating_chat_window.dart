@@ -361,7 +361,7 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  'powered by Apple Intelligence®',
+                  'powered by ChatGPT©',
                   style: TextStyle(
                     color: Colors.black.withOpacity(0.5),
                     fontSize: 10,

@@ -1,4 +1,3 @@
-import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_almostready_section.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_almostrecipe_card.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_greeting_section.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_readyrecipe_card.dart';

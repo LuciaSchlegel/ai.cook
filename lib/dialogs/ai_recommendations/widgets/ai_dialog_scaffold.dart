@@ -42,7 +42,7 @@ class AiDialogScaffold extends StatelessWidget {
           child: Container(
             width: double.infinity,
             height: double.infinity,
-            color: Colors.black54.withOpacity(controller.value * 0.5),
+            color: Colors.black54.withValues(alpha: controller.value * 0.5),
             child: Stack(
               children: [
                 GestureDetector(
@@ -62,9 +62,11 @@ class AiDialogScaffold extends StatelessWidget {
                     width: double.infinity,
                     height: double.infinity,
                     child: DraggableScrollableSheet(
-                      initialChildSize: 0.9,
-                      minChildSize: 0.5,
+                      initialChildSize: 0.85,
+                      minChildSize: 0.4,
                       maxChildSize: 0.95,
+                      snap: true,
+                      snapSizes: const [0.4, 0.7, 0.95],
                       builder: (context, scrollController) {
                         return Transform.scale(
                           scale: contentScaleAnimation.value,

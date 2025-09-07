@@ -19,19 +19,19 @@ class AIAlmostReadySection extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [AppColors.white, AppColors.orange.withOpacity(0.02)],
+          colors: [AppColors.white, AppColors.orange.withValues(alpha: 0.02)],
         ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.orange.withOpacity(0.06),
+            color: AppColors.orange.withValues(alpha: 0.06),
             blurRadius: 16,
             offset: const Offset(0, 4),
             spreadRadius: 0,
           ),
         ],
         border: Border.all(
-          color: AppColors.orange.withOpacity(0.15),
+          color: AppColors.orange.withValues(alpha: 0.15),
           width: 1.5,
         ),
       ),
@@ -47,8 +47,8 @@ class AIAlmostReadySection extends StatelessWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.orange.withOpacity(0.2),
-                      AppColors.lightYellow.withOpacity(0.3),
+                      AppColors.orange.withValues(alpha: 0.2),
+                      AppColors.lightYellow.withValues(alpha: 0.3),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(16),

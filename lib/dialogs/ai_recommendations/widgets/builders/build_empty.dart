@@ -13,14 +13,14 @@ class BuildEmpty extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.mutedGreen.withOpacity(0.05),
+            color: AppColors.mutedGreen.withValues(alpha: 0.05),
             blurRadius: 12,
             offset: const Offset(0, 2),
             spreadRadius: 0,
           ),
         ],
         border: Border.all(
-          color: AppColors.mutedGreen.withOpacity(0.1),
+          color: AppColors.mutedGreen.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -34,8 +34,8 @@ class BuildEmpty extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  AppColors.lightYellow.withOpacity(0.02),
-                  AppColors.mutedGreen.withOpacity(0.02),
+                  AppColors.lightYellow.withValues(alpha: 0.02),
+                  AppColors.mutedGreen.withValues(alpha: 0.02),
                 ],
               ),
             ),
@@ -51,7 +51,7 @@ class BuildEmpty extends StatelessWidget {
                   width: 56,
                   height: 56,
                   decoration: BoxDecoration(
-                    color: AppColors.mutedGreen.withOpacity(0.08),
+                    color: AppColors.mutedGreen.withValues(alpha: 0.08),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -79,7 +79,7 @@ class BuildEmpty extends StatelessWidget {
                     'Set your preferences above and tap the button below to get personalized recipe recommendations',
                     style: TextStyle(
                       fontSize: 13,
-                      color: AppColors.button.withOpacity(0.7),
+                      color: AppColors.button.withValues(alpha: 0.7),
                       height: 1.3,
                       letterSpacing: 0.1,
                     ),

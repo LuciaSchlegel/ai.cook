@@ -17,14 +17,14 @@ class AiRecomHeader extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                AppColors.mutedGreen.withOpacity(0.2),
-                AppColors.lightYellow.withOpacity(0.3),
+                AppColors.mutedGreen.withValues(alpha: 0.2),
+                AppColors.lightYellow.withValues(alpha: 0.3),
               ],
             ),
             borderRadius: BorderRadius.circular(14),
             boxShadow: [
               BoxShadow(
-                color: AppColors.mutedGreen.withOpacity(0.15),
+                color: AppColors.mutedGreen.withValues(alpha: 0.15),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),

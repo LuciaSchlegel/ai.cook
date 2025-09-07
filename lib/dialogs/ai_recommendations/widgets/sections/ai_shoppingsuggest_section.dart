@@ -18,19 +18,19 @@ class AIShoppingSuggestionsSection extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [AppColors.white, AppColors.lightYellow.withOpacity(0.08)],
+          colors: [AppColors.white, AppColors.lightYellow.withValues(alpha: 0.08)],
         ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.lightYellow.withOpacity(0.1),
+            color: AppColors.lightYellow.withValues(alpha: 0.1),
             blurRadius: 16,
             offset: const Offset(0, 4),
             spreadRadius: 0,
           ),
         ],
         border: Border.all(
-          color: AppColors.lightYellow.withOpacity(0.3),
+          color: AppColors.lightYellow.withValues(alpha: 0.3),
           width: 1.5,
         ),
       ),
@@ -46,8 +46,8 @@ class AIShoppingSuggestionsSection extends StatelessWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.lightYellow.withOpacity(0.3),
-                      AppColors.mutedGreen.withOpacity(0.2),
+                      AppColors.lightYellow.withValues(alpha: 0.3),
+                      AppColors.mutedGreen.withValues(alpha: 0.2),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(16),
@@ -89,10 +89,10 @@ class AIShoppingSuggestionsSection extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.white.withOpacity(0.7),
+        color: AppColors.white.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.lightYellow.withOpacity(0.2),
+          color: AppColors.lightYellow.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -127,7 +127,7 @@ class AIShoppingSuggestionsSection extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     height: 1.4,
-                    color: AppColors.button.withOpacity(0.8),
+                    color: AppColors.button.withValues(alpha: 0.8),
                   ),
                 ),
               ],
@@ -142,10 +142,10 @@ class AIShoppingSuggestionsSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.lightYellow.withOpacity(0.05),
+        color: AppColors.lightYellow.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.lightYellow.withOpacity(0.2),
+          color: AppColors.lightYellow.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -154,7 +154,7 @@ class AIShoppingSuggestionsSection extends StatelessWidget {
           Icon(
             CupertinoIcons.shopping_cart,
             size: 40,
-            color: AppColors.orange.withOpacity(0.6),
+            color: AppColors.orange.withValues(alpha: 0.6),
           ),
           const SizedBox(height: 12),
           Text(
@@ -171,7 +171,7 @@ class AIShoppingSuggestionsSection extends StatelessWidget {
             'Your ingredient collection looks great! I\'ll provide personalized shopping suggestions based on your cooking preferences and available recipes.',
             style: TextStyle(
               fontSize: 14,
-              color: AppColors.button.withOpacity(0.7),
+              color: AppColors.button.withValues(alpha: 0.7),
               height: 1.4,
             ),
             textAlign: TextAlign.center,

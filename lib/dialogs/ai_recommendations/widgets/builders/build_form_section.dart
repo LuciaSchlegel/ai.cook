@@ -36,14 +36,14 @@ class SectionBuilder extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.mutedGreen.withOpacity(0.06),
+            color: AppColors.mutedGreen.withValues(alpha: 0.06),
             blurRadius: 16,
             offset: const Offset(0, 4),
             spreadRadius: 0,
           ),
         ],
         border: Border.all(
-          color: AppColors.mutedGreen.withOpacity(0.12),
+          color: AppColors.mutedGreen.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -59,7 +59,7 @@ class SectionBuilder extends StatelessWidget {
             style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w600,
-              color: AppColors.button.withOpacity(0.9),
+              color: AppColors.button.withValues(alpha: 0.9),
               letterSpacing: 0.2,
             ),
           ),
@@ -108,7 +108,7 @@ class SectionBuilder extends StatelessWidget {
             style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w600,
-              color: AppColors.button.withOpacity(0.9),
+              color: AppColors.button.withValues(alpha: 0.9),
               letterSpacing: 0.2,
             ),
           ),
