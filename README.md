@@ -2,6 +2,9 @@
 
 **ai.cook** is a comprehensive Flutter-based recipe management application that combines intelligent recipe discovery, personalized AI recommendations, and seamless ingredient management. The app features a multi-tier architecture with Flutter frontend, Node.js/TypeScript backend, and Python-based AI microservices.
 
+<img width="5760" height="3240" alt="1" src="https://github.com/user-attachments/assets/ba1453db-5030-4a0e-8857-54d0a6edffed" />
+
+
 ## 🌟 Key Features
 
 ### 🔍 Smart Recipe Discovery
