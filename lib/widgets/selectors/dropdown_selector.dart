@@ -8,6 +8,7 @@ class DropdownSelector extends StatelessWidget {
   final Function(String?) onChanged;
   final double? width;
   final String? title;
+  final bool confirmOnDone; // New parameter to control behavior
 
   const DropdownSelector({
     super.key,
@@ -16,12 +17,17 @@ class DropdownSelector extends StatelessWidget {
     required this.onChanged,
     this.width,
     this.title,
+    this.confirmOnDone =
+        false, // Default to old behavior for backward compatibility
   });
 
   void _showDropdownMenu(BuildContext context) {
     final overlayContext =
         Navigator.of(context, rootNavigator: true).overlay!.context;
     final int initialItem = items.indexOf(value);
+
+    // Track pending selection for confirm-on-done behavior
+    String pendingSelection = value;
 
     showCupertinoModalPopup<void>(
       context: overlayContext,
@@ -70,7 +76,13 @@ class DropdownSelector extends StatelessWidget {
                             fontSize: 16,
                           ),
                         ),
-                        onPressed: () => Navigator.of(context).pop(),
+                        onPressed: () {
+                          // Apply selection based on behavior mode
+                          if (confirmOnDone) {
+                            onChanged(pendingSelection);
+                          }
+                          Navigator.of(context).pop();
+                        },
                       ),
                     ],
                   ),
@@ -86,7 +98,13 @@ class DropdownSelector extends StatelessWidget {
                         initialItem: initialItem != -1 ? initialItem : 0,
                       ),
                       onSelectedItemChanged: (int selectedItem) {
-                        onChanged(items[selectedItem]);
+                        if (confirmOnDone) {
+                          // Store pending selection for confirm-on-done behavior
+                          pendingSelection = items[selectedItem];
+                        } else {
+                          // Immediate behavior (backward compatibility)
+                          onChanged(items[selectedItem]);
+                        }
                       },
                       children:
                           items
@@ -126,7 +144,7 @@ class DropdownSelector extends StatelessWidget {
           decoration: BoxDecoration(
             color: CupertinoColors.white,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppColors.button.withOpacity(0.2)),
+            border: Border.all(color: AppColors.button.withValues(alpha: 0.2)),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Row(

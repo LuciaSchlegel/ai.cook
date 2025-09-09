@@ -67,7 +67,6 @@ class _CupboardScreenState extends State<CupboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
     final resourceProvider = Provider.of<ResourceProvider>(context);
     final ingredientsProvider = Provider.of<IngredientsProvider>(context);
     void openAddIngredientDialog() {
@@ -93,10 +92,10 @@ class _CupboardScreenState extends State<CupboardScreen> {
               onLogoutTap: widget.onLogoutTap ?? () {},
               currentIndex: 0,
             ),
-            SizedBox(height: screenHeight * 0.03),
             ChipsDropdownCard(
               dropdownValue: _selectedCategory,
               dropdownItems: categories,
+              // Note: confirmDropdownOnDone = false (default) for instant local filtering
               onDropdownChanged: (value) {
                 if (value != null) {
                   setState(() => _selectedCategory = value);

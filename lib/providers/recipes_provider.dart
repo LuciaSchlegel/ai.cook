@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:async';
 import 'package:ai_cook_project/models/recipe_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:flutter/material.dart';
@@ -11,22 +12,42 @@ class RecipesProvider extends ChangeNotifier {
   Map<int, int> _missingCountByRecipe = {};
   bool _isLoading = false;
   String? _error;
+  String? _loadingMessage;
+
+  // Request cancellation support
+  http.Client? _currentClient;
+  String? _currentFilter;
+  List<String>? _currentTags;
 
   List<Recipe> get recipes => _recipes;
   Map<int, int> get missingCountByRecipe => _missingCountByRecipe;
   int missingCountFor(int recipeId) => _missingCountByRecipe[recipeId] ?? 0;
   bool get isLoading => _isLoading;
   String? get error => _error;
+  String? get loadingMessage => _loadingMessage;
 
   Future<void> getRecipes() async {
-    _setLoading(true);
+    _cancelCurrentRequest();
+    _setLoading(true, 'Loading all recipes...');
     _clearError();
 
+    // Reset filter state for "All Recipes"
+    _currentFilter = 'All Recipes';
+    _currentTags = [];
+
     try {
-      final response = await http.get(
+      _currentClient = http.Client();
+      final response = await _currentClient!.get(
         Uri.parse('${dotenv.env['API_URL']}/recipes'),
         headers: {'Content-Type': 'application/json'},
       );
+
+      // Check if this request is still current
+      if (_currentClient == null) {
+        // Request was cancelled
+        return;
+      }
+
       if (response.statusCode == 200) {
         final List<dynamic> recipesJson = json.decode(response.body);
         _recipes = recipesJson.map((e) => Recipe.fromJson(e)).toList();
@@ -36,8 +57,19 @@ class RecipesProvider extends ChangeNotifier {
         );
       }
     } catch (e) {
-      _setError('Failed to load recipes: $e');
+      // Don't show error if request was cancelled
+      if (_currentClient != null) {
+        // Check if it's a cancellation-related error
+        if (e.toString().contains('Connection closed') ||
+            e.toString().contains('HttpException')) {
+          debugPrint('Request cancelled: $e');
+        } else {
+          _setError('Failed to load recipes: $e');
+        }
+      }
     } finally {
+      _currentClient?.close();
+      _currentClient = null;
       _setLoading(false);
     }
   }
@@ -49,10 +81,23 @@ class RecipesProvider extends ChangeNotifier {
     int? maxCookingTimeMinutes,
     String? preferredDifficulty,
   }) async {
-    _setLoading(true);
+    // Cancel any ongoing request
+    _cancelCurrentRequest();
+
+    // Check if this is a duplicate request
+    if (_currentFilter == filter && _listsEqual(_currentTags, preferredTags)) {
+      return; // Skip duplicate request
+    }
+
+    _setLoading(true, 'Applying filter: $filter...');
     _clearError();
 
+    // Store current filter state
+    _currentFilter = filter;
+    _currentTags = List.from(preferredTags);
+
     try {
+      _currentClient = http.Client();
       final apiUrl = '${dotenv.env['API_URL']}/recipes/filter';
 
       final body = {
@@ -63,11 +108,24 @@ class RecipesProvider extends ChangeNotifier {
         "preferredDifficulty": preferredDifficulty,
       };
 
-      final response = await http.post(
+      final response = await _currentClient!.post(
         Uri.parse(apiUrl),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(body),
       );
+
+      // Check if this request is still current
+      if (_currentClient == null) {
+        // Request was cancelled
+        return;
+      }
+
+      // Validate that the response matches current filter state
+      if (_currentFilter != filter ||
+          !_listsEqual(_currentTags, preferredTags)) {
+        // Filter state changed while request was in flight, ignore response
+        return;
+      }
 
       if (response.statusCode == 200) {
         final List<dynamic> recipesJson = json.decode(response.body);
@@ -79,8 +137,19 @@ class RecipesProvider extends ChangeNotifier {
         );
       }
     } catch (e) {
-      _setError('Error filtering recipes: $e');
+      // Don't show error if request was cancelled
+      if (_currentClient != null) {
+        // Check if it's a cancellation-related error
+        if (e.toString().contains('Connection closed') ||
+            e.toString().contains('HttpException')) {
+          debugPrint('Filter request cancelled: $e');
+        } else {
+          _setError('Error filtering recipes: $e');
+        }
+      }
     } finally {
+      _currentClient?.close();
+      _currentClient = null;
       _setLoading(false);
     }
   }
@@ -88,9 +157,8 @@ class RecipesProvider extends ChangeNotifier {
   Future<void> getMissingIngredients({
     required List<UserIng> userIngredients,
   }) async {
-    _setLoading(true);
-    _clearError();
-
+    // Don't interfere with main filtering requests
+    // Use a separate client for missing ingredients
     try {
       final apiUrl = '${dotenv.env['API_URL']}/recipes/filter/ing';
 
@@ -98,11 +166,14 @@ class RecipesProvider extends ChangeNotifier {
         "userIngredients": userIngredients.map((ui) => ui.toJson()).toList(),
       };
 
-      final response = await http.post(
+      final client = http.Client();
+      final response = await client.post(
         Uri.parse(apiUrl),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(body),
       );
+
+      client.close();
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
@@ -113,20 +184,21 @@ class RecipesProvider extends ChangeNotifier {
         };
         notifyListeners();
       } else {
-        _setError(
-          'Error filtering recipes. Status code: ${response.statusCode}',
+        // Silently fail for missing ingredients to not interfere with main flow
+        debugPrint(
+          'Error getting missing ingredients. Status code: ${response.statusCode}',
         );
       }
     } catch (e) {
-      _setError('Error filtering recipes: $e');
-    } finally {
-      _setLoading(false);
+      // Silently fail for missing ingredients to not interfere with main flow
+      debugPrint('Error getting missing ingredients: $e');
     }
   }
 
-  void _setLoading(bool value) {
-    if (_isLoading != value) {
+  void _setLoading(bool value, [String? message]) {
+    if (_isLoading != value || _loadingMessage != message) {
       _isLoading = value;
+      _loadingMessage = value ? message : null;
       notifyListeners();
     }
   }
@@ -142,11 +214,41 @@ class RecipesProvider extends ChangeNotifier {
     _error = null;
   }
 
+  /// Cancel the current HTTP request if one is in progress
+  void _cancelCurrentRequest() {
+    if (_currentClient != null) {
+      _currentClient!.close();
+      _currentClient = null;
+    }
+  }
+
+  /// Compare two lists for equality (order-independent)
+  bool _listsEqual(List<String>? list1, List<String>? list2) {
+    if (list1 == null && list2 == null) return true;
+    if (list1 == null || list2 == null) return false;
+    if (list1.length != list2.length) return false;
+
+    final set1 = Set<String>.from(list1);
+    final set2 = Set<String>.from(list2);
+    return set1.containsAll(set2) && set2.containsAll(set1);
+  }
+
   // Utility
   void clearAll() {
+    _cancelCurrentRequest();
     _recipes = [];
+    _missingCountByRecipe = {};
     _error = null;
     _isLoading = false;
+    _loadingMessage = null;
+    _currentFilter = null;
+    _currentTags = null;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _cancelCurrentRequest();
+    super.dispose();
   }
 }

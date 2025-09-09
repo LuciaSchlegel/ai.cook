@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:ai_cook_project/models/recipe_tag_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_image.dart';
@@ -40,10 +41,15 @@ class _RecipesScreenState extends State<RecipesScreen> {
 
   List<RecipeTag> selectedTags = [];
 
+  // Debouncing support
+  Timer? _debounceTimer;
+  static const Duration _debounceDuration = Duration(milliseconds: 300);
+
   @override
   void initState() {
     super.initState();
     Future.microtask(() async {
+      if (!mounted) return;
       final recipesProvider = Provider.of<RecipesProvider>(
         context,
         listen: false,
@@ -53,6 +59,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
         listen: false,
       );
       await recipesProvider.getRecipes();
+      if (!mounted) return;
       // Also fetch missing ingredients using current user ingredients
       await recipesProvider.getMissingIngredients(
         userIngredients: ingredientsProvider.userIngredients,
@@ -60,7 +67,15 @@ class _RecipesScreenState extends State<RecipesScreen> {
     });
   }
 
+  void _applyFiltersDebounced() {
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(_debounceDuration, () {
+      _applyFilters();
+    });
+  }
+
   Future<void> _applyFilters() async {
+    if (!mounted) return;
     await filterRecipesLogic(
       context: context,
       selectedFilter: selectedFilter,
@@ -68,6 +83,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
       maxCookingTimeMinutes: null,
       preferredDifficulty: null,
     );
+    if (!mounted) return;
     // Refresh backend-computed missing counts for the current (filtered) recipes
     final recipesProvider = Provider.of<RecipesProvider>(
       context,
@@ -80,6 +96,12 @@ class _RecipesScreenState extends State<RecipesScreen> {
     await recipesProvider.getMissingIngredients(
       userIngredients: ingredientsProvider.userIngredients,
     );
+  }
+
+  @override
+  void dispose() {
+    _debounceTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -99,28 +121,29 @@ class _RecipesScreenState extends State<RecipesScreen> {
               onLogoutTap: widget.onLogoutTap ?? () {},
               currentIndex: 0,
             ),
-            SizedBox(height: screenHeight * 0.03),
             ChipsDropdownCard(
               dropdownValue: selectedFilter,
               dropdownItems: filterOptions,
-              onDropdownChanged: (value) async {
+              confirmDropdownOnDone:
+                  true, // Enable confirm-on-done for better UX
+              onDropdownChanged: (value) {
                 if (value != null) {
                   setState(() {
                     selectedFilter = value;
                   });
-                  await _applyFilters();
+                  _applyFiltersDebounced();
                 }
               },
               chipsItems: tagNames,
               chipsSelectedItems: selectedTags.map((t) => t.name).toList(),
-              onChipsSelected: (selectedTagNames) async {
+              onChipsSelected: (selectedTagNames) {
                 setState(() {
                   selectedTags =
                       resourceProvider.recipeTags
                           .where((t) => selectedTagNames.contains(t.name))
                           .toList();
                 });
-                await _applyFilters();
+                _applyFiltersDebounced();
               },
             ),
             Expanded(
@@ -146,7 +169,26 @@ class _RecipesScreenState extends State<RecipesScreen> {
                   }
 
                   if (recipesProvider.isLoading) {
-                    return const Center(child: LoadingIndicator());
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const LoadingIndicator(),
+                          if (recipesProvider.loadingMessage != null) ...[
+                            const SizedBox(height: 16),
+                            Text(
+                              recipesProvider.loadingMessage!,
+                              style: const TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 14,
+                                color: AppColors.mutedGreen,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ],
+                      ),
+                    );
                   }
 
                   final recipes = recipesProvider.recipes;
@@ -260,7 +302,7 @@ class _ContainerRecipeCardContent extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(18)),
       ),
-      color: AppColors.white.withOpacity(0.95),
+      color: AppColors.white.withValues(alpha: 0.95),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(

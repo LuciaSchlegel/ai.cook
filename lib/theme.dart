@@ -8,6 +8,11 @@ class AppColors {
   static const button = Color(0xFF111A19);
   static const mutedGreen = Color(0xFF809076);
   static const lightYellow = Color(0xFFF8D794);
+  static const gradientOrange = LinearGradient(
+    colors: [Color(0xFFBB6830), Color(0xFFF8D794)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 
   static Color withOpacity(Color color, double opacity) {
     return color.withOpacity(opacity);

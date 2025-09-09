@@ -50,7 +50,7 @@ class IngredientListView extends StatelessWidget {
       assetPath,
       width: 26,
       height: 26,
-      color: AppColors.mutedGreen,
+      colorFilter: ColorFilter.mode(AppColors.mutedGreen, BlendMode.srcIn),
     );
   }
 
@@ -142,7 +142,7 @@ class IngredientListView extends StatelessWidget {
               borderRadius: BorderRadius.circular(18),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.04),
+                  color: Colors.black.withValues(alpha: 0.04),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -162,7 +162,7 @@ class IngredientListView extends StatelessWidget {
                         width: 32,
                         height: 32,
                         decoration: BoxDecoration(
-                          color: AppColors.mutedGreen.withOpacity(0.10),
+                          color: AppColors.mutedGreen.withValues(alpha: 0.10),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Center(child: _getCategoryIcon(userIng)),
@@ -218,7 +218,7 @@ class IngredientListView extends StatelessWidget {
                       ),
                       Icon(
                         Icons.arrow_forward_ios,
-                        color: AppColors.mutedGreen.withOpacity(0.4),
+                        color: AppColors.mutedGreen.withValues(alpha: 0.4),
                         size: 18,
                       ),
                     ],

@@ -11,6 +11,8 @@ class ChipsDropdownCard extends StatelessWidget {
   final List<String> chipsItems;
   final ValueChanged<List<String>> onChipsSelected;
   final String? dropdownTitle;
+  final bool
+  confirmDropdownOnDone; // New parameter for confirm-on-done behavior
 
   const ChipsDropdownCard({
     super.key,
@@ -21,6 +23,7 @@ class ChipsDropdownCard extends StatelessWidget {
     required this.chipsItems,
     required this.onChipsSelected,
     this.dropdownTitle,
+    this.confirmDropdownOnDone = false, // Default to old behavior
   });
 
   @override
@@ -33,7 +36,7 @@ class ChipsDropdownCard extends StatelessWidget {
         border: Border.all(color: AppColors.mutedGreen, width: 1),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 8,
             offset: const Offset(0, 2),
             spreadRadius: 0,
@@ -47,8 +50,8 @@ class ChipsDropdownCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
-            color: AppColors.mutedGreen.withOpacity(
-              0.5,
+            color: AppColors.mutedGreen.withValues(
+              alpha: 0.5,
             ), // Borde interno más suave
             width: 1,
           ),
@@ -65,6 +68,7 @@ class ChipsDropdownCard extends StatelessWidget {
               items: dropdownItems,
               onChanged: onDropdownChanged,
               title: dropdownTitle,
+              confirmOnDone: confirmDropdownOnDone,
             ),
             const SizedBox(height: 8),
             GreyCardChips(
