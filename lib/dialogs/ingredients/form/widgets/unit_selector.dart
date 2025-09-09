@@ -3,6 +3,7 @@ import 'package:ai_cook_project/models/unit.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 
 class UnitSelectorButton extends StatelessWidget {
   final Unit selectedUnit;
@@ -19,7 +20,10 @@ class UnitSelectorButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoButton(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(
+        horizontal: DialogConstants.spacingSM,
+        vertical: DialogConstants.spacingSM,
+      ),
       onPressed: () {
         showCupertinoModalPopup(
           context: context,
@@ -39,15 +43,15 @@ class UnitSelectorButton extends StatelessWidget {
             style: TextStyle(
               color:
                   selectedUnit.name == 'Select unit'
-                      ? AppColors.button.withOpacity(0.5)
+                      ? AppColors.button.withValues(alpha: 0.5)
                       : AppColors.button,
-              fontSize: 16,
+              fontSize: DialogConstants.fontSizeMD,
             ),
           ),
           const Icon(
             CupertinoIcons.chevron_down,
             color: AppColors.button,
-            size: 20,
+            size: DialogConstants.iconSizeMD,
           ),
         ],
       ),

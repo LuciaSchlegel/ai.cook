@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/widgets/clippers/optimized_aperture_clipper.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +23,45 @@ class AiDialogScaffold extends StatelessWidget {
     required this.onClose,
     required this.scrollContentBuilder,
   });
+
+  // Responsive helper methods
+  double _getInitialSize(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    if (screenWidth < DialogConstants.mobileBreakpoint) {
+      return 0.9; // Larger on mobile for better usability
+    } else if (screenWidth < DialogConstants.tabletBreakpoint) {
+      return 0.85;
+    } else {
+      return 0.8; // Smaller on desktop
+    }
+  }
+
+  double _getMinSize(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    if (screenWidth < DialogConstants.mobileBreakpoint) {
+      return 0.5; // Higher minimum on mobile
+    } else {
+      return 0.4;
+    }
+  }
+
+  double _getMaxSize(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    if (screenWidth < DialogConstants.mobileBreakpoint) {
+      return 0.95;
+    } else {
+      return 0.9; // Leave more space on larger screens
+    }
+  }
+
+  List<double> _getSnapSizes(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    if (screenWidth < DialogConstants.mobileBreakpoint) {
+      return [0.5, 0.75, 0.95]; // Mobile-optimized snap points
+    } else {
+      return [0.4, 0.7, 0.9]; // Desktop-optimized snap points
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,11 +102,11 @@ class AiDialogScaffold extends StatelessWidget {
                     width: double.infinity,
                     height: double.infinity,
                     child: DraggableScrollableSheet(
-                      initialChildSize: 0.85,
-                      minChildSize: 0.4,
-                      maxChildSize: 0.95,
+                      initialChildSize: _getInitialSize(context),
+                      minChildSize: _getMinSize(context),
+                      maxChildSize: _getMaxSize(context),
                       snap: true,
-                      snapSizes: const [0.4, 0.7, 0.95],
+                      snapSizes: _getSnapSizes(context),
                       builder: (context, scrollController) {
                         return Transform.scale(
                           scale: contentScaleAnimation.value,

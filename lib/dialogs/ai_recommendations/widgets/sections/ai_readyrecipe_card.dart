@@ -1,3 +1,4 @@
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/details_container.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/image_clip.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/recipe_details.dart';
@@ -24,21 +25,21 @@ class AIReadyToCookCard extends StatelessWidget {
     final recipe = viewModel.recipe;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(
+        horizontal: DialogConstants.spacingSM,
+        vertical: DialogConstants.spacingXS,
+      ),
       child: GestureDetector(
         onTap: () => _showRecipeDetail(context),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.green, width: 2),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
+            borderRadius: BorderRadius.circular(DialogConstants.radiusMD),
+            border: Border.all(
+              color: DialogConstants.readyCardBorder,
+              width: 2.5,
+            ),
+            boxShadow: DialogConstants.mediumShadow,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

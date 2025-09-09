@@ -1,3 +1,4 @@
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,9 @@ class SafeConstrainedDialog extends StatelessWidget {
     required this.child,
     this.maxHeightFactor = 0.90,
     this.minHeight = 280,
-    this.insetPadding = const EdgeInsets.symmetric(horizontal: 24),
+    this.insetPadding = const EdgeInsets.symmetric(
+      horizontal: DialogConstants.spacingMD,
+    ),
     this.backgroundColor,
     this.shape,
   });
@@ -40,7 +43,9 @@ class SafeConstrainedDialog extends StatelessWidget {
       backgroundColor: backgroundColor ?? CupertinoColors.systemBackground,
       shape:
           shape ??
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(DialogConstants.radiusMD),
+          ),
       clipBehavior: Clip.antiAlias, // evita que algo “sangre” fuera del radio
       child: SafeArea(
         top: true,

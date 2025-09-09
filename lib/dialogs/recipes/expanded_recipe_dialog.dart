@@ -1,4 +1,5 @@
 // Expanded Dialog
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/models/recipe_model.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/material.dart';
@@ -9,41 +10,113 @@ class RecipeExpandedDialog extends StatelessWidget {
 
   const RecipeExpandedDialog({super.key, required this.recipe});
 
+  // Responsive helper methods
+  double _getInitialSize(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    if (screenWidth < DialogConstants.mobileBreakpoint) {
+      return 0.9; // Larger on mobile for better content visibility
+    } else if (screenWidth < DialogConstants.tabletBreakpoint) {
+      return 0.85;
+    } else {
+      return 0.8; // Smaller on desktop
+    }
+  }
+
+  double _getMinSize(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    if (screenWidth < DialogConstants.mobileBreakpoint) {
+      return 0.6; // Higher minimum on mobile for better usability
+    } else {
+      return 0.5;
+    }
+  }
+
+  double _getMaxSize(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    if (screenWidth < DialogConstants.mobileBreakpoint) {
+      return 0.95;
+    } else {
+      return 0.9; // Leave more space on larger screens
+    }
+  }
+
+  List<double> _getSnapSizes(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    if (screenWidth < DialogConstants.mobileBreakpoint) {
+      return [0.6, 0.8, 0.95]; // Mobile-optimized snap points
+    } else {
+      return [0.5, 0.75, 0.9]; // Desktop-optimized snap points
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.9,
-      minChildSize: 0.5,
-      maxChildSize: 0.95,
+      initialChildSize: _getInitialSize(context),
+      minChildSize: _getMinSize(context),
+      maxChildSize: _getMaxSize(context),
+      snap: true,
+      snapSizes: _getSnapSizes(context),
       builder: (context, scrollController) {
-        return Container(
-          decoration: const BoxDecoration(
-            color: CupertinoColors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-          ),
-          child: Column(
-            children: [
-              const _DragHandle(),
-              _ExpandedHeader(recipe: recipe),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 1),
-                margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-                decoration: BoxDecoration(
-                  color: AppColors.button.withOpacity(0.4),
-                  borderRadius: BorderRadius.circular(20),
-                ),
+        return SafeArea(
+          // Handle top safe area (notch/Dynamic Island) but let bottom be handled by scroll content
+          top: true,
+          bottom: false,
+          child: Container(
+            decoration: BoxDecoration(
+              color: CupertinoColors.white,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(DialogConstants.radiusXL),
               ),
-              _ActionButtons(),
-              Expanded(
-                child: SingleChildScrollView(
-                  controller: scrollController,
-                  child: Padding(
-                    padding: EdgeInsets.all(20),
-                    child: _InstructionsSection(recipe: recipe),
+              boxShadow: DialogConstants.dialogShadow,
+            ),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(DialogConstants.radiusXL),
+              ),
+              child: Column(
+                children: [
+                  // Add small top padding for better visual spacing
+                  const SizedBox(height: DialogConstants.spacingXS),
+                  const _DragHandle(),
+                  _ExpandedHeader(recipe: recipe),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 1),
+                    margin: EdgeInsets.only(
+                      left: DialogConstants.spacingMD,
+                      right: DialogConstants.spacingMD,
+                      bottom: DialogConstants.spacingSM,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.button.withOpacity(0.4),
+                      borderRadius: BorderRadius.circular(
+                        DialogConstants.radiusLG,
+                      ),
+                    ),
                   ),
-                ),
+                  _ActionButtons(),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      controller: scrollController,
+                      child: Padding(
+                        padding: DialogConstants.adaptivePadding(context),
+                        child: Column(
+                          children: [
+                            _InstructionsSection(recipe: recipe),
+                            // Add safe area padding at bottom
+                            SizedBox(
+                              height: DialogConstants.safeScrollBottomPadding(
+                                context,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         );
       },
@@ -57,7 +130,7 @@ class _DragHandle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.symmetric(vertical: DialogConstants.spacingSM),
       child: Container(
         width: 40,
         height: 4,
@@ -78,7 +151,16 @@ class _ExpandedHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      padding: EdgeInsets.symmetric(
+        horizontal: DialogConstants.adaptiveSpacing(
+          context,
+          DialogConstants.spacingMD,
+        ),
+        vertical: DialogConstants.adaptiveSpacing(
+          context,
+          DialogConstants.spacingMD,
+        ),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -109,7 +191,13 @@ class _ActionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      padding: EdgeInsets.symmetric(
+        horizontal: DialogConstants.adaptiveSpacing(
+          context,
+          DialogConstants.spacingMD,
+        ),
+        vertical: DialogConstants.spacingSM,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -118,13 +206,13 @@ class _ActionButtons extends StatelessWidget {
             label: 'Schedule',
             onTap: () {},
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: DialogConstants.spacingSM),
           _ActionButton(
             icon: CupertinoIcons.timer,
             label: 'Start',
             onTap: () {},
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: DialogConstants.spacingSM),
           _ActionButton(
             icon: CupertinoIcons.share,
             label: 'Share',
@@ -157,7 +245,7 @@ class _ActionButton extends StatelessWidget {
           height: 40,
           decoration: BoxDecoration(
             color: CupertinoColors.systemGrey6.withOpacity(0.5),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(DialogConstants.radiusLG),
           ),
           child: IconButton(
             onPressed: onTap,
@@ -165,7 +253,7 @@ class _ActionButton extends StatelessWidget {
             icon: Icon(icon, size: 24, color: AppColors.button),
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: DialogConstants.spacingXS),
         Text(
           label,
           textAlign: TextAlign.center,
@@ -200,7 +288,7 @@ class _InstructionsSection extends StatelessWidget {
             fontFamily: 'Times New Roman',
           ),
         ),
-        SizedBox(height: 16),
+        SizedBox(height: DialogConstants.spacingSM),
         _RecipeStepsView(recipe: recipe),
       ],
     );
@@ -219,7 +307,7 @@ class _RecipeStepsView extends StatelessWidget {
       children: List.generate(
         recipe.steps.length,
         (index) => Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
+          padding: const EdgeInsets.only(bottom: DialogConstants.spacingSM),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -228,7 +316,7 @@ class _RecipeStepsView extends StatelessWidget {
                 height: 24,
                 decoration: BoxDecoration(
                   color: AppColors.mutedGreen,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(DialogConstants.radiusSM),
                 ),
                 child: Center(
                   child: Text(
@@ -241,7 +329,7 @@ class _RecipeStepsView extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: DialogConstants.spacingSM),
               Expanded(
                 child: Text(
                   recipe.steps[index],

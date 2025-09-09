@@ -89,7 +89,7 @@ class RecipesProvider extends ChangeNotifier {
       return; // Skip duplicate request
     }
 
-    _setLoading(true, 'Applying filter: $filter...');
+    _setLoading(true, _generateLoadingMessage(filter, preferredTags));
     _clearError();
 
     // Store current filter state
@@ -231,6 +231,42 @@ class RecipesProvider extends ChangeNotifier {
     final set1 = Set<String>.from(list1);
     final set2 = Set<String>.from(list2);
     return set1.containsAll(set2) && set2.containsAll(set1);
+  }
+
+  /// Generate contextual loading message based on filter and tags
+  String _generateLoadingMessage(String filter, List<String> tags) {
+    if (tags.isEmpty) {
+      // No tags selected, show basic filter message
+      switch (filter) {
+        case 'All Recipes':
+          return 'Loading all recipes...';
+        case 'With Available Ingredients':
+          return 'Finding recipes with your ingredients...';
+        case 'Recommended Recipes':
+          return 'Finding recommended recipes...';
+        default:
+          return 'Applying filter: $filter...';
+      }
+    } else {
+      // Tags selected, create contextual message
+      final tagText =
+          tags.length == 1
+              ? tags.first
+              : tags.length == 2
+              ? '${tags.first} & ${tags.last}'
+              : '${tags.first} & ${tags.length - 1} others';
+
+      switch (filter) {
+        case 'All Recipes':
+          return 'Looking for $tagText recipes...';
+        case 'With Available Ingredients':
+          return 'Finding $tagText recipes with your ingredients...';
+        case 'Recommended Recipes':
+          return 'Finding recommended $tagText recipes...';
+        default:
+          return 'Looking for $tagText recipes...';
+      }
+    }
   }
 
   // Utility

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 
 class IngredientListView extends StatelessWidget {
   final List<UserIng> ingredients;
@@ -48,8 +49,8 @@ class IngredientListView extends StatelessWidget {
 
     return SvgPicture.asset(
       assetPath,
-      width: 26,
-      height: 26,
+      width: DialogConstants.iconSizeXL,
+      height: DialogConstants.iconSizeXL,
       colorFilter: ColorFilter.mode(AppColors.mutedGreen, BlendMode.srcIn),
     );
   }
@@ -84,26 +85,38 @@ class IngredientListView extends StatelessWidget {
     // Add dietary icons based on unified logic
     if (isVegan) {
       icons.add(
-        Icon(Icons.eco_outlined, size: 14, color: AppColors.mutedGreen),
+        Icon(
+          Icons.eco_outlined,
+          size: DialogConstants.iconSizeXS,
+          color: AppColors.mutedGreen,
+        ),
       );
     }
     if (isVegetarian && !isVegan) {
       icons.add(
         Icon(
           Icons.local_dining_outlined,
-          size: 14,
+          size: DialogConstants.iconSizeXS,
           color: AppColors.mutedGreen,
         ),
       );
     }
     if (isGlutenFree) {
       icons.add(
-        Icon(Icons.no_food_outlined, size: 14, color: AppColors.mutedGreen),
+        Icon(
+          Icons.no_food_outlined,
+          size: DialogConstants.iconSizeXS,
+          color: AppColors.mutedGreen,
+        ),
       );
     }
     if (isLactoseFree) {
       icons.add(
-        Icon(Icons.block_outlined, size: 14, color: AppColors.mutedGreen),
+        Icon(
+          Icons.block_outlined,
+          size: DialogConstants.iconSizeXS,
+          color: AppColors.mutedGreen,
+        ),
       );
     }
 
@@ -124,26 +137,24 @@ class IngredientListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-
     return ListView.builder(
       padding: EdgeInsets.symmetric(
-        horizontal: screenHeight * 0.025,
-        vertical: screenHeight * 0.01,
+        horizontal: DialogConstants.adaptiveSpacing(context, 20.0),
+        vertical: DialogConstants.adaptiveSpacing(context, 10.0),
       ),
       itemCount: ingredients.length,
       itemBuilder: (context, index) {
         final userIng = ingredients[index];
         return Padding(
-          padding: const EdgeInsets.only(bottom: 10.0),
+          padding: const EdgeInsets.only(bottom: DialogConstants.spacingXS),
           child: Container(
             decoration: BoxDecoration(
               color: AppColors.white,
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(DialogConstants.radiusLG),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.04),
-                  blurRadius: 8,
+                  blurRadius: DialogConstants.radiusSM,
                   offset: const Offset(0, 2),
                 ),
               ],
@@ -152,22 +163,24 @@ class IngredientListView extends StatelessWidget {
               color: Colors.transparent,
               child: InkWell(
                 onTap: () => onTap(userIng),
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(DialogConstants.radiusLG),
                 child: Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(DialogConstants.spacingSM),
                   child: Row(
                     children: [
                       // Icono más pequeño
                       Container(
-                        width: 32,
-                        height: 32,
+                        width: DialogConstants.iconSizeXL + 6,
+                        height: DialogConstants.iconSizeXL + 6,
                         decoration: BoxDecoration(
                           color: AppColors.mutedGreen.withValues(alpha: 0.10),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(
+                            DialogConstants.radiusSM,
+                          ),
                         ),
                         child: Center(child: _getCategoryIcon(userIng)),
                       ),
-                      const SizedBox(width: 14),
+                      const SizedBox(width: DialogConstants.spacingSM),
                       // Detalles
                       Expanded(
                         child: Column(
@@ -180,23 +193,29 @@ class IngredientListView extends StatelessWidget {
                               style: TextStyle(
                                 color: AppColors.button,
                                 fontFamily: 'Casta',
-                                fontSize: 18,
+                                fontSize: DialogConstants.fontSizeXL,
                                 fontWeight: FontWeight.w600,
                                 height: 1.1,
                               ),
                             ),
-                            const SizedBox(height: 2),
+                            const SizedBox(
+                              height: DialogConstants.spacingXXS - 2,
+                            ),
                             // Dietary icons
                             if (_getDietaryIcons(userIng).isNotEmpty)
                               Padding(
-                                padding: const EdgeInsets.only(bottom: 2),
+                                padding: const EdgeInsets.only(
+                                  bottom: DialogConstants.spacingXXS - 2,
+                                ),
                                 child: Row(
                                   children:
                                       _getDietaryIcons(userIng)
                                           .map(
                                             (icon) => Padding(
                                               padding: const EdgeInsets.only(
-                                                right: 4,
+                                                right:
+                                                    DialogConstants.spacingXXS -
+                                                    2,
                                               ),
                                               child: icon,
                                             ),
@@ -209,7 +228,7 @@ class IngredientListView extends StatelessWidget {
                               style: TextStyle(
                                 color: AppColors.mutedGreen,
                                 fontFamily: 'Inter',
-                                fontSize: 13,
+                                fontSize: DialogConstants.fontSizeSM,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -219,7 +238,7 @@ class IngredientListView extends StatelessWidget {
                       Icon(
                         Icons.arrow_forward_ios,
                         color: AppColors.mutedGreen.withValues(alpha: 0.4),
-                        size: 18,
+                        size: DialogConstants.iconSizeMD,
                       ),
                     ],
                   ),

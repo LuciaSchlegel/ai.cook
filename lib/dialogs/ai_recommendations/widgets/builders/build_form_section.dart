@@ -1,9 +1,9 @@
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/form/form_comments.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/form/form_header.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/form/form_options.dart';
 import 'package:ai_cook_project/models/recipe_tag_model.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
-import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/widgets/selectors/grey_card_chips.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -29,41 +29,23 @@ class SectionBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(24),
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.mutedGreen.withValues(alpha: 0.06),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-            spreadRadius: 0,
-          ),
-        ],
-        border: Border.all(
-          color: AppColors.mutedGreen.withValues(alpha: 0.12),
-          width: 1,
-        ),
-      ),
+      padding: DialogConstants.adaptivePadding(context),
+      margin: const EdgeInsets.symmetric(vertical: DialogConstants.spacingXS),
+      decoration: DialogConstants.sectionDecoration,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Enhanced form header with gradients
           const FormHeader(),
-          const SizedBox(height: 24),
+          const SizedBox(height: DialogConstants.spacingMD),
           // Recipe Tags Selector
           Text(
             'Preferred Recipe Tags',
-            style: TextStyle(
-              fontSize: 15,
+            style: DialogConstants.bodyTextStyle.copyWith(
               fontWeight: FontWeight.w600,
-              color: AppColors.button.withValues(alpha: 0.9),
-              letterSpacing: 0.2,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: DialogConstants.spacingXS),
           Consumer<ResourceProvider>(
             builder: (context, resourceProvider, child) {
               if (!resourceProvider.isInitialized) {
@@ -91,7 +73,7 @@ class SectionBuilder extends StatelessWidget {
               );
             },
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: DialogConstants.spacingSM),
 
           // Max Cooking Time and Difficulty in a row
           FormOptions(
@@ -100,19 +82,16 @@ class SectionBuilder extends StatelessWidget {
             selectedDifficulty: selectedDifficulty,
             onDifficultyChanged: onDifficultyChanged,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: DialogConstants.spacingSM),
 
           // User Preferences
           Text(
             'Additional Preferences (optional)',
-            style: TextStyle(
-              fontSize: 15,
+            style: DialogConstants.bodyTextStyle.copyWith(
               fontWeight: FontWeight.w600,
-              color: AppColors.button.withValues(alpha: 0.9),
-              letterSpacing: 0.2,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: DialogConstants.spacingXS),
           FormComments(preferencesController: preferencesController),
         ],
       ),

@@ -1,3 +1,4 @@
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +16,8 @@ class GreyCardChips extends StatelessWidget {
     required this.items,
     required this.selectedItems,
     required this.onSelected,
-    this.horizontalPadding = 20.0,
-    this.verticalPadding = 10.0,
+    this.horizontalPadding = DialogConstants.spacingSM,
+    this.verticalPadding = DialogConstants.spacingXS,
   });
 
   void _handleChipTap(String label) {
@@ -36,24 +37,27 @@ class GreyCardChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      margin: const EdgeInsets.symmetric(vertical: DialogConstants.spacingXS),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(DialogConstants.radiusLG),
         // Sombra más suave y consistente con tu diseño
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: DialogConstants.radiusSM,
+            offset: const Offset(0, 1),
             spreadRadius: 0,
           ),
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: EdgeInsets.symmetric(
+          horizontal: DialogConstants.spacingXXS,
+          vertical: DialogConstants.spacingXXS,
+        ),
         child: Container(
-          height: MediaQuery.of(context).size.height * 0.07,
+          height: DialogConstants.adaptiveSpacing(context, 80.0),
           padding: EdgeInsets.symmetric(
             horizontal: horizontalPadding,
             vertical: verticalPadding,
@@ -69,7 +73,7 @@ class GreyCardChips extends StatelessWidget {
             },
             blendMode: BlendMode.dstIn,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(DialogConstants.radiusMD),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: items.length,
@@ -80,8 +84,8 @@ class GreyCardChips extends StatelessWidget {
 
                   return Padding(
                     padding: EdgeInsets.only(
-                      left: index == 0 ? 10 : 0,
-                      right: 10,
+                      left: DialogConstants.spacingXXS,
+                      right: DialogConstants.spacingXXS,
                     ),
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 250),
@@ -89,29 +93,37 @@ class GreyCardChips extends StatelessWidget {
                       child: Material(
                         color: Colors.transparent,
                         child: InkWell(
-                          borderRadius: BorderRadius.circular(22),
+                          borderRadius: BorderRadius.circular(
+                            DialogConstants.radiusLG,
+                          ),
                           onTap: () => _handleChipTap(label),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 250),
                             curve: Curves.easeInOut,
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
+                              horizontal: DialogConstants.spacingSM,
+                              vertical: DialogConstants.spacingXXS,
                             ),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(14),
+                              borderRadius: BorderRadius.circular(
+                                DialogConstants.radiusMD,
+                              ),
                               color:
                                   isSelected
-                                      ? AppColors.mutedGreen
-                                      : Colors.grey.withOpacity(0.08),
+                                      ? AppColors.background.withValues(
+                                        alpha: 0.9,
+                                      )
+                                      : AppColors.mutedGreen.withValues(
+                                        alpha: 0.8,
+                                      ),
                               // Sombra sutil solo para el seleccionado
                               boxShadow:
                                   isSelected
                                       ? [
                                         BoxShadow(
                                           color: AppColors.mutedGreen
-                                              .withOpacity(
-                                                index == 0 ? 0.15 : 0.3,
+                                              .withValues(
+                                                alpha: index == 0 ? 0.15 : 0.3,
                                               ),
                                           blurRadius: index == 0 ? 4 : 8,
                                           offset: const Offset(0, 2),
@@ -126,32 +138,28 @@ class GreyCardChips extends StatelessWidget {
                                 // Checkmark más sutil
                                 if (isSelected) ...[
                                   Container(
-                                    width: 16,
-                                    height: 16,
+                                    width: DialogConstants.iconSizeSM,
+                                    height: DialogConstants.iconSizeSM,
                                     decoration: BoxDecoration(
                                       color: AppColors.white,
                                       shape: BoxShape.circle,
                                     ),
                                     child: Icon(
                                       CupertinoIcons.checkmark,
-                                      size: 10,
+                                      size: DialogConstants.iconSizeXXS,
                                       color: AppColors.mutedGreen,
                                     ),
                                   ),
-                                  const SizedBox(width: 8),
+                                  const SizedBox(
+                                    width: DialogConstants.spacingXXS,
+                                  ),
                                 ],
                                 Text(
                                   TextUtils.capitalizeFirstLetter(label),
                                   style: TextStyle(
-                                    color:
-                                        isSelected
-                                            ? AppColors.white
-                                            : AppColors.button,
-                                    fontWeight:
-                                        isSelected
-                                            ? FontWeight.w600
-                                            : FontWeight.w500,
-                                    fontSize: 14,
+                                    color: AppColors.white,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: DialogConstants.fontSizeSM,
                                     letterSpacing: 0.2,
                                   ),
                                 ),

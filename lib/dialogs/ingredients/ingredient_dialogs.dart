@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 
 class IngredientDialogs {
   Future<void> showIngredientDialog({
@@ -53,11 +54,11 @@ class IngredientDialogs {
       builder:
           (context) => CupertinoAlertDialog(
             title: Container(
-              margin: const EdgeInsets.only(bottom: 8),
+              margin: const EdgeInsets.only(bottom: DialogConstants.spacingSM),
               child: const Text(
                 'Delete Ingredient',
                 style: TextStyle(
-                  fontSize: 22,
+                  fontSize: DialogConstants.fontSizeXXL,
                   fontFamily: 'Casta',
                   color: AppColors.button,
                   fontWeight: FontWeight.bold,
@@ -67,7 +68,10 @@ class IngredientDialogs {
             ),
             content: Text(
               'Are you sure you want to delete $ingredientName?',
-              style: const TextStyle(fontSize: 17, color: AppColors.button),
+              style: const TextStyle(
+                fontSize: DialogConstants.fontSizeMD,
+                color: AppColors.button,
+              ),
             ),
             actions: [
               CupertinoDialogAction(
@@ -77,7 +81,7 @@ class IngredientDialogs {
                   style: TextStyle(
                     color: AppColors.button,
                     fontWeight: FontWeight.w500,
-                    fontSize: 17,
+                    fontSize: DialogConstants.fontSizeMD,
                   ),
                 ),
               ),
@@ -89,7 +93,10 @@ class IngredientDialogs {
                 isDestructiveAction: true,
                 child: const Text(
                   'Delete',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: DialogConstants.fontSizeMD,
+                  ),
                 ),
               ),
             ],

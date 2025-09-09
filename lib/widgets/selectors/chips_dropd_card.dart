@@ -2,6 +2,7 @@ import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/widgets/selectors/dropdown_selector.dart';
 import 'package:ai_cook_project/widgets/selectors/grey_card_chips.dart';
 import 'package:flutter/material.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 
 class ChipsDropdownCard extends StatelessWidget {
   final String dropdownValue;
@@ -29,10 +30,13 @@ class ChipsDropdownCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      margin: const EdgeInsets.symmetric(
+        horizontal: DialogConstants.spacingSM,
+        vertical: DialogConstants.spacingXS,
+      ),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(28),
+        borderRadius: BorderRadius.circular(DialogConstants.radiusXXL),
         border: Border.all(color: AppColors.mutedGreen, width: 1),
         boxShadow: [
           BoxShadow(
@@ -44,8 +48,8 @@ class ChipsDropdownCard extends StatelessWidget {
         ],
       ),
       padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * 0.02,
-        vertical: MediaQuery.of(context).size.height * 0.01,
+        horizontal: DialogConstants.spacingXXS,
+        vertical: DialogConstants.spacingXXS,
       ),
       child: Container(
         decoration: BoxDecoration(
@@ -56,10 +60,12 @@ class ChipsDropdownCard extends StatelessWidget {
             width: 1,
           ),
           borderRadius: BorderRadius.circular(
-            24,
+            DialogConstants.radiusXL,
           ), // Un poco menor que el exterior
         ),
-        padding: const EdgeInsets.all(10), // Espacio entre los bordes
+        padding: const EdgeInsets.all(
+          DialogConstants.spacingSM,
+        ), // Espacio entre los bordes
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -70,12 +76,12 @@ class ChipsDropdownCard extends StatelessWidget {
               title: dropdownTitle,
               confirmOnDone: confirmDropdownOnDone,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: DialogConstants.spacingXS),
             GreyCardChips(
               items: chipsItems,
               selectedItems: chipsSelectedItems,
               onSelected: onChipsSelected,
-              horizontalPadding: 0, // Ya hay padding en el contenedor principal
+              horizontalPadding: 0,
             ),
           ],
         ),

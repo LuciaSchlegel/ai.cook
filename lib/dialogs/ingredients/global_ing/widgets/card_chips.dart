@@ -38,7 +38,7 @@ class CardChips extends StatelessWidget {
                 color:
                     isSelected
                         ? AppColors.mutedGreen
-                        : AppColors.mutedGreen.withOpacity(0.2),
+                        : AppColors.mutedGreen.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Center(
@@ -48,7 +48,7 @@ class CardChips extends StatelessWidget {
                     color:
                         isSelected
                             ? AppColors.white
-                            : AppColors.button.withOpacity(0.9),
+                            : AppColors.button.withValues(alpha: 0.9),
                     fontSize: 14,
                     fontWeight:
                         isSelected ? FontWeight.w600 : FontWeight.normal,

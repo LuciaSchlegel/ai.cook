@@ -11,6 +11,7 @@ import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/unit.dart';
 import 'package:provider/provider.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 
 class IngredientFormDialog extends StatefulWidget {
   final Ingredient? ingredient;
@@ -116,135 +117,165 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(
-          24,
-          16,
-          24,
-          MediaQuery.of(context).viewInsets.bottom + 24,
+          DialogConstants.adaptiveSpacing(context, DialogConstants.spacingMD),
+          DialogConstants.spacingSM,
+          DialogConstants.adaptiveSpacing(context, DialogConstants.spacingMD),
+          MediaQuery.of(context).viewInsets.bottom + DialogConstants.spacingMD,
         ),
         decoration: BoxDecoration(
           color: AppColors.white,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-          // No shadow at all
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(DialogConstants.radiusXL),
+          ),
+          boxShadow: DialogConstants.lightShadow,
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.only(bottom: 24),
-                decoration: BoxDecoration(
-                  color: AppColors.button.withOpacity(0.15), // softer
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              Text(
-                widget.ingredient == null
-                    ? 'Add Ingredient'
-                    : 'Edit Ingredient',
-                style: const TextStyle(
-                  fontSize: 30,
-                  fontFamily: 'Casta',
-                  color: AppColors.button,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.2,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 28),
-              IngredientNameField(name: _nameController.text),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: CupertinoColors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppColors.button.withOpacity(
-                            0.12,
-                          ), // lighter border
-                          width: 1,
-                        ),
-                      ),
-                      child: QuantityField(controller: _quantityController),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(DialogConstants.radiusXL),
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  width: 40,
+                  height: 4,
+                  margin: const EdgeInsets.only(
+                    bottom: DialogConstants.spacingMD,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.button.withOpacity(0.15), // softer
+                    borderRadius: BorderRadius.circular(
+                      DialogConstants.radiusSM,
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: CupertinoColors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppColors.button.withOpacity(
-                            0.12,
-                          ), // lighter border
-                          width: 1,
+                ),
+                Text(
+                  widget.ingredient == null
+                      ? 'Add Ingredient'
+                      : 'Edit Ingredient',
+                  style: const TextStyle(
+                    fontSize: DialogConstants.fontSizeTitle,
+                    fontFamily: 'Casta',
+                    color: AppColors.button,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.2,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: DialogConstants.adaptiveSpacing(
+                    context,
+                    DialogConstants.spacingLG,
+                  ),
+                ),
+                IngredientNameField(name: _nameController.text),
+                const SizedBox(height: DialogConstants.spacingMD),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: CupertinoColors.white,
+                          borderRadius: BorderRadius.circular(
+                            DialogConstants.radiusSM,
+                          ),
+                          border: Border.all(
+                            color: AppColors.button.withOpacity(
+                              0.12,
+                            ), // lighter border
+                            width: 1,
+                          ),
                         ),
-                      ),
-                      child: UnitSelectorButton(
-                        selectedUnit: _selectedUnit,
-                        units: availableUnits,
-                        onUnitSelected: (unit) {
-                          setState(() {
-                            _selectedUnit = unit;
-                          });
-                        },
+                        child: QuantityField(controller: _quantityController),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 36),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: FormActionButtons(
-                  isValid: _validateForm(),
-                  onDelete: widget.onDelete,
-                  isEditing:
-                      widget.ingredient != null ||
-                      widget.customIngredient != null,
-                  onCancel: () => Navigator.pop(context),
-                  onSave:
-                      () => IngredientFormUtils.handleSave(
-                        validateForm: _validateForm,
-                        onSave:
-                            () => IngredientFormUtils.handleSave(
-                              validateForm: _validateForm,
-                              onSave: () {
-                                widget.onSave(
-                                  _nameController.text,
-                                  _selectedCategory,
-                                  _selectedTags.any(
-                                    (tag) => tag.name == 'vegan',
-                                  ),
-                                  _selectedTags.any(
-                                    (tag) => tag.name == 'vegetarian',
-                                  ),
-                                  _selectedTags.any(
-                                    (tag) => tag.name == 'gluten_free',
-                                  ),
-                                  _selectedTags.any(
-                                    (tag) => tag.name == 'lactose_free',
-                                  ),
-                                  double.parse(_quantityController.text),
-                                  _selectedUnit,
-                                );
-                              },
-                              closeDialog: () => Navigator.pop(context),
-                            ),
-                        closeDialog: () => Navigator.pop(context),
+                    const SizedBox(width: DialogConstants.spacingSM),
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: CupertinoColors.white,
+                          borderRadius: BorderRadius.circular(
+                            DialogConstants.radiusSM,
+                          ),
+                          border: Border.all(
+                            color: AppColors.button.withOpacity(
+                              0.12,
+                            ), // lighter border
+                            width: 1,
+                          ),
+                        ),
+                        child: UnitSelectorButton(
+                          selectedUnit: _selectedUnit,
+                          units: availableUnits,
+                          onUnitSelected: (unit) {
+                            setState(() {
+                              _selectedUnit = unit;
+                            });
+                          },
+                        ),
                       ),
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 16),
-            ],
+                SizedBox(
+                  height: DialogConstants.adaptiveSpacing(
+                    context,
+                    DialogConstants.spacingXL,
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                      DialogConstants.radiusMD,
+                    ),
+                  ),
+                  child: FormActionButtons(
+                    isValid: _validateForm(),
+                    onDelete: widget.onDelete,
+                    isEditing:
+                        widget.ingredient != null ||
+                        widget.customIngredient != null,
+                    onCancel: () => Navigator.pop(context),
+                    onSave:
+                        () => IngredientFormUtils.handleSave(
+                          validateForm: _validateForm,
+                          onSave:
+                              () => IngredientFormUtils.handleSave(
+                                validateForm: _validateForm,
+                                onSave: () {
+                                  widget.onSave(
+                                    _nameController.text,
+                                    _selectedCategory,
+                                    _selectedTags.any(
+                                      (tag) => tag.name == 'vegan',
+                                    ),
+                                    _selectedTags.any(
+                                      (tag) => tag.name == 'vegetarian',
+                                    ),
+                                    _selectedTags.any(
+                                      (tag) => tag.name == 'gluten_free',
+                                    ),
+                                    _selectedTags.any(
+                                      (tag) => tag.name == 'lactose_free',
+                                    ),
+                                    double.parse(_quantityController.text),
+                                    _selectedUnit,
+                                  );
+                                },
+                                closeDialog: () => Navigator.pop(context),
+                              ),
+                          closeDialog: () => Navigator.pop(context),
+                        ),
+                  ),
+                ),
+                // Add safe area padding at bottom
+                SizedBox(
+                  height: DialogConstants.safeScrollBottomPadding(context),
+                ),
+              ],
+            ),
           ),
         ),
       ),

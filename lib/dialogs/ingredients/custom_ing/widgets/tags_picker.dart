@@ -1,4 +1,5 @@
 import 'package:ai_cook_project/models/dietary_tag_model.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,11 +21,11 @@ class TagsPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.mutedGreen.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.button.withOpacity(0.2)),
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(DialogConstants.radiusMD),
+        border: Border.all(color: AppColors.button.withValues(alpha: 0.2)),
       ),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(DialogConstants.spacingSM),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -32,14 +33,14 @@ class TagsPicker extends StatelessWidget {
             'Dietary Restrictions',
             style: TextStyle(
               color: AppColors.button,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+              fontSize: DialogConstants.fontSizeMD,
+              fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: DialogConstants.spacingXS),
           Wrap(
-            spacing: 8,
-            runSpacing: 8,
+            spacing: DialogConstants.spacingXS,
+            runSpacing: DialogConstants.spacingXS,
             children:
                 tags.map((tag) {
                   final isSelected = selectedTags.contains(tag);
@@ -51,28 +52,30 @@ class TagsPicker extends StatelessWidget {
                       label: Text(TextUtils.capitalizeFirstLetter(tag.name)),
                       selected: isSelected,
                       onSelected: (_) => onTagsSelected(tag.name),
-                      backgroundColor:
-                          isSelected
-                              ? AppColors.mutedGreen
-                              : AppColors.mutedGreen.withOpacity(0.18),
-                      selectedColor: AppColors.mutedGreen,
+                      backgroundColor: AppColors.mutedGreen.withValues(
+                        alpha: 0.6,
+                      ),
+                      selectedColor: AppColors.background.withValues(
+                        alpha: 0.8,
+                      ),
                       checkmarkColor: AppColors.white,
                       labelStyle: TextStyle(
-                        color: isSelected ? AppColors.white : AppColors.button,
-                        fontWeight: FontWeight.w400,
+                        color: AppColors.white,
+                        fontWeight: FontWeight.w700,
+                        decoration: TextDecoration.none,
                       ),
                       shape: StadiumBorder(
                         side: BorderSide(
                           color:
                               isSelected
-                                  ? AppColors.mutedGreen
+                                  ? AppColors.mutedGreen.withValues(alpha: 0.9)
                                   : CupertinoColors.systemGrey6,
                           width: 1,
                         ),
                       ),
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
+                        horizontal: DialogConstants.spacingXS,
+                        vertical: DialogConstants.spacingXXS,
                       ),
                     ),
                   );

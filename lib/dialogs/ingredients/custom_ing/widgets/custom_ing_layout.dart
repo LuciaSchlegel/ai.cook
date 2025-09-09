@@ -10,6 +10,7 @@ import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ai_cook_project/dialogs/ingredients/form/widgets/fields.dart'
     as custom_ing_fields;
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 
 class CustomIngLayout extends StatelessWidget {
   final bool isEditing;
@@ -58,15 +59,23 @@ class CustomIngLayout extends StatelessWidget {
       },
       child: AnimatedPadding(
         padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
+          bottom: DialogConstants.adaptiveSpacing(
+            context,
+            MediaQuery.of(context).viewInsets.bottom,
+          ),
         ),
         duration: const Duration(milliseconds: 150),
         curve: Curves.easeOut,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          padding: const EdgeInsets.symmetric(
+            horizontal: DialogConstants.spacingMD,
+            vertical: DialogConstants.spacingMD,
+          ),
           decoration: BoxDecoration(
             color: AppColors.white,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(DialogConstants.radiusMD),
+            ),
           ),
           child: SingleChildScrollView(
             child: Column(
@@ -74,12 +83,16 @@ class CustomIngLayout extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Container(
-                  width: 40,
-                  height: 4,
-                  margin: const EdgeInsets.only(bottom: 24),
+                  width: 20,
+                  height: 2,
+                  margin: const EdgeInsets.only(
+                    bottom: DialogConstants.spacingMD,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.button.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(
+                      DialogConstants.radiusSM,
+                    ),
                   ),
                 ),
                 Text(
@@ -87,7 +100,7 @@ class CustomIngLayout extends StatelessWidget {
                       ? 'Edit Custom Ingredient'
                       : 'Add Custom Ingredient',
                   style: const TextStyle(
-                    fontSize: 30,
+                    fontSize: DialogConstants.fontSizeTitle,
                     fontFamily: 'Casta',
                     color: AppColors.button,
                     fontWeight: FontWeight.bold,
@@ -95,23 +108,25 @@ class CustomIngLayout extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 28),
+                const SizedBox(height: DialogConstants.spacingMD),
                 custom_ing_fields.ControlledIngNameField(
                   controller: nameController,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: DialogConstants.spacingSM),
                 Container(
                   decoration: BoxDecoration(
                     color: CupertinoColors.white,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(
+                      DialogConstants.radiusMD,
+                    ),
                     border: Border.all(
                       color: AppColors.button.withOpacity(0.3),
                     ),
                   ),
                   child: CupertinoButton(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
+                      horizontal: DialogConstants.spacingSM,
+                      vertical: DialogConstants.spacingSM,
                     ),
                     onPressed: () {
                       showCupertinoModalPopup(
@@ -131,19 +146,19 @@ class CustomIngLayout extends StatelessWidget {
                           selectedCategory.name,
                           style: const TextStyle(
                             color: AppColors.button,
-                            fontSize: 16,
+                            fontSize: DialogConstants.fontSizeMD,
                           ),
                         ),
                         const Icon(
                           CupertinoIcons.chevron_down,
                           color: AppColors.button,
-                          size: 20,
+                          size: DialogConstants.iconSizeMD,
                         ),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: DialogConstants.spacingSM),
                 TagsPicker(
                   tags: dietaryFlags,
                   selectedTags:
@@ -154,14 +169,16 @@ class CustomIngLayout extends StatelessWidget {
                     onTagToggle(tagName);
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: DialogConstants.spacingSM),
                 Row(
                   children: [
                     Expanded(
                       child: Container(
                         decoration: BoxDecoration(
                           color: CupertinoColors.white,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(
+                            DialogConstants.radiusSM,
+                          ),
                           border: Border.all(
                             color: AppColors.button.withOpacity(0.3),
                           ),
@@ -171,20 +188,22 @@ class CustomIngLayout extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: DialogConstants.spacingSM),
                     Expanded(
                       child: Container(
                         decoration: BoxDecoration(
                           color: CupertinoColors.white,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(
+                            DialogConstants.radiusSM,
+                          ),
                           border: Border.all(
                             color: AppColors.button.withOpacity(0.3),
                           ),
                         ),
                         child: CupertinoButton(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
+                            horizontal: DialogConstants.spacingSM,
+                            vertical: DialogConstants.spacingSM,
                           ),
                           onPressed: () {
                             showCupertinoModalPopup(
@@ -209,13 +228,13 @@ class CustomIngLayout extends StatelessWidget {
                                       selectedUnit.name == 'Select unit'
                                           ? AppColors.button.withOpacity(0.5)
                                           : AppColors.button,
-                                  fontSize: 16,
+                                  fontSize: DialogConstants.fontSizeMD,
                                 ),
                               ),
                               const Icon(
                                 CupertinoIcons.chevron_down,
                                 color: AppColors.button,
-                                size: 20,
+                                size: DialogConstants.iconSizeMD,
                               ),
                             ],
                           ),
@@ -224,7 +243,7 @@ class CustomIngLayout extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 36),
+                const SizedBox(height: DialogConstants.spacingLG),
                 SaveButtonsRow(
                   isEditing: isEditing,
                   onDelete: onDelete,
@@ -232,7 +251,7 @@ class CustomIngLayout extends StatelessWidget {
                   onSave: onSave,
                   isFormValid: isFormValid,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: DialogConstants.spacingSM),
               ],
             ),
           ),

@@ -1,3 +1,4 @@
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,23 +13,11 @@ class AiRecomHeader extends StatelessWidget {
         Container(
           width: 44,
           height: 44,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                AppColors.mutedGreen.withValues(alpha: 0.2),
-                AppColors.lightYellow.withValues(alpha: 0.3),
-              ],
-            ),
-            borderRadius: BorderRadius.circular(14),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.mutedGreen.withValues(alpha: 0.15),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
+          decoration: DialogConstants.iconContainerDecoration(
+            AppColors.mutedGreen,
+          ).copyWith(
+            borderRadius: BorderRadius.circular(DialogConstants.radiusMD),
+            boxShadow: DialogConstants.lightShadow,
           ),
           child: Icon(
             CupertinoIcons.sparkles,
@@ -36,7 +25,7 @@ class AiRecomHeader extends StatelessWidget {
             color: AppColors.mutedGreen,
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: DialogConstants.spacingSM),
         Expanded(
           child: ShaderMask(
             shaderCallback:

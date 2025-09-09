@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import '../../../../theme.dart';
 import 'package:ai_cook_project/dialogs/error_dialog.dart';
 import 'package:ai_cook_project/utils/app_error_handler.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 
 class AddGlobalIngDialog extends StatefulWidget {
   const AddGlobalIngDialog({super.key});
@@ -52,7 +53,7 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
       child: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: DialogConstants.adaptivePadding(context),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
@@ -62,13 +63,13 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: AppColors.button,
-                  fontSize: 28,
+                  fontSize: DialogConstants.fontSizeTitle,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Casta',
                   letterSpacing: 1.2,
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DialogConstants.spacingMD),
               CupertinoTextField(
                 controller: searchController,
                 placeholder: 'Search ingredients...',
@@ -77,14 +78,14 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                   child: Icon(
                     CupertinoIcons.search,
                     color: AppColors.button,
-                    size: 20,
+                    size: DialogConstants.iconSizeMD + 2,
                   ),
                 ),
                 onChanged: (_) => setState(() {}),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DialogConstants.spacingMD),
               SizedBox(
-                height: 40,
+                height: DialogConstants.adaptiveSpacing(context, 50.0),
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: categories.length + 1,
@@ -93,20 +94,26 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                         index == 0 ? 'All' : categories[index - 1].name;
                     final selected = name == selectedCategory;
                     return Padding(
-                      padding: const EdgeInsets.only(right: 12),
+                      padding: const EdgeInsets.only(
+                        right: DialogConstants.spacingXS,
+                      ),
                       child: GestureDetector(
                         onTap: () => setState(() => selectedCategory = name),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
+                            horizontal: DialogConstants.spacingSM,
+                            vertical: DialogConstants.spacingXXS,
                           ),
                           decoration: BoxDecoration(
                             color:
                                 selected
                                     ? AppColors.mutedGreen
-                                    : AppColors.mutedGreen.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(20),
+                                    : AppColors.mutedGreen.withValues(
+                                      alpha: 0.2,
+                                    ),
+                            borderRadius: BorderRadius.circular(
+                              DialogConstants.radiusMD,
+                            ),
                           ),
                           child: Text(
                             name,
@@ -114,7 +121,9 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                               color:
                                   selected
                                       ? AppColors.white
-                                      : AppColors.button.withOpacity(0.9),
+                                      : AppColors.button.withValues(alpha: 0.8),
+                              fontSize: DialogConstants.fontSizeMD,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
@@ -123,9 +132,11 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                   },
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DialogConstants.spacingMD),
               ConstrainedBox(
-                constraints: const BoxConstraints(maxHeight: 320),
+                constraints: BoxConstraints(
+                  maxHeight: DialogConstants.adaptiveSpacing(context, 380.0),
+                ),
                 child:
                     searchFilteredIngredients.isEmpty
                         ? const EmptyList()
@@ -185,17 +196,15 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                           },
                         ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DialogConstants.spacingLG),
               CupertinoButton(
                 padding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 32,
+                  vertical: DialogConstants.spacingSM,
+                  horizontal: DialogConstants.spacingLG,
                 ),
-                color:
-                    selectedIngredients.isNotEmpty
-                        ? AppColors.button
-                        : AppColors.button.withOpacity(0.4),
-                borderRadius: BorderRadius.circular(18),
+                color: AppColors.background.withValues(alpha: 0.9),
+                disabledColor: AppColors.button.withValues(alpha: 0.4),
+                borderRadius: BorderRadius.circular(DialogConstants.radiusMD),
                 onPressed:
                     selectedIngredients.isNotEmpty
                         ? () async {
@@ -222,12 +231,12 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                   'Add Selected',
                   style: TextStyle(
                     color: AppColors.white,
-                    fontSize: 16,
+                    fontSize: DialogConstants.fontSizeMD,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: DialogConstants.spacingXS),
               const AddCustomIngredientButton(),
             ],
           ),

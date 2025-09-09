@@ -1,10 +1,10 @@
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/utils/helpers.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/ai_dialog_scaffold.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_dialog.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/close_button.dart';
 import 'package:ai_cook_project/models/recipe_tag_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 class AiRecipesDialog extends StatefulWidget {
   final VoidCallback onToggle;
@@ -122,9 +122,9 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
         final maxH = safeHeight * 0.9; // o 0.88–0.95 según diseño
 
         return SafeArea(
-          // evita notch y home indicator
+          // Handle top safe area (notch/status bar) but let bottom be handled by scroll content
           top: true,
-          bottom: true,
+          bottom: false, // Let scroll content handle bottom safe area
           child: AnimatedPadding(
             // sube el contenido con teclado
             duration: const Duration(milliseconds: 180),
@@ -138,43 +138,24 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
                   decoration: BoxDecoration(
                     color: CupertinoColors.white,
                     borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(30),
+                      top: Radius.circular(DialogConstants.radiusXL),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.primary.withValues(alpha: 0.08),
-                        blurRadius: 32,
-                        offset: const Offset(0, -8),
-                      ),
-                      BoxShadow(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.secondary.withValues(alpha: 0.04),
-                        blurRadius: 16,
-                        offset: const Offset(0, -4),
-                        spreadRadius: 2,
-                      ),
-                    ],
+                    boxShadow: DialogConstants.dialogShadow,
                   ),
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () => FocusScope.of(context).unfocus(),
-                    child: CustomScrollView(
-                      controller: scrollController,
-                      physics: const ClampingScrollPhysics(),
-                      slivers: [
-                        // Close button positioned absolutely over scrollable content
-                        SliverToBoxAdapter(
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(DialogConstants.radiusXL),
+                    ),
+                    child: Column(
+                      children: [
+                        // Fixed header with close button (non-scrollable)
+                        Container(
+                          height: DialogConstants.dialogTopSafeArea(context),
                           child: Stack(
                             children: [
-                              const SizedBox(
-                                height: 55,
-                              ), // Space for close button
                               Positioned(
-                                top: 16,
-                                right: 16,
+                                top: DialogConstants.spacingSM,
+                                right: DialogConstants.spacingSM,
                                 child: CloseButtonExt(
                                   handleClose: _handleClose,
                                 ),
@@ -182,28 +163,53 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
                             ],
                           ),
                         ),
-                        // Main dialog content
-                        SliverPadding(
-                          padding: const EdgeInsets.all(20),
-                          sliver: SliverToBoxAdapter(
-                            child: BuildDialog(
-                              selectedTags: _selectedTags,
-                              onTagSelectionChanged: (tags) {
-                                setState(() => _selectedTags = tags);
-                              },
-                              maxTimeController: _maxTimeController,
-                              preferencesController: _preferencesController,
-                              selectedDifficulty: _selectedDifficulty,
-                              onDifficultyChanged: (value) {
-                                setState(() => _selectedDifficulty = value);
-                              },
-                              generateAiRecommendations:
-                                  _generateAIRecommendations,
+                        // Scrollable content area
+                        Expanded(
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () => FocusScope.of(context).unfocus(),
+                            child: CustomScrollView(
+                              controller: scrollController,
+                              physics: const ClampingScrollPhysics(),
+                              slivers: [
+                                // Main dialog content
+                                SliverPadding(
+                                  padding: DialogConstants.adaptivePadding(
+                                    context,
+                                  ),
+                                  sliver: SliverToBoxAdapter(
+                                    child: BuildDialog(
+                                      selectedTags: _selectedTags,
+                                      onTagSelectionChanged: (tags) {
+                                        setState(() => _selectedTags = tags);
+                                      },
+                                      maxTimeController: _maxTimeController,
+                                      preferencesController:
+                                          _preferencesController,
+                                      selectedDifficulty: _selectedDifficulty,
+                                      onDifficultyChanged: (value) {
+                                        setState(
+                                          () => _selectedDifficulty = value,
+                                        );
+                                      },
+                                      generateAiRecommendations:
+                                          _generateAIRecommendations,
+                                    ),
+                                  ),
+                                ),
+                                // Add safe area padding at bottom for proper scrolling
+                                SliverToBoxAdapter(
+                                  child: SizedBox(
+                                    height:
+                                        DialogConstants.safeScrollBottomPadding(
+                                          context,
+                                        ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                        // Add extra space at bottom for better scrolling
-                        const SliverToBoxAdapter(child: SizedBox(height: 20)),
                       ],
                     ),
                   ),

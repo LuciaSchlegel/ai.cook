@@ -1,3 +1,4 @@
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/models/ai_response_model.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,30 +13,10 @@ class AISubstitutionsSection extends StatelessWidget {
     // Show section even if empty, with fallback content
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.white,
-            AppColors.mutedGreen.withValues(alpha: 0.04),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.mutedGreen.withValues(alpha: 0.06),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-            spreadRadius: 0,
-          ),
-        ],
-        border: Border.all(
-          color: AppColors.mutedGreen.withValues(alpha: 0.2),
-          width: 1.5,
-        ),
+      margin: const EdgeInsets.only(bottom: DialogConstants.spacingMD),
+      padding: const EdgeInsets.all(DialogConstants.spacingMD),
+      decoration: DialogConstants.sectionDecoration.copyWith(
+        gradient: DialogConstants.primaryGradient,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,14 +27,8 @@ class AISubstitutionsSection extends StatelessWidget {
               Container(
                 width: 32,
                 height: 32,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      AppColors.mutedGreen.withValues(alpha: 0.2),
-                      AppColors.lightYellow.withValues(alpha: 0.2),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(16),
+                decoration: DialogConstants.iconContainerDecoration(
+                  AppColors.mutedGreen,
                 ),
                 child: Icon(
                   CupertinoIcons.arrow_2_circlepath,
@@ -61,21 +36,16 @@ class AISubstitutionsSection extends StatelessWidget {
                   color: AppColors.mutedGreen,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: DialogConstants.spacingSM),
               Expanded(
                 child: Text(
                   'Smart Substitutions',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.button,
-                    letterSpacing: 0.3,
-                  ),
+                  style: DialogConstants.sectionTitleStyle,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: DialogConstants.spacingMD),
 
           // Substitutions or fallback
           if (substitutions.isNotEmpty)
@@ -91,13 +61,15 @@ class AISubstitutionsSection extends StatelessWidget {
 
   Widget _buildSubstitutionItem(AISubstitution substitution) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: DialogConstants.spacingSM),
+      padding: const EdgeInsets.all(DialogConstants.spacingSM),
       decoration: BoxDecoration(
         color: AppColors.white.withValues(alpha: 0.7),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(DialogConstants.radiusSM),
         border: Border.all(
-          color: AppColors.mutedGreen.withValues(alpha: 0.15),
+          color: AppColors.mutedGreen.withValues(
+            alpha: DialogConstants.alphaMedium,
+          ),
           width: 1,
         ),
       ),

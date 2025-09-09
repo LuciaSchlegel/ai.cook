@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/theme.dart';
 
 class AIConclusionSection extends StatelessWidget {
@@ -14,21 +15,9 @@ class AIConclusionSection extends StatelessWidget {
             : 'Happy cooking! Let me know if you need any help with these recipes! 👨‍🍳✨';
 
     return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.lightYellow.withValues(alpha: 0.08),
-            AppColors.mutedGreen.withValues(alpha: 0.05),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: AppColors.mutedGreen.withValues(alpha: 0.1),
-          width: 1,
-        ),
+      padding: const EdgeInsets.all(DialogConstants.spacingMD),
+      decoration: DialogConstants.sectionDecoration.copyWith(
+        gradient: DialogConstants.accentGradient,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,14 +25,8 @@ class AIConclusionSection extends StatelessWidget {
           Container(
             width: 28,
             height: 28,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.mutedGreen.withValues(alpha: 0.2),
-                  AppColors.lightYellow.withValues(alpha: 0.3),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(14),
+            decoration: DialogConstants.iconContainerDecoration(
+              AppColors.mutedGreen,
             ),
             child: Icon(
               CupertinoIcons.heart_fill,
@@ -51,15 +34,11 @@ class AIConclusionSection extends StatelessWidget {
               color: AppColors.mutedGreen,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: DialogConstants.spacingSM),
           Expanded(
             child: Text(
               displayText,
-              style: TextStyle(
-                fontSize: 15,
-                height: 1.5,
-                color: AppColors.button.withValues(alpha: 0.85),
-                fontWeight: FontWeight.w400,
+              style: DialogConstants.bodyTextStyle.copyWith(
                 fontStyle: FontStyle.italic,
               ),
             ),

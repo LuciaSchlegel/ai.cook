@@ -1,3 +1,4 @@
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_recom_header.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_empty.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_error.dart';
@@ -41,7 +42,12 @@ class BuildDialog extends StatelessWidget {
           children: [
             // Enhanced dialog title with gradient
             const AiRecomHeader(),
-            const SizedBox(height: 24),
+            SizedBox(
+              height: DialogConstants.adaptiveSpacing(
+                context,
+                DialogConstants.spacingMD,
+              ),
+            ),
 
             // AI Recommendation Form Section
             SectionBuilder(
@@ -52,7 +58,12 @@ class BuildDialog extends StatelessWidget {
               selectedDifficulty: selectedDifficulty,
               onDifficultyChanged: onDifficultyChanged,
             ),
-            const SizedBox(height: 24),
+            SizedBox(
+              height: DialogConstants.adaptiveSpacing(
+                context,
+                DialogConstants.spacingMD,
+              ),
+            ),
 
             // Show loading, error, or recommendations based on provider state
             if (aiProvider.isLoading)
@@ -64,7 +75,12 @@ class BuildDialog extends StatelessWidget {
             else
               _buildEmptyContent(),
 
-            const SizedBox(height: 20),
+            SizedBox(
+              height: DialogConstants.adaptiveSpacing(
+                context,
+                DialogConstants.spacingMD,
+              ),
+            ),
 
             // Generate/Regenerate recommendations button - Enhanced
             Container(

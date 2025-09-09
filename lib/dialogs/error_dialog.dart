@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/theme.dart';
 
 void showErrorDialog(
@@ -17,17 +18,17 @@ void showErrorDialog(
           title: const Icon(
             CupertinoIcons.exclamationmark_triangle_fill,
             color: AppColors.orange,
-            size: 40,
+            size: DialogConstants.iconSizeXXL,
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(height: 16),
+              const SizedBox(height: DialogConstants.spacingSM),
               Text(
                 message,
                 style: const TextStyle(
                   color: AppColors.black,
-                  fontSize: 16,
+                  fontSize: DialogConstants.fontSizeMD,
                   height: 1.4,
                 ),
                 textAlign: TextAlign.center,

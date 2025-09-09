@@ -1,3 +1,4 @@
+import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -12,12 +13,18 @@ class QuantityField extends StatelessWidget {
       controller: controller,
       keyboardType: TextInputType.number,
       placeholder: 'Quantity',
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(
+        horizontal: DialogConstants.spacingSM,
+        vertical: DialogConstants.spacingSM,
+      ),
       placeholderStyle: TextStyle(
         color: AppColors.button.withOpacity(0.5),
-        fontSize: 16,
+        fontSize: DialogConstants.fontSizeMD,
       ),
-      style: const TextStyle(color: AppColors.button, fontSize: 16),
+      style: const TextStyle(
+        color: AppColors.button,
+        fontSize: DialogConstants.fontSizeMD,
+      ),
       decoration: null,
       cursorColor: AppColors.mutedGreen,
     );
@@ -33,15 +40,21 @@ class IngredientNameField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: CupertinoColors.systemGrey6,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.mutedGreen.withOpacity(0.6),
-          width: 2,
+        color: CupertinoColors.systemGrey6.withValues(alpha: 0.7),
+        borderRadius: BorderRadius.circular(DialogConstants.radiusSM),
+        border: Border.all(color: AppColors.button.withOpacity(0.12), width: 1),
+      ),
+      padding: const EdgeInsets.symmetric(
+        horizontal: DialogConstants.spacingSM,
+        vertical: DialogConstants.spacingSM,
+      ),
+      child: Text(
+        name,
+        style: TextStyle(
+          color: AppColors.button,
+          fontSize: DialogConstants.fontSizeMD,
         ),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Text(name, style: TextStyle(color: AppColors.button)),
     );
   }
 }
@@ -56,18 +69,24 @@ class ControlledIngNameField extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: CupertinoColors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(DialogConstants.radiusMD),
         border: Border.all(color: AppColors.button.withOpacity(0.3)),
       ),
       child: CupertinoTextField(
         controller: controller,
         placeholder: 'Ingredient Name',
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.symmetric(
+          horizontal: DialogConstants.spacingSM,
+          vertical: DialogConstants.spacingSM,
+        ),
         placeholderStyle: TextStyle(
           color: AppColors.button.withOpacity(0.5),
-          fontSize: 16,
+          fontSize: DialogConstants.fontSizeMD,
         ),
-        style: const TextStyle(color: AppColors.button, fontSize: 16),
+        style: const TextStyle(
+          color: AppColors.button,
+          fontSize: DialogConstants.fontSizeMD,
+        ),
         decoration: null,
         cursorColor: AppColors.mutedGreen,
       ),
