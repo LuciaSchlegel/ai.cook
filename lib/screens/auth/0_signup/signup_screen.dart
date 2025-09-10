@@ -1,6 +1,8 @@
 import 'package:ai_cook_project/screens/auth/0_signup/widgets/welcome_message.dart';
 import 'package:ai_cook_project/screens/auth/0_signup/widgets/sign_up_form.dart';
 import 'package:ai_cook_project/screens/auth/logic/sign_up_controller.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:ai_cook_project/theme.dart';
@@ -34,20 +36,31 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final screenHeight = constraints.maxHeight;
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: screenHeight),
-                child: IntrinsicHeight(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: ResponsiveUtils.getOptimalContentWidth(context),
+            ),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final screenHeight = constraints.maxHeight;
+                return SingleChildScrollView(
+                  padding: ResponsiveUtils.padding(
+                    context,
+                    ResponsiveSpacing.md,
+                  ),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: screenHeight),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const SizedBox(height: 48),
-                        WelcomeMessage(),
-                        const SizedBox(height: 32),
+                        const ResponsiveSpacingWidget.vertical(
+                          ResponsiveSpacing.xl,
+                        ),
+                        const WelcomeMessage(),
+                        const ResponsiveSpacingWidget.vertical(
+                          ResponsiveSpacing.lg,
+                        ),
                         FadeInUp(
                           delay: const Duration(milliseconds: 300),
                           duration: const Duration(milliseconds: 800),
@@ -70,13 +83,16 @@ class _SignupScreenState extends State<SignupScreen> {
                             },
                           ),
                         ),
+                        const ResponsiveSpacingWidget.vertical(
+                          ResponsiveSpacing.xxl,
+                        ),
                       ],
                     ),
                   ),
-                ),
-              ),
-            );
-          },
+                );
+              },
+            ),
+          ),
         ),
       ),
     );

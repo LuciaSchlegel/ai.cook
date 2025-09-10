@@ -153,6 +153,7 @@ class ResponsiveUtils {
   static const double _fontXL = 20.0;
   static const double _fontXXL = 24.0;
   static const double _fontTitle = 28.0;
+  static const double _fontTitle2 = 42.0;
   static const double _fontDisplay = 34.0;
   static const double _fontDisplay2 = 85.0;
 
@@ -178,6 +179,7 @@ class ResponsiveUtils {
       ResponsiveFontSize.xl => _fontXL,
       ResponsiveFontSize.xxl => _fontXXL,
       ResponsiveFontSize.title => _fontTitle,
+      ResponsiveFontSize.title2 => _fontTitle2,
       ResponsiveFontSize.display => _fontDisplay,
       ResponsiveFontSize.display2 => _fontDisplay2,
     };
@@ -348,7 +350,18 @@ enum DeviceType { iPhone, iPadMini, iPadPro }
 
 enum ResponsiveSpacing { xxs, xs, sm, md, lg, xl, xxl }
 
-enum ResponsiveFontSize { xs, sm, md, lg, xl, xxl, title, display, display2 }
+enum ResponsiveFontSize {
+  xs,
+  sm,
+  md,
+  lg,
+  xl,
+  xxl,
+  title,
+  title2,
+  display,
+  display2,
+}
 
 enum ResponsiveIconSize { xs, sm, md, lg, xl, xxl }
 

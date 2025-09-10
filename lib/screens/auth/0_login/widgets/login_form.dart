@@ -1,4 +1,6 @@
 import 'package:ai_cook_project/utils/field_validator.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:ai_cook_project/widgets/buttons/auth_button.dart';
 import 'package:ai_cook_project/widgets/utils/custom_text_field.dart';
 import 'package:ai_cook_project/widgets/buttons/navigation_text_link.dart';
@@ -28,20 +30,10 @@ class LoginForm extends StatelessWidget {
     return FadeInUp(
       delay: const Duration(milliseconds: 300),
       duration: const Duration(milliseconds: 800),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(32),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.15),
-              blurRadius: 15,
-              spreadRadius: 1,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+      child: ResponsiveContainer(
+        padding: ResponsiveSpacing.xl,
+        backgroundColor: Colors.white,
+        borderRadius: ResponsiveBorderRadius.xxl,
         child: Form(
           key: formKey,
           child: Column(
@@ -52,21 +44,21 @@ class LoginForm extends StatelessWidget {
                 label: 'Email',
                 validator: FieldValidator.validateEmail,
               ),
-              const SizedBox(height: 24),
+              ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
               CustomTextField(
                 controller: passwordController,
                 label: 'Password',
                 validator: FieldValidator.validatePassword,
                 obscureText: true,
               ),
-              const SizedBox(height: 24),
+              ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
               AuthButton(label: 'Sign in', onPressed: onLogin),
-              const SizedBox(height: 16),
+              ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
               NavigationTextLink(
                 label: 'Forgot your password ?',
                 onTap: onForgotPassword,
               ),
-              const SizedBox(height: 16),
+              ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
               NavigationTextLink(
                 label: 'Don\'t have an account? Sign up',
                 onTap: onRegister,
