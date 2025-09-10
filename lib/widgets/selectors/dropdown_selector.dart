@@ -1,4 +1,6 @@
 import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
@@ -45,138 +47,143 @@ class DropdownSelector extends StatelessWidget {
       barrierDismissible: true,
       semanticsDismissible: true,
       builder:
-          (BuildContext context) => Container(
-            height: pickerHeight,
-            padding: const EdgeInsets.symmetric(
-              vertical: DialogConstants.spacingXXS,
-            ),
-            color: CupertinoColors.systemBackground.resolveFrom(context),
-            child: SafeArea(
-              top: false,
-              child: Column(
-                children: [
-                  // Header with Cancel/Done buttons - matches GenericPickerModal
-                  SizedBox(
-                    height: DialogConstants.adaptiveSpacing(context, 44.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // Cancel button
-                        CupertinoButton(
-                          padding: const EdgeInsets.only(
-                            left: DialogConstants.spacingSM,
-                          ),
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(color: AppColors.mutedGreen),
-                          ),
-                          onPressed: () => Navigator.of(context).pop(),
-                        ),
-
-                        // Optional title
-                        if (title != null)
-                          Expanded(
-                            child: Text(
-                              title!,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: DialogConstants.fontSizeMD + 1,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.button,
-                                decoration: TextDecoration.none,
-                              ),
-                            ),
-                          ),
-
-                        // Done button
-                        CupertinoButton(
-                          padding: const EdgeInsets.only(
-                            right: DialogConstants.spacingSM,
-                          ),
-                          child: const Text(
-                            'Done',
-                            style: TextStyle(
-                              color: AppColors.mutedGreen,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          onPressed: () {
-                            // Apply selection based on behavior mode
-                            if (confirmOnDone) {
-                              onChanged(pendingSelection);
-                            }
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    ),
+          (BuildContext context) => ResponsiveBuilder(
+            builder: (context, deviceType) {
+              return Container(
+                height: pickerHeight,
+                padding: EdgeInsets.symmetric(
+                  vertical: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.xs,
                   ),
-                  // Picker content - matches GenericPickerModal exactly
-                  Expanded(
-                    child: CupertinoPicker(
-                      magnification: 1.22,
-                      squeeze: 1.2,
-                      useMagnifier: true,
-                      itemExtent: DialogConstants.adaptiveSpacing(
-                        context,
-                        32.0,
-                      ),
-                      scrollController: FixedExtentScrollController(
-                        initialItem: initialItem != -1 ? initialItem : 0,
-                      ),
-                      onSelectedItemChanged: (int selectedItem) {
-                        if (confirmOnDone) {
-                          // Store pending selection for confirm-on-done behavior
-                          pendingSelection = items[selectedItem];
-                        } else {
-                          // Immediate behavior (backward compatibility)
-                          onChanged(items[selectedItem]);
-                        }
-                      },
-                      children:
-                          items
-                              .map(
-                                (item) => Center(
-                                  child: Text(
-                                    item,
-                                    style: TextStyle(
-                                      fontSize: DialogConstants.adaptiveSpacing(
-                                        context,
-                                        20.0,
-                                      ),
-                                      color: AppColors.button,
-                                    ),
-                                  ),
+                ),
+                color: CupertinoColors.systemBackground.resolveFrom(context),
+                child: SafeArea(
+                  top: false,
+                  child: Column(
+                    children: [
+                      // Header with Cancel/Done buttons
+                      SizedBox(
+                        height:
+                            ResponsiveUtils.spacing(
+                              context,
+                              ResponsiveSpacing.xxl,
+                            ) +
+                            4,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // Cancel button
+                            CupertinoButton(
+                              padding: EdgeInsets.only(
+                                left: ResponsiveUtils.spacing(
+                                  context,
+                                  ResponsiveSpacing.sm,
                                 ),
-                              )
-                              .toList(),
-                    ),
+                              ),
+                              child: ResponsiveText(
+                                'Cancel',
+                                fontSize: ResponsiveFontSize.md,
+                                color: AppColors.mutedGreen,
+                              ),
+                              onPressed: () => Navigator.of(context).pop(),
+                            ),
+
+                            // Optional title
+                            if (title != null)
+                              Expanded(
+                                child: ResponsiveText(
+                                  title!,
+                                  fontSize: ResponsiveFontSize.lg,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.button,
+                                  textAlign: TextAlign.center,
+                                  decoration: TextDecoration.none,
+                                ),
+                              ),
+
+                            // Done button
+                            CupertinoButton(
+                              padding: EdgeInsets.only(
+                                right: ResponsiveUtils.spacing(
+                                  context,
+                                  ResponsiveSpacing.sm,
+                                ),
+                              ),
+                              child: ResponsiveText(
+                                'Done',
+                                fontSize: ResponsiveFontSize.md,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.mutedGreen,
+                              ),
+                              onPressed: () {
+                                // Apply selection based on behavior mode
+                                if (confirmOnDone) {
+                                  onChanged(pendingSelection);
+                                }
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Picker content with responsive sizing
+                      Expanded(
+                        child: CupertinoPicker(
+                          magnification: 1.22,
+                          squeeze: 1.2,
+                          useMagnifier: true,
+                          itemExtent: ResponsiveUtils.spacing(
+                            context,
+                            ResponsiveSpacing.xl,
+                          ),
+                          scrollController: FixedExtentScrollController(
+                            initialItem: initialItem != -1 ? initialItem : 0,
+                          ),
+                          onSelectedItemChanged: (int selectedItem) {
+                            if (confirmOnDone) {
+                              // Store pending selection for confirm-on-done behavior
+                              pendingSelection = items[selectedItem];
+                            } else {
+                              // Immediate behavior (backward compatibility)
+                              onChanged(items[selectedItem]);
+                            }
+                          },
+                          children:
+                              items
+                                  .map(
+                                    (item) => Center(
+                                      child: ResponsiveText(
+                                        item,
+                                        fontSize: ResponsiveFontSize.lg,
+                                        color: AppColors.button,
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           ),
     );
   }
 
-  /// Calculate responsive height based on screen size - matches GenericPickerModal
+  /// Calculate responsive height based on device type using new responsive system
   double _calculatePickerHeight(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final screenHeight = mediaQuery.size.height;
-    final screenWidth = mediaQuery.size.width;
+    final deviceType = ResponsiveUtils.getDeviceType(context);
 
-    // Responsive height calculation - same as GenericPickerModal
-    if (screenWidth < DialogConstants.mobileBreakpoint) {
-      // Mobile: más compacto
-      return (screenHeight * 0.3).clamp(200.0, 250.0);
-    } else if (screenWidth < DialogConstants.tabletBreakpoint) {
-      // Tablet: tamaño medio
-      return (screenHeight * 0.25).clamp(220.0, 280.0);
-    } else {
-      // Desktop: más generoso
-      return (screenHeight * 0.2).clamp(240.0, 320.0);
-    }
+    return switch (deviceType) {
+      DeviceType.iPhone => (screenHeight * 0.3).clamp(200.0, 250.0),
+      DeviceType.iPadMini => (screenHeight * 0.25).clamp(220.0, 280.0),
+      DeviceType.iPadPro => (screenHeight * 0.2).clamp(240.0, 320.0),
+    };
   }
 
   @override
@@ -186,70 +193,85 @@ class DropdownSelector extends StatelessWidget {
         semanticLabel ??
         (title != null ? '$title: $value' : 'Dropdown selector: $value');
 
-    return Semantics(
-      label: effectiveSemanticLabel,
-      hint: isDisabled ? 'Dropdown is disabled' : 'Tap to select an option',
-      button: true,
-      enabled: !isDisabled,
-      child: Material(
-        color: Colors.transparent,
-        child: GestureDetector(
-          onTap: isDisabled ? null : () => _showDropdownMenu(context),
-          behavior: HitTestBehavior.opaque,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            width: width,
-            constraints: BoxConstraints(
-              minHeight: DialogConstants.adaptiveSpacing(context, 48.0),
-            ),
-            decoration: BoxDecoration(
-              color:
-                  isDisabled
-                      ? CupertinoColors.systemGrey6
-                      : CupertinoColors.white,
-              borderRadius: BorderRadius.circular(DialogConstants.radiusLG),
-              border: Border.all(
-                color:
-                    isDisabled
-                        ? AppColors.button.withValues(alpha: 0.1)
-                        : AppColors.button.withValues(alpha: 0.2),
-              ),
-              boxShadow: isDisabled ? null : DialogConstants.lightShadow,
-            ),
-            padding: EdgeInsets.symmetric(
-              horizontal: DialogConstants.spacingSM,
-              vertical: DialogConstants.spacingXS,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    value,
-                    style: TextStyle(
-                      color:
-                          isDisabled
-                              ? AppColors.button.withValues(alpha: 0.4)
-                              : AppColors.button,
-                      fontSize: DialogConstants.fontSizeMD,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        return Semantics(
+          label: effectiveSemanticLabel,
+          hint: isDisabled ? 'Dropdown is disabled' : 'Tap to select an option',
+          button: true,
+          enabled: !isDisabled,
+          child: Material(
+            color: Colors.transparent,
+            child: GestureDetector(
+              onTap: isDisabled ? null : () => _showDropdownMenu(context),
+              behavior: HitTestBehavior.opaque,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                width: width,
+                constraints: BoxConstraints(
+                  minHeight:
+                      ResponsiveUtils.spacing(context, ResponsiveSpacing.xxl) +
+                      8,
                 ),
-                Icon(
-                  CupertinoIcons.chevron_down,
+                decoration: BoxDecoration(
                   color:
                       isDisabled
-                          ? AppColors.button.withValues(alpha: 0.3)
-                          : AppColors.button,
-                  size: DialogConstants.iconSizeMD,
+                          ? CupertinoColors.systemGrey6
+                          : CupertinoColors.white,
+                  borderRadius: BorderRadius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.lg,
+                    ),
+                  ),
+                  border: Border.all(
+                    color:
+                        isDisabled
+                            ? AppColors.button.withValues(alpha: 0.1)
+                            : AppColors.button.withValues(alpha: 0.2),
+                  ),
+                  boxShadow: isDisabled ? null : DialogConstants.lightShadow,
                 ),
-              ],
+                padding: EdgeInsets.symmetric(
+                  horizontal: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.sm,
+                  ),
+                  vertical: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.xs,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: ResponsiveText(
+                        value,
+                        fontSize: ResponsiveFontSize.md,
+                        fontWeight: FontWeight.w500,
+                        color:
+                            isDisabled
+                                ? AppColors.button.withValues(alpha: 0.4)
+                                : AppColors.button,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    ResponsiveIcon(
+                      CupertinoIcons.chevron_down,
+                      size: ResponsiveIconSize.md,
+                      color:
+                          isDisabled
+                              ? AppColors.button.withValues(alpha: 0.3)
+                              : AppColors.button,
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

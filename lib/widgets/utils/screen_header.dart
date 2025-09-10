@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ai_cook_project/widgets/buttons/main_floating_button.dart';
 import 'package:ai_cook_project/widgets/utils/search_bar.dart';
 import 'package:ai_cook_project/providers/search_provider.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:provider/provider.dart';
 
 class ScreenHeader extends StatelessWidget {
@@ -22,35 +24,35 @@ class ScreenHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final searchProvider = Provider.of<SearchProvider>(context);
 
-    return Container(
-      color: Colors.transparent,
-      padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * 0.05,
-        vertical: 10,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          MainFloatingButton(
-            onProfileTap: onProfileTap,
-            onFeedTap: onFeedTap,
-            onLogoutTap: onLogoutTap,
-            currentIndex: currentIndex,
-            onMenuStateChanged: (isOpen) {
-              searchProvider.setMenuOpen(isOpen);
-            },
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        return ResponsiveContainer(
+          padding: ResponsiveSpacing.lg,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              MainFloatingButton(
+                onProfileTap: onProfileTap,
+                onFeedTap: onFeedTap,
+                onLogoutTap: onLogoutTap,
+                currentIndex: currentIndex,
+                onMenuStateChanged: (isOpen) {
+                  searchProvider.setMenuOpen(isOpen);
+                },
+              ),
+              ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.xs),
+              Expanded(
+                child: CustomSearchBar(
+                  controller: searchProvider.searchController,
+                  hintText: searchProvider.getSearchHint(),
+                  onChanged: searchProvider.onSearch,
+                  isMenuOpen: searchProvider.isMenuOpen,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: CustomSearchBar(
-              controller: searchProvider.searchController,
-              hintText: searchProvider.getSearchHint(),
-              onChanged: searchProvider.onSearch,
-              isMenuOpen: searchProvider.isMenuOpen,
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

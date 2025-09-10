@@ -228,7 +228,7 @@ class ResponsiveUtils {
   static const double _radiusLG = 16.0;
   static const double _radiusXL = 20.0;
   static const double _radiusXXL = 24.0;
-
+  static const double _radiusXXXL = 28.0; // 2xl
   /// Responsive border radius
   static double borderRadius(
     BuildContext context,
@@ -253,6 +253,7 @@ class ResponsiveUtils {
       ResponsiveBorderRadius.lg => _radiusLG,
       ResponsiveBorderRadius.xl => _radiusXL,
       ResponsiveBorderRadius.xxl => _radiusXXL,
+      ResponsiveBorderRadius.xxxl => _radiusXXXL,
     };
   }
 
@@ -365,7 +366,7 @@ enum ResponsiveFontSize {
 
 enum ResponsiveIconSize { xs, sm, md, lg, xl, xxl }
 
-enum ResponsiveBorderRadius { xs, sm, md, lg, xl, xxl }
+enum ResponsiveBorderRadius { xs, sm, md, lg, xl, xxl, xxxl } // 2xl
 
 // ==================== DATA CLASSES ====================
 
