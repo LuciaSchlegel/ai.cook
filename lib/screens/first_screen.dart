@@ -1,3 +1,5 @@
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/providers/auth_provider.dart';
@@ -14,20 +16,19 @@ class FirstScreen extends StatelessWidget {
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0),
+          padding: ResponsiveUtils.padding(context, ResponsiveSpacing.xl),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Logo
-              const Text(
+              const ResponsiveText(
                 'ai.cook',
-                style: TextStyle(
-                  fontSize: 85,
-                  fontFamily: 'Casta',
-                  color: AppColors.white,
-                ),
+                fontSize: ResponsiveFontSize.display2,
+                fontWeight: FontWeight.normal,
+                color: AppColors.white,
+                fontFamily: 'Casta',
               ),
-              const SizedBox(height: 80),
+              const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.xl),
 
               // Apple Button
               GestureDetector(
@@ -39,28 +40,33 @@ class FirstScreen extends StatelessWidget {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: AppColors.button,
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(
+                      ResponsiveUtils.borderRadius(
+                        context,
+                        ResponsiveBorderRadius.xl,
+                      ),
+                    ),
                   ),
                   child: Center(
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Image.asset('assets/icons/apple-logo.png', height: 24),
-                        const SizedBox(width: 8),
-                        const Text(
+                        const ResponsiveSpacingWidget.horizontal(
+                          ResponsiveSpacing.xs,
+                        ),
+                        const ResponsiveText(
                           "Continue with Apple",
-                          style: TextStyle(
-                            color: AppColors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          color: AppColors.white,
+                          fontSize: ResponsiveFontSize.sm,
+                          fontWeight: FontWeight.w500,
                         ),
                       ],
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
 
               // Google + Sign In
               Row(
@@ -74,7 +80,12 @@ class FirstScreen extends StatelessWidget {
                         height: 50,
                         decoration: BoxDecoration(
                           color: AppColors.white,
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(
+                            ResponsiveUtils.borderRadius(
+                              context,
+                              ResponsiveBorderRadius.xl,
+                            ),
+                          ),
                         ),
                         child: Center(
                           child: Image.asset(
@@ -85,7 +96,9 @@ class FirstScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const ResponsiveSpacingWidget.horizontal(
+                    ResponsiveSpacing.md,
+                  ),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
@@ -95,41 +108,43 @@ class FirstScreen extends StatelessWidget {
                         backgroundColor: AppColors.orange,
                         foregroundColor: AppColors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(
+                            ResponsiveUtils.borderRadius(
+                              context,
+                              ResponsiveBorderRadius.xl,
+                            ),
+                          ),
                         ),
                         minimumSize: const Size.fromHeight(50),
                       ),
-                      child: const Text(
+                      child: const ResponsiveText(
                         "Sign in",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        fontSize: ResponsiveFontSize.sm,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.white,
                       ),
                     ),
                   ),
                 ],
               ),
 
-              const SizedBox(height: 30),
+              const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.xl),
 
               // Sign Up
               GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(context, '/sign_up');
                 },
-                child: const Text(
+                child: const ResponsiveText(
                   'Sign up',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    height: 2.5,
-                    decoration: TextDecoration.underline,
-                    decorationColor: AppColors.white,
-                    decorationStyle: TextDecorationStyle.solid,
-                    decorationThickness: 1,
-                    color: AppColors.white,
-                  ),
+                  fontSize: ResponsiveFontSize.sm,
+                  fontWeight: FontWeight.w500,
+                  decoration: TextDecoration.underline,
+                  height: 2.5,
+                  color: AppColors.white,
+                  decorationColor: AppColors.white,
+                  decorationStyle: TextDecorationStyle.solid,
+                  decorationThickness: 1,
                 ),
               ),
             ],

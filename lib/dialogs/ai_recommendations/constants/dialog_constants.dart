@@ -1,4 +1,5 @@
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/material.dart';
 
 /// Design system constants for AI Recommendations Dialog
@@ -155,51 +156,43 @@ class DialogConstants {
   static const Color almostReadyCardBorder = Colors.orange;
   static const Color missingCardBorder = Colors.red;
 
-  // Responsive Breakpoints
-  static const double mobileBreakpoint = 600;
-  static const double tabletBreakpoint = 900;
+  // ==================== RESPONSIVE BREAKPOINTS ====================
+  // DEPRECATED: Use ResponsiveUtils instead
+  static const double mobileBreakpoint = ResponsiveUtils.iPhoneMaxWidth;
+  static const double tabletBreakpoint = ResponsiveUtils.iPadProWidth;
 
-  // Adaptive Spacing
+  // ==================== ADAPTIVE SPACING (Updated to use ResponsiveUtils) ====================
+
+  /// Adaptive spacing using the new responsive system
   static double adaptiveSpacing(BuildContext context, double baseSpacing) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    if (screenWidth < mobileBreakpoint) {
-      return baseSpacing * 0.8;
-    } else if (screenWidth < tabletBreakpoint) {
-      return baseSpacing;
-    } else {
-      return baseSpacing * 1.2;
-    }
+    // Convert base spacing to ResponsiveSpacing enum equivalent
+    final responsiveSize = _convertToResponsiveSpacing(baseSpacing);
+    return ResponsiveUtils.spacing(context, responsiveSize);
   }
 
-  // Adaptive Padding
+  /// Adaptive padding using the new responsive system
   static EdgeInsets adaptivePadding(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    if (screenWidth < mobileBreakpoint) {
-      return const EdgeInsets.all(spacingSM);
-    } else if (screenWidth < tabletBreakpoint) {
-      return const EdgeInsets.all(spacingMD);
-    } else {
-      return const EdgeInsets.all(spacingLG);
-    }
+    return ResponsiveUtils.padding(context, ResponsiveSpacing.md);
   }
 
-  // Safe Area Aware Bottom Padding for Scrollable Content
+  /// Convert legacy spacing values to ResponsiveSpacing enum
+  static ResponsiveSpacing _convertToResponsiveSpacing(double baseSpacing) {
+    if (baseSpacing <= spacingXS) return ResponsiveSpacing.xs;
+    if (baseSpacing <= spacingSM) return ResponsiveSpacing.sm;
+    if (baseSpacing <= spacingMD) return ResponsiveSpacing.md;
+    if (baseSpacing <= spacingLG) return ResponsiveSpacing.lg;
+    return ResponsiveSpacing.xl;
+  }
+
+  // ==================== SAFE AREA HELPERS (Updated to use ResponsiveUtils) ====================
+
+  /// Safe Area Aware Bottom Padding for Scrollable Content
   static double safeScrollBottomPadding(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final bottomSafeArea = mediaQuery.padding.bottom;
-    final baseSpacing = adaptiveSpacing(context, spacingMD);
-
-    // Ensure minimum spacing even on devices without bottom safe area
-    return bottomSafeArea > 0
-        ? bottomSafeArea + baseSpacing
-        : baseSpacing * 1.5; // Extra space for devices without home indicator
+    return ResponsiveUtils.getScrollBottomPadding(context);
   }
 
-  // Top safe area for dialog content (close button area)
+  /// Top safe area for dialog content (close button area)
   static double dialogTopSafeArea(BuildContext context) {
-    // Ensure enough space so content doesn't get cut off at the top
-    final baseSpacing = adaptiveSpacing(context, spacingXL);
-    final extraPadding = adaptiveSpacing(context, spacingMD);
-    return baseSpacing + extraPadding; // More generous top spacing
+    return ResponsiveUtils.getDialogTopPadding(context);
   }
 }

@@ -149,7 +149,7 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
                     child: Column(
                       children: [
                         // Fixed header with close button (non-scrollable)
-                        Container(
+                        SizedBox(
                           height: DialogConstants.dialogTopSafeArea(context),
                           child: Stack(
                             children: [
