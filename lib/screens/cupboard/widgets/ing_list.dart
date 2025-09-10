@@ -1,8 +1,9 @@
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 
 class IngredientListView extends StatelessWidget {
   final List<UserIng> ingredients;
@@ -14,7 +15,7 @@ class IngredientListView extends StatelessWidget {
     required this.onTap,
   });
 
-  Widget _getCategoryIcon(UserIng userIng) {
+  Widget _getCategoryIcon(UserIng userIng, BuildContext context) {
     final categoryName =
         userIng.ingredient?.category?.name.toLowerCase() ??
         userIng.customIngredient?.category?.name.toLowerCase() ??
@@ -49,13 +50,13 @@ class IngredientListView extends StatelessWidget {
 
     return SvgPicture.asset(
       assetPath,
-      width: DialogConstants.iconSizeXL,
-      height: DialogConstants.iconSizeXL,
+      width: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
+      height: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
       colorFilter: ColorFilter.mode(AppColors.mutedGreen, BlendMode.srcIn),
     );
   }
 
-  List<Widget> _getDietaryIcons(UserIng userIng) {
+  List<Widget> _getDietaryIcons(UserIng userIng, BuildContext context) {
     final icons = <Widget>[];
 
     // Unified approach using tag-based logic for both ingredient types
@@ -85,36 +86,36 @@ class IngredientListView extends StatelessWidget {
     // Add dietary icons based on unified logic
     if (isVegan) {
       icons.add(
-        Icon(
+        ResponsiveIcon(
           Icons.eco_outlined,
-          size: DialogConstants.iconSizeXS,
+          size: ResponsiveIconSize.xs,
           color: AppColors.mutedGreen,
         ),
       );
     }
     if (isVegetarian && !isVegan) {
       icons.add(
-        Icon(
+        ResponsiveIcon(
           Icons.local_dining_outlined,
-          size: DialogConstants.iconSizeXS,
+          size: ResponsiveIconSize.xs,
           color: AppColors.mutedGreen,
         ),
       );
     }
     if (isGlutenFree) {
       icons.add(
-        Icon(
+        ResponsiveIcon(
           Icons.no_food_outlined,
-          size: DialogConstants.iconSizeXS,
+          size: ResponsiveIconSize.xs,
           color: AppColors.mutedGreen,
         ),
       );
     }
     if (isLactoseFree) {
       icons.add(
-        Icon(
+        ResponsiveIcon(
           Icons.block_outlined,
-          size: DialogConstants.iconSizeXS,
+          size: ResponsiveIconSize.xs,
           color: AppColors.mutedGreen,
         ),
       );
@@ -137,115 +138,168 @@ class IngredientListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: EdgeInsets.symmetric(
-        horizontal: DialogConstants.adaptiveSpacing(context, 20.0),
-        vertical: DialogConstants.adaptiveSpacing(context, 10.0),
-      ),
-      itemCount: ingredients.length,
-      itemBuilder: (context, index) {
-        final userIng = ingredients[index];
-        return Padding(
-          padding: const EdgeInsets.only(bottom: DialogConstants.spacingXS),
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.circular(DialogConstants.radiusLG),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.04),
-                  blurRadius: DialogConstants.radiusSM,
-                  offset: const Offset(0, 2),
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        return ListView.builder(
+          padding: EdgeInsets.symmetric(
+            horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.lg),
+            vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+          ),
+          itemCount: ingredients.length,
+          itemBuilder: (context, index) {
+            final userIng = ingredients[index];
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.xl,
+                    ),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.04),
+                      blurRadius: ResponsiveUtils.borderRadius(
+                        context,
+                        ResponsiveBorderRadius.sm,
+                      ),
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () => onTap(userIng),
-                borderRadius: BorderRadius.circular(DialogConstants.radiusLG),
-                child: Padding(
-                  padding: const EdgeInsets.all(DialogConstants.spacingSM),
-                  child: Row(
-                    children: [
-                      // Icono más pequeño
-                      Container(
-                        width: DialogConstants.iconSizeXL + 6,
-                        height: DialogConstants.iconSizeXL + 6,
-                        decoration: BoxDecoration(
-                          color: AppColors.mutedGreen.withValues(alpha: 0.10),
-                          borderRadius: BorderRadius.circular(
-                            DialogConstants.radiusSM,
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => onTap(userIng),
+                    borderRadius: BorderRadius.circular(
+                      ResponsiveUtils.borderRadius(
+                        context,
+                        ResponsiveBorderRadius.xl,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(
+                        ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+                      ),
+                      child: Row(
+                        children: [
+                          // Icono más pequeño
+                          Container(
+                            width:
+                                ResponsiveUtils.iconSize(
+                                  context,
+                                  ResponsiveIconSize.xl,
+                                ) +
+                                6,
+                            height:
+                                ResponsiveUtils.iconSize(
+                                  context,
+                                  ResponsiveIconSize.xl,
+                                ) +
+                                6,
+                            decoration: BoxDecoration(
+                              color: AppColors.mutedGreen.withValues(
+                                alpha: 0.10,
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                ResponsiveUtils.borderRadius(
+                                  context,
+                                  ResponsiveBorderRadius.lg,
+                                ),
+                              ),
+                            ),
+                            child: Center(
+                              child: _getCategoryIcon(userIng, context),
+                            ),
                           ),
-                        ),
-                        child: Center(child: _getCategoryIcon(userIng)),
-                      ),
-                      const SizedBox(width: DialogConstants.spacingSM),
-                      // Detalles
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              userIng.ingredient?.name ??
-                                  userIng.customIngredient?.name ??
-                                  '',
-                              style: TextStyle(
-                                color: AppColors.button,
-                                fontFamily: 'Casta',
-                                fontSize: DialogConstants.fontSizeXL,
-                                fontWeight: FontWeight.w600,
-                                height: 1.1,
-                              ),
+                          SizedBox(
+                            width: ResponsiveUtils.spacing(
+                              context,
+                              ResponsiveSpacing.md,
                             ),
-                            const SizedBox(
-                              height: DialogConstants.spacingXXS - 2,
-                            ),
-                            // Dietary icons
-                            if (_getDietaryIcons(userIng).isNotEmpty)
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  bottom: DialogConstants.spacingXXS - 2,
+                          ),
+                          // Detalles
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ResponsiveText(
+                                  userIng.ingredient?.name ??
+                                      userIng.customIngredient?.name ??
+                                      '',
+                                  color: AppColors.button,
+                                  fontFamily: 'Casta',
+                                  fontSize: ResponsiveFontSize.xl,
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.1,
                                 ),
-                                child: Row(
-                                  children:
-                                      _getDietaryIcons(userIng)
-                                          .map(
-                                            (icon) => Padding(
-                                              padding: const EdgeInsets.only(
-                                                right:
-                                                    DialogConstants.spacingXXS -
-                                                    2,
-                                              ),
-                                              child: icon,
-                                            ),
-                                          )
-                                          .toList(),
+                                SizedBox(
+                                  height: ResponsiveUtils.spacing(
+                                    context,
+                                    ResponsiveSpacing.xxs,
+                                  ),
                                 ),
-                              ),
-                            Text(
-                              '${_formatQuantity(userIng.quantity)} ${userIng.unit?.abbreviation ?? ''}',
-                              style: TextStyle(
-                                color: AppColors.mutedGreen,
-                                fontFamily: 'Inter',
-                                fontSize: DialogConstants.fontSizeSM,
-                                fontWeight: FontWeight.w400,
-                              ),
+                                // Dietary icons
+                                if (_getDietaryIcons(
+                                  userIng,
+                                  context,
+                                ).isNotEmpty)
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom:
+                                          ResponsiveUtils.spacing(
+                                            context,
+                                            ResponsiveSpacing.xxs,
+                                          ) -
+                                          2,
+                                    ),
+                                    child: Row(
+                                      children:
+                                          _getDietaryIcons(userIng, context)
+                                              .map(
+                                                (icon) => Padding(
+                                                  padding: EdgeInsets.only(
+                                                    right:
+                                                        ResponsiveUtils.spacing(
+                                                          context,
+                                                          ResponsiveSpacing.xs,
+                                                        ) -
+                                                        2,
+                                                  ),
+                                                  child: icon,
+                                                ),
+                                              )
+                                              .toList(),
+                                    ),
+                                  ),
+                                ResponsiveText(
+                                  '${_formatQuantity(userIng.quantity)} ${userIng.unit?.abbreviation ?? ''}',
+                                  color: AppColors.background,
+                                  fontFamily: 'Inter',
+                                  fontSize: ResponsiveFontSize.sm,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                          ResponsiveIcon(
+                            Icons.arrow_forward_ios,
+                            color: AppColors.mutedGreen.withValues(alpha: 0.4),
+                            size: ResponsiveIconSize.md,
+                          ),
+                        ],
                       ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: AppColors.mutedGreen.withValues(alpha: 0.4),
-                        size: DialogConstants.iconSizeMD,
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );

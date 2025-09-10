@@ -114,7 +114,6 @@ class _CupboardScreenState extends State<CupboardScreen> {
                 builder: (context, ingredientsProvider, _) {
                   if (!ingredientsProvider.isInitialized) {
                     return const LoadingIndicator(
-                      size: 24.0,
                       message: 'Loading ingredients...',
                     );
                   }

@@ -1,5 +1,6 @@
-import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/cupertino.dart';
 
 class QuantityField extends StatelessWidget {
@@ -9,24 +10,28 @@ class QuantityField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoTextField(
-      controller: controller,
-      keyboardType: TextInputType.number,
-      placeholder: 'Quantity',
-      padding: const EdgeInsets.symmetric(
-        horizontal: DialogConstants.spacingSM,
-        vertical: DialogConstants.spacingSM,
-      ),
-      placeholderStyle: TextStyle(
-        color: AppColors.button.withOpacity(0.5),
-        fontSize: DialogConstants.fontSizeMD,
-      ),
-      style: const TextStyle(
-        color: AppColors.button,
-        fontSize: DialogConstants.fontSizeMD,
-      ),
-      decoration: null,
-      cursorColor: AppColors.mutedGreen,
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        return CupertinoTextField(
+          controller: controller,
+          keyboardType: TextInputType.number,
+          placeholder: 'Quantity',
+          padding: EdgeInsets.symmetric(
+            horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+          ),
+          placeholderStyle: TextStyle(
+            color: AppColors.button.withValues(alpha: 0.5),
+            fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.md),
+          ),
+          style: TextStyle(
+            color: AppColors.button,
+            fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.md),
+          ),
+          decoration: null,
+          cursorColor: AppColors.mutedGreen,
+        );
+      },
     );
   }
 }
@@ -38,23 +43,39 @@ class IngredientNameField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: CupertinoColors.systemGrey6.withValues(alpha: 0.7),
-        borderRadius: BorderRadius.circular(DialogConstants.radiusSM),
-        border: Border.all(color: AppColors.button.withOpacity(0.12), width: 1),
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: DialogConstants.spacingSM,
-        vertical: DialogConstants.spacingSM,
-      ),
-      child: Text(
-        name,
-        style: TextStyle(
-          color: AppColors.button,
-          fontSize: DialogConstants.fontSizeMD,
-        ),
-      ),
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        return ResponsiveContainer(
+          padding: ResponsiveSpacing.sm,
+          child: CupertinoTextField(
+            controller: TextEditingController(text: name),
+            enabled: false,
+            padding: EdgeInsets.symmetric(
+              horizontal: ResponsiveUtils.spacing(
+                context,
+                ResponsiveSpacing.md,
+              ),
+              vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+            ),
+            style: TextStyle(
+              color: AppColors.button,
+              fontSize: ResponsiveUtils.fontSize(
+                context,
+                ResponsiveFontSize.md,
+              ),
+            ),
+            decoration: BoxDecoration(
+              color: CupertinoColors.systemGrey6.withValues(alpha: 0.7),
+              borderRadius: BorderRadius.circular(
+                ResponsiveUtils.borderRadius(
+                  context,
+                  ResponsiveBorderRadius.lg,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -66,30 +87,45 @@ class ControlledIngNameField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: CupertinoColors.white,
-        borderRadius: BorderRadius.circular(DialogConstants.radiusMD),
-        border: Border.all(color: AppColors.button.withOpacity(0.3)),
-      ),
-      child: CupertinoTextField(
-        controller: controller,
-        placeholder: 'Ingredient Name',
-        padding: const EdgeInsets.symmetric(
-          horizontal: DialogConstants.spacingSM,
-          vertical: DialogConstants.spacingSM,
-        ),
-        placeholderStyle: TextStyle(
-          color: AppColors.button.withOpacity(0.5),
-          fontSize: DialogConstants.fontSizeMD,
-        ),
-        style: const TextStyle(
-          color: AppColors.button,
-          fontSize: DialogConstants.fontSizeMD,
-        ),
-        decoration: null,
-        cursorColor: AppColors.mutedGreen,
-      ),
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        return Container(
+          decoration: BoxDecoration(
+            color: CupertinoColors.white,
+            borderRadius: BorderRadius.circular(
+              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.md),
+            ),
+            border: Border.all(color: AppColors.button.withValues(alpha: 0.3)),
+          ),
+          child: CupertinoTextField(
+            controller: controller,
+            placeholder: 'Ingredient Name',
+            padding: EdgeInsets.symmetric(
+              horizontal: ResponsiveUtils.spacing(
+                context,
+                ResponsiveSpacing.sm,
+              ),
+              vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            ),
+            placeholderStyle: TextStyle(
+              color: AppColors.button.withValues(alpha: 0.5),
+              fontSize: ResponsiveUtils.fontSize(
+                context,
+                ResponsiveFontSize.md,
+              ),
+            ),
+            style: TextStyle(
+              color: AppColors.button,
+              fontSize: ResponsiveUtils.fontSize(
+                context,
+                ResponsiveFontSize.md,
+              ),
+            ),
+            decoration: null,
+            cursorColor: AppColors.mutedGreen,
+          ),
+        );
+      },
     );
   }
 }

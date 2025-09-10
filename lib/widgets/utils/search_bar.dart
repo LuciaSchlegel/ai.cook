@@ -32,7 +32,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
       builder: (context, deviceType) {
         final searchBarRadius = ResponsiveUtils.borderRadius(
           context,
-          ResponsiveBorderRadius.xl,
+          ResponsiveBorderRadius.xxl,
         );
 
         return Row(
@@ -45,7 +45,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                   borderRadius: BorderRadius.circular(searchBarRadius),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.07),
+                      color: Colors.black.withValues(alpha: 0.07),
                       blurRadius: ResponsiveUtils.spacing(
                         context,
                         ResponsiveSpacing.md,
@@ -78,7 +78,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                       ResponsiveIcon(
                         Icons.search_rounded,
                         size: ResponsiveIconSize.md,
-                        color: AppColors.button.withOpacity(0.85),
+                        color: AppColors.button.withValues(alpha: 0.85),
                       ),
                       ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.xs),
                       Expanded(

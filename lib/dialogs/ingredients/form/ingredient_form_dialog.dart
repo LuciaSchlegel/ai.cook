@@ -11,7 +11,8 @@ import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/unit.dart';
 import 'package:provider/provider.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 
 class IngredientFormDialog extends StatefulWidget {
   final Ingredient? ingredient;
@@ -111,174 +112,219 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
     final resourceProvider = Provider.of<ResourceProvider>(context);
     final availableUnits = resourceProvider.units;
 
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Container(
-        padding: EdgeInsets.fromLTRB(
-          DialogConstants.adaptiveSpacing(context, DialogConstants.spacingMD),
-          DialogConstants.spacingSM,
-          DialogConstants.adaptiveSpacing(context, DialogConstants.spacingMD),
-          MediaQuery.of(context).viewInsets.bottom + DialogConstants.spacingMD,
-        ),
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(DialogConstants.radiusXL),
-          ),
-          boxShadow: DialogConstants.lightShadow,
-        ),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(DialogConstants.radiusXL),
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  width: 40,
-                  height: 4,
-                  margin: const EdgeInsets.only(
-                    bottom: DialogConstants.spacingMD,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.button.withOpacity(0.15), // softer
-                    borderRadius: BorderRadius.circular(
-                      DialogConstants.radiusSM,
-                    ),
-                  ),
-                ),
-                Text(
-                  widget.ingredient == null
-                      ? 'Add Ingredient'
-                      : 'Edit Ingredient',
-                  style: const TextStyle(
-                    fontSize: DialogConstants.fontSizeTitle,
-                    fontFamily: 'Casta',
-                    color: AppColors.button,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.2,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: DialogConstants.adaptiveSpacing(
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        return GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Container(
+            padding: EdgeInsets.fromLTRB(
+              ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+              ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+              ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+              MediaQuery.of(context).viewInsets.bottom +
+                  ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(
+                  ResponsiveUtils.borderRadius(
                     context,
-                    DialogConstants.spacingLG,
+                    ResponsiveBorderRadius.xl,
                   ),
                 ),
-                IngredientNameField(name: _nameController.text),
-                const SizedBox(height: DialogConstants.spacingMD),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: CupertinoColors.white,
-                          borderRadius: BorderRadius.circular(
-                            DialogConstants.radiusSM,
-                          ),
-                          border: Border.all(
-                            color: AppColors.button.withOpacity(
-                              0.12,
-                            ), // lighter border
-                            width: 1,
-                          ),
-                        ),
-                        child: QuantityField(controller: _quantityController),
-                      ),
-                    ),
-                    const SizedBox(width: DialogConstants.spacingSM),
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: CupertinoColors.white,
-                          borderRadius: BorderRadius.circular(
-                            DialogConstants.radiusSM,
-                          ),
-                          border: Border.all(
-                            color: AppColors.button.withOpacity(
-                              0.12,
-                            ), // lighter border
-                            width: 1,
-                          ),
-                        ),
-                        child: UnitSelectorButton(
-                          selectedUnit: _selectedUnit,
-                          units: availableUnits,
-                          onUnitSelected: (unit) {
-                            setState(() {
-                              _selectedUnit = unit;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: DialogConstants.adaptiveSpacing(
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.mutedGreen.withValues(alpha: 0.06),
+                  blurRadius: ResponsiveUtils.spacing(
                     context,
-                    DialogConstants.spacingXL,
+                    ResponsiveSpacing.sm,
                   ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                      DialogConstants.radiusMD,
-                    ),
+                  offset: Offset(
+                    0,
+                    ResponsiveUtils.spacing(context, ResponsiveSpacing.xxs),
                   ),
-                  child: FormActionButtons(
-                    isValid: _validateForm(),
-                    onDelete: widget.onDelete,
-                    isEditing:
-                        widget.ingredient != null ||
-                        widget.customIngredient != null,
-                    onCancel: () => Navigator.pop(context),
-                    onSave:
-                        () => IngredientFormUtils.handleSave(
-                          validateForm: _validateForm,
-                          onSave:
-                              () => IngredientFormUtils.handleSave(
-                                validateForm: _validateForm,
-                                onSave: () {
-                                  widget.onSave(
-                                    _nameController.text,
-                                    _selectedCategory,
-                                    _selectedTags.any(
-                                      (tag) => tag.name == 'vegan',
-                                    ),
-                                    _selectedTags.any(
-                                      (tag) => tag.name == 'vegetarian',
-                                    ),
-                                    _selectedTags.any(
-                                      (tag) => tag.name == 'gluten_free',
-                                    ),
-                                    _selectedTags.any(
-                                      (tag) => tag.name == 'lactose_free',
-                                    ),
-                                    double.parse(_quantityController.text),
-                                    _selectedUnit,
-                                  );
-                                },
-                                closeDialog: () => Navigator.pop(context),
-                              ),
-                          closeDialog: () => Navigator.pop(context),
-                        ),
-                  ),
-                ),
-                // Add safe area padding at bottom
-                SizedBox(
-                  height: DialogConstants.safeScrollBottomPadding(context),
+                  spreadRadius: 0,
                 ),
               ],
             ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(
+                  ResponsiveUtils.borderRadius(
+                    context,
+                    ResponsiveBorderRadius.xl,
+                  ),
+                ),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                      width: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.xxl,
+                      ),
+                      height: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.xxs,
+                      ),
+                      margin: EdgeInsets.only(
+                        bottom: ResponsiveUtils.spacing(
+                          context,
+                          ResponsiveSpacing.md,
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.button.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(
+                          ResponsiveUtils.borderRadius(
+                            context,
+                            ResponsiveBorderRadius.sm,
+                          ),
+                        ),
+                      ),
+                    ),
+                    ResponsiveText(
+                      widget.ingredient == null
+                          ? 'Add Ingredient'
+                          : 'Edit Ingredient',
+                      fontSize: ResponsiveFontSize.title,
+                      fontFamily: 'Casta',
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.button,
+                      textAlign: TextAlign.center,
+                    ),
+                    const ResponsiveSpacingWidget.vertical(
+                      ResponsiveSpacing.lg,
+                    ),
+                    IngredientNameField(name: _nameController.text),
+                    const ResponsiveSpacingWidget.vertical(
+                      ResponsiveSpacing.md,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ResponsiveContainer(
+                            backgroundColor: CupertinoColors.white,
+                            borderRadius: ResponsiveBorderRadius.sm,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: AppColors.button.withValues(
+                                    alpha: 0.12,
+                                  ),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  ResponsiveUtils.borderRadius(
+                                    context,
+                                    ResponsiveBorderRadius.sm,
+                                  ),
+                                ),
+                              ),
+                              child: QuantityField(
+                                controller: _quantityController,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const ResponsiveSpacingWidget.horizontal(
+                          ResponsiveSpacing.sm,
+                        ),
+                        Expanded(
+                          child: ResponsiveContainer(
+                            backgroundColor: CupertinoColors.white,
+                            borderRadius: ResponsiveBorderRadius.sm,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: AppColors.button.withValues(
+                                    alpha: 0.12,
+                                  ),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  ResponsiveUtils.borderRadius(
+                                    context,
+                                    ResponsiveBorderRadius.sm,
+                                  ),
+                                ),
+                              ),
+                              child: UnitSelectorButton(
+                                selectedUnit: _selectedUnit,
+                                units: availableUnits,
+                                onUnitSelected: (unit) {
+                                  setState(() {
+                                    _selectedUnit = unit;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const ResponsiveSpacingWidget.vertical(
+                      ResponsiveSpacing.xl,
+                    ),
+                    ResponsiveContainer(
+                      borderRadius: ResponsiveBorderRadius.md,
+                      child: FormActionButtons(
+                        isValid: _validateForm(),
+                        onDelete: widget.onDelete,
+                        isEditing:
+                            widget.ingredient != null ||
+                            widget.customIngredient != null,
+                        onCancel: () => Navigator.pop(context),
+                        onSave:
+                            () => IngredientFormUtils.handleSave(
+                              validateForm: _validateForm,
+                              onSave:
+                                  () => IngredientFormUtils.handleSave(
+                                    validateForm: _validateForm,
+                                    onSave: () {
+                                      widget.onSave(
+                                        _nameController.text,
+                                        _selectedCategory,
+                                        _selectedTags.any(
+                                          (tag) => tag.name == 'vegan',
+                                        ),
+                                        _selectedTags.any(
+                                          (tag) => tag.name == 'vegetarian',
+                                        ),
+                                        _selectedTags.any(
+                                          (tag) => tag.name == 'gluten_free',
+                                        ),
+                                        _selectedTags.any(
+                                          (tag) => tag.name == 'lactose_free',
+                                        ),
+                                        double.parse(_quantityController.text),
+                                        _selectedUnit,
+                                      );
+                                    },
+                                    closeDialog: () => Navigator.pop(context),
+                                  ),
+                              closeDialog: () => Navigator.pop(context),
+                            ),
+                      ),
+                    ),
+                    // Add safe area padding at bottom
+                    SizedBox(
+                      height: ResponsiveUtils.getScrollBottomPadding(context),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
