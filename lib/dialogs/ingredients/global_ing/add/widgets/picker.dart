@@ -3,6 +3,7 @@ import 'package:ai_cook_project/models/unit.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/utils/modal_utils.dart';
 import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -40,9 +41,9 @@ Future<(double, Unit)?> _showAsBottomSheet(
   List<Unit> units,
 ) {
   ('📱 Showing as bottom sheet for iPhone'); // Debug
-  return showCupertinoModalPopup<(double, Unit)?>(
+  return ModalUtils.showKeyboardAwareCupertinoModalPopup<(double, Unit)?>(
     context: context,
-    builder: (context) => QuantityUnitPicker(units: units),
+    child: QuantityUnitPicker(units: units),
   );
 }
 
@@ -64,9 +65,11 @@ Future<(double, Unit)?> _showAsPopup(BuildContext context, List<Unit> units) {
             return Center(
               child: ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: maxWidth),
-                child: QuantityUnitPicker(
-                  units: units,
-                  isPopup: true, // Tell the picker it's in popup mode
+                child: KeyboardAwareModalWrapper(
+                  child: QuantityUnitPicker(
+                    units: units,
+                    isPopup: true, // Tell the picker it's in popup mode
+                  ),
                 ),
               ),
             );
@@ -129,38 +132,52 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
 
     // Use different container approach for popup vs bottom sheet
     if (widget.isPopup) {
-      return Container(
-        padding: ResponsiveUtils.padding(context, ResponsiveSpacing.lg),
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(
-            ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.lg),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.button.withValues(alpha: 0.1),
-              blurRadius: 20,
-              offset: const Offset(0, 10),
+      return GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Container(
+          padding: ResponsiveUtils.padding(context, ResponsiveSpacing.lg),
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(
+              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.lg),
             ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: _buildContent(context, showDragHandle),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.button.withValues(alpha: 0.1),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: _buildContent(context, showDragHandle),
+            ),
+          ),
         ),
       );
     }
 
     // Bottom sheet mode (iPhone)
-    return ResponsiveContainer(
-      padding: ResponsiveSpacing.lg,
-      borderRadius: ResponsiveBorderRadius.xl,
-      backgroundColor: AppColors.white,
-      child: SafeArea(
-        top: false,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: _buildContent(context, showDragHandle),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: ResponsiveContainer(
+        padding: ResponsiveSpacing.lg,
+        borderRadius: ResponsiveBorderRadius.xl,
+        backgroundColor: AppColors.white,
+        child: SafeArea(
+          top: false,
+          child: SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: _buildContent(context, showDragHandle),
+            ),
+          ),
         ),
       ),
     );
@@ -355,6 +372,9 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
           ),
         ),
       ),
+
+      // Add bottom padding for keyboard safety
+      SizedBox(height: ResponsiveUtils.spacing(context, ResponsiveSpacing.md)),
     ];
   }
 }

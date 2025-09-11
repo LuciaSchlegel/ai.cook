@@ -3,9 +3,7 @@ import 'package:ai_cook_project/models/unit.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/utils/responsive_utils.dart';
-import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 
 class UnitSelectorButton extends StatelessWidget {
   final Unit selectedUnit;

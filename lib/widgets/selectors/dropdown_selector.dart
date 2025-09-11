@@ -33,13 +33,10 @@ class DropdownSelector extends StatelessWidget {
     // Early return if disabled or no items
     if (!isEnabled || items.isEmpty) return;
 
-    final overlayContext =
-        Navigator.of(context, rootNavigator: true).overlay!.context;
-
     if (confirmOnDone) {
       // Use GenericPickerModal with confirm-on-done behavior
       final selectedValue = await showGenericPicker<String>(
-        context: overlayContext,
+        context: context,
         items: items,
         selectedItem: value,
         getDisplayText: (item) => item,
@@ -56,7 +53,7 @@ class DropdownSelector extends StatelessWidget {
     } else {
       // Use GenericPickerModal with immediate behavior (backward compatibility)
       await showCupertinoModalPopup<void>(
-        context: overlayContext,
+        context: context,
         builder:
             (context) => GenericPickerModal<String>(
               items: items,

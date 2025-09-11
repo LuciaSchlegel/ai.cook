@@ -100,6 +100,8 @@ class CustomIngLayout extends StatelessWidget {
                       : null, // Add shadow for popup
             ),
             child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -305,7 +307,11 @@ class CustomIngLayout extends StatelessWidget {
                     isFormValid: isFormValid,
                   ),
                   SizedBox(
-                    height: ResponsiveUtils.getScrollBottomPadding(context),
+                    height:
+                        ResponsiveUtils.getScrollBottomPadding(context) +
+                        (isPopup
+                            ? 0
+                            : MediaQuery.of(context).viewInsets.bottom * 0.1),
                   ),
                 ],
               ),

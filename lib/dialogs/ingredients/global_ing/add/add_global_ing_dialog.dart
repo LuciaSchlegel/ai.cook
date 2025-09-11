@@ -91,7 +91,7 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                   ),
                   ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
                   GreyCardChips(
-                    items: ['All', ...categories.map((c) => c.name).toList()],
+                    items: ['All', ...categories.map((c) => c.name)],
                     selectedItems: [selectedCategory],
                     onSelected: (items) {
                       // For category filtering, we want single selection behavior

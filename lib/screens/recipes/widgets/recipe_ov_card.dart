@@ -4,6 +4,7 @@ import 'package:ai_cook_project/screens/recipes/widgets/recipe_glance_card.dart'
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_header.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_tags.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/modal_utils.dart';
 import 'package:ai_cook_project/widgets/utils/swipe.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -62,12 +63,10 @@ class _RecipeOverviewCardState extends State<RecipeOverviewCard>
   }
 
   void _showExpandedDialog() {
-    showModalBottomSheet(
+    ModalUtils.showKeyboardAwareModalBottomSheet(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
       transitionAnimationController: _animationController,
-      builder: (context) => RecipeExpandedDialog(recipe: widget.recipe),
+      child: RecipeExpandedDialog(recipe: widget.recipe),
     );
   }
 

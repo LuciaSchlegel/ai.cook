@@ -194,6 +194,9 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                         ),
                       ),
               child: SingleChildScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                physics: const BouncingScrollPhysics(),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -344,9 +347,13 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                             ),
                       ),
                     ),
-                    // Add safe area padding at bottom
+                    // Add safe area padding at bottom + keyboard padding
                     SizedBox(
-                      height: ResponsiveUtils.getScrollBottomPadding(context),
+                      height:
+                          ResponsiveUtils.getScrollBottomPadding(context) +
+                          (widget.isPopup
+                              ? 0
+                              : MediaQuery.of(context).viewInsets.bottom * 0.1),
                     ),
                   ],
                 ),

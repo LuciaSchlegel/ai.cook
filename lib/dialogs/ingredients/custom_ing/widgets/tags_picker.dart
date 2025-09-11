@@ -5,6 +5,7 @@ import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class TagsPicker extends StatelessWidget {
@@ -103,58 +104,93 @@ class TagsPicker extends StatelessWidget {
                         label:
                             'Dietary restriction $tag, ${isSelected ? "selected" : "not selected"}',
                         selected: isSelected,
-                        child: FilterChip(
-                          label: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              _getIcon(tag.name),
-                              SizedBox(
-                                width: ResponsiveUtils.spacing(
-                                  context,
-                                  ResponsiveSpacing.xs,
-                                ),
-                              ),
-                              ResponsiveText(
-                                TextUtils.capitalizeFirstLetter(tag.name),
-                                fontSize: ResponsiveFontSize.sm,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.white,
-                              ),
-                            ],
-                          ),
-                          selected: isSelected,
-                          onSelected: (_) => onTagsSelected(tag.name),
-                          backgroundColor: AppColors.mutedGreen.withValues(
-                            alpha: 0.6,
-                          ),
-                          selectedColor: AppColors.background.withValues(
-                            alpha: 0.8,
-                          ),
-                          checkmarkColor: AppColors.white,
-                          labelStyle: TextStyle(
-                            color: AppColors.white,
-                            fontWeight: FontWeight.w700,
-                            decoration: TextDecoration.none,
-                          ),
-                          shape: StadiumBorder(
-                            side: BorderSide(
+                        child: GestureDetector(
+                          onTap: () {
+                            HapticFeedback.lightImpact();
+                            onTagsSelected(tag.name);
+                          },
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.easeInOut,
+                            decoration: BoxDecoration(
                               color:
                                   isSelected
-                                      ? AppColors.mutedGreen.withValues(
-                                        alpha: 0.9,
+                                      ? AppColors.background.withValues(
+                                        alpha: 0.8,
                                       )
-                                      : CupertinoColors.systemGrey6,
-                              width: 1,
+                                      : AppColors.mutedGreen.withValues(
+                                        alpha: 0.6,
+                                      ),
+                              borderRadius: BorderRadius.circular(
+                                ResponsiveUtils.borderRadius(
+                                  context,
+                                  ResponsiveBorderRadius.xxl,
+                                ),
+                              ),
+                              border: Border.all(
+                                color:
+                                    isSelected
+                                        ? AppColors.mutedGreen.withValues(
+                                          alpha: 0.9,
+                                        )
+                                        : CupertinoColors.systemGrey6,
+                                width: 1,
+                              ),
+                              // Add subtle shadow for depth
+                              boxShadow:
+                                  isSelected
+                                      ? [
+                                        BoxShadow(
+                                          color: AppColors.mutedGreen
+                                              .withValues(alpha: 0.3),
+                                          blurRadius: 4,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ]
+                                      : null,
                             ),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: ResponsiveUtils.spacing(
-                              context,
-                              ResponsiveSpacing.xs,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: ResponsiveUtils.spacing(
+                                context,
+                                ResponsiveSpacing.sm,
+                              ),
+                              vertical: ResponsiveUtils.spacing(
+                                context,
+                                ResponsiveSpacing.xs,
+                              ),
                             ),
-                            vertical: ResponsiveUtils.spacing(
-                              context,
-                              ResponsiveSpacing.sm,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                _getIcon(tag.name),
+                                SizedBox(
+                                  width: ResponsiveUtils.spacing(
+                                    context,
+                                    ResponsiveSpacing.xs,
+                                  ),
+                                ),
+                                ResponsiveText(
+                                  TextUtils.capitalizeFirstLetter(tag.name),
+                                  fontSize: ResponsiveFontSize.sm,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.white,
+                                ),
+                                // Add checkmark for selected state
+                                if (isSelected) ...[
+                                  SizedBox(
+                                    width: ResponsiveUtils.spacing(
+                                      context,
+                                      ResponsiveSpacing.xs,
+                                    ),
+                                  ),
+                                  ResponsiveIcon(
+                                    CupertinoIcons.checkmark,
+                                    null,
+                                    size: ResponsiveIconSize.xs,
+                                    color: AppColors.white,
+                                  ),
+                                ],
+                              ],
                             ),
                           ),
                         ),

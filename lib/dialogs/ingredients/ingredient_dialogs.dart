@@ -8,6 +8,7 @@ import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/utils/modal_utils.dart';
 import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:ai_cook_project/dialogs/ingredients/global_ing/add/add_global_ing_dialog.dart';
 
@@ -48,13 +49,10 @@ Future<void> showResponsiveIngredientDialog({
 
   if (deviceType == DeviceType.iPhone) {
     ('📱 Showing as bottom sheet for iPhone'); // Debug
-    return showModalBottomSheet(
+    return ModalUtils.showKeyboardAwareModalBottomSheet(
       context: context,
-      backgroundColor: Colors.transparent,
-      useSafeArea: true,
-      isScrollControlled: true,
       enableDrag: false,
-      builder: (context) => dialogContent,
+      child: dialogContent,
     );
   } else {
     ('📱 Showing as popup dialog for iPad'); // Debug
@@ -144,24 +142,20 @@ class IngredientDialogs {
       listen: false,
     );
 
-    return showModalBottomSheet(
+    return ModalUtils.showKeyboardAwareModalBottomSheet(
       context: context,
-      backgroundColor: Colors.transparent,
-      useSafeArea: true,
-      isScrollControlled: true,
       enableDrag: false,
-      builder:
-          (context) => PopScope(
-            canPop: true,
-            child: buildIngredientDialog(
-              userIng: userIng,
-              onDelete: onDelete,
-              context: context,
-              categories: categories,
-              ingredientsProvider: ingredientsProvider,
-              onSave: onSave,
-            ),
-          ),
+      child: PopScope(
+        canPop: true,
+        child: buildIngredientDialog(
+          userIng: userIng,
+          onDelete: onDelete,
+          context: context,
+          categories: categories,
+          ingredientsProvider: ingredientsProvider,
+          onSave: onSave,
+        ),
+      ),
     );
   }
 
