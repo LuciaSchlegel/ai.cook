@@ -27,6 +27,7 @@ class CustomIngFormDialog extends StatefulWidget {
   )
   onSave;
   final Function()? onDelete;
+  final bool isPopup; // New parameter to detect popup mode
 
   const CustomIngFormDialog({
     super.key,
@@ -37,6 +38,7 @@ class CustomIngFormDialog extends StatefulWidget {
     required this.categories,
     required this.onSave,
     this.onDelete,
+    this.isPopup = false, // Default to false for backward compatibility
   });
 
   @override
@@ -172,6 +174,7 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
       onDelete: widget.onDelete,
       isFormValid: _validateForm(),
       resourceProvider: resourceProvider,
+      isPopup: widget.isPopup, // Pass popup mode
     );
   }
 }

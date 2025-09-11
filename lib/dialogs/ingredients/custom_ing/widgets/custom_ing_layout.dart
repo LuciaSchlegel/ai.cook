@@ -30,6 +30,8 @@ class CustomIngLayout extends StatelessWidget {
   final bool isFormValid;
   final VoidCallback onSave;
   final ResourceProvider resourceProvider;
+  final bool isPopup; // New parameter to detect popup mode
+
   const CustomIngLayout({
     super.key,
     required this.isEditing,
@@ -48,11 +50,13 @@ class CustomIngLayout extends StatelessWidget {
     this.onDelete,
     required this.isFormValid,
     required this.resourceProvider,
+    this.isPopup = false, // Default to false for backward compatibility
   });
 
   @override
   Widget build(BuildContext context) {
     final dietaryFlags = resourceProvider.dietaryTags;
+    final showDragHandle = !isPopup; // Only show drag handle for bottom sheet
 
     return ResponsiveBuilder(
       builder: (context, deviceType) {
@@ -66,45 +70,67 @@ class CustomIngLayout extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               color: AppColors.white,
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(
-                  ResponsiveUtils.borderRadius(
-                    context,
-                    ResponsiveBorderRadius.xl,
-                  ),
-                ),
-              ),
+              borderRadius:
+                  isPopup
+                      ? BorderRadius.circular(
+                        // All corners rounded for popup
+                        ResponsiveUtils.borderRadius(
+                          context,
+                          ResponsiveBorderRadius.lg,
+                        ),
+                      )
+                      : BorderRadius.vertical(
+                        // Only top rounded for bottom sheet
+                        top: Radius.circular(
+                          ResponsiveUtils.borderRadius(
+                            context,
+                            ResponsiveBorderRadius.xl,
+                          ),
+                        ),
+                      ),
+              boxShadow:
+                  isPopup
+                      ? [
+                        BoxShadow(
+                          color: AppColors.button.withValues(alpha: 0.1),
+                          blurRadius: 20,
+                          offset: const Offset(0, 10),
+                        ),
+                      ]
+                      : null, // Add shadow for popup
             ),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
-                    width: ResponsiveUtils.spacing(
-                      context,
-                      ResponsiveSpacing.lg,
-                    ),
-                    height: ResponsiveUtils.spacing(
-                      context,
-                      ResponsiveSpacing.xxs,
-                    ),
-                    margin: EdgeInsets.only(
-                      bottom: ResponsiveUtils.spacing(
+                  // Drag handle (only for bottom sheet)
+                  if (showDragHandle)
+                    Container(
+                      width: ResponsiveUtils.spacing(
                         context,
                         ResponsiveSpacing.lg,
                       ),
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.button.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(
-                        ResponsiveUtils.borderRadius(
+                      height: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.xxs,
+                      ),
+                      margin: EdgeInsets.only(
+                        bottom: ResponsiveUtils.spacing(
                           context,
-                          ResponsiveBorderRadius.sm,
+                          ResponsiveSpacing.lg,
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.button.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(
+                          ResponsiveUtils.borderRadius(
+                            context,
+                            ResponsiveBorderRadius.sm,
+                          ),
                         ),
                       ),
                     ),
-                  ),
                   ResponsiveText(
                     isEditing
                         ? 'Edit Custom Ingredient'

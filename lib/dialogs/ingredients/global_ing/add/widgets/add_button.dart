@@ -27,7 +27,7 @@ class AddCustomIngredientButton extends StatelessWidget {
 
     return TextButton(
       onPressed: () {
-        IngredientDialogs().showIngredientDialog(
+        showResponsiveIngredientDialog(
           context: context,
           categories: resourceProvider.categories,
           ingredients:

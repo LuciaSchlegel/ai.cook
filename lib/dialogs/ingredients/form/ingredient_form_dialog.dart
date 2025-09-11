@@ -32,6 +32,7 @@ class IngredientFormDialog extends StatefulWidget {
   )
   onSave;
   final Function()? onDelete;
+  final bool isPopup; // New parameter to detect popup mode
 
   const IngredientFormDialog({
     super.key,
@@ -42,6 +43,7 @@ class IngredientFormDialog extends StatefulWidget {
     required this.categories,
     required this.onSave,
     this.onDelete,
+    this.isPopup = false, // Default to false for backward compatibility
   });
 
   @override
@@ -112,6 +114,8 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
   Widget build(BuildContext context) {
     final resourceProvider = Provider.of<ResourceProvider>(context);
     final availableUnits = resourceProvider.units;
+    final showDragHandle =
+        !widget.isPopup; // Only show drag handle for bottom sheet
 
     return ResponsiveBuilder(
       builder: (context, deviceType) {
@@ -125,68 +129,102 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
             ),
             decoration: BoxDecoration(
               color: AppColors.white,
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(
-                  ResponsiveUtils.borderRadius(
-                    context,
-                    ResponsiveBorderRadius.xl,
-                  ),
-                ),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.mutedGreen.withValues(alpha: 0.06),
-                  blurRadius: ResponsiveUtils.spacing(
-                    context,
-                    ResponsiveSpacing.sm,
-                  ),
-                  offset: Offset(
-                    0,
-                    ResponsiveUtils.spacing(context, ResponsiveSpacing.xxs),
-                  ),
-                  spreadRadius: 0,
-                ),
-              ],
+              borderRadius:
+                  widget.isPopup
+                      ? BorderRadius.circular(
+                        // All corners rounded for popup
+                        ResponsiveUtils.borderRadius(
+                          context,
+                          ResponsiveBorderRadius.lg,
+                        ),
+                      )
+                      : BorderRadius.vertical(
+                        // Only top rounded for bottom sheet
+                        top: Radius.circular(
+                          ResponsiveUtils.borderRadius(
+                            context,
+                            ResponsiveBorderRadius.xl,
+                          ),
+                        ),
+                      ),
+              boxShadow:
+                  widget.isPopup
+                      ? [
+                        BoxShadow(
+                          color: AppColors.button.withValues(alpha: 0.1),
+                          blurRadius: 20,
+                          offset: const Offset(0, 10),
+                        ),
+                      ]
+                      : [
+                        BoxShadow(
+                          color: AppColors.mutedGreen.withValues(alpha: 0.06),
+                          blurRadius: ResponsiveUtils.spacing(
+                            context,
+                            ResponsiveSpacing.sm,
+                          ),
+                          offset: Offset(
+                            0,
+                            ResponsiveUtils.spacing(
+                              context,
+                              ResponsiveSpacing.xxs,
+                            ),
+                          ),
+                          spreadRadius: 0,
+                        ),
+                      ],
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(
-                  ResponsiveUtils.borderRadius(
-                    context,
-                    ResponsiveBorderRadius.xl,
-                  ),
-                ),
-              ),
+              borderRadius:
+                  widget.isPopup
+                      ? BorderRadius.circular(
+                        // All corners rounded for popup
+                        ResponsiveUtils.borderRadius(
+                          context,
+                          ResponsiveBorderRadius.lg,
+                        ),
+                      )
+                      : BorderRadius.vertical(
+                        // Only top rounded for bottom sheet
+                        top: Radius.circular(
+                          ResponsiveUtils.borderRadius(
+                            context,
+                            ResponsiveBorderRadius.xl,
+                          ),
+                        ),
+                      ),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Container(
-                      width: ResponsiveUtils.spacing(
-                        context,
-                        ResponsiveSpacing.xxl,
-                      ),
-                      height: ResponsiveUtils.spacing(
-                        context,
-                        ResponsiveSpacing.xxs,
-                      ),
-                      margin: EdgeInsets.only(
-                        bottom: ResponsiveUtils.spacing(
+                    // Drag handle (only for bottom sheet)
+                    if (showDragHandle)
+                      Container(
+                        width: ResponsiveUtils.spacing(
                           context,
-                          ResponsiveSpacing.lg,
+                          ResponsiveSpacing.xxl,
                         ),
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.button.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(
-                          ResponsiveUtils.borderRadius(
+                        height: ResponsiveUtils.spacing(
+                          context,
+                          ResponsiveSpacing.xxs,
+                        ),
+                        margin: EdgeInsets.only(
+                          bottom: ResponsiveUtils.spacing(
                             context,
-                            ResponsiveBorderRadius.sm,
+                            ResponsiveSpacing.lg,
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.button.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(
+                            ResponsiveUtils.borderRadius(
+                              context,
+                              ResponsiveBorderRadius.sm,
+                            ),
                           ),
                         ),
                       ),
-                    ),
                     ResponsiveText(
                       widget.ingredient == null
                           ? 'Add Ingredient'

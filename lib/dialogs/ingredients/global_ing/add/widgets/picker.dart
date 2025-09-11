@@ -19,7 +19,7 @@ import 'package:flutter/services.dart';
 /// );
 /// if (result != null) {
 ///   final (quantity, unit) = result;
-///   print('Selected: $quantity ${unit.name}');
+///   ('Selected: $quantity ${unit.name}');
 /// }
 /// ```
 Future<(double, Unit)?> showQuantityUnitPicker({
@@ -27,7 +27,7 @@ Future<(double, Unit)?> showQuantityUnitPicker({
   required List<Unit> units,
 }) {
   final deviceType = ResponsiveUtils.getDeviceType(context);
-  print('🔍 Device type detected: $deviceType'); // Debug print
+  ('🔍 Device type detected: $deviceType'); // Debug
 
   return deviceType == DeviceType.iPhone
       ? _showAsBottomSheet(context, units)
@@ -39,7 +39,7 @@ Future<(double, Unit)?> _showAsBottomSheet(
   BuildContext context,
   List<Unit> units,
 ) {
-  print('📱 Showing as bottom sheet for iPhone'); // Debug print
+  ('📱 Showing as bottom sheet for iPhone'); // Debug
   return showCupertinoModalPopup<(double, Unit)?>(
     context: context,
     builder: (context) => QuantityUnitPicker(units: units),
@@ -48,7 +48,7 @@ Future<(double, Unit)?> _showAsBottomSheet(
 
 /// Shows picker as centered popup (iPad)
 Future<(double, Unit)?> _showAsPopup(BuildContext context, List<Unit> units) {
-  print('📱 Showing as popup dialog for iPad'); // Debug print
+  ('📱 Showing as popup dialog for iPad'); // Debug
   return showCupertinoDialog<(double, Unit)?>(
     context: context,
     barrierDismissible: true,

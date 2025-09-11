@@ -16,6 +16,7 @@ Widget buildIngredientDialog({
   UserIng? userIng,
   required Future<void> Function(UserIng) onSave,
   VoidCallback? onDelete,
+  bool isPopup = false, // New parameter for popup mode
 }) {
   final unitFallback = Unit(
     id: -1,
@@ -32,6 +33,7 @@ Widget buildIngredientDialog({
       unit: userIng?.unit ?? unitFallback,
       categories: categories,
       onDelete: userIng != null ? onDelete : null,
+      isPopup: isPopup, // Pass popup mode
       onSave: (
         name,
         category,
@@ -93,6 +95,7 @@ Widget buildIngredientDialog({
       unit: userIng.unit ?? unitFallback,
       categories: categories,
       onDelete: onDelete,
+      isPopup: isPopup, // Pass popup mode
       onSave: (
         name,
         category,

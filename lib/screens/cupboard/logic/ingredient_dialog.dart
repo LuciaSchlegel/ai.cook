@@ -32,8 +32,7 @@ Future<void> showIngredientDialog({
     userIng = updated;
   }
 
-  final dialogs = IngredientDialogs();
-  await dialogs.showIngredientDialog(
+  await showResponsiveIngredientDialog(
     context: context,
     categories: resourceProvider.categories,
     ingredients:
