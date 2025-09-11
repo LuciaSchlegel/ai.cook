@@ -56,8 +56,10 @@ class IngredientListView extends StatelessWidget {
     );
   }
 
-  List<Widget> _getDietaryIcons(UserIng userIng, BuildContext context) {
+  List<Widget> getDietaryIcons(UserIng userIng, BuildContext context) {
     final icons = <Widget>[];
+    final wheatSvgIcon = SvgAssetLoader('assets/icons/grains.svg');
+    final lacFreeSvgIcon = SvgAssetLoader('assets/icons/lac-free.svg');
 
     // Unified approach using tag-based logic for both ingredient types
     bool isVegan = false;
@@ -87,7 +89,8 @@ class IngredientListView extends StatelessWidget {
     if (isVegan) {
       icons.add(
         ResponsiveIcon(
-          Icons.eco_outlined,
+          Icons.cruelty_free_outlined,
+          null,
           size: ResponsiveIconSize.xs,
           color: AppColors.mutedGreen,
         ),
@@ -96,7 +99,8 @@ class IngredientListView extends StatelessWidget {
     if (isVegetarian && !isVegan) {
       icons.add(
         ResponsiveIcon(
-          Icons.local_dining_outlined,
+          Icons.eco_outlined,
+          null,
           size: ResponsiveIconSize.xs,
           color: AppColors.mutedGreen,
         ),
@@ -105,7 +109,8 @@ class IngredientListView extends StatelessWidget {
     if (isGlutenFree) {
       icons.add(
         ResponsiveIcon(
-          Icons.no_food_outlined,
+          null,
+          wheatSvgIcon,
           size: ResponsiveIconSize.xs,
           color: AppColors.mutedGreen,
         ),
@@ -114,7 +119,8 @@ class IngredientListView extends StatelessWidget {
     if (isLactoseFree) {
       icons.add(
         ResponsiveIcon(
-          Icons.block_outlined,
+          null,
+          lacFreeSvgIcon,
           size: ResponsiveIconSize.xs,
           color: AppColors.mutedGreen,
         ),
@@ -245,7 +251,7 @@ class IngredientListView extends StatelessWidget {
                                   ),
                                 ),
                                 // Dietary icons
-                                if (_getDietaryIcons(
+                                if (getDietaryIcons(
                                   userIng,
                                   context,
                                 ).isNotEmpty)
@@ -260,7 +266,7 @@ class IngredientListView extends StatelessWidget {
                                     ),
                                     child: Row(
                                       children:
-                                          _getDietaryIcons(userIng, context)
+                                          getDietaryIcons(userIng, context)
                                               .map(
                                                 (icon) => Padding(
                                                   padding: EdgeInsets.only(
@@ -289,6 +295,7 @@ class IngredientListView extends StatelessWidget {
                           ),
                           ResponsiveIcon(
                             Icons.arrow_forward_ios,
+                            null,
                             color: AppColors.mutedGreen.withValues(alpha: 0.4),
                             size: ResponsiveIconSize.md,
                           ),

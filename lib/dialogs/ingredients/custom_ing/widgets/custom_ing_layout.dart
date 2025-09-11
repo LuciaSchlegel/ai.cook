@@ -7,10 +7,11 @@ import 'package:ai_cook_project/models/unit.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/utils/text_utils.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ai_cook_project/dialogs/ingredients/form/widgets/fields.dart'
     as custom_ing_fields;
-import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 
 class CustomIngLayout extends StatelessWidget {
   final bool isEditing;
@@ -53,210 +54,233 @@ class CustomIngLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final dietaryFlags = resourceProvider.dietaryTags;
 
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: AnimatedPadding(
-        padding: EdgeInsets.only(
-          bottom: DialogConstants.adaptiveSpacing(
-            context,
-            MediaQuery.of(context).viewInsets.bottom,
-          ),
-        ),
-        duration: const Duration(milliseconds: 150),
-        curve: Curves.easeOut,
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: DialogConstants.spacingMD,
-            vertical: DialogConstants.spacingMD,
-          ),
-          decoration: BoxDecoration(
-            color: AppColors.white,
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(DialogConstants.radiusMD),
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        return GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Container(
+            padding: EdgeInsets.all(
+              ResponsiveUtils.spacing(context, ResponsiveSpacing.lg),
             ),
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  width: 20,
-                  height: 2,
-                  margin: const EdgeInsets.only(
-                    bottom: DialogConstants.spacingMD,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.button.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(
-                      DialogConstants.radiusSM,
-                    ),
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(
+                  ResponsiveUtils.borderRadius(
+                    context,
+                    ResponsiveBorderRadius.xl,
                   ),
                 ),
-                Text(
-                  isEditing
-                      ? 'Edit Custom Ingredient'
-                      : 'Add Custom Ingredient',
-                  style: const TextStyle(
-                    fontSize: DialogConstants.fontSizeTitle,
+              ),
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    width: ResponsiveUtils.spacing(
+                      context,
+                      ResponsiveSpacing.lg,
+                    ),
+                    height: ResponsiveUtils.spacing(
+                      context,
+                      ResponsiveSpacing.xxs,
+                    ),
+                    margin: EdgeInsets.only(
+                      bottom: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.lg,
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.button.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(
+                        ResponsiveUtils.borderRadius(
+                          context,
+                          ResponsiveBorderRadius.sm,
+                        ),
+                      ),
+                    ),
+                  ),
+                  ResponsiveText(
+                    isEditing
+                        ? 'Edit Custom Ingredient'
+                        : 'Add Custom Ingredient',
+                    fontSize: ResponsiveFontSize.title,
                     fontFamily: 'Casta',
                     color: AppColors.button,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.2,
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: DialogConstants.spacingMD),
-                custom_ing_fields.ControlledIngNameField(
-                  controller: nameController,
-                ),
-                const SizedBox(height: DialogConstants.spacingSM),
-                Container(
-                  decoration: BoxDecoration(
-                    color: CupertinoColors.white,
-                    borderRadius: BorderRadius.circular(
-                      DialogConstants.radiusMD,
-                    ),
-                    border: Border.all(
-                      color: AppColors.button.withOpacity(0.3),
-                    ),
+                  const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
+                  custom_ing_fields.ControlledIngNameField(
+                    controller: nameController,
                   ),
-                  child: CupertinoButton(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: DialogConstants.spacingSM,
-                      vertical: DialogConstants.spacingSM,
-                    ),
-                    onPressed: () {
-                      showCupertinoModalPopup(
-                        context: context,
-                        builder:
-                            (BuildContext context) => CategoryPickerModal(
-                              categories: categories,
-                              selectedCategory: selectedCategory,
-                              onSelected: onCategoryChanged,
-                            ),
-                      );
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          selectedCategory.name,
-                          style: const TextStyle(
-                            color: AppColors.button,
-                            fontSize: DialogConstants.fontSizeMD,
-                          ),
-                        ),
-                        const Icon(
-                          CupertinoIcons.chevron_down,
-                          color: AppColors.button,
-                          size: DialogConstants.iconSizeMD,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: DialogConstants.spacingSM),
-                TagsPicker(
-                  tags: dietaryFlags,
-                  selectedTags:
-                      dietaryFlags
-                          .where((tag) => selectedTags.contains(tag.name))
-                          .toList(),
-                  onTagsSelected: (String tagName) {
-                    onTagToggle(tagName);
-                  },
-                ),
-                const SizedBox(height: DialogConstants.spacingSM),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: CupertinoColors.white,
-                          borderRadius: BorderRadius.circular(
-                            DialogConstants.radiusSM,
-                          ),
-                          border: Border.all(
-                            color: AppColors.button.withOpacity(0.3),
-                          ),
-                        ),
-                        child: custom_ing_fields.QuantityField(
-                          controller: quantityController,
+                  const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: AppColors.mutedGreen.withValues(alpha: 0.7),
+                        width: 0.5,
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        ResponsiveUtils.borderRadius(
+                          context,
+                          ResponsiveBorderRadius.md,
                         ),
                       ),
                     ),
-                    const SizedBox(width: DialogConstants.spacingSM),
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: CupertinoColors.white,
-                          borderRadius: BorderRadius.circular(
-                            DialogConstants.radiusSM,
+                    child: CupertinoButton(
+                      sizeStyle: CupertinoButtonSize.large,
+                      autofocus: false,
+                      padding: ResponsiveUtils.padding(
+                        context,
+                        ResponsiveSpacing.sm,
+                      ),
+                      onPressed: () {
+                        showCupertinoModalPopup(
+                          context: context,
+                          builder:
+                              (BuildContext context) => CategoryPickerModal(
+                                categories: categories,
+                                selectedCategory: selectedCategory,
+                                onSelected: onCategoryChanged,
+                              ),
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ResponsiveText(
+                            selectedCategory.name,
+                            fontSize: ResponsiveFontSize.md,
+                            color: AppColors.button,
                           ),
-                          border: Border.all(
-                            color: AppColors.button.withOpacity(0.3),
+                          ResponsiveIcon(
+                            CupertinoIcons.chevron_down,
+                            null,
+                            color: AppColors.button,
+                            size: ResponsiveIconSize.md,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
+                  TagsPicker(
+                    tags: dietaryFlags,
+                    selectedTags:
+                        dietaryFlags
+                            .where((tag) => selectedTags.contains(tag.name))
+                            .toList(),
+                    onTagsSelected: (String tagName) {
+                      onTagToggle(tagName);
+                    },
+                  ),
+                  const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: CupertinoColors.white,
+                            borderRadius: BorderRadius.circular(
+                              ResponsiveUtils.borderRadius(
+                                context,
+                                ResponsiveBorderRadius.sm,
+                              ),
+                            ),
+                            border: Border.all(
+                              color: AppColors.button.withValues(alpha: 0.3),
+                            ),
+                          ),
+                          child: custom_ing_fields.QuantityField(
+                            controller: quantityController,
                           ),
                         ),
-                        child: CupertinoButton(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: DialogConstants.spacingSM,
-                            vertical: DialogConstants.spacingSM,
+                      ),
+                      const ResponsiveSpacingWidget.horizontal(
+                        ResponsiveSpacing.md,
+                      ),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: CupertinoColors.white,
+                            borderRadius: BorderRadius.circular(
+                              ResponsiveUtils.borderRadius(
+                                context,
+                                ResponsiveBorderRadius.sm,
+                              ),
+                            ),
+                            border: Border.all(
+                              color: AppColors.button.withValues(alpha: 0.3),
+                            ),
                           ),
-                          onPressed: () {
-                            showCupertinoModalPopup(
-                              context: context,
-                              builder:
-                                  (context) => UnitPickerModal(
-                                    selectedUnit: selectedUnit,
-                                    units: availableUnits,
-                                    onSelected: onUnitChanged,
+                          child: CupertinoButton(
+                            padding: ResponsiveUtils.padding(
+                              context,
+                              ResponsiveSpacing.sm,
+                            ),
+                            onPressed: () {
+                              showCupertinoModalPopup(
+                                context: context,
+                                builder:
+                                    (context) => UnitPickerModal(
+                                      selectedUnit: selectedUnit,
+                                      units: availableUnits,
+                                      onSelected: onUnitChanged,
+                                    ),
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ResponsiveText(
+                                  TextUtils.capitalizeFirstLetter(
+                                    selectedUnit.name,
                                   ),
-                            );
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                TextUtils.capitalizeFirstLetter(
-                                  selectedUnit.name,
-                                ),
-                                style: TextStyle(
+                                  fontSize: ResponsiveFontSize.md,
                                   color:
                                       selectedUnit.name == 'Select unit'
-                                          ? AppColors.button.withOpacity(0.5)
+                                          ? AppColors.button.withValues(
+                                            alpha: 0.5,
+                                          )
                                           : AppColors.button,
-                                  fontSize: DialogConstants.fontSizeMD,
                                 ),
-                              ),
-                              const Icon(
-                                CupertinoIcons.chevron_down,
-                                color: AppColors.button,
-                                size: DialogConstants.iconSizeMD,
-                              ),
-                            ],
+                                ResponsiveIcon(
+                                  CupertinoIcons.chevron_down,
+                                  null,
+                                  color: AppColors.button,
+                                  size: ResponsiveIconSize.md,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: DialogConstants.spacingLG),
-                SaveButtonsRow(
-                  isEditing: isEditing,
-                  onDelete: onDelete,
-                  onCancel: onCancel,
-                  onSave: onSave,
-                  isFormValid: isFormValid,
-                ),
-                const SizedBox(height: DialogConstants.spacingSM),
-              ],
+                    ],
+                  ),
+                  const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.xl),
+                  SaveButtonsRow(
+                    isEditing: isEditing,
+                    onDelete: onDelete,
+                    onCancel: onCancel,
+                    onSave: onSave,
+                    isFormValid: isFormValid,
+                  ),
+                  SizedBox(
+                    height: ResponsiveUtils.getScrollBottomPadding(context),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

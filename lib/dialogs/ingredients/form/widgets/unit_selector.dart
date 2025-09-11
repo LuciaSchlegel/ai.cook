@@ -4,6 +4,8 @@ import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 
 class UnitSelectorButton extends StatelessWidget {
   final Unit selectedUnit;
@@ -20,9 +22,10 @@ class UnitSelectorButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoButton(
-      padding: const EdgeInsets.symmetric(
-        horizontal: DialogConstants.spacingSM,
-        vertical: DialogConstants.spacingSM,
+      autofocus: false,
+      padding: EdgeInsets.symmetric(
+        horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.lg),
+        vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
       ),
       onPressed: () {
         showCupertinoModalPopup(
@@ -45,13 +48,16 @@ class UnitSelectorButton extends StatelessWidget {
                   selectedUnit.name == 'Select unit'
                       ? AppColors.button.withValues(alpha: 0.5)
                       : AppColors.button,
-              fontSize: DialogConstants.fontSizeMD,
+              fontSize: ResponsiveUtils.fontSize(
+                context,
+                ResponsiveFontSize.md,
+              ),
             ),
           ),
-          const Icon(
+          Icon(
             CupertinoIcons.chevron_down,
             color: AppColors.button,
-            size: DialogConstants.iconSizeMD,
+            size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.sm),
           ),
         ],
       ),

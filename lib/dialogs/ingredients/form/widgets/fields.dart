@@ -2,6 +2,7 @@ import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 
 class QuantityField extends StatelessWidget {
   final TextEditingController controller;
@@ -12,13 +13,13 @@ class QuantityField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ResponsiveBuilder(
       builder: (context, deviceType) {
-        return CupertinoTextField(
+        return CupertinoTextField.borderless(
           controller: controller,
-          keyboardType: TextInputType.number,
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
           placeholder: 'Quantity',
           padding: EdgeInsets.symmetric(
-            horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
-            vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+            vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
           ),
           placeholderStyle: TextStyle(
             color: AppColors.button.withValues(alpha: 0.5),
@@ -28,8 +29,11 @@ class QuantityField extends StatelessWidget {
             color: AppColors.button,
             fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.md),
           ),
-          decoration: null,
           cursorColor: AppColors.mutedGreen,
+          inputFormatters: [
+            // Allow only numbers and a single decimal point
+            FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,}$')),
+          ],
         );
       },
     );
@@ -45,25 +49,10 @@ class IngredientNameField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ResponsiveBuilder(
       builder: (context, deviceType) {
-        return ResponsiveContainer(
-          padding: ResponsiveSpacing.sm,
-          child: CupertinoTextField(
-            controller: TextEditingController(text: name),
-            enabled: false,
-            padding: EdgeInsets.symmetric(
-              horizontal: ResponsiveUtils.spacing(
-                context,
-                ResponsiveSpacing.md,
-              ),
-              vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
-            ),
-            style: TextStyle(
-              color: AppColors.button,
-              fontSize: ResponsiveUtils.fontSize(
-                context,
-                ResponsiveFontSize.md,
-              ),
-            ),
+        return Padding(
+          padding: ResponsiveUtils.padding(context, ResponsiveSpacing.sm),
+          child: Container(
+            padding: ResponsiveUtils.padding(context, ResponsiveSpacing.xxs),
             decoration: BoxDecoration(
               color: CupertinoColors.systemGrey6.withValues(alpha: 0.7),
               borderRadius: BorderRadius.circular(
@@ -72,6 +61,28 @@ class IngredientNameField extends StatelessWidget {
                   ResponsiveBorderRadius.lg,
                 ),
               ),
+            ),
+            child: CupertinoTextField(
+              controller: TextEditingController(text: name),
+              enabled: false,
+              padding: EdgeInsets.symmetric(
+                horizontal: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.md,
+                ),
+                vertical: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.md,
+                ),
+              ),
+              style: TextStyle(
+                color: AppColors.button,
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.md,
+                ),
+              ),
+              decoration: null,
             ),
           ),
         );
@@ -95,9 +106,12 @@ class ControlledIngNameField extends StatelessWidget {
             borderRadius: BorderRadius.circular(
               ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.md),
             ),
-            border: Border.all(color: AppColors.button.withValues(alpha: 0.3)),
+            border: Border.all(
+              color: AppColors.mutedGreen.withValues(alpha: 0.7),
+              width: 0.5,
+            ),
           ),
-          child: CupertinoTextField(
+          child: CupertinoTextField.borderless(
             controller: controller,
             placeholder: 'Ingredient Name',
             padding: EdgeInsets.symmetric(
@@ -105,7 +119,7 @@ class ControlledIngNameField extends StatelessWidget {
                 context,
                 ResponsiveSpacing.sm,
               ),
-              vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+              vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
             ),
             placeholderStyle: TextStyle(
               color: AppColors.button.withValues(alpha: 0.5),

@@ -1,9 +1,11 @@
 import 'package:ai_cook_project/models/dietary_tag_model.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:ai_cook_project/utils/text_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class TagsPicker extends StatelessWidget {
   final List<DietaryTag> tags;
@@ -17,72 +19,152 @@ class TagsPicker extends StatelessWidget {
     required this.onTagsSelected,
   });
 
+  /// Get the appropriate SVG icon path for each dietary tag
+  Widget _getIcon(String tagName) {
+    final wheatSvgIcon = SvgAssetLoader('assets/icons/grains.svg');
+    final lacFreeSvgIcon = SvgAssetLoader('assets/icons/lac-free.svg');
+
+    final lowerTagName = tagName.toLowerCase();
+    switch (lowerTagName) {
+      case 'vegan':
+        return ResponsiveIcon(
+          Icons.cruelty_free_outlined,
+          null,
+          size: ResponsiveIconSize.sm,
+          color: AppColors.white,
+        );
+      case 'vegetarian':
+        return ResponsiveIcon(
+          Icons.eco_outlined,
+          null,
+          size: ResponsiveIconSize.sm,
+          color: AppColors.white,
+        );
+      case 'gluten-free':
+        return ResponsiveIcon(
+          null,
+          wheatSvgIcon,
+          size: ResponsiveIconSize.sm,
+          color: AppColors.white,
+        );
+      case 'lactose-free':
+        return ResponsiveIcon(
+          null,
+          lacFreeSvgIcon,
+          size: ResponsiveIconSize.sm,
+          color: AppColors.white,
+        );
+      default:
+        return ResponsiveIcon(
+          Icons.eco_outlined,
+          null,
+          size: ResponsiveIconSize.sm,
+          color: AppColors.white,
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(DialogConstants.radiusMD),
-        border: Border.all(color: AppColors.button.withValues(alpha: 0.2)),
-      ),
-      padding: const EdgeInsets.all(DialogConstants.spacingSM),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Dietary Restrictions',
-            style: TextStyle(
-              color: AppColors.button,
-              fontSize: DialogConstants.fontSizeMD,
-              fontWeight: FontWeight.w600,
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        return Container(
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(
+              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.md),
+            ),
+            border: Border.all(
+              color: AppColors.mutedGreen.withValues(alpha: 0.7),
+              width: 0.5,
             ),
           ),
-          const SizedBox(height: DialogConstants.spacingXS),
-          Wrap(
-            spacing: DialogConstants.spacingXS,
-            runSpacing: DialogConstants.spacingXS,
-            children:
-                tags.map((tag) {
-                  final isSelected = selectedTags.contains(tag);
-                  return Semantics(
-                    label:
-                        'Dietary restriction $tag, ${isSelected ? "selected" : "not selected"}',
-                    selected: isSelected,
-                    child: FilterChip(
-                      label: Text(TextUtils.capitalizeFirstLetter(tag.name)),
-                      selected: isSelected,
-                      onSelected: (_) => onTagsSelected(tag.name),
-                      backgroundColor: AppColors.mutedGreen.withValues(
-                        alpha: 0.6,
-                      ),
-                      selectedColor: AppColors.background.withValues(
-                        alpha: 0.8,
-                      ),
-                      checkmarkColor: AppColors.white,
-                      labelStyle: TextStyle(
-                        color: AppColors.white,
-                        fontWeight: FontWeight.w700,
-                        decoration: TextDecoration.none,
-                      ),
-                      shape: StadiumBorder(
-                        side: BorderSide(
-                          color:
-                              isSelected
-                                  ? AppColors.mutedGreen.withValues(alpha: 0.9)
-                                  : CupertinoColors.systemGrey6,
-                          width: 1,
+          padding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ResponsiveText(
+                'Dietary Restrictions',
+                fontSize: ResponsiveFontSize.md,
+                fontWeight: FontWeight.w600,
+                color: AppColors.button,
+              ),
+              const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
+              Wrap(
+                spacing: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+                runSpacing: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.sm,
+                ),
+                children:
+                    tags.map((tag) {
+                      final isSelected = selectedTags.contains(tag);
+                      return Semantics(
+                        label:
+                            'Dietary restriction $tag, ${isSelected ? "selected" : "not selected"}',
+                        selected: isSelected,
+                        child: FilterChip(
+                          label: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              _getIcon(tag.name),
+                              SizedBox(
+                                width: ResponsiveUtils.spacing(
+                                  context,
+                                  ResponsiveSpacing.xs,
+                                ),
+                              ),
+                              ResponsiveText(
+                                TextUtils.capitalizeFirstLetter(tag.name),
+                                fontSize: ResponsiveFontSize.sm,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.white,
+                              ),
+                            ],
+                          ),
+                          selected: isSelected,
+                          onSelected: (_) => onTagsSelected(tag.name),
+                          backgroundColor: AppColors.mutedGreen.withValues(
+                            alpha: 0.6,
+                          ),
+                          selectedColor: AppColors.background.withValues(
+                            alpha: 0.8,
+                          ),
+                          checkmarkColor: AppColors.white,
+                          labelStyle: TextStyle(
+                            color: AppColors.white,
+                            fontWeight: FontWeight.w700,
+                            decoration: TextDecoration.none,
+                          ),
+                          shape: StadiumBorder(
+                            side: BorderSide(
+                              color:
+                                  isSelected
+                                      ? AppColors.mutedGreen.withValues(
+                                        alpha: 0.9,
+                                      )
+                                      : CupertinoColors.systemGrey6,
+                              width: 1,
+                            ),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: ResponsiveUtils.spacing(
+                              context,
+                              ResponsiveSpacing.xs,
+                            ),
+                            vertical: ResponsiveUtils.spacing(
+                              context,
+                              ResponsiveSpacing.sm,
+                            ),
+                          ),
                         ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: DialogConstants.spacingXS,
-                        vertical: DialogConstants.spacingXXS,
-                      ),
-                    ),
-                  );
-                }).toList(),
+                      );
+                    }).toList(),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

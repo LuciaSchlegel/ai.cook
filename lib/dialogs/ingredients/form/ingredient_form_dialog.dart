@@ -104,6 +104,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
       tags: _selectedTags,
       quantity: _quantityController.text,
       unit: _selectedUnit,
+      isEditing: widget.ingredient != null || widget.customIngredient != null,
     );
   }
 
@@ -119,12 +120,8 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
             FocusScope.of(context).unfocus();
           },
           child: Container(
-            padding: EdgeInsets.fromLTRB(
+            padding: EdgeInsets.all(
               ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
-              ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
-              ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
-              MediaQuery.of(context).viewInsets.bottom +
-                  ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
             ),
             decoration: BoxDecoration(
               color: AppColors.white,
@@ -177,7 +174,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                       margin: EdgeInsets.only(
                         bottom: ResponsiveUtils.spacing(
                           context,
-                          ResponsiveSpacing.md,
+                          ResponsiveSpacing.lg,
                         ),
                       ),
                       decoration: BoxDecoration(
@@ -205,7 +202,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                     ),
                     IngredientNameField(name: _nameController.text),
                     const ResponsiveSpacingWidget.vertical(
-                      ResponsiveSpacing.md,
+                      ResponsiveSpacing.xxs,
                     ),
                     Row(
                       children: [
@@ -271,7 +268,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                       ],
                     ),
                     const ResponsiveSpacingWidget.vertical(
-                      ResponsiveSpacing.xl,
+                      ResponsiveSpacing.md,
                     ),
                     ResponsiveContainer(
                       borderRadius: ResponsiveBorderRadius.md,
@@ -285,31 +282,26 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                         onSave:
                             () => IngredientFormUtils.handleSave(
                               validateForm: _validateForm,
-                              onSave:
-                                  () => IngredientFormUtils.handleSave(
-                                    validateForm: _validateForm,
-                                    onSave: () {
-                                      widget.onSave(
-                                        _nameController.text,
-                                        _selectedCategory,
-                                        _selectedTags.any(
-                                          (tag) => tag.name == 'vegan',
-                                        ),
-                                        _selectedTags.any(
-                                          (tag) => tag.name == 'vegetarian',
-                                        ),
-                                        _selectedTags.any(
-                                          (tag) => tag.name == 'gluten_free',
-                                        ),
-                                        _selectedTags.any(
-                                          (tag) => tag.name == 'lactose_free',
-                                        ),
-                                        double.parse(_quantityController.text),
-                                        _selectedUnit,
-                                      );
-                                    },
-                                    closeDialog: () => Navigator.pop(context),
+                              onSave: () {
+                                widget.onSave(
+                                  _nameController.text,
+                                  _selectedCategory,
+                                  _selectedTags.any(
+                                    (tag) => tag.name == 'vegan',
                                   ),
+                                  _selectedTags.any(
+                                    (tag) => tag.name == 'vegetarian',
+                                  ),
+                                  _selectedTags.any(
+                                    (tag) => tag.name == 'gluten_free',
+                                  ),
+                                  _selectedTags.any(
+                                    (tag) => tag.name == 'lactose_free',
+                                  ),
+                                  double.parse(_quantityController.text),
+                                  _selectedUnit,
+                                );
+                              },
                               closeDialog: () => Navigator.pop(context),
                             ),
                       ),

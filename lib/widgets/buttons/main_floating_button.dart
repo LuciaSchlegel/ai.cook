@@ -273,6 +273,7 @@ class _MainFloatingButtonState extends State<MainFloatingButton>
                                         ),
                                         child: ResponsiveIcon(
                                           Icons.person_rounded,
+                                          null,
                                           size: ResponsiveIconSize.lg,
                                           color: AppColors.white,
                                         ),
@@ -327,6 +328,7 @@ class _MainFloatingButtonState extends State<MainFloatingButton>
                                           ),
                                           child: ResponsiveIcon(
                                             Icons.close_rounded,
+                                            null,
                                             size: ResponsiveIconSize.sm,
                                             color: Colors.grey,
                                           ),
@@ -456,6 +458,7 @@ class _MainFloatingButtonState extends State<MainFloatingButton>
                   ),
                   child: ResponsiveIcon(
                     icon,
+                    null,
                     size: ResponsiveIconSize.md,
                     color:
                         isDestructive ? Colors.red.shade600 : AppColors.orange,
@@ -504,6 +507,7 @@ class _MainFloatingButtonState extends State<MainFloatingButton>
                   ),
                   child: ResponsiveIcon(
                     Icons.arrow_forward_ios_rounded,
+                    null,
                     size: ResponsiveIconSize.xs,
                     color: AppColors.mutedGreen,
                   ),
@@ -582,6 +586,7 @@ class _MainFloatingButtonState extends State<MainFloatingButton>
                     curve: Curves.easeInOut,
                     child: ResponsiveIcon(
                       Icons.menu_rounded,
+                      null,
                       size: ResponsiveIconSize.lg,
                       color: AppColors.white,
                     ),

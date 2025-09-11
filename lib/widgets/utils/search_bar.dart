@@ -77,6 +77,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                     children: [
                       ResponsiveIcon(
                         Icons.search_rounded,
+                        null,
                         size: ResponsiveIconSize.md,
                         color: AppColors.button.withValues(alpha: 0.85),
                       ),
@@ -133,6 +134,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                             ),
                             child: ResponsiveIcon(
                               Icons.close_rounded,
+                              null,
                               size: ResponsiveIconSize.sm,
                               color: Colors.grey[600],
                             ),

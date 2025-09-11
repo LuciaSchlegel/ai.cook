@@ -86,10 +86,7 @@ class IngredientDialogs {
                 ),
               ),
               CupertinoDialogAction(
-                onPressed: () {
-                  onDelete();
-                  Navigator.pop(context);
-                },
+                onPressed: onDelete,
                 isDestructiveAction: true,
                 child: const Text(
                   'Delete',

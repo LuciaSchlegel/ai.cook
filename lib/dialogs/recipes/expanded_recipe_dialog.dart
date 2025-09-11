@@ -206,6 +206,7 @@ class _ActionButton extends StatelessWidget {
             padding: EdgeInsets.zero,
             icon: ResponsiveIcon(
               icon,
+              null,
               size: ResponsiveIconSize.md,
               color: AppColors.button,
             ),

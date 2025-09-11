@@ -33,8 +33,36 @@ class IngredientFormUtils {
         Unit(id: -1, name: 'Select unit', abbreviation: '', type: '');
     setUnit(unit);
 
-    // final tags = ingredient?.tags ?? customIngredient?.tags;
-    // if (tags != null) selectedTags.addAll(tags);
+    // Populate dietary tags from ingredient boolean properties
+    if (ingredient != null) {
+      selectedTags.clear();
+      if (ingredient.isVegan) {
+        selectedTags.add(DietaryTag(id: 1, name: 'vegan'));
+      }
+      if (ingredient.isVegetarian) {
+        selectedTags.add(DietaryTag(id: 2, name: 'vegetarian'));
+      }
+      if (ingredient.isGlutenFree) {
+        selectedTags.add(DietaryTag(id: 3, name: 'gluten_free'));
+      }
+      if (ingredient.isLactoseFree) {
+        selectedTags.add(DietaryTag(id: 4, name: 'lactose_free'));
+      }
+    } else if (customIngredient != null) {
+      selectedTags.clear();
+      if (customIngredient.isVegan) {
+        selectedTags.add(DietaryTag(id: 1, name: 'vegan'));
+      }
+      if (customIngredient.isVegetarian) {
+        selectedTags.add(DietaryTag(id: 2, name: 'vegetarian'));
+      }
+      if (customIngredient.isGlutenFree) {
+        selectedTags.add(DietaryTag(id: 3, name: 'gluten_free'));
+      }
+      if (customIngredient.isLactoseFree) {
+        selectedTags.add(DietaryTag(id: 4, name: 'lactose_free'));
+      }
+    }
   }
 
   /// Valida si el formulario está completo y correcto
@@ -43,11 +71,21 @@ class IngredientFormUtils {
     required Set<DietaryTag> tags,
     required String quantity,
     required Unit unit,
+    bool isEditing = false,
   }) {
-    if (name.isEmpty || tags.isEmpty || unit.name == 'Select unit') {
-      return false;
-    }
-    return double.tryParse(quantity) != null;
+    // Name cannot be empty
+    if (name.isEmpty) return false;
+
+    // Unit must be selected
+    if (unit.name == 'Select unit') return false;
+
+    // Quantity must be valid
+    if (double.tryParse(quantity) == null) return false;
+
+    // For editing existing ingredients, dietary tags are optional
+    // For new ingredients, we might want to require at least one dietary tag
+    // But for now, let's make it optional for both cases
+    return true;
   }
 
   /// Encapsula la lógica de guardado

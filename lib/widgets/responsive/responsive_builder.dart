@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../utils/responsive_utils.dart';
 
 /// A builder widget that provides responsive breakpoints for building
@@ -153,12 +154,14 @@ class ResponsiveText extends StatelessWidget {
 
 /// A responsive icon widget that adapts size based on device type
 class ResponsiveIcon extends StatelessWidget {
-  final IconData icon;
+  final IconData? icon;
+  final SvgAssetLoader? svgIcon;
   final ResponsiveIconSize size;
   final Color? color;
 
   const ResponsiveIcon(
-    this.icon, {
+    this.icon,
+    this.svgIcon, {
     super.key,
     this.size = ResponsiveIconSize.md,
     this.color,
@@ -166,11 +169,19 @@ class ResponsiveIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Icon(
-      icon,
-      size: ResponsiveUtils.iconSize(context, size),
-      color: color,
-    );
+    final iconSize = ResponsiveUtils.iconSize(context, size);
+
+    if (svgIcon != null) {
+      return SvgPicture(
+        svgIcon!,
+        width: iconSize,
+        height: iconSize,
+        colorFilter:
+            color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
+      );
+    } else {
+      return Icon(icon, size: iconSize, color: color);
+    }
   }
 }
 

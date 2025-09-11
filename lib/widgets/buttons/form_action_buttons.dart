@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 
 class FormActionButtons extends StatelessWidget {
   final VoidCallback onCancel;
@@ -20,71 +22,128 @@ class FormActionButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        // Botón de eliminar en el lado izquierdo
-        if (onDelete != null)
-          CupertinoButton(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            onPressed: onDelete,
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: CupertinoColors.systemRed.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(
-                CupertinoIcons.delete,
-                color: CupertinoColors.systemRed,
-                size: 20,
-              ),
-            ),
-          )
-        else
-          const SizedBox.shrink(),
-        
-        // Botones de Cancel y Save en el lado derecho
-        Row(
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            TextButton(
-              onPressed: onCancel,
-              style: TextButton.styleFrom(
-                foregroundColor: AppColors.button,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              ),
-              child: const Text(
-                'Cancel',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              ),
-            ),
-            const SizedBox(width: 16),
-            CupertinoButton(
-              padding: EdgeInsets.zero,
-              onPressed: isValid ? onSave : null,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                decoration: BoxDecoration(
-                  color:
-                      isValid
-                          ? AppColors.mutedGreen
-                          : AppColors.mutedGreen.withOpacity(0.4),
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: Text(
-                  isEditing ? 'Save' : 'Add',
-                  style: const TextStyle(
-                    color: AppColors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.5,
+            // Botón de eliminar en el lado izquierdo
+            if (onDelete != null)
+              CupertinoButton(
+                padding: EdgeInsets.symmetric(
+                  horizontal: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.sm,
+                  ),
+                  vertical: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.xs,
                   ),
                 ),
-              ),
+                onPressed: onDelete,
+                child: Container(
+                  padding: EdgeInsets.all(
+                    ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+                  ),
+                  decoration: BoxDecoration(
+                    color: CupertinoColors.systemRed.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(
+                      ResponsiveUtils.borderRadius(
+                        context,
+                        ResponsiveBorderRadius.xs,
+                      ),
+                    ),
+                  ),
+                  child: Icon(
+                    CupertinoIcons.delete,
+                    color: CupertinoColors.systemRed,
+                    size: ResponsiveUtils.iconSize(
+                      context,
+                      ResponsiveIconSize.sm,
+                    ),
+                  ),
+                ),
+              )
+            else
+              const SizedBox.shrink(),
+
+            // Botones de Cancel y Save en el lado derecho
+            Row(
+              children: [
+                TextButton(
+                  onPressed: onCancel,
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.button,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.sm,
+                      ),
+                      vertical: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.xs,
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      fontSize: ResponsiveUtils.fontSize(
+                        context,
+                        ResponsiveFontSize.md,
+                      ),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+                ),
+                CupertinoButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: isValid ? onSave : null,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.lg,
+                      ),
+                      vertical: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.sm,
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color:
+                          isValid
+                              ? AppColors.mutedGreen
+                              : AppColors.mutedGreen.withValues(alpha: 0.4),
+                      borderRadius: BorderRadius.circular(
+                        ResponsiveUtils.borderRadius(
+                          context,
+                          ResponsiveBorderRadius.lg,
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      isEditing ? 'Save' : 'Add',
+                      style: TextStyle(
+                        color: AppColors.white,
+                        fontSize: ResponsiveUtils.fontSize(
+                          context,
+                          ResponsiveFontSize.md,
+                        ),
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
-        ),
-      ],
+        );
+      },
     );
   }
 }

@@ -1,5 +1,6 @@
-import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/cupertino.dart';
 
 /// Generic picker modal that can be used for any type of data
@@ -70,23 +71,18 @@ class _GenericPickerModalState<T> extends State<GenericPickerModal<T>> {
     super.dispose();
   }
 
-  /// Calculate responsive height based on screen size
+  /// Calculate responsive height using the responsive system
   double _calculatePickerHeight(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final screenHeight = mediaQuery.size.height;
-    final screenWidth = mediaQuery.size.width;
+    final deviceType = ResponsiveUtils.getDeviceType(context);
 
-    // Responsive height calculation
-    if (screenWidth < DialogConstants.mobileBreakpoint) {
-      // Mobile: más compacto
-      return (screenHeight * 0.3).clamp(200.0, 250.0);
-    } else if (screenWidth < DialogConstants.tabletBreakpoint) {
-      // Tablet: tamaño medio
-      return (screenHeight * 0.25).clamp(220.0, 280.0);
-    } else {
-      // Desktop: más generoso
-      return (screenHeight * 0.2).clamp(240.0, 320.0);
-    }
+    // Use device-specific height calculations
+    return switch (deviceType) {
+      DeviceType.iPhone => (screenHeight * 0.3).clamp(200.0, 250.0),
+      DeviceType.iPadMini => (screenHeight * 0.25).clamp(220.0, 280.0),
+      DeviceType.iPadPro => (screenHeight * 0.2).clamp(240.0, 320.0),
+    };
   }
 
   @override
@@ -95,7 +91,7 @@ class _GenericPickerModalState<T> extends State<GenericPickerModal<T>> {
 
     return Container(
       height: pickerHeight,
-      padding: const EdgeInsets.symmetric(vertical: DialogConstants.spacingXXS),
+      padding: ResponsiveUtils.verticalPadding(context, ResponsiveSpacing.xxs),
       color: CupertinoColors.systemBackground.resolveFrom(context),
       child: SafeArea(
         top: false,
@@ -111,7 +107,10 @@ class _GenericPickerModalState<T> extends State<GenericPickerModal<T>> {
                   magnification: 1.22,
                   squeeze: 1.2,
                   useMagnifier: true,
-                  itemExtent: DialogConstants.adaptiveSpacing(context, 32.0),
+                  itemExtent: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.xl,
+                  ),
                   scrollController: _controller,
                   onSelectedItemChanged: (index) {
                     if (index >= 0 && index < widget.items.length) {
@@ -124,15 +123,10 @@ class _GenericPickerModalState<T> extends State<GenericPickerModal<T>> {
                       widget.items
                           .map(
                             (item) => Center(
-                              child: Text(
+                              child: ResponsiveText(
                                 widget.getDisplayText(item),
-                                style: TextStyle(
-                                  fontSize: DialogConstants.adaptiveSpacing(
-                                    context,
-                                    20.0,
-                                  ),
-                                  color: AppColors.button,
-                                ),
+                                fontSize: ResponsiveFontSize.lg,
+                                color: AppColors.button,
                               ),
                             ),
                           )
@@ -148,52 +142,57 @@ class _GenericPickerModalState<T> extends State<GenericPickerModal<T>> {
 
   Widget _buildHeader(BuildContext context) {
     return SizedBox(
-      height: DialogConstants.adaptiveSpacing(context, 44.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Cancel button
-          CupertinoButton(
-            padding: const EdgeInsets.only(left: DialogConstants.spacingSM),
-            child: Text(
-              widget.cancelText,
-              style: const TextStyle(color: AppColors.mutedGreen),
+      height: ResponsiveUtils.spacing(context, ResponsiveSpacing.xxl),
+      child: SafeArea(
+        top: false,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Cancel button
+            CupertinoButton(
+              padding: EdgeInsets.only(
+                left: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+              ),
+              child: ResponsiveText(
+                widget.cancelText,
+                fontSize: ResponsiveFontSize.md,
+                color: AppColors.mutedGreen,
+              ),
+              onPressed: () => Navigator.of(context).pop(),
             ),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
 
-          // Optional title
-          if (widget.title != null)
-            Expanded(
-              child: Text(
-                widget.title!,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: DialogConstants.fontSizeMD + 1,
+            // Optional title
+            if (widget.title != null)
+              Expanded(
+                child: ResponsiveText(
+                  widget.title!,
+                  textAlign: TextAlign.center,
+                  fontSize: ResponsiveFontSize.lg,
                   fontWeight: FontWeight.w600,
                   color: AppColors.button,
                   decoration: TextDecoration.none,
                 ),
               ),
-            ),
 
-          // Done button
-          CupertinoButton(
-            padding: const EdgeInsets.only(right: DialogConstants.spacingSM),
-            child: Text(
-              widget.doneText,
-              style: const TextStyle(
+            // Done button
+            CupertinoButton(
+              padding: EdgeInsets.only(
+                right: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+              ),
+              child: ResponsiveText(
+                widget.doneText,
+                fontSize: ResponsiveFontSize.md,
                 color: AppColors.mutedGreen,
                 fontWeight: FontWeight.w600,
               ),
+              onPressed: () {
+                widget.onSelected(_tempSelected);
+                Navigator.of(context).pop();
+              },
             ),
-            onPressed: () {
-              widget.onSelected(_tempSelected);
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -6,6 +6,7 @@ import 'package:ai_cook_project/providers/resource_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/unit.dart';
+import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:provider/provider.dart';
 
 class CustomIngFormDialog extends StatefulWidget {
@@ -119,7 +120,7 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
     final tagNames = _selectedTags.map((tag) => tag.toLowerCase()).toSet();
 
     widget.onSave(
-      _nameController.text,
+      TextUtils.capitalizeFirstLetter(_nameController.text),
       _selectedCategory,
       tagNames.contains('vegan'),
       tagNames.contains('vegetarian'),
