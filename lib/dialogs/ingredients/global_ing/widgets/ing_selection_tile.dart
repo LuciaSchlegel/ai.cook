@@ -3,8 +3,10 @@ import 'package:ai_cook_project/dialogs/ingredients/global_ing/add/widgets/picke
 import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/unit.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 
 class IngredientSelectionTile extends StatelessWidget {
   final Ingredient ingredient;
@@ -56,132 +58,156 @@ class IngredientSelectionTile extends StatelessWidget {
       default:
         assetPath = 'assets/icons/tote-simple.svg';
     }
-    return SvgPicture.asset(
-      assetPath,
-      width: 22,
-      height: 22,
+    return ResponsiveIcon(
+      null,
+      SvgAssetLoader(assetPath),
+      size: ResponsiveIconSize.lg,
       color: AppColors.mutedGreen,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: disabled ? 0.5 : 1.0,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        margin: const EdgeInsets.only(bottom: 14),
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color:
-                selected
-                    ? AppColors.mutedGreen
-                    : AppColors.mutedGreen.withOpacity(0.18),
-            width: selected ? 1.5 : 1.1,
-          ),
-          boxShadow: [
-            if (selected)
-              BoxShadow(
-                color: AppColors.mutedGreen.withOpacity(0.08),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-          child: Row(
-            children: [
-              // Icono de categoría
-              Container(
-                width: 38,
-                height: 38,
-                decoration: BoxDecoration(
-                  color: AppColors.mutedGreen.withOpacity(0.08),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Center(child: _getCategoryIcon()),
-              ),
-              const SizedBox(width: 16),
-              // Nombre y categoría
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      ingredient.name,
-                      style: const TextStyle(
-                        color: AppColors.button,
-                        fontFamily: 'Casta',
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.2,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      ingredient.category?.name ?? '',
-                      style: TextStyle(
-                        color: AppColors.mutedGreen.withOpacity(0.85),
-                        fontFamily: 'Inter',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        return Opacity(
+          opacity: disabled ? 0.5 : 1.0,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            margin: ResponsiveUtils.padding(context, ResponsiveSpacing.xs),
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(
+                ResponsiveUtils.borderRadius(
+                  context,
+                  ResponsiveBorderRadius.xl,
                 ),
               ),
-              // Cantidad y unidad (si está seleccionado)
-              if (selected)
-                Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: Text(
-                    '$quantity ${unit.abbreviation}',
-                    style: const TextStyle(
-                      color: AppColors.mutedGreen,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
+              border: Border.all(
+                color:
+                    selected
+                        ? AppColors.mutedGreen
+                        : AppColors.mutedGreen.withValues(alpha: 0.18),
+                width: selected ? 1.5 : 1.1,
+              ),
+              boxShadow: [
+                if (selected)
+                  BoxShadow(
+                    color: AppColors.mutedGreen.withValues(alpha: 0.08),
+                    blurRadius: ResponsiveUtils.spacing(
+                      context,
+                      ResponsiveSpacing.xs,
+                    ),
+                    offset: const Offset(0, 2),
+                  ),
+              ],
+            ),
+            child: Padding(
+              padding: ResponsiveUtils.padding(context, ResponsiveSpacing.sm),
+              child: Row(
+                children: [
+                  // Icono de categoría
+                  Container(
+                    width: ResponsiveUtils.spacing(
+                      context,
+                      ResponsiveSpacing.xxl,
+                    ),
+                    height: ResponsiveUtils.spacing(
+                      context,
+                      ResponsiveSpacing.xxl,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.mutedGreen.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(
+                        ResponsiveUtils.borderRadius(
+                          context,
+                          ResponsiveBorderRadius.lg,
+                        ),
+                      ),
+                    ),
+                    child: Center(child: _getCategoryIcon()),
+                  ),
+                  const ResponsiveSpacingWidget.horizontal(
+                    ResponsiveSpacing.md,
+                  ),
+                  // Nombre y categoría
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ResponsiveText(
+                          ingredient.name,
+                          color: AppColors.button,
+                          fontFamily: 'Casta',
+                          fontSize: ResponsiveFontSize.xl,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.2,
+                        ),
+                        const ResponsiveSpacingWidget.vertical(
+                          ResponsiveSpacing.xxs,
+                        ),
+                        ResponsiveText(
+                          ingredient.category?.name ?? '',
+                          color: AppColors.mutedGreen.withValues(alpha: 0.85),
+                          fontSize: ResponsiveFontSize.sm,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              // Botón de acción
-              GestureDetector(
-                onTap:
-                    disabled
-                        ? null
-                        : () async {
-                          if (selected) {
-                            onDeselect();
-                          } else {
-                            final result =
-                                await showCupertinoModalPopup<(double, Unit)?>(
+                  // Cantidad y unidad (si está seleccionado)
+                  if (selected)
+                    Padding(
+                      padding: EdgeInsets.only(
+                        right: ResponsiveUtils.spacing(
+                          context,
+                          ResponsiveSpacing.sm,
+                        ),
+                      ),
+                      child: ResponsiveText(
+                        '$quantity ${unit.abbreviation}',
+                        color: AppColors.mutedGreen,
+                        fontWeight: FontWeight.bold,
+                        fontSize: ResponsiveFontSize.sm,
+                      ),
+                    ),
+                  // Botón de acción
+                  GestureDetector(
+                    onTap:
+                        disabled
+                            ? null
+                            : () async {
+                              if (selected) {
+                                onDeselect();
+                              } else {
+                                final result = await showQuantityUnitPicker(
                                   context: context,
-                                  builder:
-                                      (_) => QuantityUnitPicker(units: units),
+                                  units: units,
                                 );
-                            if (result != null) {
-                              final (qty, unit) = result;
-                              onConfirm(qty.toDouble(), unit);
-                            }
-                          }
-                        },
-                child: Icon(
-                  selected
-                      ? CupertinoIcons.checkmark_alt_circle_fill
-                      : CupertinoIcons.add_circled,
-                  color:
-                      disabled
-                          ? AppColors.button.withOpacity(0.3)
-                          : AppColors.mutedGreen,
-                  size: 28,
-                ),
+                                if (result != null) {
+                                  final (qty, unit) = result;
+                                  onConfirm(qty.toDouble(), unit);
+                                }
+                              }
+                            },
+                    child: ResponsiveIcon(
+                      selected
+                          ? CupertinoIcons.checkmark_alt_circle_fill
+                          : CupertinoIcons.add_circled,
+                      null,
+                      color:
+                          disabled
+                              ? AppColors.button.withValues(alpha: 0.3)
+                              : AppColors.mutedGreen,
+                      size: ResponsiveIconSize.lg,
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

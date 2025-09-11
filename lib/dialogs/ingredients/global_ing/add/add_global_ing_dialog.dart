@@ -5,6 +5,9 @@ import 'package:ai_cook_project/dialogs/ingredients/global_ing/widgets/ing_selec
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
+import 'package:ai_cook_project/widgets/selectors/grey_card_chips.dart';
 import 'package:ai_cook_project/widgets/utils/safe_constrained_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +15,6 @@ import 'package:provider/provider.dart';
 import '../../../../theme.dart';
 import 'package:ai_cook_project/dialogs/error_dialog.dart';
 import 'package:ai_cook_project/utils/app_error_handler.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 
 class AddGlobalIngDialog extends StatefulWidget {
   const AddGlobalIngDialog({super.key});
@@ -48,200 +50,201 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
       searchText: searchText,
     );
 
-    return SafeConstrainedDialog(
-      backgroundColor: AppColors.white,
-      child: SingleChildScrollView(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        child: Padding(
-          padding: DialogConstants.adaptivePadding(context),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Add Ingredients',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: AppColors.button,
-                  fontSize: DialogConstants.fontSizeTitle,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Casta',
-                  letterSpacing: 1.2,
-                ),
-              ),
-              const SizedBox(height: DialogConstants.spacingMD),
-              CupertinoTextField(
-                controller: searchController,
-                placeholder: 'Search ingredients...',
-                prefix: const Padding(
-                  padding: EdgeInsets.only(left: 8.0),
-                  child: Icon(
-                    CupertinoIcons.search,
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        return SafeConstrainedDialog(
+          backgroundColor: AppColors.white,
+          child: SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            child: Padding(
+              padding: ResponsiveUtils.padding(context, ResponsiveSpacing.lg),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ResponsiveText(
+                    'Add Ingredients',
+                    fontSize: ResponsiveFontSize.title,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Casta',
                     color: AppColors.button,
-                    size: DialogConstants.iconSizeMD + 2,
+                    letterSpacing: 1.2,
+                    textAlign: TextAlign.center,
                   ),
-                ),
-                onChanged: (_) => setState(() {}),
-              ),
-              const SizedBox(height: DialogConstants.spacingMD),
-              SizedBox(
-                height: DialogConstants.adaptiveSpacing(context, 50.0),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: categories.length + 1,
-                  itemBuilder: (context, index) {
-                    final name =
-                        index == 0 ? 'All' : categories[index - 1].name;
-                    final selected = name == selectedCategory;
-                    return Padding(
-                      padding: const EdgeInsets.only(
-                        right: DialogConstants.spacingXS,
+                  ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
+                  CupertinoTextField(
+                    controller: searchController,
+                    placeholder: 'Search ingredients...',
+                    prefix: Padding(
+                      padding: ResponsiveUtils.padding(
+                        context,
+                        ResponsiveSpacing.sm,
+                      ).copyWith(right: 0),
+                      child: ResponsiveIcon(
+                        CupertinoIcons.search,
+                        null,
+                        color: AppColors.button,
+                        size: ResponsiveIconSize.md,
                       ),
-                      child: GestureDetector(
-                        onTap: () => setState(() => selectedCategory = name),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: DialogConstants.spacingSM,
-                            vertical: DialogConstants.spacingXXS,
-                          ),
-                          decoration: BoxDecoration(
-                            color:
-                                selected
-                                    ? AppColors.mutedGreen
-                                    : AppColors.mutedGreen.withValues(
-                                      alpha: 0.2,
-                                    ),
-                            borderRadius: BorderRadius.circular(
-                              DialogConstants.radiusMD,
-                            ),
-                          ),
-                          child: Text(
-                            name,
-                            style: TextStyle(
-                              color:
-                                  selected
-                                      ? AppColors.white
-                                      : AppColors.button.withValues(alpha: 0.8),
-                              fontSize: DialogConstants.fontSizeMD,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: DialogConstants.spacingMD),
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: DialogConstants.adaptiveSpacing(context, 380.0),
-                ),
-                child:
-                    searchFilteredIngredients.isEmpty
-                        ? const EmptyList()
-                        : ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: searchFilteredIngredients.length,
-                          itemBuilder: (context, index) {
-                            final ing = searchFilteredIngredients[index];
-                            final ingEntry = selectedIngredients.firstWhere(
-                              (ui) => ui.ingredient?.id == ing.id,
-                              orElse:
-                                  () => UserIng(
-                                    id: -1,
-                                    uid: '',
-                                    ingredient: ing,
-                                    quantity: 0.0,
-                                    unit: units.first,
-                                  ),
-                            );
-                            final isInCupboard = userIngredients.any(
-                              (ui) => ui.ingredient?.id == ing.id,
-                            );
-                            return IngredientSelectionTile(
-                              ingredient: ing,
-                              selected: ingEntry.id != -1,
-                              quantity: ingEntry.quantity,
-                              unit: ingEntry.unit!,
-                              units: units,
-                              onConfirm: (qty, unit) {
-                                setState(() {
-                                  selectedIngredients.removeWhere(
-                                    (ui) => ui.ingredient?.id == ing.id,
-                                  );
-                                  selectedIngredients.add(
-                                    UserIng(
-                                      id: ing.id,
-                                      uid:
-                                          FirebaseAuth
-                                              .instance
-                                              .currentUser!
-                                              .uid,
-                                      ingredient: ing,
-                                      quantity: qty,
-                                      unit: unit,
-                                    ),
-                                  );
-                                });
-                              },
-                              onDeselect:
-                                  () => setState(() {
-                                    selectedIngredients.removeWhere(
-                                      (ui) => ui.ingredient?.id == ing.id,
-                                    );
-                                  }),
-                              disabled: isInCupboard,
-                            );
-                          },
-                        ),
-              ),
-              const SizedBox(height: DialogConstants.spacingLG),
-              CupertinoButton(
-                padding: const EdgeInsets.symmetric(
-                  vertical: DialogConstants.spacingSM,
-                  horizontal: DialogConstants.spacingLG,
-                ),
-                color: AppColors.background.withValues(alpha: 0.9),
-                disabledColor: AppColors.button.withValues(alpha: 0.4),
-                borderRadius: BorderRadius.circular(DialogConstants.radiusMD),
-                onPressed:
-                    selectedIngredients.isNotEmpty
-                        ? () async {
-                          try {
-                            await Future.wait(
-                              selectedIngredients.map(
-                                (ing) => ingredientsProvider.addUserIngredient(
-                                  ing.copyWith(id: 0),
-                                  optimistic: false,
-                                ),
-                              ),
-                            );
-                            await ingredientsProvider.fetchUserIngredients();
-                            if (context.mounted) Navigator.pop(context);
-                          } catch (e) {
-                            final errorMsg = AppErrorHandler.handle(e);
-                            if (context.mounted) {
-                              showErrorDialog(context, message: errorMsg);
-                            }
-                          }
+                    ),
+                    onChanged: (_) => setState(() {}),
+                  ),
+                  ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
+                  GreyCardChips(
+                    items: ['All', ...categories.map((c) => c.name).toList()],
+                    selectedItems: [selectedCategory],
+                    onSelected: (items) {
+                      // For category filtering, we want single selection behavior
+                      // If multiple items are selected, take the last one (most recently selected)
+                      // If the current category was deselected, default to 'All'
+                      setState(() {
+                        if (items.isEmpty) {
+                          selectedCategory = 'All';
+                        } else if (items.length == 1) {
+                          selectedCategory = items.first;
+                        } else {
+                          // Multiple items selected, find the one that's not currently selected
+                          final newCategory = items.firstWhere(
+                            (item) => item != selectedCategory,
+                            orElse: () => items.first,
+                          );
+                          selectedCategory = newCategory;
                         }
-                        : null,
-                child: const Text(
-                  'Add Selected',
-                  style: TextStyle(
-                    color: AppColors.white,
-                    fontSize: DialogConstants.fontSizeMD,
-                    fontWeight: FontWeight.w600,
+                      });
+                    },
+                    horizontalPadding: ResponsiveSpacing.sm,
+                    verticalPadding: ResponsiveSpacing.xs,
                   ),
-                ),
+                  ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight:
+                          ResponsiveUtils.getDeviceType(context) ==
+                                  DeviceType.iPhone
+                              ? 300.0
+                              : ResponsiveUtils.getDeviceType(context) ==
+                                  DeviceType.iPadMini
+                              ? 380.0
+                              : 450.0,
+                    ),
+                    child:
+                        searchFilteredIngredients.isEmpty
+                            ? const EmptyList()
+                            : ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: searchFilteredIngredients.length,
+                              itemBuilder: (context, index) {
+                                final ing = searchFilteredIngredients[index];
+                                final ingEntry = selectedIngredients.firstWhere(
+                                  (ui) => ui.ingredient?.id == ing.id,
+                                  orElse:
+                                      () => UserIng(
+                                        id: -1,
+                                        uid: '',
+                                        ingredient: ing,
+                                        quantity: 0.0,
+                                        unit: units.first,
+                                      ),
+                                );
+                                final isInCupboard = userIngredients.any(
+                                  (ui) => ui.ingredient?.id == ing.id,
+                                );
+                                return IngredientSelectionTile(
+                                  ingredient: ing,
+                                  selected: ingEntry.id != -1,
+                                  quantity: ingEntry.quantity,
+                                  unit: ingEntry.unit!,
+                                  units: units,
+                                  onConfirm: (qty, unit) {
+                                    setState(() {
+                                      selectedIngredients.removeWhere(
+                                        (ui) => ui.ingredient?.id == ing.id,
+                                      );
+                                      selectedIngredients.add(
+                                        UserIng(
+                                          id: ing.id,
+                                          uid:
+                                              FirebaseAuth
+                                                  .instance
+                                                  .currentUser!
+                                                  .uid,
+                                          ingredient: ing,
+                                          quantity: qty,
+                                          unit: unit,
+                                        ),
+                                      );
+                                    });
+                                  },
+                                  onDeselect:
+                                      () => setState(() {
+                                        selectedIngredients.removeWhere(
+                                          (ui) => ui.ingredient?.id == ing.id,
+                                        );
+                                      }),
+                                  disabled: isInCupboard,
+                                );
+                              },
+                            ),
+                  ),
+                  ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
+                  CupertinoButton(
+                    padding: EdgeInsets.symmetric(
+                      vertical: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.sm,
+                      ),
+                      horizontal: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.lg,
+                      ),
+                    ),
+                    color: AppColors.background.withValues(alpha: 0.9),
+                    disabledColor: AppColors.button.withValues(alpha: 0.4),
+                    borderRadius: BorderRadius.circular(
+                      ResponsiveUtils.borderRadius(
+                        context,
+                        ResponsiveBorderRadius.md,
+                      ),
+                    ),
+                    onPressed:
+                        selectedIngredients.isNotEmpty
+                            ? () async {
+                              try {
+                                await Future.wait(
+                                  selectedIngredients.map(
+                                    (ing) =>
+                                        ingredientsProvider.addUserIngredient(
+                                          ing.copyWith(id: 0),
+                                          optimistic: false,
+                                        ),
+                                  ),
+                                );
+                                await ingredientsProvider
+                                    .fetchUserIngredients();
+                                if (context.mounted) Navigator.pop(context);
+                              } catch (e) {
+                                final errorMsg = AppErrorHandler.handle(e);
+                                if (context.mounted) {
+                                  showErrorDialog(context, message: errorMsg);
+                                }
+                              }
+                            }
+                            : null,
+                    child: ResponsiveText(
+                      'Add Selected',
+                      fontSize: ResponsiveFontSize.md,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.white,
+                    ),
+                  ),
+                  ResponsiveSpacingWidget.vertical(ResponsiveSpacing.xs),
+                  const AddCustomIngredientButton(),
+                ],
               ),
-              const SizedBox(height: DialogConstants.spacingXS),
-              const AddCustomIngredientButton(),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

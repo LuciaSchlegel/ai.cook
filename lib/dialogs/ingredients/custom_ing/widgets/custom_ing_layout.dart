@@ -195,7 +195,10 @@ class CustomIngLayout extends StatelessWidget {
                               ),
                             ),
                             border: Border.all(
-                              color: AppColors.button.withValues(alpha: 0.3),
+                              color: AppColors.mutedGreen.withValues(
+                                alpha: 0.7,
+                              ),
+                              width: 0.5,
                             ),
                           ),
                           child: custom_ing_fields.QuantityField(
@@ -217,7 +220,10 @@ class CustomIngLayout extends StatelessWidget {
                               ),
                             ),
                             border: Border.all(
-                              color: AppColors.button.withValues(alpha: 0.3),
+                              color: AppColors.mutedGreen.withValues(
+                                alpha: 0.7,
+                              ),
+                              width: 0.5,
                             ),
                           ),
                           child: CupertinoButton(

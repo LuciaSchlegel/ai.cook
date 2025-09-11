@@ -92,7 +92,7 @@ class GreyCardChips extends StatelessWidget {
         // Primary shadow with orange tint
         BoxShadow(
           color: AppColors.orange.withValues(alpha: 0.25),
-          blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+          blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.xxs),
           offset: Offset(
             0,
             ResponsiveUtils.spacing(context, ResponsiveSpacing.xxs),
@@ -102,10 +102,10 @@ class GreyCardChips extends StatelessWidget {
         // Secondary ambient shadow
         BoxShadow(
           color: AppColors.orange.withValues(alpha: 0.08),
-          blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+          blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.xxs),
           offset: Offset(
             0,
-            ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+            ResponsiveUtils.spacing(context, ResponsiveSpacing.xxs),
           ),
           spreadRadius: 0,
         ),
@@ -115,10 +115,10 @@ class GreyCardChips extends StatelessWidget {
         // Subtle shadow for unselected
         BoxShadow(
           color: AppColors.mutedGreen.withValues(alpha: 0.12),
-          blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+          blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.xxs),
           offset: Offset(
             0,
-            ResponsiveUtils.spacing(context, ResponsiveSpacing.xxs) * 0.5,
+            ResponsiveUtils.spacing(context, ResponsiveSpacing.xxs),
           ),
           spreadRadius: 0,
         ),
@@ -142,7 +142,7 @@ class GreyCardChips extends StatelessWidget {
                 color: Colors.black.withValues(alpha: 0.08),
                 blurRadius: ResponsiveUtils.spacing(
                   context,
-                  ResponsiveSpacing.lg,
+                  ResponsiveSpacing.md,
                 ),
                 offset: Offset(
                   0,

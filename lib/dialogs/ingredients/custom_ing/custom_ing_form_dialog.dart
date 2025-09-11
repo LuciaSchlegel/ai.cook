@@ -106,6 +106,7 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
       quantity: quantity,
       selectedTags: _selectedTags.toList(),
       unitName: _selectedUnit.name,
+      isEditing: widget.customIngredient != null,
     );
   }
 
