@@ -1,7 +1,6 @@
 import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
-import 'package:ai_cook_project/widgets/pickers/generic_picker_modal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
@@ -12,9 +11,9 @@ class DropdownSelector extends StatelessWidget {
   final Function(String?) onChanged;
   final double? width;
   final String? title;
-  final bool confirmOnDone; // New parameter to control behavior
-  final String? semanticLabel; // For accessibility
-  final bool isEnabled; // For disabled state
+  final bool confirmOnDone;
+  final String? semanticLabel;
+  final bool isEnabled;
 
   const DropdownSelector({
     super.key,
@@ -23,50 +22,41 @@ class DropdownSelector extends StatelessWidget {
     required this.onChanged,
     this.width,
     this.title,
-    this.confirmOnDone =
-        false, // Default to old behavior for backward compatibility
+    this.confirmOnDone = false,
     this.semanticLabel,
     this.isEnabled = true,
   });
 
   void _showDropdownMenu(BuildContext context) async {
-    // Early return if disabled or no items
     if (!isEnabled || items.isEmpty) return;
 
     if (confirmOnDone) {
-      // Use GenericPickerModal with confirm-on-done behavior
-      final selectedValue = await showGenericPicker<String>(
+      // Use inline picker with confirm-on-done behavior
+      final selectedValue = await showCupertinoModalPopup<String>(
         context: context,
-        items: items,
-        selectedItem: value,
-        getDisplayText: (item) => item,
-        areEqual: (a, b) => a == b,
-        title: title,
-        cancelText: 'Cancel',
-        doneText: 'Done',
+        builder:
+            (BuildContext modalContext) => _InlineConfirmPicker(
+              items: items,
+              selectedItem: value,
+              title: title,
+              context: context,
+            ),
       );
 
-      // Only call onChanged if user selected something (didn't cancel)
       if (selectedValue != null) {
         onChanged(selectedValue);
       }
     } else {
-      // Use GenericPickerModal with immediate behavior (backward compatibility)
+      // Legacy immediate selection behavior
       await showCupertinoModalPopup<void>(
         context: context,
         builder:
-            (context) => GenericPickerModal<String>(
+            (BuildContext modalContext) => _InlineImmediatePicker(
               items: items,
               selectedItem: value,
-              getDisplayText: (item) => item,
-              areEqual: (a, b) => a == b,
-              onSelected: (selectedItem) {
-                // Immediate behavior - call onChanged immediately
-                onChanged(selectedItem);
-              },
               title: title,
-              cancelText: 'Cancel',
-              doneText: 'Done',
+              onSelected: onChanged,
+              context: context,
             ),
       );
     }
@@ -159,6 +149,348 @@ class DropdownSelector extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+// Confirm-on-done picker that follows your app's styling
+class _InlineConfirmPicker extends StatefulWidget {
+  final List<String> items;
+  final String selectedItem;
+  final String? title;
+  final BuildContext context;
+
+  const _InlineConfirmPicker({
+    required this.items,
+    required this.selectedItem,
+    required this.context,
+    this.title,
+  });
+
+  @override
+  State<_InlineConfirmPicker> createState() => _InlineConfirmPickerState();
+}
+
+class _InlineConfirmPickerState extends State<_InlineConfirmPicker> {
+  late String _tempSelected;
+  late FixedExtentScrollController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _tempSelected = widget.selectedItem;
+
+    final initialIndex = widget.items.indexWhere(
+      (item) => item == widget.selectedItem,
+    );
+    _controller = FixedExtentScrollController(
+      initialItem: initialIndex >= 0 ? initialIndex : 0,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  double _calculatePickerHeight() {
+    final mediaQuery = MediaQuery.of(widget.context);
+    final screenHeight = mediaQuery.size.height;
+    final deviceType = ResponsiveUtils.getDeviceType(widget.context);
+
+    return switch (deviceType) {
+      DeviceType.iPhone => (screenHeight * 0.3).clamp(200.0, 250.0),
+      DeviceType.iPadMini => (screenHeight * 0.25).clamp(220.0, 280.0),
+      DeviceType.iPadPro => (screenHeight * 0.2).clamp(240.0, 320.0),
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final pickerHeight = _calculatePickerHeight();
+
+    return Container(
+      height: pickerHeight,
+      padding: ResponsiveUtils.verticalPadding(
+        widget.context,
+        ResponsiveSpacing.xxs,
+      ),
+      color: CupertinoColors.systemBackground.resolveFrom(context),
+      child: SafeArea(
+        top: false,
+        child: Column(
+          children: [
+            // Header with title and buttons
+            SizedBox(
+              height: ResponsiveUtils.spacing(
+                widget.context,
+                ResponsiveSpacing.xxl,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Cancel button
+                  CupertinoButton(
+                    padding: EdgeInsets.only(
+                      left: ResponsiveUtils.spacing(
+                        widget.context,
+                        ResponsiveSpacing.sm,
+                      ),
+                    ),
+                    child: ResponsiveText(
+                      'Cancel',
+                      fontSize: ResponsiveFontSize.md,
+                      color: AppColors.mutedGreen,
+                    ),
+                    onPressed: () => Navigator.of(context).pop(null),
+                  ),
+
+                  // Optional title
+                  if (widget.title != null)
+                    Expanded(
+                      child: ResponsiveText(
+                        widget.title!,
+                        textAlign: TextAlign.center,
+                        fontSize: ResponsiveFontSize.lg,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.button,
+                        decoration: TextDecoration.none,
+                      ),
+                    ),
+
+                  // Done button
+                  CupertinoButton(
+                    padding: EdgeInsets.only(
+                      right: ResponsiveUtils.spacing(
+                        widget.context,
+                        ResponsiveSpacing.sm,
+                      ),
+                    ),
+                    child: ResponsiveText(
+                      'Done',
+                      fontSize: ResponsiveFontSize.md,
+                      color: AppColors.mutedGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    onPressed: () => Navigator.of(context).pop(_tempSelected),
+                  ),
+                ],
+              ),
+            ),
+
+            // Picker content
+            Expanded(
+              child: ExcludeSemantics(
+                child: CupertinoPicker(
+                  magnification: 1.22,
+                  squeeze: 1.2,
+                  useMagnifier: true,
+                  itemExtent: ResponsiveUtils.spacing(
+                    widget.context,
+                    ResponsiveSpacing.xl,
+                  ),
+                  scrollController: _controller,
+                  onSelectedItemChanged: (index) {
+                    if (index >= 0 && index < widget.items.length) {
+                      setState(() {
+                        _tempSelected = widget.items[index];
+                      });
+                    }
+                  },
+                  children:
+                      widget.items
+                          .map(
+                            (item) => Center(
+                              child: ResponsiveText(
+                                item,
+                                fontSize: ResponsiveFontSize.lg,
+                                color: AppColors.button,
+                              ),
+                            ),
+                          )
+                          .toList(),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Immediate selection picker with Done button for consistent UX
+class _InlineImmediatePicker extends StatefulWidget {
+  final List<String> items;
+  final String selectedItem;
+  final String? title;
+  final Function(String?) onSelected;
+  final BuildContext context;
+
+  const _InlineImmediatePicker({
+    required this.items,
+    required this.selectedItem,
+    required this.onSelected,
+    required this.context,
+    this.title,
+  });
+
+  @override
+  State<_InlineImmediatePicker> createState() => _InlineImmediatePickerState();
+}
+
+class _InlineImmediatePickerState extends State<_InlineImmediatePicker> {
+  late String _currentSelection;
+  late FixedExtentScrollController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentSelection = widget.selectedItem;
+    final initialIndex = widget.items.indexWhere(
+      (item) => item == widget.selectedItem,
+    );
+    _controller = FixedExtentScrollController(
+      initialItem: initialIndex >= 0 ? initialIndex : 0,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  double _calculatePickerHeight() {
+    final mediaQuery = MediaQuery.of(widget.context);
+    final screenHeight = mediaQuery.size.height;
+    final deviceType = ResponsiveUtils.getDeviceType(widget.context);
+
+    return switch (deviceType) {
+      DeviceType.iPhone => (screenHeight * 0.3).clamp(200.0, 250.0),
+      DeviceType.iPadMini => (screenHeight * 0.25).clamp(220.0, 280.0),
+      DeviceType.iPadPro => (screenHeight * 0.2).clamp(240.0, 320.0),
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final pickerHeight = _calculatePickerHeight();
+
+    return Container(
+      height: pickerHeight,
+      padding: ResponsiveUtils.verticalPadding(
+        widget.context,
+        ResponsiveSpacing.xxs,
+      ),
+      color: CupertinoColors.systemBackground.resolveFrom(context),
+      child: SafeArea(
+        top: false,
+        child: Column(
+          children: [
+            // Header with title and buttons
+            SizedBox(
+              height: ResponsiveUtils.spacing(
+                widget.context,
+                ResponsiveSpacing.xxl,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Cancel button
+                  CupertinoButton(
+                    padding: EdgeInsets.only(
+                      left: ResponsiveUtils.spacing(
+                        widget.context,
+                        ResponsiveSpacing.sm,
+                      ),
+                    ),
+                    child: ResponsiveText(
+                      'Cancel',
+                      fontSize: ResponsiveFontSize.md,
+                      color: AppColors.mutedGreen,
+                    ),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+
+                  // Optional title
+                  if (widget.title != null)
+                    Expanded(
+                      child: ResponsiveText(
+                        widget.title!,
+                        textAlign: TextAlign.center,
+                        fontSize: ResponsiveFontSize.lg,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.button,
+                        decoration: TextDecoration.none,
+                      ),
+                    ),
+
+                  // Done button
+                  CupertinoButton(
+                    padding: EdgeInsets.only(
+                      right: ResponsiveUtils.spacing(
+                        widget.context,
+                        ResponsiveSpacing.sm,
+                      ),
+                    ),
+                    child: ResponsiveText(
+                      'Done',
+                      fontSize: ResponsiveFontSize.md,
+                      color: AppColors.mutedGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    onPressed: () {
+                      widget.onSelected(_currentSelection);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+            // Picker content
+            Expanded(
+              child: ExcludeSemantics(
+                child: CupertinoPicker(
+                  magnification: 1.22,
+                  squeeze: 1.2,
+                  useMagnifier: true,
+                  itemExtent: ResponsiveUtils.spacing(
+                    widget.context,
+                    ResponsiveSpacing.xl,
+                  ),
+                  scrollController: _controller,
+                  onSelectedItemChanged: (index) {
+                    if (index >= 0 && index < widget.items.length) {
+                      setState(() {
+                        _currentSelection = widget.items[index];
+                      });
+                      // For immediate mode: call the callback right away for real-time filtering
+                      widget.onSelected(widget.items[index]);
+                    }
+                  },
+                  children:
+                      widget.items
+                          .map(
+                            (item) => Center(
+                              child: ResponsiveText(
+                                item,
+                                fontSize: ResponsiveFontSize.lg,
+                                color: AppColors.button,
+                              ),
+                            ),
+                          )
+                          .toList(),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -127,16 +127,27 @@ class _RecipesScreenState extends State<RecipesScreen> {
               confirmDropdownOnDone:
                   true, // Enable confirm-on-done for better UX
               onDropdownChanged: (value) {
+                print('🔍 DEBUG: ChipsDropdownCard onDropdownChanged called');
+                print('🔍 DEBUG: Received value: $value');
+                print('🔍 DEBUG: Current selectedFilter: $selectedFilter');
+
                 if (value != null) {
+                  print('🔍 DEBUG: Setting new selectedFilter: $value');
                   setState(() {
                     selectedFilter = value;
                   });
+                  print('🔍 DEBUG: Calling _applyFiltersDebounced');
                   _applyFiltersDebounced();
+                } else {
+                  print('🔍 DEBUG: Value is null, not updating');
                 }
               },
               chipsItems: tagNames,
               chipsSelectedItems: selectedTags.map((t) => t.name).toList(),
               onChipsSelected: (selectedTagNames) {
+                print(
+                  '🔍 DEBUG: onChipsSelected called with: $selectedTagNames',
+                );
                 setState(() {
                   selectedTags =
                       resourceProvider.recipeTags
