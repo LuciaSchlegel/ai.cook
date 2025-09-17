@@ -97,36 +97,36 @@ class ResponsiveContainer extends StatelessWidget {
 /// A responsive text widget that adapts font size based on device type
 class ResponsiveText extends StatelessWidget {
   final String text;
-  final ResponsiveFontSize fontSize;
+  final double? fontSize;
   final FontWeight? fontWeight;
   final Color? color;
+  final String? fontFamily;
   final TextAlign? textAlign;
   final int? maxLines;
   final TextOverflow? overflow;
-  final String? fontFamily;
-  final double? letterSpacing;
   final double? height;
   final TextDecoration? decoration;
   final Color? decorationColor;
   final TextDecorationStyle? decorationStyle;
   final double? decorationThickness;
+  final double? letterSpacing;
 
   const ResponsiveText(
     this.text, {
     super.key,
-    this.fontSize = ResponsiveFontSize.md,
+    this.fontSize,
     this.fontWeight,
     this.color,
+    this.fontFamily,
     this.textAlign,
     this.maxLines,
     this.overflow,
-    this.fontFamily,
-    this.letterSpacing,
     this.height,
     this.decoration,
     this.decorationColor,
     this.decorationStyle,
     this.decorationThickness,
+    this.letterSpacing,
   });
 
   @override
@@ -137,16 +137,16 @@ class ResponsiveText extends StatelessWidget {
       maxLines: maxLines,
       overflow: overflow,
       style: TextStyle(
-        fontSize: ResponsiveUtils.fontSize(context, fontSize),
-        fontWeight: fontWeight,
+        fontSize: fontSize,
+        fontWeight: fontWeight ?? FontWeight.w400,
         color: color,
-        fontFamily: fontFamily,
-        letterSpacing: letterSpacing,
+        fontFamily: fontFamily ?? 'Melodrama',
         height: height,
         decoration: decoration,
         decorationColor: decorationColor,
         decorationStyle: decorationStyle,
         decorationThickness: decorationThickness,
+        letterSpacing: letterSpacing,
       ),
     );
   }

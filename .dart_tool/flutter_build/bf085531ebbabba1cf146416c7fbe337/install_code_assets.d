@@ -1,0 +1,1 @@
+ /Users/luciaschlegel/Programming/flutter/ai.cook/.dart_tool/flutter_build/bf085531ebbabba1cf146416c7fbe337/native_assets.json: 

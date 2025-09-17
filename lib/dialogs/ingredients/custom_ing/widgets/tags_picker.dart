@@ -86,7 +86,10 @@ class TagsPicker extends StatelessWidget {
             children: [
               ResponsiveText(
                 'Dietary Restrictions',
-                fontSize: ResponsiveFontSize.md,
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.md,
+                ),
                 fontWeight: FontWeight.w600,
                 color: AppColors.button,
               ),
@@ -171,7 +174,10 @@ class TagsPicker extends StatelessWidget {
                                 ),
                                 ResponsiveText(
                                   TextUtils.capitalizeFirstLetter(tag.name),
-                                  fontSize: ResponsiveFontSize.sm,
+                                  fontSize: ResponsiveUtils.fontSize(
+                                    context,
+                                    ResponsiveFontSize.sm,
+                                  ),
                                   fontWeight: FontWeight.w700,
                                   color: AppColors.white,
                                 ),

@@ -137,11 +137,13 @@ class CustomIngLayout extends StatelessWidget {
                     isEditing
                         ? 'Edit Custom Ingredient'
                         : 'Add Custom Ingredient',
-                    fontSize: ResponsiveFontSize.title,
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.title,
+                    ),
                     fontFamily: 'Casta',
                     color: AppColors.button,
                     fontWeight: FontWeight.bold,
-                    letterSpacing: 1.2,
                     textAlign: TextAlign.center,
                   ),
                   const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
@@ -185,7 +187,10 @@ class CustomIngLayout extends StatelessWidget {
                         children: [
                           ResponsiveText(
                             selectedCategory.name,
-                            fontSize: ResponsiveFontSize.md,
+                            fontSize: ResponsiveUtils.fontSize(
+                              context,
+                              ResponsiveFontSize.md,
+                            ),
                             color: AppColors.button,
                           ),
                           ResponsiveIcon(
@@ -277,7 +282,10 @@ class CustomIngLayout extends StatelessWidget {
                                   TextUtils.capitalizeFirstLetter(
                                     selectedUnit.name,
                                   ),
-                                  fontSize: ResponsiveFontSize.md,
+                                  fontSize: ResponsiveUtils.fontSize(
+                                    context,
+                                    ResponsiveFontSize.md,
+                                  ),
                                   color:
                                       selectedUnit.name == 'Select unit'
                                           ? AppColors.button.withValues(

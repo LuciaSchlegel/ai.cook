@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 
 class LoadingDialog extends StatelessWidget {
   final String message;
@@ -23,7 +24,14 @@ class LoadingDialog extends StatelessWidget {
               // 👈 Este bloquea el overflow
               child: Text(
                 message,
-                style: const TextStyle(fontSize: 16, color: AppColors.black),
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(
+                    context,
+                    ResponsiveFontSize.md,
+                  ),
+                  color: AppColors.black,
+                  fontFamily: 'Inter',
+                ),
                 overflow: TextOverflow.ellipsis, // opcional
               ),
             ),

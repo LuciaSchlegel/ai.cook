@@ -1,5 +1,6 @@
 // widgets/auth_button.dart
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/material.dart';
 
 class AuthButton extends StatelessWidget {
@@ -18,11 +19,23 @@ class AuthButton extends StatelessWidget {
           backgroundColor: AppColors.orange,
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(
+              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xxl),
+            ),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: EdgeInsets.symmetric(
+            vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+          ),
         ),
-        child: Text(label),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontWeight: AppFontWeights.medium,
+            fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.md),
+            color: Colors.white,
+            fontFamily: 'Inter',
+          ),
+        ),
       ),
     );
   }

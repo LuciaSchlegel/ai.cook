@@ -1,4 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/material.dart';
@@ -19,13 +20,17 @@ class WelcomeMessage extends StatelessWidget {
           child: Center(
             child: DefaultTextStyle(
               style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(
-                  context,
-                  ResponsiveFontSize.title2,
-                ),
-                fontFamily: 'Casta',
+                fontSize:
+                    ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.title2,
+                    ) *
+                    1.02,
+                fontFamily: 'Melodrama',
                 color: Colors.white,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppFontWeights.medium,
+                letterSpacing: 1.2,
+                height: 1.2,
               ),
               child: AnimatedTextKit(
                 totalRepeatCount: 1,

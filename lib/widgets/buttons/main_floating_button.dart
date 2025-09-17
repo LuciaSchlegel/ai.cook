@@ -288,20 +288,18 @@ class _MainFloatingButtonState extends State<MainFloatingButton>
                                           children: [
                                             ResponsiveText(
                                               'Lucia Schlegel',
-                                              fontSize: ResponsiveFontSize.lg,
-                                              fontWeight: FontWeight.w600,
+                                              fontSize:
+                                                  ResponsiveUtils.fontSize(
+                                                    context,
+                                                    ResponsiveFontSize.xl,
+                                                  ),
+                                              fontWeight: AppFontWeights.medium,
                                               color: AppColors.black,
                                               letterSpacing: -0.3,
+                                              fontFamily: 'Melodrama',
                                             ),
                                             ResponsiveSpacingWidget.vertical(
                                               ResponsiveSpacing.xxs,
-                                            ),
-                                            ResponsiveText(
-                                              'Culinary enthusiast',
-                                              fontSize: ResponsiveFontSize.sm,
-                                              color: AppColors.mutedGreen,
-                                              fontWeight: FontWeight.w500,
-                                              letterSpacing: -0.2,
                                             ),
                                           ],
                                         ),
@@ -471,8 +469,12 @@ class _MainFloatingButtonState extends State<MainFloatingButton>
                     children: [
                       ResponsiveText(
                         label,
-                        fontSize: ResponsiveFontSize.md,
-                        fontWeight: FontWeight.w600,
+                        fontSize: ResponsiveUtils.fontSize(
+                          context,
+                          ResponsiveFontSize.sm,
+                        ),
+                        fontWeight: AppFontWeights.medium,
+                        fontFamily: 'Inter',
                         color:
                             isDestructive
                                 ? Colors.red.shade600
@@ -482,9 +484,13 @@ class _MainFloatingButtonState extends State<MainFloatingButton>
                       ResponsiveSpacingWidget.vertical(ResponsiveSpacing.xxs),
                       ResponsiveText(
                         subtitle,
-                        fontSize: ResponsiveFontSize.sm,
+                        fontSize: ResponsiveUtils.fontSize(
+                          context,
+                          ResponsiveFontSize.sm,
+                        ),
                         color: AppColors.mutedGreen,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppFontWeights.medium,
+                        fontFamily: 'Inter',
                         letterSpacing: -0.1,
                       ),
                     ],

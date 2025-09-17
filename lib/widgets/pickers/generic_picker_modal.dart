@@ -125,7 +125,10 @@ class _GenericPickerModalState<T> extends State<GenericPickerModal<T>> {
                             (item) => Center(
                               child: ResponsiveText(
                                 widget.getDisplayText(item),
-                                fontSize: ResponsiveFontSize.lg,
+                                fontSize: ResponsiveUtils.fontSize(
+                                  context,
+                                  ResponsiveFontSize.lg,
+                                ),
                                 color: AppColors.button,
                               ),
                             ),
@@ -156,7 +159,10 @@ class _GenericPickerModalState<T> extends State<GenericPickerModal<T>> {
               ),
               child: ResponsiveText(
                 widget.cancelText,
-                fontSize: ResponsiveFontSize.md,
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.md,
+                ),
                 color: AppColors.mutedGreen,
               ),
               onPressed: () => Navigator.of(context).pop(),
@@ -168,7 +174,10 @@ class _GenericPickerModalState<T> extends State<GenericPickerModal<T>> {
                 child: ResponsiveText(
                   widget.title!,
                   textAlign: TextAlign.center,
-                  fontSize: ResponsiveFontSize.lg,
+                  fontSize: ResponsiveUtils.fontSize(
+                    context,
+                    ResponsiveFontSize.lg,
+                  ),
                   fontWeight: FontWeight.w600,
                   color: AppColors.button,
                   decoration: TextDecoration.none,
@@ -182,7 +191,10 @@ class _GenericPickerModalState<T> extends State<GenericPickerModal<T>> {
               ),
               child: ResponsiveText(
                 widget.doneText,
-                fontSize: ResponsiveFontSize.md,
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.md,
+                ),
                 color: AppColors.mutedGreen,
                 fontWeight: FontWeight.w600,
               ),

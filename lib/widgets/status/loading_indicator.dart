@@ -29,7 +29,10 @@ class LoadingIndicator extends StatelessWidget {
                   ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
                   ResponsiveText(
                     message!,
-                    fontSize: ResponsiveFontSize.md,
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.md,
+                    ),
                     fontWeight: FontWeight.w500,
                     color: color ?? AppColors.mutedGreen,
                     textAlign: TextAlign.center,

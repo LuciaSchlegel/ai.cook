@@ -27,8 +27,12 @@ void showErrorDialog(
               const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
               ResponsiveText(
                 message,
-                fontSize: ResponsiveFontSize.md,
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.md,
+                ),
                 fontWeight: FontWeight.w400,
+                fontFamily: 'Inter',
               ),
             ],
           ),
@@ -44,20 +48,28 @@ void showErrorDialog(
                     onResetPassword,
                   );
                 },
-                child: const ResponsiveText(
+                child: ResponsiveText(
                   "Reset password",
-                  fontSize: ResponsiveFontSize.md,
+                  fontSize: ResponsiveUtils.fontSize(
+                    context,
+                    ResponsiveFontSize.md,
+                  ),
                   fontWeight: FontWeight.w600,
                   color: AppColors.orange,
+                  fontFamily: 'Inter',
                 ),
               ),
             CupertinoDialogAction(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: const ResponsiveText(
+              child: ResponsiveText(
                 "OK",
-                fontSize: ResponsiveFontSize.sm,
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.sm,
+                ),
                 fontWeight: FontWeight.w500,
                 color: AppColors.button,
+                fontFamily: 'Inter',
               ),
             ),
           ],

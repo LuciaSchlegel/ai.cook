@@ -239,15 +239,19 @@ class IngredientListView extends StatelessWidget {
                                       userIng.customIngredient?.name ??
                                       '',
                                   color: AppColors.button,
-                                  fontFamily: 'Casta',
-                                  fontSize: ResponsiveFontSize.xl,
-                                  fontWeight: FontWeight.w600,
+                                  fontFamily: 'Melodrama',
+                                  fontSize: ResponsiveUtils.fontSize(
+                                    context,
+                                    ResponsiveFontSize.xl,
+                                  ),
                                   height: 1.1,
+                                  letterSpacing: 1.7,
+                                  fontWeight: AppFontWeights.semiBold,
                                 ),
                                 SizedBox(
                                   height: ResponsiveUtils.spacing(
                                     context,
-                                    ResponsiveSpacing.xxs,
+                                    ResponsiveSpacing.xs,
                                   ),
                                 ),
                                 // Dietary icons
@@ -287,7 +291,10 @@ class IngredientListView extends StatelessWidget {
                                   '${_formatQuantity(userIng.quantity)} ${userIng.unit?.abbreviation ?? ''}',
                                   color: AppColors.background,
                                   fontFamily: 'Inter',
-                                  fontSize: ResponsiveFontSize.sm,
+                                  fontSize: ResponsiveUtils.fontSize(
+                                    context,
+                                    ResponsiveFontSize.sm,
+                                  ),
                                   fontWeight: FontWeight.w500,
                                 ),
                               ],

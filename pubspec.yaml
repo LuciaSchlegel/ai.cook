@@ -94,9 +94,14 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Casta
+    - family: Melodrama
       fonts:
-        - asset: assets/fonts/Casta-Thin.otf
+        - asset: assets/fonts/Melodrama-Light.otf
+        - asset: assets/fonts/Melodrama-Regular.otf
+        - asset: assets/fonts/Melodrama-Medium.otf
+        - asset: assets/fonts/Melodrama-SemiBold.otf
+        - asset: assets/fonts/Melodrama-Bold.otf
+
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

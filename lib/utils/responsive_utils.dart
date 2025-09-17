@@ -56,6 +56,7 @@ class ResponsiveUtils {
   // ==================== SPACING SYSTEM ====================
 
   /// Base spacing constants
+  static const double _spacingXXXS = 2.0;
   static const double _spacingXXS = 4.0;
   static const double _spacingXS = 8.0;
   static const double _spacingSM = 12.0;
@@ -78,6 +79,7 @@ class ResponsiveUtils {
 
   static double _getBaseSpacing(ResponsiveSpacing size) {
     return switch (size) {
+      ResponsiveSpacing.xxxs => _spacingXXXS,
       ResponsiveSpacing.xxs => _spacingXXS,
       ResponsiveSpacing.xs => _spacingXS,
       ResponsiveSpacing.sm => _spacingSM,
@@ -156,6 +158,7 @@ class ResponsiveUtils {
   static const double _fontTitle2 = 42.0;
   static const double _fontDisplay = 34.0;
   static const double _fontDisplay2 = 85.0;
+  static const double _fontDisplay3 = 100.0;
 
   /// Responsive font size that adapts to device type
   static double fontSize(BuildContext context, ResponsiveFontSize size) {
@@ -182,6 +185,7 @@ class ResponsiveUtils {
       ResponsiveFontSize.title2 => _fontTitle2,
       ResponsiveFontSize.display => _fontDisplay,
       ResponsiveFontSize.display2 => _fontDisplay2,
+      ResponsiveFontSize.display3 => _fontDisplay3,
     };
   }
 
@@ -349,7 +353,7 @@ class ResponsiveUtils {
 
 enum DeviceType { iPhone, iPadMini, iPadPro }
 
-enum ResponsiveSpacing { xxs, xs, sm, md, lg, xl, xxl }
+enum ResponsiveSpacing { xxxs, xxs, xs, sm, md, lg, xl, xxl }
 
 enum ResponsiveFontSize {
   xs,
@@ -362,6 +366,7 @@ enum ResponsiveFontSize {
   title2,
   display,
   display2,
+  display3,
 }
 
 enum ResponsiveIconSize { xs, sm, md, lg, xl, xxl }

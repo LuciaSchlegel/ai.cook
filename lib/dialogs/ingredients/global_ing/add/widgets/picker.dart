@@ -204,7 +204,7 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
       // Quantity section
       ResponsiveText(
         'Enter Quantity',
-        fontSize: ResponsiveFontSize.xxl,
+        fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl),
         fontFamily: 'Casta',
         decoration: TextDecoration.none,
         fontWeight: FontWeight.bold,
@@ -252,7 +252,7 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
       // Unit section
       ResponsiveText(
         'Select Unit',
-        fontSize: ResponsiveFontSize.xxl,
+        fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl),
         decoration: TextDecoration.none,
         fontFamily: 'Casta',
         fontWeight: FontWeight.bold,
@@ -299,7 +299,10 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
                           (unit) => Center(
                             child: ResponsiveText(
                               TextUtils.capitalizeFirstLetter(unit.name),
-                              fontSize: ResponsiveFontSize.lg,
+                              fontSize: ResponsiveUtils.fontSize(
+                                context,
+                                ResponsiveFontSize.lg,
+                              ),
                               color: AppColors.button.withValues(alpha: 0.9),
                               fontWeight: FontWeight.w500,
                             ),
@@ -359,7 +362,7 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
           ),
           child: ResponsiveText(
             'Confirm',
-            fontSize: ResponsiveFontSize.lg,
+            fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.lg),
             fontWeight: FontWeight.w600,
             color:
                 _isQuantityValid

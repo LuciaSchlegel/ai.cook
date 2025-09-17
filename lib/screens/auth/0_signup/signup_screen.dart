@@ -54,12 +54,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const ResponsiveSpacingWidget.vertical(
-                          ResponsiveSpacing.xl,
-                        ),
                         const WelcomeMessage(),
                         const ResponsiveSpacingWidget.vertical(
-                          ResponsiveSpacing.lg,
+                          ResponsiveSpacing.xl,
                         ),
                         FadeInUp(
                           delay: const Duration(milliseconds: 300),

@@ -126,7 +126,10 @@ class _ExpandedHeader extends StatelessWidget {
           Expanded(
             child: ResponsiveText(
               recipe.name,
-              fontSize: ResponsiveFontSize.display,
+              fontSize: ResponsiveUtils.fontSize(
+                context,
+                ResponsiveFontSize.display,
+              ),
               fontWeight: FontWeight.w600,
               color: AppColors.button,
               fontFamily: 'Casta',
@@ -215,7 +218,7 @@ class _ActionButton extends StatelessWidget {
         ResponsiveSpacingWidget.vertical(ResponsiveSpacing.xs),
         ResponsiveText(
           label,
-          fontSize: ResponsiveFontSize.xs,
+          fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.xs),
           fontWeight: FontWeight.w500,
           color: CupertinoColors.label,
           fontFamily: 'Inter',
@@ -238,7 +241,7 @@ class _InstructionsSection extends StatelessWidget {
       children: [
         ResponsiveText(
           'Steps',
-          fontSize: ResponsiveFontSize.xl,
+          fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.xl),
           fontWeight: FontWeight.w500,
           color: AppColors.button,
           fontFamily: 'Times New Roman',
@@ -286,7 +289,10 @@ class _RecipeStepsView extends StatelessWidget {
                 child: Center(
                   child: ResponsiveText(
                     '${index + 1}',
-                    fontSize: ResponsiveFontSize.xs,
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.xs,
+                    ),
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -296,7 +302,10 @@ class _RecipeStepsView extends StatelessWidget {
               Expanded(
                 child: ResponsiveText(
                   recipe.steps[index],
-                  fontSize: ResponsiveFontSize.md,
+                  fontSize: ResponsiveUtils.fontSize(
+                    context,
+                    ResponsiveFontSize.md,
+                  ),
                   height: 1.5,
                   color: CupertinoColors.label,
                 ),

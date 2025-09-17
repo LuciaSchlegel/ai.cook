@@ -139,7 +139,10 @@ class IngredientSelectionTile extends StatelessWidget {
                           ingredient.name,
                           color: AppColors.button,
                           fontFamily: 'Casta',
-                          fontSize: ResponsiveFontSize.xl,
+                          fontSize: ResponsiveUtils.fontSize(
+                            context,
+                            ResponsiveFontSize.xl,
+                          ),
                           fontWeight: FontWeight.w700,
                           letterSpacing: 0.2,
                         ),
@@ -149,7 +152,10 @@ class IngredientSelectionTile extends StatelessWidget {
                         ResponsiveText(
                           ingredient.category?.name ?? '',
                           color: AppColors.mutedGreen.withValues(alpha: 0.85),
-                          fontSize: ResponsiveFontSize.sm,
+                          fontSize: ResponsiveUtils.fontSize(
+                            context,
+                            ResponsiveFontSize.sm,
+                          ),
                           fontWeight: FontWeight.w400,
                         ),
                       ],
@@ -168,7 +174,10 @@ class IngredientSelectionTile extends StatelessWidget {
                         '$quantity ${unit.abbreviation}',
                         color: AppColors.mutedGreen,
                         fontWeight: FontWeight.bold,
-                        fontSize: ResponsiveFontSize.sm,
+                        fontSize: ResponsiveUtils.fontSize(
+                          context,
+                          ResponsiveFontSize.sm,
+                        ),
                       ),
                     ),
                   // Botón de acción

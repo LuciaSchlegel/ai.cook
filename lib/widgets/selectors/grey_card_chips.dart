@@ -391,7 +391,8 @@ class GreyCardChips extends StatelessWidget {
                                                           : AppColors.button,
                                                   fontWeight:
                                                       isSelected
-                                                          ? FontWeight.w600
+                                                          ? AppFontWeights
+                                                              .medium
                                                           : FontWeight.w500,
                                                   fontSize:
                                                       ResponsiveUtils.fontSize(
@@ -399,6 +400,7 @@ class GreyCardChips extends StatelessWidget {
                                                         ResponsiveFontSize.sm,
                                                       ),
                                                   letterSpacing: 0.3,
+                                                  fontFamily: 'Inter',
                                                   shadows:
                                                       isSelected
                                                           ? [

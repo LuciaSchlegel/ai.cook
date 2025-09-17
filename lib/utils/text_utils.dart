@@ -20,4 +20,10 @@ class TextUtils {
     if (text.isEmpty) return text;
     return capitalizeFirstLetter(text.toLowerCase());
   }
+
+  static String emailCannotBeEmpty = 'Email cannot be empty';
+  static String invalidEmailFormat = 'Invalid email format';
+  static String passwordCannotBeEmpty = 'Password cannot be empty';
+  static String passwordMustBeAtLeast6CharactersLong =
+      'Password must be at least 6 characters long';
 }

@@ -64,7 +64,10 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                 children: [
                   ResponsiveText(
                     'Add Ingredients',
-                    fontSize: ResponsiveFontSize.title,
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.title,
+                    ),
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Casta',
                     color: AppColors.button,
@@ -232,7 +235,10 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                             : null,
                     child: ResponsiveText(
                       'Add Selected',
-                      fontSize: ResponsiveFontSize.md,
+                      fontSize: ResponsiveUtils.fontSize(
+                        context,
+                        ResponsiveFontSize.md,
+                      ),
                       fontWeight: FontWeight.w600,
                       color: AppColors.white,
                     ),

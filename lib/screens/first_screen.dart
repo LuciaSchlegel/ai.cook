@@ -12,145 +12,227 @@ class FirstScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<FBAuthProvider>(context, listen: false);
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: Padding(
-          padding: ResponsiveUtils.padding(context, ResponsiveSpacing.xl),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Logo
-              const ResponsiveText(
-                'ai.cook',
-                fontSize: ResponsiveFontSize.display2,
-                fontWeight: FontWeight.normal,
-                color: AppColors.white,
-                fontFamily: 'Casta',
-              ),
-              const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.xl),
-
-              // Apple Button
-              GestureDetector(
-                onTap: () async {
-                  await authProvider.signInWithApple();
-                },
-                child: Container(
-                  height: 50,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: AppColors.button,
-                    borderRadius: BorderRadius.circular(
-                      ResponsiveUtils.borderRadius(
-                        context,
-                        ResponsiveBorderRadius.xl,
-                      ),
-                    ),
-                  ),
-                  child: Center(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Image.asset('assets/icons/apple-logo.png', height: 24),
-                        const ResponsiveSpacingWidget.horizontal(
-                          ResponsiveSpacing.xs,
-                        ),
-                        const ResponsiveText(
-                          "Continue with Apple",
-                          color: AppColors.white,
-                          fontSize: ResponsiveFontSize.sm,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
-
-              // Google + Sign In
-              Row(
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        return Scaffold(
+          backgroundColor: AppColors.background,
+          body: SafeArea(
+            child: Padding(
+              padding: ResponsiveUtils.padding(context, ResponsiveSpacing.xl),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () async {
-                        await authProvider.signInWithGoogle();
-                      },
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(
-                            ResponsiveUtils.borderRadius(
+                  // Logo
+                  ResponsiveText(
+                    'ai.cook',
+                    fontSize:
+                        deviceType == DeviceType.iPadPro
+                            ? ResponsiveUtils.fontSize(
                               context,
-                              ResponsiveBorderRadius.xl,
+                              ResponsiveFontSize.display3,
+                            )
+                            : ResponsiveUtils.fontSize(
+                              context,
+                              ResponsiveFontSize.display2,
                             ),
+                    color: AppColors.white,
+                    fontWeight: AppFontWeights.medium,
+                  ),
+                  const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
+
+                  // Apple Button
+                  Container(
+                    padding: ResponsiveUtils.padding(
+                      context,
+                      deviceType == DeviceType.iPadPro
+                          ? ResponsiveSpacing.xxs
+                          : ResponsiveSpacing.sm,
+                    ),
+                    child: Center(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: ResponsiveUtils.getOptimalContentWidth(
+                            context,
                           ),
                         ),
-                        child: Center(
-                          child: Image.asset(
-                            'assets/icons/google-logo.png',
-                            height: 24,
+                        child: GestureDetector(
+                          onTap: () async {
+                            await authProvider.signInWithApple();
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            height:
+                                ResponsiveUtils.spacing(
+                                  context,
+                                  ResponsiveSpacing.xxl,
+                                ) *
+                                1.2,
+                            padding: ResponsiveUtils.padding(
+                              context,
+                              ResponsiveSpacing.md,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.button,
+                              borderRadius: BorderRadius.circular(
+                                ResponsiveUtils.borderRadius(
+                                  context,
+                                  ResponsiveBorderRadius.xxl,
+                                ),
+                              ),
+                            ),
+                            child: Center(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Image.asset(
+                                    'assets/icons/apple-logo.png',
+                                    height: ResponsiveUtils.iconSize(
+                                      context,
+                                      ResponsiveIconSize.lg,
+                                    ),
+                                  ),
+                                  ResponsiveSpacingWidget.horizontal(
+                                    ResponsiveSpacing.sm,
+                                  ),
+                                  ResponsiveText(
+                                    "Continue with Apple",
+                                    color: AppColors.white,
+                                    fontSize: ResponsiveUtils.fontSize(
+                                      context,
+                                      ResponsiveFontSize.md,
+                                    ),
+                                    fontWeight: AppFontWeights.medium,
+                                    fontFamily: 'Inter',
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                  const ResponsiveSpacingWidget.horizontal(
-                    ResponsiveSpacing.md,
-                  ),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/login');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.orange,
-                        foregroundColor: AppColors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            ResponsiveUtils.borderRadius(
-                              context,
-                              ResponsiveBorderRadius.xl,
-                            ),
+                  Container(
+                    padding: ResponsiveUtils.padding(
+                      context,
+                      ResponsiveSpacing.sm,
+                    ),
+                    child: Center(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: ResponsiveUtils.getOptimalContentWidth(
+                            context,
                           ),
                         ),
-                        minimumSize: const Size.fromHeight(50),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () async {
+                                  await authProvider.signInWithGoogle();
+                                },
+                                child: Container(
+                                  height:
+                                      ResponsiveUtils.spacing(
+                                        context,
+                                        ResponsiveSpacing.xxl,
+                                      ) *
+                                      1.2,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.white,
+                                    borderRadius: BorderRadius.circular(
+                                      ResponsiveUtils.borderRadius(
+                                        context,
+                                        ResponsiveBorderRadius.xxl,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Image.asset(
+                                      'assets/icons/google-logo.png',
+                                      height: ResponsiveUtils.iconSize(
+                                        context,
+                                        ResponsiveIconSize.lg,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            ResponsiveSpacingWidget.horizontal(
+                              ResponsiveSpacing.md,
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(context, '/login');
+                                },
+                                child: Container(
+                                  height:
+                                      ResponsiveUtils.spacing(
+                                        context,
+                                        ResponsiveSpacing.xxl,
+                                      ) *
+                                      1.2,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.orange,
+                                    borderRadius: BorderRadius.circular(
+                                      ResponsiveUtils.borderRadius(
+                                        context,
+                                        ResponsiveBorderRadius.xxl,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: ResponsiveText(
+                                      "Sign in",
+                                      fontSize: ResponsiveUtils.fontSize(
+                                        context,
+                                        ResponsiveFontSize.md,
+                                      ),
+                                      fontWeight: AppFontWeights.medium,
+                                      color: AppColors.white,
+                                      fontFamily: 'Inter',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      child: const ResponsiveText(
-                        "Sign in",
-                        fontSize: ResponsiveFontSize.sm,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.white,
+                    ),
+                  ),
+
+                  const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.xl),
+
+                  // Sign Up
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/sign_up');
+                    },
+                    child: ResponsiveText(
+                      'Sign up',
+                      fontSize: ResponsiveUtils.fontSize(
+                        context,
+                        ResponsiveFontSize.md,
                       ),
+                      fontWeight: AppFontWeights.medium,
+                      fontFamily: 'Inter',
+                      decoration: TextDecoration.underline,
+                      height: 2.5,
+                      color: AppColors.white,
+                      decorationColor: AppColors.white,
+                      decorationStyle: TextDecorationStyle.solid,
+                      decorationThickness: 1,
                     ),
                   ),
                 ],
               ),
-
-              const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.xl),
-
-              // Sign Up
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/sign_up');
-                },
-                child: const ResponsiveText(
-                  'Sign up',
-                  fontSize: ResponsiveFontSize.sm,
-                  fontWeight: FontWeight.w500,
-                  decoration: TextDecoration.underline,
-                  height: 2.5,
-                  color: AppColors.white,
-                  decorationColor: AppColors.white,
-                  decorationStyle: TextDecorationStyle.solid,
-                  decorationThickness: 1,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

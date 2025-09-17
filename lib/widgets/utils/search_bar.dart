@@ -93,7 +93,8 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                               context,
                               ResponsiveFontSize.md,
                             ),
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppFontWeights.medium,
+                            fontFamily: 'Inter',
                           ),
                           decoration: InputDecoration(
                             hintText: widget.hintText,

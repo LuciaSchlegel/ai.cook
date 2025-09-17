@@ -1,4 +1,5 @@
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -22,24 +23,59 @@ class CustomTextField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(fontSize: 17, color: AppColors.black),
+          style: TextStyle(
+            fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.md),
+            color: AppColors.black,
+            fontFamily: 'Inter',
+          ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(
+          height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+        ),
         TextFormField(
           controller: controller,
           obscureText: obscureText,
           validator: validator,
-          style: const TextStyle(color: AppColors.black),
+          style: TextStyle(
+            fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.md),
+            color: AppColors.black,
+            fontFamily: 'Inter',
+          ),
           decoration: InputDecoration(
+            errorStyle: TextStyle(
+              fontSize: ResponsiveUtils.fontSize(
+                context,
+                ResponsiveFontSize.sm,
+              ),
+              color: Colors.red,
+              fontFamily: 'Inter',
+            ),
             filled: true,
             fillColor: AppColors.white,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(
+                ResponsiveUtils.borderRadius(
+                  context,
+                  ResponsiveBorderRadius.lg,
+                ),
+              ),
+            ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(
+                ResponsiveUtils.borderRadius(
+                  context,
+                  ResponsiveBorderRadius.lg,
+                ),
+              ),
               borderSide: BorderSide(color: Colors.grey),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(
+                ResponsiveUtils.borderRadius(
+                  context,
+                  ResponsiveBorderRadius.lg,
+                ),
+              ),
               borderSide: const BorderSide(color: AppColors.orange, width: 2),
             ),
           ),

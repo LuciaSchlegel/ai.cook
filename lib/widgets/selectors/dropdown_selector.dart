@@ -123,9 +123,13 @@ class DropdownSelector extends StatelessWidget {
                   children: [
                     Expanded(
                       child: ResponsiveText(
+                        fontFamily: 'Inter',
                         value,
-                        fontSize: ResponsiveFontSize.md,
-                        fontWeight: FontWeight.w500,
+                        fontSize: ResponsiveUtils.fontSize(
+                          context,
+                          ResponsiveFontSize.md,
+                        ),
+                        fontWeight: AppFontWeights.medium,
                         color:
                             isDisabled
                                 ? AppColors.button.withValues(alpha: 0.4)
@@ -241,7 +245,11 @@ class _InlineConfirmPickerState extends State<_InlineConfirmPicker> {
                     ),
                     child: ResponsiveText(
                       'Cancel',
-                      fontSize: ResponsiveFontSize.md,
+                      fontFamily: 'Inter',
+                      fontSize: ResponsiveUtils.fontSize(
+                        context,
+                        ResponsiveFontSize.md,
+                      ),
                       color: AppColors.mutedGreen,
                     ),
                     onPressed: () => Navigator.of(context).pop(null),
@@ -253,8 +261,12 @@ class _InlineConfirmPickerState extends State<_InlineConfirmPicker> {
                       child: ResponsiveText(
                         widget.title!,
                         textAlign: TextAlign.center,
-                        fontSize: ResponsiveFontSize.lg,
-                        fontWeight: FontWeight.w600,
+                        fontSize: ResponsiveUtils.fontSize(
+                          context,
+                          ResponsiveFontSize.lg,
+                        ),
+                        fontWeight: AppFontWeights.medium,
+                        fontFamily: 'Inter',
                         color: AppColors.button,
                         decoration: TextDecoration.none,
                       ),
@@ -270,9 +282,13 @@ class _InlineConfirmPickerState extends State<_InlineConfirmPicker> {
                     ),
                     child: ResponsiveText(
                       'Done',
-                      fontSize: ResponsiveFontSize.md,
+                      fontFamily: 'Inter',
+                      fontSize: ResponsiveUtils.fontSize(
+                        context,
+                        ResponsiveFontSize.md,
+                      ),
                       color: AppColors.mutedGreen,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppFontWeights.medium,
                     ),
                     onPressed: () => Navigator.of(context).pop(_tempSelected),
                   ),
@@ -305,7 +321,11 @@ class _InlineConfirmPickerState extends State<_InlineConfirmPicker> {
                             (item) => Center(
                               child: ResponsiveText(
                                 item,
-                                fontSize: ResponsiveFontSize.lg,
+                                fontFamily: 'Inter',
+                                fontSize: ResponsiveUtils.fontSize(
+                                  context,
+                                  ResponsiveFontSize.lg,
+                                ),
                                 color: AppColors.button,
                               ),
                             ),
@@ -410,7 +430,11 @@ class _InlineImmediatePickerState extends State<_InlineImmediatePicker> {
                     ),
                     child: ResponsiveText(
                       'Cancel',
-                      fontSize: ResponsiveFontSize.md,
+                      fontFamily: 'Inter',
+                      fontSize: ResponsiveUtils.fontSize(
+                        context,
+                        ResponsiveFontSize.md,
+                      ),
                       color: AppColors.mutedGreen,
                     ),
                     onPressed: () => Navigator.of(context).pop(),
@@ -422,8 +446,12 @@ class _InlineImmediatePickerState extends State<_InlineImmediatePicker> {
                       child: ResponsiveText(
                         widget.title!,
                         textAlign: TextAlign.center,
-                        fontSize: ResponsiveFontSize.lg,
-                        fontWeight: FontWeight.w600,
+                        fontSize: ResponsiveUtils.fontSize(
+                          context,
+                          ResponsiveFontSize.lg,
+                        ),
+                        fontWeight: AppFontWeights.medium,
+                        fontFamily: 'Inter',
                         color: AppColors.button,
                         decoration: TextDecoration.none,
                       ),
@@ -439,9 +467,13 @@ class _InlineImmediatePickerState extends State<_InlineImmediatePicker> {
                     ),
                     child: ResponsiveText(
                       'Done',
-                      fontSize: ResponsiveFontSize.md,
+                      fontFamily: 'Inter',
+                      fontSize: ResponsiveUtils.fontSize(
+                        context,
+                        ResponsiveFontSize.md,
+                      ),
                       color: AppColors.mutedGreen,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppFontWeights.medium,
                     ),
                     onPressed: () {
                       widget.onSelected(_currentSelection);
@@ -479,7 +511,11 @@ class _InlineImmediatePickerState extends State<_InlineImmediatePicker> {
                             (item) => Center(
                               child: ResponsiveText(
                                 item,
-                                fontSize: ResponsiveFontSize.lg,
+                                fontFamily: 'Inter',
+                                fontSize: ResponsiveUtils.fontSize(
+                                  context,
+                                  ResponsiveFontSize.lg,
+                                ),
                                 color: AppColors.button,
                               ),
                             ),

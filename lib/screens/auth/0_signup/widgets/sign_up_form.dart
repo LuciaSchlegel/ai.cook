@@ -54,7 +54,7 @@ class SignUpForm extends StatelessWidget {
               validator: FieldValidator.validatePassword,
               obscureText: true,
             ),
-            ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
+            ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
             _CheckboxRow(
               value: acceptedTerms,
               onChanged: onToggleTerms,
@@ -64,6 +64,7 @@ class SignUpForm extends StatelessWidget {
                     TextSpan(
                       text: 'I accept the terms and conditions ',
                       style: TextStyle(
+                        fontFamily: 'Inter',
                         color: AppColors.black,
                         fontSize: ResponsiveUtils.fontSize(
                           context,
@@ -74,6 +75,7 @@ class SignUpForm extends StatelessWidget {
                     TextSpan(
                       text: '*',
                       style: TextStyle(
+                        fontFamily: 'Inter',
                         color: Colors.red,
                         fontWeight: FontWeight.bold,
                         fontSize: ResponsiveUtils.fontSize(
@@ -91,8 +93,12 @@ class SignUpForm extends StatelessWidget {
               onChanged: onToggleNewsletter,
               child: ResponsiveText(
                 'Subscribe to our newsletter',
-                fontSize: ResponsiveFontSize.sm,
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.sm,
+                ),
                 color: AppColors.black,
+                fontFamily: 'Inter',
               ),
             ),
             ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
@@ -180,8 +186,9 @@ class _ResponsiveSignUpButton extends StatelessWidget {
         ),
         child: ResponsiveText(
           'Sign up',
-          fontSize: ResponsiveFontSize.md,
-          fontWeight: FontWeight.w600,
+          fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.md),
+          fontWeight: AppFontWeights.medium,
+          fontFamily: 'Inter',
         ),
       ),
     );

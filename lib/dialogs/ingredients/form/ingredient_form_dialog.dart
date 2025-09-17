@@ -232,7 +232,10 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                       widget.ingredient == null
                           ? 'Add Ingredient'
                           : 'Edit Ingredient',
-                      fontSize: ResponsiveFontSize.title,
+                      fontSize: ResponsiveUtils.fontSize(
+                        context,
+                        ResponsiveFontSize.title,
+                      ),
                       fontFamily: 'Casta',
                       fontWeight: FontWeight.bold,
                       color: AppColors.button,
