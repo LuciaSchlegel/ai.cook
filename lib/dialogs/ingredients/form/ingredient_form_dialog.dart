@@ -127,72 +127,35 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
             padding: EdgeInsets.all(
               ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
             ),
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius:
-                  widget.isPopup
-                      ? BorderRadius.circular(
-                        // All corners rounded for popup
+            decoration:
+                widget.isPopup
+                    ? BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(
                         ResponsiveUtils.borderRadius(
                           context,
                           ResponsiveBorderRadius.lg,
                         ),
-                      )
-                      : BorderRadius.vertical(
-                        // Only top rounded for bottom sheet
-                        top: Radius.circular(
-                          ResponsiveUtils.borderRadius(
-                            context,
-                            ResponsiveBorderRadius.xl,
-                          ),
-                        ),
                       ),
-              boxShadow:
-                  widget.isPopup
-                      ? [
+                      boxShadow: [
                         BoxShadow(
                           color: AppColors.button.withValues(alpha: 0.1),
                           blurRadius: 20,
                           offset: const Offset(0, 10),
                         ),
-                      ]
-                      : [
-                        BoxShadow(
-                          color: AppColors.mutedGreen.withValues(alpha: 0.06),
-                          blurRadius: ResponsiveUtils.spacing(
-                            context,
-                            ResponsiveSpacing.sm,
-                          ),
-                          offset: Offset(
-                            0,
-                            ResponsiveUtils.spacing(
-                              context,
-                              ResponsiveSpacing.xxs,
-                            ),
-                          ),
-                          spreadRadius: 0,
-                        ),
                       ],
-            ),
+                    )
+                    : null, // No decoration for bottom sheet - handled by wrapper
             child: ClipRRect(
               borderRadius:
                   widget.isPopup
                       ? BorderRadius.circular(
-                        // All corners rounded for popup
                         ResponsiveUtils.borderRadius(
                           context,
                           ResponsiveBorderRadius.lg,
                         ),
                       )
-                      : BorderRadius.vertical(
-                        // Only top rounded for bottom sheet
-                        top: Radius.circular(
-                          ResponsiveUtils.borderRadius(
-                            context,
-                            ResponsiveBorderRadius.xl,
-                          ),
-                        ),
-                      ),
+                      : BorderRadius.zero, // No clipping for bottom sheet
               child: SingleChildScrollView(
                 padding:
                     deviceType == DeviceType.iPadPro ||

@@ -3,7 +3,6 @@ import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/ai_dialog_sca
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_dialog.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/close_button.dart';
 import 'package:ai_cook_project/models/recipe_tag_model.dart';
-import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
@@ -124,7 +123,9 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
             final mq = MediaQuery.of(context);
             final safeHeight =
                 mq.size.height - mq.padding.top - mq.padding.bottom;
-            final maxH = safeHeight * 0.9; // o 0.88–0.95 según diseño
+            final maxH =
+                safeHeight *
+                ResponsiveUtils.getDialogMaxHeightMultiplier(context);
 
             return SafeArea(
               // Handle top safe area (notch/status bar) but let bottom be handled by scroll content
@@ -140,32 +141,8 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
                   child: ConstrainedBox(
                     constraints: BoxConstraints(maxHeight: maxH),
                     child: Container(
-                      decoration: BoxDecoration(
-                        color: CupertinoColors.white,
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(
-                            ResponsiveUtils.borderRadius(
-                              context,
-                              ResponsiveBorderRadius.xl,
-                            ),
-                          ),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.button.withValues(alpha: 0.1),
-                            blurRadius: ResponsiveUtils.spacing(
-                              context,
-                              ResponsiveSpacing.sm,
-                            ),
-                            offset: Offset(
-                              0,
-                              ResponsiveUtils.spacing(
-                                context,
-                                ResponsiveSpacing.sm,
-                              ),
-                            ),
-                          ),
-                        ],
+                      decoration: ResponsiveUtils.getDialogContainerDecoration(
+                        context,
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.vertical(

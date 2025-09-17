@@ -68,37 +68,25 @@ class CustomIngLayout extends StatelessWidget {
             padding: EdgeInsets.all(
               ResponsiveUtils.spacing(context, ResponsiveSpacing.lg),
             ),
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius:
-                  isPopup
-                      ? BorderRadius.circular(
-                        // All corners rounded for popup
+            decoration:
+                isPopup
+                    ? BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(
                         ResponsiveUtils.borderRadius(
                           context,
                           ResponsiveBorderRadius.lg,
                         ),
-                      )
-                      : BorderRadius.vertical(
-                        // Only top rounded for bottom sheet
-                        top: Radius.circular(
-                          ResponsiveUtils.borderRadius(
-                            context,
-                            ResponsiveBorderRadius.xl,
-                          ),
-                        ),
                       ),
-              boxShadow:
-                  isPopup
-                      ? [
+                      boxShadow: [
                         BoxShadow(
                           color: AppColors.button.withValues(alpha: 0.1),
                           blurRadius: 20,
                           offset: const Offset(0, 10),
                         ),
-                      ]
-                      : null, // Add shadow for popup
-            ),
+                      ],
+                    )
+                    : null, // No decoration for bottom sheet - handled by wrapper
             child: SingleChildScrollView(
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               physics: const BouncingScrollPhysics(),

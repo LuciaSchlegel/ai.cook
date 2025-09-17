@@ -112,7 +112,7 @@ Widget _buildRecipeCards(
           children: [
             Icon(
               Icons.check_circle,
-              color: Colors.green,
+              color: AppColors.mutedGreen,
               size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
             ),
             SizedBox(
@@ -126,25 +126,26 @@ Widget _buildRecipeCards(
                   ResponsiveFontSize.md,
                 ),
                 fontWeight: AppFontWeights.bold,
-                color: Colors.green,
+                fontFamily: 'Inter',
+                color: AppColors.mutedGreen,
               ),
             ),
           ],
         ),
         SizedBox(
-          height: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+          height: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
         ),
         ...readyModels.map((vm) => AIReadyToCookCard(viewModel: vm)),
       ],
       if (almostModels.isNotEmpty) ...[
         SizedBox(
-          height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+          height: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
         ),
         Row(
           children: [
             Icon(
               Icons.shopping_cart,
-              color: Colors.orange,
+              color: AppColors.orange,
               size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
             ),
             SizedBox(
@@ -158,13 +159,14 @@ Widget _buildRecipeCards(
                   ResponsiveFontSize.md,
                 ),
                 fontWeight: AppFontWeights.bold,
-                color: Colors.orange,
+                fontFamily: 'Inter',
+                color: AppColors.orange,
               ),
             ),
           ],
         ),
         SizedBox(
-          height: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+          height: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
         ),
         ...almostModels.map((vm) => AIAlmostReadyCard(viewModel: vm)),
       ],

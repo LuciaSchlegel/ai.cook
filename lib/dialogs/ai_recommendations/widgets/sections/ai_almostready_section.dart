@@ -22,20 +22,22 @@ class AIAlmostReadySection extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [AppColors.white, AppColors.orange.withValues(alpha: 0.02)],
+          colors: [AppColors.white, AppColors.orange.withValues(alpha: 0.03)],
         ),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.lg),
+        ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.orange.withValues(alpha: 0.06),
+            color: AppColors.orange.withValues(alpha: 0.08),
             blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
-            offset: const Offset(0, 4),
+            offset: const Offset(0, 2),
             spreadRadius: 0,
           ),
         ],
         border: Border.all(
-          color: AppColors.orange.withValues(alpha: 0.15),
-          width: 1.5,
+          color: AppColors.orange.withValues(alpha: 0.2),
+          width: 1,
         ),
       ),
       child: Column(
@@ -45,21 +47,31 @@ class AIAlmostReadySection extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
-                height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+                width: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
+                height: ResponsiveUtils.iconSize(
+                  context,
+                  ResponsiveIconSize.lg,
+                ),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [
-                      AppColors.orange.withValues(alpha: 0.2),
-                      AppColors.lightYellow.withValues(alpha: 0.3),
-                    ],
+                    colors: [AppColors.orange, AppColors.lightYellow],
                   ),
                   borderRadius: BorderRadius.circular(
                     ResponsiveUtils.borderRadius(
                       context,
-                      ResponsiveBorderRadius.sm,
+                      ResponsiveBorderRadius.md,
                     ),
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.orange.withValues(alpha: 0.2),
+                      blurRadius: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.xs,
+                      ),
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: Icon(
                   CupertinoIcons.cart,
@@ -67,7 +79,7 @@ class AIAlmostReadySection extends StatelessWidget {
                     context,
                     ResponsiveIconSize.md,
                   ),
-                  color: AppColors.orange,
+                  color: AppColors.white,
                 ),
               ),
               SizedBox(
@@ -76,15 +88,13 @@ class AIAlmostReadySection extends StatelessWidget {
               Expanded(
                 child: Text(
                   'Almost Ready Recipes',
-                  style: TextStyle(
+                  style: MelodramaTextStyles.bold(
                     fontSize: ResponsiveUtils.fontSize(
                       context,
-                      ResponsiveFontSize.md,
+                      ResponsiveFontSize.lg,
                     ),
-                    fontWeight: FontWeight.w700,
                     color: AppColors.button,
-                    letterSpacing: 0.3,
-                  ),
+                  ).copyWith(letterSpacing: 0.3),
                 ),
               ),
             ],
@@ -109,40 +119,61 @@ class AIAlmostReadySection extends StatelessWidget {
                       children: [
                         Text(
                           recipe.title,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                          style: MelodramaTextStyles.bold(
                             fontSize: ResponsiveUtils.fontSize(
                               context,
                               ResponsiveFontSize.md,
                             ),
+                            color: AppColors.button,
+                          ),
+                        ),
+                        SizedBox(
+                          height: ResponsiveUtils.spacing(
+                            context,
+                            ResponsiveSpacing.xs,
                           ),
                         ),
                         Text(
                           recipe.description,
-                          style: TextStyle(
+                          style: MelodramaTextStyles.regular(
                             fontSize: ResponsiveUtils.fontSize(
                               context,
                               ResponsiveFontSize.sm,
                             ),
+                            color: AppColors.button.withValues(alpha: 0.8),
+                            height: 1.3,
+                          ),
+                        ),
+                        SizedBox(
+                          height: ResponsiveUtils.spacing(
+                            context,
+                            ResponsiveSpacing.xs,
                           ),
                         ),
                         Text(
                           'Missing: ${recipe.missingIngredients.join(', ')}',
-                          style: TextStyle(
+                          style: MelodramaTextStyles.medium(
                             fontSize: ResponsiveUtils.fontSize(
                               context,
                               ResponsiveFontSize.sm,
                             ),
+                            color: AppColors.orange,
+                          ),
+                        ),
+                        SizedBox(
+                          height: ResponsiveUtils.spacing(
+                            context,
+                            ResponsiveSpacing.xs,
                           ),
                         ),
                         Text(
                           '${recipe.timeMinutes} | ${recipe.difficulty}',
-                          style: TextStyle(
+                          style: MelodramaTextStyles.regular(
                             fontSize: ResponsiveUtils.fontSize(
                               context,
                               ResponsiveFontSize.sm,
                             ),
-                            color: Colors.grey,
+                            color: AppColors.button.withValues(alpha: 0.6),
                           ),
                         ),
                       ],

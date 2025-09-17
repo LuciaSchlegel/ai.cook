@@ -16,14 +16,30 @@ class AISubstitutionsSection extends StatelessWidget {
       margin: EdgeInsets.only(
         bottom: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
       ),
-      padding: EdgeInsets.all(
-        ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
-      ),
+      padding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [AppColors.white, AppColors.orange.withValues(alpha: 0.02)],
+          colors: [
+            AppColors.white,
+            AppColors.mutedGreen.withValues(alpha: 0.03),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.lg),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.mutedGreen.withValues(alpha: 0.08),
+            blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            offset: const Offset(0, 2),
+            spreadRadius: 0,
+          ),
+        ],
+        border: Border.all(
+          color: AppColors.mutedGreen.withValues(alpha: 0.12),
+          width: 1,
         ),
       ),
       child: Column(
@@ -33,32 +49,57 @@ class AISubstitutionsSection extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
-                height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
-                decoration: BoxDecoration(color: AppColors.mutedGreen),
+                width: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
+                height: ResponsiveUtils.iconSize(
+                  context,
+                  ResponsiveIconSize.lg,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.mutedGreen,
+                  borderRadius: BorderRadius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.md,
+                    ),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.mutedGreen.withValues(alpha: 0.2),
+                      blurRadius: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.xs,
+                      ),
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
                 child: Icon(
                   CupertinoIcons.arrow_2_circlepath,
                   size: ResponsiveUtils.iconSize(
                     context,
                     ResponsiveIconSize.md,
                   ),
-                  color: AppColors.mutedGreen,
+                  color: AppColors.white,
                 ),
               ),
               SizedBox(
-                width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+                width: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
               ),
               Expanded(
                 child: Text(
                   'Smart Substitutions',
                   style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(
-                      context,
-                      ResponsiveFontSize.md,
-                    ),
-                    fontWeight: FontWeight.w700,
+                    fontSize:
+                        ResponsiveUtils.fontSize(
+                          context,
+                          ResponsiveFontSize.xl,
+                        ) *
+                        1.2,
+                    fontWeight: AppFontWeights.semiBold,
+                    fontFamily: 'Melodrama',
                     color: AppColors.button,
-                    letterSpacing: 0.3,
+                    letterSpacing: 1.3,
+                    height: 1.4,
                   ),
                 ),
               ),
@@ -126,7 +167,7 @@ class AISubstitutionsSection extends StatelessWidget {
             ),
           ),
           SizedBox(
-            width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            width: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
           ),
           Expanded(
             child: Column(
@@ -137,16 +178,17 @@ class AISubstitutionsSection extends StatelessWidget {
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(
                       context,
-                      ResponsiveFontSize.sm,
+                      ResponsiveFontSize.lg,
                     ),
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppFontWeights.semiBold,
+                    fontFamily: 'Melodrama',
                     color: AppColors.button,
                   ),
                 ),
                 SizedBox(
                   height: ResponsiveUtils.spacing(
                     context,
-                    ResponsiveSpacing.sm,
+                    ResponsiveSpacing.xs,
                   ),
                 ),
                 Text(
@@ -156,6 +198,9 @@ class AISubstitutionsSection extends StatelessWidget {
                       context,
                       ResponsiveFontSize.sm,
                     ),
+                    fontWeight: AppFontWeights.regular,
+                    fontFamily: 'Inter',
+                    letterSpacing: 0.2,
                     height: 1.4,
                     color: AppColors.button.withValues(alpha: 0.8),
                   ),
@@ -198,10 +243,13 @@ class AISubstitutionsSection extends StatelessWidget {
             style: TextStyle(
               fontSize: ResponsiveUtils.fontSize(
                 context,
-                ResponsiveFontSize.sm,
+                ResponsiveFontSize.lg,
               ),
-              fontWeight: FontWeight.w600,
+              fontWeight: AppFontWeights.semiBold,
+              fontFamily: 'Melodrama',
               color: AppColors.button,
+              letterSpacing: 1.3,
+              height: 1.4,
             ),
             textAlign: TextAlign.center,
           ),
@@ -213,8 +261,11 @@ class AISubstitutionsSection extends StatelessWidget {
             style: TextStyle(
               fontSize: ResponsiveUtils.fontSize(
                 context,
-                ResponsiveFontSize.sm,
+                ResponsiveFontSize.lg,
               ),
+              fontWeight: AppFontWeights.regular,
+              fontFamily: 'Inter',
+              letterSpacing: 0.2,
               color: AppColors.button.withValues(alpha: 0.7),
               height: 1.4,
             ),

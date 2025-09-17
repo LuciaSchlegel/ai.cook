@@ -50,17 +50,25 @@ Future<void> showResponsiveIngredientDialog({
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      useSafeArea: false, // Let the dialog handle its own safe areas
+      useSafeArea: true, // Let the dialog handle its own safe areas
       backgroundColor: Colors.transparent,
       isDismissible: true,
       enableDrag: false,
       builder:
-          (context) => Padding(
-            // Only handle keyboard padding outside the modal
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
+          (context) => SafeArea(
+            // Respect top safe area when keyboard pushes content up
+            top: true,
+            bottom: false, // Let modal handle its own bottom padding
+            child: Padding(
+              // Only handle keyboard padding outside the modal
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: _KeyboardAwareModalContent(
+                isKeyboardVisible: MediaQuery.of(context).viewInsets.bottom > 0,
+                child: dialogContent,
+              ),
             ),
-            child: dialogContent,
           ),
     );
   } else {
@@ -130,6 +138,45 @@ Future<void> showResponsiveAddGlobalIngDialog(BuildContext context) {
               );
             },
           ),
+    );
+  }
+}
+
+/// Widget that handles modal appearance when keyboard is visible
+class _KeyboardAwareModalContent extends StatelessWidget {
+  final bool isKeyboardVisible;
+  final Widget child;
+
+  const _KeyboardAwareModalContent({
+    required this.isKeyboardVisible,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(
+          top: const Radius.circular(20),
+          // Add bottom radius when keyboard is visible
+          bottom: isKeyboardVisible ? const Radius.circular(20) : Radius.zero,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 10,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.vertical(
+          top: const Radius.circular(20),
+          bottom: isKeyboardVisible ? const Radius.circular(20) : Radius.zero,
+        ),
+        child: child,
+      ),
     );
   }
 }

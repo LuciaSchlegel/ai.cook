@@ -12,29 +12,68 @@ class AIGreetingSection extends StatelessWidget {
     if (greeting.isEmpty) return const SizedBox.shrink();
 
     return Container(
+      margin: EdgeInsets.only(
+        bottom: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+      ),
       padding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [AppColors.white, AppColors.orange.withValues(alpha: 0.02)],
+          colors: [
+            AppColors.white,
+            AppColors.mutedGreen.withValues(alpha: 0.03),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.lg),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.mutedGreen.withValues(alpha: 0.08),
+            blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            offset: const Offset(0, 2),
+            spreadRadius: 0,
+          ),
+        ],
+        border: Border.all(
+          color: AppColors.mutedGreen.withValues(alpha: 0.12),
+          width: 1,
         ),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
-            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
-            decoration: BoxDecoration(color: AppColors.mutedGreen),
+            width: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
+            height: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
+            decoration: BoxDecoration(
+              color: AppColors.mutedGreen,
+              borderRadius: BorderRadius.circular(
+                ResponsiveUtils.borderRadius(
+                  context,
+                  ResponsiveBorderRadius.md,
+                ),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.mutedGreen.withValues(alpha: 0.2),
+                  blurRadius: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.xs,
+                  ),
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
             child: Icon(
               CupertinoIcons.person_fill,
               size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
-              color: AppColors.mutedGreen,
+              color: AppColors.white,
             ),
           ),
           SizedBox(
-            width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            width: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
           ),
           Expanded(
             child: Text(
@@ -42,10 +81,12 @@ class AIGreetingSection extends StatelessWidget {
               style: TextStyle(
                 fontSize: ResponsiveUtils.fontSize(
                   context,
-                  ResponsiveFontSize.md,
+                  ResponsiveFontSize.sm,
                 ),
-                fontWeight: FontWeight.w500,
-                color: AppColors.mutedGreen,
+                fontWeight: AppFontWeights.medium,
+                fontFamily: 'Inter',
+                color: AppColors.button,
+                height: 1.4,
               ),
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:ai_cook_project/models/ai_response_model.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/cupertino.dart';
 
 class AIShoppingSuggestionsSection extends StatelessWidget {
@@ -12,26 +13,33 @@ class AIShoppingSuggestionsSection extends StatelessWidget {
     // Show section even if empty, with fallback content
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      padding: const EdgeInsets.all(24),
+      margin: EdgeInsets.only(
+        bottom: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+      ),
+      padding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [AppColors.white, AppColors.lightYellow.withValues(alpha: 0.08)],
+          colors: [
+            AppColors.white,
+            AppColors.lightYellow.withValues(alpha: 0.05),
+          ],
         ),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.lg),
+        ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.lightYellow.withValues(alpha: 0.1),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: AppColors.lightYellow.withValues(alpha: 0.08),
+            blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            offset: const Offset(0, 2),
             spreadRadius: 0,
           ),
         ],
         border: Border.all(
-          color: AppColors.lightYellow.withValues(alpha: 0.3),
-          width: 1.5,
+          color: AppColors.lightYellow.withValues(alpha: 0.2),
+          width: 1,
         ),
       ),
       child: Column(
@@ -41,74 +49,126 @@ class AIShoppingSuggestionsSection extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 32,
-                height: 32,
+                width: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
+                height: ResponsiveUtils.iconSize(
+                  context,
+                  ResponsiveIconSize.lg,
+                ),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.lightYellow.withValues(alpha: 0.3),
-                      AppColors.mutedGreen.withValues(alpha: 0.2),
+                      AppColors.lightYellow.withValues(alpha: 0.8),
+                      AppColors.orange.withValues(alpha: 0.6),
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.md,
+                    ),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.orange.withValues(alpha: 0.2),
+                      blurRadius: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.xs,
+                      ),
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: Icon(
                   CupertinoIcons.lightbulb,
-                  size: 18,
-                  color: AppColors.orange,
+                  size: ResponsiveUtils.iconSize(
+                    context,
+                    ResponsiveIconSize.md,
+                  ),
+                  color: AppColors.white,
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(
+                width: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+              ),
               Expanded(
                 child: Text(
                   'Smart Shopping Tips',
                   style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
+                    fontSize:
+                        ResponsiveUtils.fontSize(
+                          context,
+                          ResponsiveFontSize.xl,
+                        ) *
+                        1.2,
+                    fontWeight: AppFontWeights.semiBold,
+                    fontFamily: 'Melodrama',
                     color: AppColors.button,
-                    letterSpacing: 0.3,
+                    letterSpacing: 1.3,
+                    height: 1.4,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          SizedBox(
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+          ),
 
           // Suggestions or fallback
           if (suggestions.isNotEmpty)
-            ...suggestions.map((suggestion) => _buildSuggestionItem(suggestion))
+            ...suggestions.map(
+              (suggestion) => _buildSuggestionItem(context, suggestion),
+            )
           else
-            _buildShoppingSuggestionsFallback(),
+            _buildShoppingSuggestionsFallback(context),
         ],
       ),
     );
   }
 
-  Widget _buildSuggestionItem(AIShoppingSuggestion suggestion) {
+  Widget _buildSuggestionItem(
+    BuildContext context,
+    AIShoppingSuggestion suggestion,
+  ) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(
+        bottom: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+      ),
+      padding: ResponsiveUtils.padding(context, ResponsiveSpacing.sm),
       decoration: BoxDecoration(
-        color: AppColors.white.withValues(alpha: 0.7),
-        borderRadius: BorderRadius.circular(12),
+        color: AppColors.white.withValues(alpha: 0.8),
+        borderRadius: BorderRadius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.md),
+        ),
         border: Border.all(
-          color: AppColors.lightYellow.withValues(alpha: 0.2),
+          color: AppColors.lightYellow.withValues(alpha: 0.3),
           width: 1,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.lightYellow.withValues(alpha: 0.05),
+            blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+            offset: const Offset(0, 1),
+          ),
+        ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 6,
-            height: 6,
-            margin: const EdgeInsets.only(top: 6),
+            width: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+            margin: EdgeInsets.only(
+              top: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+            ),
             decoration: BoxDecoration(
               color: AppColors.orange,
               shape: BoxShape.circle,
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(
+            width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+          ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,16 +176,31 @@ class AIShoppingSuggestionsSection extends StatelessWidget {
                 Text(
                   suggestion.name,
                   style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.lg,
+                    ),
+                    fontWeight: AppFontWeights.semiBold,
+                    fontFamily: 'Melodrama',
                     color: AppColors.button,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(
+                  height: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.xs,
+                  ),
+                ),
                 Text(
                   suggestion.reason,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.sm,
+                    ),
+                    fontWeight: AppFontWeights.medium,
+                    fontFamily: 'Inter',
+                    letterSpacing: 0.2,
                     height: 1.4,
                     color: AppColors.button.withValues(alpha: 0.8),
                   ),
@@ -138,12 +213,14 @@ class AIShoppingSuggestionsSection extends StatelessWidget {
     );
   }
 
-  Widget _buildShoppingSuggestionsFallback() {
+  Widget _buildShoppingSuggestionsFallback(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
       decoration: BoxDecoration(
         color: AppColors.lightYellow.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.md),
+        ),
         border: Border.all(
           color: AppColors.lightYellow.withValues(alpha: 0.2),
           width: 1,
@@ -153,24 +230,39 @@ class AIShoppingSuggestionsSection extends StatelessWidget {
         children: [
           Icon(
             CupertinoIcons.shopping_cart,
-            size: 40,
+            size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.xl),
             color: AppColors.orange.withValues(alpha: 0.6),
           ),
-          const SizedBox(height: 12),
+          SizedBox(
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+          ),
           Text(
             'Smart Shopping Ready!',
             style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
+              fontSize: ResponsiveUtils.fontSize(
+                context,
+                ResponsiveFontSize.lg,
+              ),
+              fontWeight: AppFontWeights.semiBold,
+              fontFamily: 'Melodrama',
               color: AppColors.button,
+              letterSpacing: 1.3,
+              height: 1.4,
             ),
-            textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 8),
+          SizedBox(
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+          ),
           Text(
             'Your ingredient collection looks great! I\'ll provide personalized shopping suggestions based on your cooking preferences and available recipes.',
             style: TextStyle(
-              fontSize: 14,
+              fontSize: ResponsiveUtils.fontSize(
+                context,
+                ResponsiveFontSize.sm,
+              ),
+              fontWeight: AppFontWeights.regular,
+              fontFamily: 'Inter',
+              letterSpacing: 0.2,
               color: AppColors.button.withValues(alpha: 0.7),
               height: 1.4,
             ),

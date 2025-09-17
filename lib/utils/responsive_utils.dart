@@ -347,6 +347,57 @@ class ResponsiveUtils {
 
     return topSafeArea + additionalPadding;
   }
+
+  // ==================== DIALOG HELPERS ====================
+
+  /// Get dialog max height multiplier based on device type
+  static double getDialogMaxHeightMultiplier(BuildContext context) {
+    final deviceType = getDeviceType(context);
+
+    return switch (deviceType) {
+      DeviceType.iPhone => 0.9, // Use more space on iPhone
+      DeviceType.iPadMini => 0.85, // Slightly less on iPad Mini
+      DeviceType.iPadPro => 0.8, // More conservative on iPad Pro
+    };
+  }
+
+  /// Get consistent dialog container decoration
+  static BoxDecoration getDialogContainerDecoration(BuildContext context) {
+    return BoxDecoration(
+      color: const Color(0xFFFFFFFF), // CupertinoColors.white equivalent
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(borderRadius(context, ResponsiveBorderRadius.xl)),
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: const Color(
+            0xFF111A19,
+          ).withValues(alpha: 0.1), // AppColors.button
+          blurRadius: spacing(context, ResponsiveSpacing.sm),
+          offset: Offset(0, spacing(context, ResponsiveSpacing.sm)),
+        ),
+      ],
+    );
+  }
+
+  /// Get consistent form section decoration
+  static BoxDecoration getFormSectionDecoration(BuildContext context) {
+    return BoxDecoration(
+      color: const Color(0xFFFFFFFF), // White background
+      borderRadius: BorderRadius.circular(
+        borderRadius(context, ResponsiveBorderRadius.xl),
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: const Color(
+            0xFF111A19,
+          ).withValues(alpha: 0.08), // Lighter shadow
+          blurRadius: spacing(context, ResponsiveSpacing.sm),
+          offset: Offset(0, spacing(context, ResponsiveSpacing.xs)),
+        ),
+      ],
+    );
+  }
 }
 
 // ==================== ENUMS ====================

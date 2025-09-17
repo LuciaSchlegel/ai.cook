@@ -34,23 +34,24 @@ class AIAlmostReadyCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(
-              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.md),
+              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.lg),
             ),
             border: Border.all(
               color:
                   viewModel.missingCount == 1
                       ? AppColors.orange
-                      : AppColors.orange.withValues(alpha: 0.15),
-              width: 2.5,
+                      : AppColors.orange.withValues(alpha: 0.4),
+              width: 2,
             ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.orange.withValues(alpha: 0.15),
+                color: AppColors.orange.withValues(alpha: 0.12),
                 blurRadius: ResponsiveUtils.spacing(
                   context,
                   ResponsiveSpacing.sm,
                 ),
-                offset: const Offset(0, 4),
+                offset: const Offset(0, 2),
+                spreadRadius: 0,
               ),
             ],
           ),

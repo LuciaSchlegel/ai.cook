@@ -1,3 +1,4 @@
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:ai_cook_project/widgets/cards/ingredients_card.dart';
 import 'package:ai_cook_project/widgets/utils/social_widget.dart';
 import 'package:ai_cook_project/widgets/cards/weekly_card.dart';
@@ -64,13 +65,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
+                              Text(
                                 'Welcome,',
                                 style: TextStyle(
-                                  fontFamily: 'Casta',
-                                  fontSize: 48,
+                                  fontFamily: 'Melodrama',
+                                  fontSize:
+                                      ResponsiveUtils.fontSize(
+                                        context,
+                                        ResponsiveFontSize.title2,
+                                      ) *
+                                      1.3,
                                   color: Colors.white,
                                   height: 1.1,
+                                  fontWeight: AppFontWeights.medium,
+                                  letterSpacing: 1.3,
                                 ),
                               ),
                               Consumer<UserProvider>(
@@ -88,15 +96,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                     },
                                     child:
                                         isLoading || name == null
-                                            ? const SizedBox(height: 48)
+                                            ? SizedBox(
+                                              height: ResponsiveUtils.spacing(
+                                                context,
+                                                ResponsiveSpacing.xxl,
+                                              ),
+                                            )
                                             : Text(
                                               name,
                                               key: ValueKey(name),
-                                              style: const TextStyle(
-                                                fontFamily: 'Casta',
-                                                fontSize: 48,
+                                              style: TextStyle(
+                                                fontFamily: 'Melodrama',
+                                                fontSize:
+                                                    ResponsiveUtils.fontSize(
+                                                      context,
+                                                      ResponsiveFontSize.title2,
+                                                    ) *
+                                                    1.3,
                                                 color: Colors.white,
                                                 height: 1.1,
+                                                fontWeight:
+                                                    AppFontWeights.medium,
+                                                letterSpacing: 1.3,
                                               ),
                                             ),
                                   );

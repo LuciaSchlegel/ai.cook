@@ -76,10 +76,22 @@ class BuildDialog extends StatelessWidget {
             // Generate/Regenerate recommendations button - Enhanced
             Container(
               width: double.infinity,
-              height: 54,
-              margin: const EdgeInsets.symmetric(vertical: 8),
+              height:
+                  ResponsiveUtils.spacing(context, ResponsiveSpacing.xxl) +
+                  ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+              margin: EdgeInsets.symmetric(
+                vertical: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.xs,
+                ),
+              ),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(
+                  ResponsiveUtils.borderRadius(
+                    context,
+                    ResponsiveBorderRadius.lg,
+                  ),
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.button.withValues(alpha: 0.15),
@@ -87,7 +99,7 @@ class BuildDialog extends StatelessWidget {
                       context,
                       ResponsiveSpacing.sm,
                     ),
-                    offset: const Offset(0, 4),
+                    offset: const Offset(0, 2),
                     spreadRadius: 0,
                   ),
                 ],
@@ -97,15 +109,27 @@ class BuildDialog extends StatelessWidget {
                   debugPrint('🔄 AI Dialog: Manual regeneration triggered');
                   generateAiRecommendations();
                 },
-                icon: Icon(CupertinoIcons.sparkles, size: 18),
+                icon: Icon(
+                  CupertinoIcons.sparkles,
+                  size: ResponsiveUtils.iconSize(
+                    context,
+                    ResponsiveIconSize.sm,
+                  ),
+                ),
                 label: Text(
                   aiProvider.currentRecommendation == null
                       ? 'Generate AI Recommendations'
                       : 'Update Recommendations',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.3,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.md,
+                    ),
+                    fontWeight: AppFontWeights.semiBold,
+                    fontFamily: 'Inter',
+                    letterSpacing: 0.2,
+                    height: 1.4,
+                    color: AppColors.white,
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
@@ -113,11 +137,16 @@ class BuildDialog extends StatelessWidget {
                   foregroundColor: AppColors.white,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(
+                      ResponsiveUtils.borderRadius(
+                        context,
+                        ResponsiveBorderRadius.lg,
+                      ),
+                    ),
                   ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 16,
+                  padding: ResponsiveUtils.padding(
+                    context,
+                    ResponsiveSpacing.md,
                   ),
                 ),
               ),

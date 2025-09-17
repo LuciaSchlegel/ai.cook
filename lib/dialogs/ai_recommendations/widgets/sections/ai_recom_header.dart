@@ -1,6 +1,5 @@
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:ai_cook_project/utils/responsive_utils.dart';
 
 class AiRecomHeader extends StatelessWidget {
@@ -11,9 +10,10 @@ class AiRecomHeader extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
-          height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
-          decoration: BoxDecoration(color: AppColors.mutedGreen).copyWith(
+          width: ResponsiveUtils.iconSize(context, ResponsiveIconSize.xl),
+          height: ResponsiveUtils.iconSize(context, ResponsiveIconSize.xl),
+          decoration: BoxDecoration(
+            color: AppColors.mutedGreen,
             borderRadius: BorderRadius.circular(
               ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.md),
             ),
@@ -31,7 +31,9 @@ class AiRecomHeader extends StatelessWidget {
           child: Icon(
             CupertinoIcons.sparkles,
             size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
-            color: AppColors.mutedGreen,
+            color:
+                AppColors
+                    .white, // Changed from mutedGreen to white for visibility
           ),
         ),
         SizedBox(width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm)),
@@ -49,15 +51,16 @@ class AiRecomHeader extends StatelessWidget {
                   stops: const [0.0, 0.5, 1.0],
                 ).createShader(bounds),
             child: Text(
-              'AI Recipe Recommendations',
+              'What would you like to cook today?',
               style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(
-                  context,
-                  ResponsiveFontSize.md,
-                ),
-                fontWeight: FontWeight.w700,
+                fontSize:
+                    ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) *
+                    1.2,
+                fontWeight: AppFontWeights.semiBold,
+                fontFamily: 'Melodrama',
                 color: AppColors.white,
-                letterSpacing: 0.5,
+                letterSpacing: 1.8,
+                height: 1.4,
               ),
             ),
           ),

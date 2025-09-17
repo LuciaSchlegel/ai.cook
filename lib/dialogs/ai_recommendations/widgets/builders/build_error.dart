@@ -1,5 +1,7 @@
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class ErrorBuild extends StatelessWidget {
   final String error;
@@ -9,27 +11,41 @@ class ErrorBuild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 220,
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      height:
+          ResponsiveUtils.spacing(context, ResponsiveSpacing.xxl) * 4 +
+          ResponsiveUtils.spacing(context, ResponsiveSpacing.xl),
+      margin: EdgeInsets.symmetric(
+        vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+      ),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.lg),
+        ),
         boxShadow: [
           BoxShadow(
             color: AppColors.orange.withValues(alpha: 0.08),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            offset: const Offset(0, 2),
             spreadRadius: 0,
           ),
         ],
-        border: Border.all(color: AppColors.orange.withValues(alpha: 0.2), width: 1),
+        border: Border.all(
+          color: AppColors.orange.withValues(alpha: 0.2),
+          width: 1,
+        ),
       ),
       child: Stack(
         children: [
           // Subtle gradient background
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(
+                ResponsiveUtils.borderRadius(
+                  context,
+                  ResponsiveBorderRadius.lg,
+                ),
+              ),
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -43,46 +59,72 @@ class ErrorBuild extends StatelessWidget {
           // Main content
           Center(
             child: Padding(
-              padding: const EdgeInsets.all(24),
+              padding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Error icon
                   Container(
-                    width: 64,
-                    height: 64,
+                    width:
+                        ResponsiveUtils.iconSize(
+                          context,
+                          ResponsiveIconSize.xxl,
+                        ) +
+                        ResponsiveUtils.spacing(context, ResponsiveSpacing.lg),
+                    height:
+                        ResponsiveUtils.iconSize(
+                          context,
+                          ResponsiveIconSize.xxl,
+                        ) +
+                        ResponsiveUtils.spacing(context, ResponsiveSpacing.lg),
                     decoration: BoxDecoration(
                       color: AppColors.orange.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
                       CupertinoIcons.exclamationmark_triangle,
-                      size: 32,
+                      size: ResponsiveUtils.iconSize(
+                        context,
+                        ResponsiveIconSize.xl,
+                      ),
                       color: AppColors.orange,
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  // Title
-                  const Text(
-                    'AI Chef Unavailable',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.button,
-                      letterSpacing: 0.3,
+                  SizedBox(
+                    height: ResponsiveUtils.spacing(
+                      context,
+                      ResponsiveSpacing.md,
                     ),
+                  ),
+                  // Title
+                  Text(
+                    'AI Chef Unavailable',
+                    style: MelodramaTextStyles.semiBold(
+                      fontSize: ResponsiveUtils.fontSize(
+                        context,
+                        ResponsiveFontSize.lg,
+                      ),
+                      color: AppColors.button,
+                    ).copyWith(letterSpacing: 0.3),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(
+                    height: ResponsiveUtils.spacing(
+                      context,
+                      ResponsiveSpacing.sm,
+                    ),
+                  ),
                   // Error message
                   Text(
                     error,
-                    style: TextStyle(
-                      fontSize: 14,
+                    style: MelodramaTextStyles.regular(
+                      fontSize: ResponsiveUtils.fontSize(
+                        context,
+                        ResponsiveFontSize.sm,
+                      ),
                       color: AppColors.button.withValues(alpha: 0.7),
                       height: 1.4,
-                      letterSpacing: 0.1,
-                    ),
+                    ).copyWith(letterSpacing: 0.1),
                     textAlign: TextAlign.center,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,

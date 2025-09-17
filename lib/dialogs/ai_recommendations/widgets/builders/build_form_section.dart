@@ -32,30 +32,16 @@ class SectionBuilder extends StatelessWidget {
     return Container(
       padding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
       margin: EdgeInsets.symmetric(
-        vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+        vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
       ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xl),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.button.withValues(alpha: 0.1),
-            blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
-            offset: Offset(
-              0,
-              ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
-            ),
-          ),
-        ],
-      ),
+      decoration: ResponsiveUtils.getFormSectionDecoration(context),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Enhanced form header with gradients
           const FormHeader(),
           SizedBox(
-            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.lg),
           ),
           // Recipe Tags Selector
           Text(
@@ -65,9 +51,11 @@ class SectionBuilder extends StatelessWidget {
                 context,
                 ResponsiveFontSize.md,
               ),
-              color: AppColors.button,
+              fontWeight: AppFontWeights.medium,
               fontFamily: 'Inter',
-              fontWeight: FontWeight.w600,
+              color: AppColors.button,
+              letterSpacing: 0.2,
+              height: 1.4,
             ),
           ),
           SizedBox(
@@ -103,7 +91,7 @@ class SectionBuilder extends StatelessWidget {
             },
           ),
           SizedBox(
-            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.lg),
           ),
 
           // Max Cooking Time and Difficulty in a row
@@ -114,7 +102,7 @@ class SectionBuilder extends StatelessWidget {
             onDifficultyChanged: onDifficultyChanged,
           ),
           SizedBox(
-            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.lg),
           ),
 
           // User Preferences
@@ -123,15 +111,17 @@ class SectionBuilder extends StatelessWidget {
             style: TextStyle(
               fontSize: ResponsiveUtils.fontSize(
                 context,
-                ResponsiveFontSize.md,
+                ResponsiveFontSize.sm,
               ),
-              color: AppColors.button,
+              fontWeight: AppFontWeights.semiBold,
               fontFamily: 'Inter',
-              fontWeight: FontWeight.w600,
+              letterSpacing: 0.2,
+              height: 1.4,
+              color: AppColors.button,
             ),
           ),
           SizedBox(
-            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
           ),
           FormComments(preferencesController: preferencesController),
         ],
