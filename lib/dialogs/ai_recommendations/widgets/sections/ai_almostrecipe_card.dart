@@ -1,9 +1,10 @@
-import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/details_container.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/image_clip.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/recipe_details.dart';
 import 'package:ai_cook_project/models/ai_response_model.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_ov_card.dart';
+import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/material.dart';
 
 class AIAlmostReadyCard extends StatelessWidget {
@@ -23,24 +24,35 @@ class AIAlmostReadyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: DialogConstants.spacingSM,
-        vertical: DialogConstants.spacingXS,
+      padding: EdgeInsets.symmetric(
+        horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+        vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
       ),
       child: GestureDetector(
         onTap: () => _showRecipeDetail(context),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(DialogConstants.radiusMD),
+            borderRadius: BorderRadius.circular(
+              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.md),
+            ),
             border: Border.all(
               color:
                   viewModel.missingCount == 1
-                      ? DialogConstants.almostReadyCardBorder
-                      : DialogConstants.missingCardBorder,
+                      ? AppColors.orange
+                      : AppColors.orange.withValues(alpha: 0.15),
               width: 2.5,
             ),
-            boxShadow: DialogConstants.mediumShadow,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.orange.withValues(alpha: 0.15),
+                blurRadius: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.sm,
+                ),
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

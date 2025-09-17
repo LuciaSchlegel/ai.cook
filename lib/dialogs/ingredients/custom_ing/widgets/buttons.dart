@@ -1,4 +1,5 @@
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -26,24 +27,32 @@ class SaveButtonsRow extends StatelessWidget {
         // Botón de eliminar en el lado izquierdo
         if (isEditing)
           CupertinoButton(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: EdgeInsets.symmetric(
+              horizontal: ResponsiveUtils.spacing(
+                context,
+                ResponsiveSpacing.sm,
+              ),
+              vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+            ),
             onPressed: onDelete,
             child: Container(
-              padding: const EdgeInsets.all(8),
+              padding: EdgeInsets.all(
+                ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+              ),
               decoration: BoxDecoration(
-                color: CupertinoColors.systemRed.withOpacity(0.1),
+                color: CupertinoColors.systemRed.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(
+              child: Icon(
                 CupertinoIcons.delete,
                 color: CupertinoColors.systemRed,
-                size: 20,
+                size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.sm),
               ),
             ),
           )
         else
           const SizedBox.shrink(),
-        
+
         // Botones de Cancel y Save en el lado derecho
         Row(
           children: [
@@ -51,33 +60,70 @@ class SaveButtonsRow extends StatelessWidget {
               onPressed: onCancel,
               style: TextButton.styleFrom(
                 foregroundColor: AppColors.button,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: EdgeInsets.symmetric(
+                  horizontal: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.md,
+                  ),
+                  vertical: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.sm,
+                  ),
+                ),
               ),
-              child: const Text(
+              child: Text(
                 'Cancel',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(
+                    context,
+                    ResponsiveFontSize.md,
+                  ),
+                  fontWeight: AppFontWeights.medium,
+                  fontFamily: 'Inter',
+                  letterSpacing: 0.2,
+                ),
               ),
             ),
-            const SizedBox(width: 16),
+            SizedBox(
+              width: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+            ),
             CupertinoButton(
               padding: EdgeInsets.zero,
               onPressed: isFormValid ? onSave : null,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding: EdgeInsets.symmetric(
+                  horizontal: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.lg,
+                  ),
+                  vertical: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.sm,
+                  ),
+                ),
                 decoration: BoxDecoration(
                   color:
                       isFormValid
                           ? AppColors.mutedGreen
-                          : AppColors.mutedGreen.withOpacity(0.4),
-                  borderRadius: BorderRadius.circular(18),
+                          : AppColors.mutedGreen.withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.xl,
+                    ),
+                  ),
                 ),
                 child: Text(
                   isEditing ? 'Save' : 'Add',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppColors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.5,
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.md,
+                    ),
+                    fontWeight: AppFontWeights.semiBold,
+                    fontFamily: 'Inter',
+                    letterSpacing: 0.2,
                   ),
                 ),
               ),

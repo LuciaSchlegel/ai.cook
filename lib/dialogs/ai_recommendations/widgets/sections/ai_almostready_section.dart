@@ -1,5 +1,6 @@
 import 'package:ai_cook_project/models/ai_response_model.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,8 +14,10 @@ class AIAlmostReadySection extends StatelessWidget {
     if (content.isEmpty) return const SizedBox.shrink();
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      padding: const EdgeInsets.all(24),
+      margin: EdgeInsets.only(
+        bottom: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+      ),
+      padding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -25,7 +28,7 @@ class AIAlmostReadySection extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: AppColors.orange.withValues(alpha: 0.06),
-            blurRadius: 16,
+            blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
             offset: const Offset(0, 4),
             spreadRadius: 0,
           ),
@@ -42,8 +45,8 @@ class AIAlmostReadySection extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 32,
-                height: 32,
+                width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+                height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -51,20 +54,33 @@ class AIAlmostReadySection extends StatelessWidget {
                       AppColors.lightYellow.withValues(alpha: 0.3),
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.sm,
+                    ),
+                  ),
                 ),
                 child: Icon(
                   CupertinoIcons.cart,
-                  size: 18,
+                  size: ResponsiveUtils.iconSize(
+                    context,
+                    ResponsiveIconSize.md,
+                  ),
                   color: AppColors.orange,
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(
+                width: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+              ),
               Expanded(
                 child: Text(
                   'Almost Ready Recipes',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.md,
+                    ),
                     fontWeight: FontWeight.w700,
                     color: AppColors.button,
                     letterSpacing: 0.3,
@@ -73,36 +89,59 @@ class AIAlmostReadySection extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+          ),
 
           // Content
           Column(
             children:
                 content.map((recipe) {
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
+                    padding: EdgeInsets.only(
+                      bottom: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.xs,
+                      ),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           recipe.title,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: ResponsiveUtils.fontSize(
+                              context,
+                              ResponsiveFontSize.md,
+                            ),
                           ),
                         ),
                         Text(
                           recipe.description,
-                          style: const TextStyle(fontSize: 14),
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(
+                              context,
+                              ResponsiveFontSize.sm,
+                            ),
+                          ),
                         ),
                         Text(
                           'Missing: ${recipe.missingIngredients.join(', ')}',
-                          style: const TextStyle(fontSize: 13),
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(
+                              context,
+                              ResponsiveFontSize.sm,
+                            ),
+                          ),
                         ),
                         Text(
                           '${recipe.timeMinutes} | ${recipe.difficulty}',
-                          style: const TextStyle(
-                            fontSize: 13,
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(
+                              context,
+                              ResponsiveFontSize.sm,
+                            ),
                             color: Colors.grey,
                           ),
                         ),

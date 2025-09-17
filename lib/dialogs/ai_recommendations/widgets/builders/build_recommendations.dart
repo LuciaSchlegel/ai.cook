@@ -6,6 +6,8 @@ import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_s
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_subst_section.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/recipe_finder.dart';
 import 'package:ai_cook_project/models/ai_response_model.dart';
+import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/material.dart';
 
 class RecommendationsBuilder extends StatelessWidget {
@@ -19,7 +21,9 @@ class RecommendationsBuilder extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Success indicator with stats - Enhanced design
-        const SizedBox(height: 16),
+        SizedBox(
+          height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+        ),
 
         // Structured AI Response Sections
         Column(
@@ -37,7 +41,9 @@ class RecommendationsBuilder extends StatelessWidget {
               recommendation.almostReady,
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(
+              height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            ),
 
             // Almost ready recipes
             // AIAlmostReadySection(content: recommendation.almostReady),
@@ -104,38 +110,62 @@ Widget _buildRecipeCards(
       if (readyModels.isNotEmpty) ...[
         Row(
           children: [
-            const Icon(Icons.check_circle, color: Colors.green, size: 20),
-            const SizedBox(width: 8),
+            Icon(
+              Icons.check_circle,
+              color: Colors.green,
+              size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
+            ),
+            SizedBox(
+              width: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+            ),
             Text(
               'Ready to Cook (${readyModels.length})',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+              style: TextStyle(
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.md,
+                ),
+                fontWeight: AppFontWeights.bold,
                 color: Colors.green,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        SizedBox(
+          height: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+        ),
         ...readyModels.map((vm) => AIReadyToCookCard(viewModel: vm)),
       ],
       if (almostModels.isNotEmpty) ...[
-        const SizedBox(height: 16),
+        SizedBox(
+          height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+        ),
         Row(
           children: [
-            const Icon(Icons.shopping_cart, color: Colors.orange, size: 20),
-            const SizedBox(width: 8),
+            Icon(
+              Icons.shopping_cart,
+              color: Colors.orange,
+              size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
+            ),
+            SizedBox(
+              width: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+            ),
             Text(
               'Almost Ready (${almostModels.length})',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+              style: TextStyle(
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.md,
+                ),
+                fontWeight: AppFontWeights.bold,
                 color: Colors.orange,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        SizedBox(
+          height: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+        ),
         ...almostModels.map((vm) => AIAlmostReadyCard(viewModel: vm)),
       ],
     ],

@@ -63,21 +63,30 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ResponsiveText(
-                    'Add Ingredients',
-                    fontSize: ResponsiveUtils.fontSize(
-                      context,
-                      ResponsiveFontSize.title,
-                    ),
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Casta',
+                    'ADD INGREDIENTS',
+                    fontSize:
+                        ResponsiveUtils.fontSize(
+                          context,
+                          ResponsiveFontSize.title,
+                        ) *
+                        1.2,
+                    fontWeight: AppFontWeights.semiBold,
+                    fontFamily: 'Melodrama',
                     color: AppColors.button,
-                    letterSpacing: 1.2,
+                    letterSpacing: 1.8,
                     textAlign: TextAlign.center,
                   ),
-                  ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
+                  ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
                   CupertinoTextField(
                     controller: searchController,
                     placeholder: 'Search ingredients...',
+                    placeholderStyle: TextStyle(
+                      color: AppColors.button,
+                      fontSize: ResponsiveUtils.fontSize(
+                        context,
+                        ResponsiveFontSize.md,
+                      ),
+                    ),
                     prefix: Padding(
                       padding: ResponsiveUtils.padding(
                         context,
@@ -239,7 +248,8 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                         context,
                         ResponsiveFontSize.md,
                       ),
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppFontWeights.semiBold,
+                      fontFamily: 'Inter',
                       color: AppColors.white,
                     ),
                   ),

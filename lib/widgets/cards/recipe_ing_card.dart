@@ -2,17 +2,17 @@ import 'package:ai_cook_project/models/recipe_ingredient_model.dart';
 import 'package:ai_cook_project/models/recipe_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RecipeIngCard extends StatelessWidget {
   final Recipe recipe;
-  final Size size;
   final List<UserIng> userIngredients;
 
   const RecipeIngCard({
     required this.recipe,
-    required this.size,
     required this.userIngredients,
     super.key,
   });
@@ -20,10 +20,12 @@ class RecipeIngCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: size.width,
+      width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.lg),
+        ),
         border: Border.all(
           color: AppColors.mutedGreen.withValues(alpha: 0.3),
           width: 1.5,
@@ -31,12 +33,15 @@ class RecipeIngCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+            blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+            offset: Offset(
+              0,
+              ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+            ),
           ),
         ],
       ),
-      padding: const EdgeInsets.all(20),
+      padding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -44,32 +49,52 @@ class RecipeIngCard extends StatelessWidget {
             children: [
               Icon(
                 Icons.shopping_basket_outlined,
-                size: 20,
+                size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
                 color: AppColors.mutedGreen,
               ),
-              const SizedBox(width: 8),
+              const ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.sm),
               Text(
                 'Ingredients',
                 style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
+                  fontSize: ResponsiveUtils.fontSize(
+                    context,
+                    ResponsiveFontSize.lg,
+                  ),
+                  fontWeight: AppFontWeights.medium,
                   color: AppColors.button,
-                  fontFamily: 'Casta',
-                  letterSpacing: 0.5,
+                  fontFamily: 'Inter',
+                  letterSpacing: 0.2,
                 ),
               ),
               const Spacer(),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: EdgeInsets.symmetric(
+                  horizontal: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.sm,
+                  ),
+                  vertical: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.xxs,
+                  ),
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.mutedGreen.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.sm,
+                    ),
+                  ),
                 ),
                 child: Text(
                   '${recipe.ingredients.length} items',
                   style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.sm,
+                    ),
+                    fontWeight: AppFontWeights.medium,
                     color: AppColors.mutedGreen,
                     fontFamily: 'Inter',
                   ),
@@ -77,12 +102,15 @@ class RecipeIngCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
           if (recipe.ingredients.isNotEmpty)
             Expanded(
               child: ListView.separated(
                 itemCount: recipe.ingredients.length,
-                separatorBuilder: (context, idx) => const SizedBox(height: 8),
+                separatorBuilder:
+                    (context, idx) => const ResponsiveSpacingWidget.vertical(
+                      ResponsiveSpacing.sm,
+                    ),
                 itemBuilder:
                     (context, index) => _IngredientRow(
                       ingredient: recipe.ingredients[index],
@@ -92,14 +120,23 @@ class RecipeIngCard extends StatelessWidget {
               ),
             )
           else
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.xs,
+                ),
+              ),
               child: Text(
                 '• No ingredients listed',
                 style: TextStyle(
                   fontStyle: FontStyle.italic,
+                  fontWeight: AppFontWeights.medium,
                   color: AppColors.button,
-                  fontSize: 14,
+                  fontSize: ResponsiveUtils.fontSize(
+                    context,
+                    ResponsiveFontSize.sm,
+                  ),
                   fontFamily: 'Inter',
                 ),
               ),
@@ -179,23 +216,30 @@ class _IngredientRow extends StatelessWidget {
     }
   }
 
-  Widget _buildStatusIcon(IngredientAvailabilityStatus status) {
+  Widget _buildStatusIcon(
+    IngredientAvailabilityStatus status,
+    BuildContext context,
+  ) {
     switch (status) {
       case IngredientAvailabilityStatus.available:
         return Icon(
           CupertinoIcons.checkmark_circle_fill,
-          size: 18,
+          size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.sm),
           color: AppColors.mutedGreen.withValues(alpha: 0.8),
         );
       case IngredientAvailabilityStatus.insufficient:
       case IngredientAvailabilityStatus.incompatible:
         return Icon(
           Icons.warning,
-          size: 18,
+          size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.sm),
           color: const Color.fromARGB(255, 228, 209, 43),
         );
       case IngredientAvailabilityStatus.unavailable:
-        return Icon(Icons.error, size: 18, color: AppColors.orange);
+        return Icon(
+          Icons.error,
+          size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.sm),
+          color: AppColors.orange,
+        );
     }
   }
 
@@ -216,8 +260,13 @@ class _IngredientRow extends StatelessWidget {
     final status = _getAvailabilityStatus();
 
     return Container(
-      constraints: const BoxConstraints(minHeight: 48),
-      padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 12),
+      constraints: BoxConstraints(
+        minHeight: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+      ),
+      padding: EdgeInsets.symmetric(
+        vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+        horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+      ),
       decoration: BoxDecoration(
         color: AppColors.background.withValues(alpha: 0.02),
         borderRadius: BorderRadius.circular(12),
@@ -240,32 +289,39 @@ class _IngredientRow extends StatelessWidget {
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
-            const SizedBox(width: 12),
+            const ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.sm),
             Expanded(
               flex: 5,
               child: Text(
                 ingredient.ingredient.name,
-                style: const TextStyle(
+                style: TextStyle(
                   color: AppColors.button,
-                  fontSize: 14,
+                  fontSize: ResponsiveUtils.fontSize(
+                    context,
+                    ResponsiveFontSize.sm,
+                  ),
                   fontFamily: 'Inter',
-                  fontWeight: FontWeight.w500,
+                  fontWeight: AppFontWeights.medium,
                   height: 1.3,
+                  letterSpacing: 0.2,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            const SizedBox(width: 8),
+            const ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.xs),
             Expanded(
               flex: 3,
               child: Text(
                 '${ingredient.quantity} ${ingredient.unit?.abbreviation ?? ""}',
                 style: TextStyle(
                   color: _getQuantityTextColor(status),
-                  fontSize: 12,
+                  fontSize: ResponsiveUtils.fontSize(
+                    context,
+                    ResponsiveFontSize.sm,
+                  ),
                   fontFamily: 'Inter',
-                  fontWeight: FontWeight.w500,
+                  fontWeight: AppFontWeights.medium,
                   height: 1.2,
                   letterSpacing: 0.2,
                 ),
@@ -274,8 +330,8 @@ class _IngredientRow extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            const SizedBox(width: 8),
-            _buildStatusIcon(status),
+            const ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.xs),
+            _buildStatusIcon(status, context),
           ],
         ),
       ),
@@ -326,70 +382,107 @@ class _IngredientRow extends StatelessWidget {
       barrierDismissible: true,
       builder:
           (BuildContext dialogContext) => CupertinoAlertDialog(
-            title: Icon(icon, color: iconColor, size: 40),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 16),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: AppColors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  textAlign: TextAlign.center,
+            title: Icon(
+              icon,
+              color: iconColor,
+              size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
+            ),
+            content: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.xs,
                 ),
-                const SizedBox(height: 12),
-                Text(
-                  ingredient.ingredient.name,
-                  style: const TextStyle(
-                    color: AppColors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  message,
-                  style: const TextStyle(
-                    color: AppColors.black,
-                    fontSize: 14,
-                    height: 1.4,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 12),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.mutedGreen.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    'Recipe requires: ${ingredient.quantity} ${ingredient.unit?.abbreviation ?? ''}',
-                    style: const TextStyle(
-                      fontSize: 13,
-                      color: AppColors.mutedGreen,
-                      fontWeight: FontWeight.w600,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
+                  Text(
+                    ingredient.ingredient.name,
+                    style: TextStyle(
+                      color: AppColors.black,
+                      fontSize: ResponsiveUtils.fontSize(
+                        context,
+                        ResponsiveFontSize.xxl,
+                      ),
+                      fontWeight: AppFontWeights.semiBold,
+                      letterSpacing: 1.8,
+                      fontFamily: 'Melodrama',
                     ),
                     textAlign: TextAlign.center,
                   ),
-                ),
-              ],
+                  const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: AppColors.black,
+                      fontSize: ResponsiveUtils.fontSize(
+                        context,
+                        ResponsiveFontSize.lg,
+                      ),
+                      fontWeight: AppFontWeights.medium,
+                      letterSpacing: 0.2,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.xs),
+                  Text(
+                    message,
+                    style: TextStyle(
+                      color: AppColors.black,
+                      fontSize: ResponsiveUtils.fontSize(
+                        context,
+                        ResponsiveFontSize.sm,
+                      ),
+                      height: 1.4,
+                      letterSpacing: 0.2,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.sm,
+                      ),
+                      vertical: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.xs,
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.mutedGreen.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      'Recipe requires: ${ingredient.quantity} ${ingredient.unit?.abbreviation ?? ''}',
+                      style: TextStyle(
+                        fontSize: ResponsiveUtils.fontSize(
+                          context,
+                          ResponsiveFontSize.sm,
+                        ),
+                        color: AppColors.mutedGreen,
+                        fontWeight: AppFontWeights.medium,
+                        letterSpacing: 0.2,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
             ),
             actions: [
               CupertinoDialogAction(
                 onPressed: () => Navigator.of(dialogContext).pop(),
-                child: const Text(
+                child: Text(
                   'Close',
                   style: TextStyle(
                     color: AppColors.orange,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppFontWeights.medium,
+                    letterSpacing: 0.2,
+                    fontFamily: 'Inter',
                   ),
                 ),
               ),

@@ -11,17 +11,13 @@ class RecipeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final width = size.width * 0.30;
-    final height = size.height * 0.14;
-
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          RecipeImage(imageUrl: recipe.image, width: width, height: height),
+          RecipeImage(imageUrl: recipe.image),
           Expanded(child: RecipeTitle(name: recipe.name)),
         ],
       ),

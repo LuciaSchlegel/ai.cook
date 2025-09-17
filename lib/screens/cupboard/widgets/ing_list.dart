@@ -242,11 +242,11 @@ class IngredientListView extends StatelessWidget {
                                   fontFamily: 'Melodrama',
                                   fontSize: ResponsiveUtils.fontSize(
                                     context,
-                                    ResponsiveFontSize.xl,
+                                    ResponsiveFontSize.xxl,
                                   ),
                                   height: 1.1,
                                   letterSpacing: 1.7,
-                                  fontWeight: AppFontWeights.semiBold,
+                                  fontWeight: AppFontWeights.medium,
                                 ),
                                 SizedBox(
                                   height: ResponsiveUtils.spacing(

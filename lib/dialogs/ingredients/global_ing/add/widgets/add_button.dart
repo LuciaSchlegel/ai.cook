@@ -5,6 +5,8 @@ import 'package:ai_cook_project/models/unit.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
+import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -78,12 +80,13 @@ class AddCustomIngredientButton extends StatelessWidget {
           onDelete: () {},
         );
       },
-      child: const Text(
+      child: Text(
         'Add custom ingredient',
         style: TextStyle(
           color: CupertinoColors.systemBlue,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
+          fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.sm),
+          fontWeight: AppFontWeights.medium,
+          fontFamily: 'Inter',
         ),
       ),
     );

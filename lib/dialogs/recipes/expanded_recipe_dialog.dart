@@ -1,5 +1,4 @@
 // Expanded Dialog
-import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/models/recipe_model.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/utils/responsive_utils.dart';
@@ -33,56 +32,123 @@ class RecipeExpandedDialog extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               color: CupertinoColors.white,
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(DialogConstants.radiusXL),
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(
+                  ResponsiveUtils.borderRadius(
+                    context,
+                    ResponsiveBorderRadius.xl,
+                  ),
+                ),
               ),
-              boxShadow: DialogConstants.dialogShadow,
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.button.withValues(alpha: 0.1),
+                  blurRadius: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.sm,
+                  ),
+                  offset: const Offset(0, 10),
+                ),
+              ],
             ),
             child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(DialogConstants.radiusXL),
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(
+                  ResponsiveUtils.borderRadius(
+                    context,
+                    ResponsiveBorderRadius.xl,
+                  ),
+                ),
               ),
-              child: Column(
-                children: [
-                  // Add small top padding for better visual spacing
-                  const SizedBox(height: DialogConstants.spacingXS),
-                  const _DragHandle(),
-                  _ExpandedHeader(recipe: recipe),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 1),
-                    margin: EdgeInsets.only(
-                      left: DialogConstants.spacingMD,
-                      right: DialogConstants.spacingMD,
-                      bottom: DialogConstants.spacingSM,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.button.withOpacity(0.4),
-                      borderRadius: BorderRadius.circular(
-                        DialogConstants.radiusLG,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.sm,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    // Add small top padding for better visual spacing
+                    SizedBox(
+                      height: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.xs,
                       ),
                     ),
-                  ),
-                  _ActionButtons(),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      controller: scrollController,
-                      child: ResponsiveContainer(
-                        padding: ResponsiveSpacing.md,
-                        child: Column(
-                          children: [
-                            _InstructionsSection(recipe: recipe),
-                            // Add safe area padding at bottom using responsive system
-                            SizedBox(
-                              height: ResponsiveUtils.getScrollBottomPadding(
-                                context,
-                              ),
-                            ),
+                    const _DragHandle(),
+                    _ExpandedHeader(recipe: recipe),
+                    Container(
+                      margin: EdgeInsets.only(
+                        left: ResponsiveUtils.spacing(
+                          context,
+                          ResponsiveSpacing.lg,
+                        ),
+                        right: ResponsiveUtils.spacing(
+                          context,
+                          ResponsiveSpacing.lg,
+                        ),
+                      ),
+                      padding:
+                          ResponsiveUtils.padding(
+                            context,
+                            ResponsiveSpacing.xxs,
+                          ) *
+                          0.4,
+                      decoration: BoxDecoration(
+                        color: AppColors.button.withValues(alpha: 0.4),
+                        borderRadius: BorderRadius.circular(
+                          ResponsiveUtils.borderRadius(
+                            context,
+                            ResponsiveBorderRadius.lg,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const ResponsiveSpacingWidget.vertical(
+                      ResponsiveSpacing.sm,
+                    ),
+                    _ActionButtons(),
+                    // Add subtle divider before steps
+                    Container(
+                      margin: ResponsiveUtils.horizontalPadding(
+                        context,
+                        ResponsiveSpacing.lg,
+                      ),
+                      height: 1,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.transparent,
+                            AppColors.mutedGreen.withValues(alpha: 0.2),
+                            Colors.transparent,
                           ],
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        controller: scrollController,
+                        physics: const BouncingScrollPhysics(),
+                        child: ResponsiveContainer(
+                          padding: ResponsiveSpacing.md,
+                          child: Column(
+                            children: [
+                              _InstructionsSection(recipe: recipe),
+                              // Add safe area padding at bottom using responsive system
+                              SizedBox(
+                                height: ResponsiveUtils.getScrollBottomPadding(
+                                  context,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -98,13 +164,17 @@ class _DragHandle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: DialogConstants.spacingSM),
+      padding: EdgeInsets.symmetric(
+        vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+      ),
       child: Container(
-        width: 40,
-        height: 4,
+        width: ResponsiveUtils.spacing(context, ResponsiveSpacing.xxl),
+        height: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
         decoration: BoxDecoration(
           color: CupertinoColors.systemGrey3,
-          borderRadius: BorderRadius.circular(2),
+          borderRadius: BorderRadius.circular(
+            ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.sm),
+          ),
         ),
       ),
     );
@@ -128,13 +198,13 @@ class _ExpandedHeader extends StatelessWidget {
               recipe.name,
               fontSize: ResponsiveUtils.fontSize(
                 context,
-                ResponsiveFontSize.display,
+                ResponsiveFontSize.title2,
               ),
-              fontWeight: FontWeight.w600,
+              fontWeight: AppFontWeights.semiBold,
               color: AppColors.button,
-              fontFamily: 'Casta',
-              letterSpacing: 1,
-              height: 1.2,
+              fontFamily: 'Melodrama',
+              letterSpacing: 1.8,
+              height: 1.4,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -163,13 +233,13 @@ class _ActionButtons extends StatelessWidget {
             label: 'Schedule',
             onTap: () {},
           ),
-          ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.sm),
+          ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.lg),
           _ActionButton(
             icon: CupertinoIcons.timer,
             label: 'Start',
             onTap: () {},
           ),
-          ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.sm),
+          ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.lg),
           _ActionButton(
             icon: CupertinoIcons.share,
             label: 'Share',
@@ -198,11 +268,13 @@ class _ActionButton extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: 40,
-          height: 40,
+          width: ResponsiveUtils.spacing(context, ResponsiveSpacing.xl),
+          height: ResponsiveUtils.spacing(context, ResponsiveSpacing.xl),
           decoration: BoxDecoration(
-            color: CupertinoColors.systemGrey6.withOpacity(0.5),
-            borderRadius: BorderRadius.circular(DialogConstants.radiusLG),
+            color: CupertinoColors.systemGrey6.withValues(alpha: 0.5),
+            borderRadius: BorderRadius.circular(
+              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.lg),
+            ),
           ),
           child: IconButton(
             onPressed: onTap,
@@ -210,7 +282,7 @@ class _ActionButton extends StatelessWidget {
             icon: ResponsiveIcon(
               icon,
               null,
-              size: ResponsiveIconSize.md,
+              size: ResponsiveIconSize.lg,
               color: AppColors.button,
             ),
           ),
@@ -219,10 +291,11 @@ class _ActionButton extends StatelessWidget {
         ResponsiveText(
           label,
           fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.xs),
-          fontWeight: FontWeight.w500,
+          fontWeight: AppFontWeights.medium,
           color: CupertinoColors.label,
           fontFamily: 'Inter',
           height: 1.2,
+          letterSpacing: 0.2,
           textAlign: TextAlign.center,
         ),
       ],
@@ -239,14 +312,75 @@ class _InstructionsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ResponsiveText(
-          'Steps',
-          fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.xl),
-          fontWeight: FontWeight.w500,
-          color: AppColors.button,
-          fontFamily: 'Times New Roman',
+        // Enhanced section header
+        Row(
+          children: [
+            Container(
+              width: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+              height: ResponsiveUtils.fontSize(
+                context,
+                ResponsiveFontSize.title,
+              ),
+              decoration: BoxDecoration(
+                gradient: AppColors.gradientOrange,
+                borderRadius: BorderRadius.circular(
+                  ResponsiveUtils.borderRadius(
+                    context,
+                    ResponsiveBorderRadius.sm,
+                  ),
+                ),
+              ),
+            ),
+            ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.sm),
+            Expanded(
+              child: ResponsiveText(
+                'Cooking Steps',
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.title,
+                ),
+                fontWeight: AppFontWeights.semiBold,
+                color: AppColors.button,
+                fontFamily: 'Melodrama',
+                letterSpacing: 1.2,
+              ),
+            ),
+            // Step count badge
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.sm,
+                ),
+                vertical: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.xs,
+                ),
+              ),
+              decoration: BoxDecoration(
+                color: AppColors.mutedGreen.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(
+                  ResponsiveUtils.borderRadius(
+                    context,
+                    ResponsiveBorderRadius.lg,
+                  ),
+                ),
+              ),
+              child: ResponsiveText(
+                '${recipe.steps.length} steps',
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.sm,
+                ),
+                fontWeight: AppFontWeights.medium,
+                color: AppColors.mutedGreen,
+                fontFamily: 'Inter',
+                letterSpacing: 0.3,
+              ),
+            ),
+          ],
         ),
-        ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
+        ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
         _RecipeStepsView(recipe: recipe),
       ],
     );
@@ -261,59 +395,181 @@ class _RecipeStepsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: List.generate(
         recipe.steps.length,
-        (index) => Padding(
-          padding: EdgeInsets.only(
-            bottom: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
-                height: ResponsiveUtils.iconSize(
+        (index) => _StepCard(
+          stepNumber: index + 1,
+          stepText: recipe.steps[index],
+          isLastStep: index == recipe.steps.length - 1,
+          isFirstStep: index == 0,
+        ),
+      ),
+    );
+  }
+}
+
+class _StepCard extends StatelessWidget {
+  final int stepNumber;
+  final String stepText;
+  final bool isLastStep;
+  final bool isFirstStep;
+
+  const _StepCard({
+    required this.stepNumber,
+    required this.stepText,
+    required this.isLastStep,
+    this.isFirstStep = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Centered step number divider (shown for every step)
+        _CenteredStepDivider(stepNumber: stepNumber),
+        ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
+
+        // Step content card
+        Container(
+          margin: ResponsiveUtils.padding(
+            context,
+            ResponsiveSpacing.xs,
+          ).copyWith(top: 0),
+          padding: ResponsiveUtils.padding(context, ResponsiveSpacing.lg),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(
+              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xl),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.button.withValues(alpha: 0.06),
+                blurRadius: ResponsiveUtils.spacing(
                   context,
-                  ResponsiveIconSize.md,
+                  ResponsiveSpacing.sm,
                 ),
-                decoration: BoxDecoration(
-                  color: AppColors.mutedGreen,
-                  borderRadius: BorderRadius.circular(
-                    ResponsiveUtils.borderRadius(
-                      context,
-                      ResponsiveBorderRadius.sm,
-                    ),
-                  ),
-                ),
-                child: Center(
-                  child: ResponsiveText(
-                    '${index + 1}',
-                    fontSize: ResponsiveUtils.fontSize(
-                      context,
-                      ResponsiveFontSize.xs,
-                    ),
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
+                offset: const Offset(0, 2),
+                spreadRadius: 0,
               ),
-              ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.sm),
-              Expanded(
-                child: ResponsiveText(
-                  recipe.steps[index],
-                  fontSize: ResponsiveUtils.fontSize(
-                    context,
-                    ResponsiveFontSize.md,
-                  ),
-                  height: 1.5,
-                  color: CupertinoColors.label,
+            ],
+            border: Border.all(
+              color: AppColors.mutedGreen.withValues(alpha: 0.1),
+              width: 1,
+            ),
+          ),
+          child: ResponsiveText(
+            stepText,
+            fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.md),
+            height: 1.6,
+            fontFamily: 'Inter',
+            letterSpacing: 0.3,
+            color: AppColors.button,
+            fontWeight: AppFontWeights.regular,
+          ),
+        ),
+
+        // Spacing after step
+        if (!isLastStep) ...[
+          ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
+        ] else ...[
+          // Extra spacing after last step
+          ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
+        ],
+      ],
+    );
+  }
+}
+
+class _CenteredStepDivider extends StatelessWidget {
+  final int stepNumber;
+
+  const _CenteredStepDivider({required this.stepNumber});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        // Left line
+        Expanded(
+          child: Container(
+            height: 1.5,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Colors.transparent,
+                  AppColors.mutedGreen.withValues(alpha: 0.3),
+                  AppColors.mutedGreen.withValues(alpha: 0.6),
+                ],
+              ),
+            ),
+          ),
+        ),
+
+        // Step number circle
+        Container(
+          margin: ResponsiveUtils.horizontalPadding(
+            context,
+            ResponsiveSpacing.md,
+          ),
+          width: ResponsiveUtils.iconSize(context, ResponsiveIconSize.xl),
+          height: ResponsiveUtils.iconSize(context, ResponsiveIconSize.xl),
+          decoration: BoxDecoration(
+            gradient: AppColors.gradientOrange,
+            borderRadius: BorderRadius.circular(
+              ResponsiveUtils.borderRadius(
+                context,
+                ResponsiveBorderRadius.xxxl,
+              ),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.orange.withValues(alpha: 0.3),
+                blurRadius: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.sm,
                 ),
+                offset: const Offset(0, 2),
+                spreadRadius: 0,
               ),
             ],
           ),
+          child: Center(
+            child: ResponsiveText(
+              '$stepNumber',
+              fontSize: ResponsiveUtils.fontSize(
+                context,
+                ResponsiveFontSize.sm,
+              ),
+              fontWeight: AppFontWeights.bold,
+              color: Colors.white,
+              fontFamily: 'Melodrama',
+              letterSpacing: 0.5,
+            ),
+          ),
         ),
-      ),
+
+        // Right line
+        Expanded(
+          child: Container(
+            height: 1.5,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  AppColors.mutedGreen.withValues(alpha: 0.6),
+                  AppColors.mutedGreen.withValues(alpha: 0.3),
+                  Colors.transparent,
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

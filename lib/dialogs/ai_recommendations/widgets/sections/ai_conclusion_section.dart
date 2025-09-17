@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:ai_cook_project/theme.dart';
 
 class AIConclusionSection extends StatelessWidget {
@@ -15,31 +15,41 @@ class AIConclusionSection extends StatelessWidget {
             : 'Happy cooking! Let me know if you need any help with these recipes! 👨‍🍳✨';
 
     return Container(
-      padding: const EdgeInsets.all(DialogConstants.spacingMD),
-      decoration: DialogConstants.sectionDecoration.copyWith(
-        gradient: DialogConstants.accentGradient,
+      padding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [AppColors.white, AppColors.orange.withValues(alpha: 0.02)],
+        ),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 28,
-            height: 28,
-            decoration: DialogConstants.iconContainerDecoration(
-              AppColors.mutedGreen,
-            ),
+            width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            decoration: BoxDecoration(color: AppColors.mutedGreen),
             child: Icon(
               CupertinoIcons.heart_fill,
-              size: 16,
+              size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
               color: AppColors.mutedGreen,
             ),
           ),
-          const SizedBox(width: DialogConstants.spacingSM),
+          SizedBox(
+            width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+          ),
           Expanded(
             child: Text(
               displayText,
-              style: DialogConstants.bodyTextStyle.copyWith(
+              style: TextStyle(
                 fontStyle: FontStyle.italic,
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.md,
+                ),
+                fontWeight: FontWeight.w500,
+                color: AppColors.mutedGreen,
               ),
             ),
           ),

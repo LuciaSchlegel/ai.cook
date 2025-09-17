@@ -1,6 +1,6 @@
-import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 
 class AIGreetingSection extends StatelessWidget {
   final String greeting;
@@ -12,28 +12,43 @@ class AIGreetingSection extends StatelessWidget {
     if (greeting.isEmpty) return const SizedBox.shrink();
 
     return Container(
-      margin: const EdgeInsets.only(bottom: DialogConstants.spacingMD),
-      padding: const EdgeInsets.all(DialogConstants.spacingMD),
-      decoration: DialogConstants.sectionDecoration.copyWith(
-        gradient: DialogConstants.accentGradient,
+      padding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [AppColors.white, AppColors.orange.withValues(alpha: 0.02)],
+        ),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 28,
-            height: 28,
-            decoration: DialogConstants.iconContainerDecoration(
-              AppColors.mutedGreen,
-            ),
+            width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            decoration: BoxDecoration(color: AppColors.mutedGreen),
             child: Icon(
               CupertinoIcons.person_fill,
-              size: 16,
+              size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
               color: AppColors.mutedGreen,
             ),
           ),
-          const SizedBox(width: DialogConstants.spacingSM),
-          Expanded(child: Text(greeting, style: DialogConstants.bodyTextStyle)),
+          SizedBox(
+            width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+          ),
+          Expanded(
+            child: Text(
+              greeting,
+              style: TextStyle(
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.md,
+                ),
+                fontWeight: FontWeight.w500,
+                color: AppColors.mutedGreen,
+              ),
+            ),
+          ),
         ],
       ),
     );

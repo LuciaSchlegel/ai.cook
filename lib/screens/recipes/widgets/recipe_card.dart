@@ -72,9 +72,6 @@ class _RecipeCardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final width = size.width * 0.24;
-    final height = size.width * 0.24;
     final unitWarnings = recipe.getUnitWarnings(userIngredients);
     final missingIngredients = recipe.getMissingIngredients(userIngredients);
     return Card(
@@ -88,7 +85,7 @@ class _RecipeCardContent extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            RecipeImage(imageUrl: recipe.image, width: width, height: height),
+            RecipeImage(imageUrl: recipe.image),
             const SizedBox(width: 16),
             Expanded(
               child: _RecipeDetails(

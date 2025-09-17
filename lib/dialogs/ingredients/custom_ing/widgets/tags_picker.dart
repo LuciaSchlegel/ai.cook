@@ -90,7 +90,9 @@ class TagsPicker extends StatelessWidget {
                   context,
                   ResponsiveFontSize.md,
                 ),
-                fontWeight: FontWeight.w600,
+                fontWeight: AppFontWeights.medium,
+                fontFamily: 'Inter',
+                letterSpacing: 0.2,
                 color: AppColors.button,
               ),
               const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
@@ -173,12 +175,14 @@ class TagsPicker extends StatelessWidget {
                                   ),
                                 ),
                                 ResponsiveText(
+                                  fontFamily: 'Inter',
+                                  fontWeight: AppFontWeights.medium,
+                                  letterSpacing: 0.2,
                                   TextUtils.capitalizeFirstLetter(tag.name),
                                   fontSize: ResponsiveUtils.fontSize(
                                     context,
                                     ResponsiveFontSize.sm,
                                   ),
-                                  fontWeight: FontWeight.w700,
                                   color: AppColors.white,
                                 ),
                                 // Add checkmark for selected state

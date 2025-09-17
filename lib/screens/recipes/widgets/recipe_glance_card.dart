@@ -2,6 +2,8 @@ import 'package:ai_cook_project/models/recipe_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/widgets/cards/recipe_ing_card.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/material.dart';
 
 class RecipeGlanceCard extends StatelessWidget {
@@ -18,169 +20,246 @@ class RecipeGlanceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size.width * 0.92,
-      height: size.height * 0.52,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: AppColors.mutedGreen.withOpacity(0.3),
-          width: 1.5,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.black.withOpacity(0.08),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header Section
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: AppColors.mutedGreen.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        // Responsive sizing
+        final cardWidth = switch (deviceType) {
+          DeviceType.iPhone => size.width * 0.92,
+          DeviceType.iPadMini => size.width * 0.85,
+          DeviceType.iPadPro => size.width * 0.75,
+        };
+
+        final cardHeight = switch (deviceType) {
+          DeviceType.iPhone => size.height * 0.52,
+          DeviceType.iPadMini => size.height * 0.48,
+          DeviceType.iPadPro => size.height * 0.45,
+        };
+
+        return Container(
+          width: cardWidth,
+          height: cardHeight,
+          padding: ResponsiveUtils.padding(context, ResponsiveSpacing.lg),
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(
+              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xl),
+            ),
+            border: Border.all(
+              color: AppColors.mutedGreen.withValues(alpha: 0.3),
+              width: 1.5,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.black.withValues(alpha: 0.08),
+                blurRadius: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.md,
                 ),
-                child: Icon(
-                  Icons.visibility_outlined,
-                  size: 20,
-                  color: AppColors.mutedGreen,
-                ),
+                offset: const Offset(0, 4),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  'Quick Overview',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.5,
-                    color: AppColors.button,
-                    fontFamily: 'Casta',
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header Section with responsive spacing
+              Row(
+                children: [
+                  Container(
+                    padding: ResponsiveUtils.padding(
+                      context,
+                      ResponsiveSpacing.xs,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.mutedGreen.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(
+                        ResponsiveUtils.borderRadius(
+                          context,
+                          ResponsiveBorderRadius.md,
+                        ),
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.visibility_outlined,
+                      size: ResponsiveUtils.iconSize(
+                        context,
+                        ResponsiveIconSize.md,
+                      ),
+                      color: AppColors.mutedGreen,
+                    ),
                   ),
+                  ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.sm),
+                  Expanded(
+                    child: Text(
+                      'Quick Overview',
+                      style: TextStyle(
+                        fontSize:
+                            ResponsiveUtils.fontSize(
+                              context,
+                              ResponsiveFontSize.xxl,
+                            ) *
+                            1,
+                        fontWeight: AppFontWeights.medium,
+                        letterSpacing: 0.2,
+                        color: AppColors.button,
+                        fontFamily: 'Inter',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
+
+              // Info Chips Section (replacing cards)
+              _RecipeInfoChips(recipe: recipe),
+
+              ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
+
+              // Ingredients Section
+              Expanded(
+                child: _IngredientsSection(
+                  recipe: recipe,
+                  size: size,
+                  userIngredients: userIngredients,
                 ),
               ),
             ],
           ),
-
-          const SizedBox(height: 16),
-
-          // Info Cards Section
-          _RecipeInfoCards(recipe: recipe),
-
-          const SizedBox(height: 20),
-
-          // Ingredients Section
-          Expanded(
-            child: _IngredientsSection(
-              recipe: recipe,
-              size: size,
-              userIngredients: userIngredients,
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
 
-class _RecipeInfoCards extends StatelessWidget {
+/// Elegant chips displaying recipe information with descriptive icons (Glance Card version)
+class _RecipeInfoChips extends StatelessWidget {
   final Recipe recipe;
 
-  const _RecipeInfoCards({required this.recipe});
+  const _RecipeInfoChips({required this.recipe});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: _InfoCard(
-            icon: Icons.timer_outlined,
-            title: 'Time',
-            value: recipe.cookingTime ?? 'N/A',
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _InfoCard(
-            icon: Icons.restaurant_menu_rounded,
-            title: 'Level',
-            value: recipe.difficulty ?? 'N/A',
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _InfoCard(
-            icon: Icons.people_outline_rounded,
-            title: 'Serves',
-            value: '${recipe.servings ?? 'N/A'}',
-          ),
-        ),
-      ],
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        return Wrap(
+          spacing: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+          runSpacing: ResponsiveUtils.spacing(context, ResponsiveSpacing.xxs),
+          children: [
+            _GlanceInfoChip(
+              icon: Icons.access_time_rounded,
+              label: recipe.cookingTime ?? "N/A",
+              backgroundColor: AppColors.mutedGreen.withValues(alpha: 0.1),
+              iconColor: AppColors.mutedGreen,
+              textColor: AppColors.mutedGreen,
+            ),
+            _GlanceInfoChip(
+              icon: _getDifficultyIcon(recipe.difficulty),
+              label: recipe.difficulty ?? "N/A",
+              backgroundColor: AppColors.lightYellow.withValues(alpha: 0.08),
+              iconColor: AppColors.background,
+              textColor: AppColors.background,
+            ),
+            _GlanceInfoChip(
+              icon: Icons.people_outline_rounded,
+              label: '${recipe.servings ?? 'N/A'} serves',
+              backgroundColor: AppColors.orange.withValues(alpha: 0.1),
+              iconColor: AppColors.orange,
+              textColor: AppColors.orange,
+            ),
+          ],
+        );
+      },
     );
+  }
+
+  IconData _getDifficultyIcon(String? difficulty) {
+    switch (difficulty?.toLowerCase()) {
+      case 'easy':
+        return Icons.sentiment_very_satisfied_rounded;
+      case 'medium':
+        return Icons.sentiment_satisfied_rounded;
+      case 'hard':
+        return Icons.sentiment_neutral_rounded;
+      default:
+        return Icons.help_outline_rounded;
+    }
   }
 }
 
-class _InfoCard extends StatelessWidget {
+/// Individual info chip component for glance card
+class _GlanceInfoChip extends StatelessWidget {
   final IconData icon;
-  final String title;
-  final String value;
+  final String label;
+  final Color backgroundColor;
+  final Color iconColor;
+  final Color textColor;
 
-  const _InfoCard({
+  const _GlanceInfoChip({
     required this.icon,
-    required this.title,
-    required this.value,
+    required this.label,
+    required this.backgroundColor,
+    required this.iconColor,
+    required this.textColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-      decoration: BoxDecoration(
-        color: AppColors.background.withOpacity(0.03),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: AppColors.mutedGreen.withOpacity(0.15),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 24, color: AppColors.mutedGreen),
-          const SizedBox(height: 8),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
-              color: AppColors.mutedGreen,
-              fontFamily: 'Inter',
-              letterSpacing: 0.5,
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        final chipPadding = switch (deviceType) {
+          DeviceType.iPhone => EdgeInsets.symmetric(
+            horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+          ),
+          DeviceType.iPadMini => EdgeInsets.symmetric(
+            horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+            vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+          ),
+          DeviceType.iPadPro => EdgeInsets.symmetric(
+            horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+            vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+          ),
+        };
+
+        return Container(
+          padding: chipPadding,
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            borderRadius: BorderRadius.circular(
+              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xl),
+            ),
+            border: Border.all(
+              color: iconColor.withValues(alpha: 0.2),
+              width: 1,
             ),
           ),
-          const SizedBox(height: 4),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              color: AppColors.button,
-              fontFamily: 'Inter',
-            ),
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                icon,
+                size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
+                color: iconColor,
+              ),
+              ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.xs),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(
+                    context,
+                    ResponsiveFontSize.sm,
+                  ),
+                  color: textColor,
+                  fontFamily: 'Inter',
+                  fontWeight: AppFontWeights.semiBold,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -198,10 +277,6 @@ class _IngredientsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RecipeIngCard(
-      recipe: recipe,
-      size: Size(size.width * 0.85, size.height * 0.25),
-      userIngredients: userIngredients,
-    );
+    return RecipeIngCard(recipe: recipe, userIngredients: userIngredients);
   }
 }

@@ -1,7 +1,7 @@
-import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/models/ai_response_model.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 
 class AISubstitutionsSection extends StatelessWidget {
   final List<AISubstitution> substitutions;
@@ -13,10 +13,18 @@ class AISubstitutionsSection extends StatelessWidget {
     // Show section even if empty, with fallback content
 
     return Container(
-      margin: const EdgeInsets.only(bottom: DialogConstants.spacingMD),
-      padding: const EdgeInsets.all(DialogConstants.spacingMD),
-      decoration: DialogConstants.sectionDecoration.copyWith(
-        gradient: DialogConstants.primaryGradient,
+      margin: EdgeInsets.only(
+        bottom: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+      ),
+      padding: EdgeInsets.all(
+        ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+      ),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [AppColors.white, AppColors.orange.withValues(alpha: 0.02)],
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,51 +33,71 @@ class AISubstitutionsSection extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 32,
-                height: 32,
-                decoration: DialogConstants.iconContainerDecoration(
-                  AppColors.mutedGreen,
-                ),
+                width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+                height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+                decoration: BoxDecoration(color: AppColors.mutedGreen),
                 child: Icon(
                   CupertinoIcons.arrow_2_circlepath,
-                  size: 18,
+                  size: ResponsiveUtils.iconSize(
+                    context,
+                    ResponsiveIconSize.md,
+                  ),
                   color: AppColors.mutedGreen,
                 ),
               ),
-              const SizedBox(width: DialogConstants.spacingSM),
+              SizedBox(
+                width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+              ),
               Expanded(
                 child: Text(
                   'Smart Substitutions',
-                  style: DialogConstants.sectionTitleStyle,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.md,
+                    ),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.button,
+                    letterSpacing: 0.3,
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: DialogConstants.spacingMD),
+          SizedBox(
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+          ),
 
           // Substitutions or fallback
           if (substitutions.isNotEmpty)
             ...substitutions.map(
-              (substitution) => _buildSubstitutionItem(substitution),
+              (substitution) => _buildSubstitutionItem(substitution, context),
             )
           else
-            _buildSubstitutionsFallback(),
+            _buildSubstitutionsFallback(context),
         ],
       ),
     );
   }
 
-  Widget _buildSubstitutionItem(AISubstitution substitution) {
+  Widget _buildSubstitutionItem(
+    AISubstitution substitution,
+    BuildContext context,
+  ) {
     return Container(
-      margin: const EdgeInsets.only(bottom: DialogConstants.spacingSM),
-      padding: const EdgeInsets.all(DialogConstants.spacingSM),
+      margin: EdgeInsets.only(
+        bottom: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+      ),
+      padding: EdgeInsets.all(
+        ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+      ),
       decoration: BoxDecoration(
         color: AppColors.white.withValues(alpha: 0.7),
-        borderRadius: BorderRadius.circular(DialogConstants.radiusSM),
+        borderRadius: BorderRadius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.sm),
+        ),
         border: Border.all(
-          color: AppColors.mutedGreen.withValues(
-            alpha: DialogConstants.alphaMedium,
-          ),
+          color: AppColors.mutedGreen.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -77,20 +105,29 @@ class AISubstitutionsSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 20,
-            height: 20,
-            margin: const EdgeInsets.only(top: 2),
+            width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            margin: EdgeInsets.only(
+              top: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            ),
             decoration: BoxDecoration(
               color: AppColors.mutedGreen.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(
+                ResponsiveUtils.borderRadius(
+                  context,
+                  ResponsiveBorderRadius.sm,
+                ),
+              ),
             ),
             child: Icon(
               CupertinoIcons.arrow_right,
-              size: 12,
+              size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.sm),
               color: AppColors.mutedGreen,
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(
+            width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+          ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,16 +135,27 @@ class AISubstitutionsSection extends StatelessWidget {
                 Text(
                   substitution.original,
                   style: TextStyle(
-                    fontSize: 15,
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.sm,
+                    ),
                     fontWeight: FontWeight.w600,
                     color: AppColors.button,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(
+                  height: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.sm,
+                  ),
+                ),
                 Text(
                   substitution.alternatives.join(', '),
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.sm,
+                    ),
                     height: 1.4,
                     color: AppColors.button.withValues(alpha: 0.8),
                   ),
@@ -120,12 +168,16 @@ class AISubstitutionsSection extends StatelessWidget {
     );
   }
 
-  Widget _buildSubstitutionsFallback() {
+  Widget _buildSubstitutionsFallback(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(
+        ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+      ),
       decoration: BoxDecoration(
         color: AppColors.mutedGreen.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.md),
+        ),
         border: Border.all(
           color: AppColors.mutedGreen.withValues(alpha: 0.2),
           width: 1,
@@ -135,24 +187,34 @@ class AISubstitutionsSection extends StatelessWidget {
         children: [
           Icon(
             CupertinoIcons.arrow_2_circlepath,
-            size: 40,
+            size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
             color: AppColors.mutedGreen.withValues(alpha: 0.6),
           ),
-          const SizedBox(height: 12),
+          SizedBox(
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+          ),
           Text(
             'Substitution Master!',
             style: TextStyle(
-              fontSize: 16,
+              fontSize: ResponsiveUtils.fontSize(
+                context,
+                ResponsiveFontSize.sm,
+              ),
               fontWeight: FontWeight.w600,
               color: AppColors.button,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 8),
+          SizedBox(
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+          ),
           Text(
             'You have all the ingredients you need! I\'ll suggest smart substitutions when needed to help you adapt recipes to your taste or dietary preferences.',
             style: TextStyle(
-              fontSize: 14,
+              fontSize: ResponsiveUtils.fontSize(
+                context,
+                ResponsiveFontSize.sm,
+              ),
               color: AppColors.button.withValues(alpha: 0.7),
               height: 1.4,
             ),

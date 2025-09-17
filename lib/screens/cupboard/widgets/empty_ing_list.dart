@@ -15,13 +15,12 @@ class EmptyIngredientListMessage extends StatelessWidget {
             child: ResponsiveText(
               'No ingredients match your filters',
               color: AppColors.white,
-              fontFamily: 'Casta',
-              fontSize: ResponsiveUtils.fontSize(
-                context,
-                ResponsiveFontSize.title,
-              ),
-              fontWeight: FontWeight.w600,
-              letterSpacing: 1,
+              fontFamily: 'Melodrama',
+              fontWeight: AppFontWeights.medium,
+              fontSize:
+                  ResponsiveUtils.fontSize(context, ResponsiveFontSize.title) *
+                  1.2,
+              letterSpacing: 1.8,
               height: 1.5,
               textAlign: TextAlign.center,
             ),

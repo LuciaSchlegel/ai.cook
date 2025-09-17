@@ -240,8 +240,6 @@ class _AddExtRecipeState extends State<AddExtRecipe> {
                                           height: 70,
                                           child: RecipeImage(
                                             imageUrl: recipe.image,
-                                            width: 70,
-                                            height: 70,
                                           ),
                                         ),
                                       ),

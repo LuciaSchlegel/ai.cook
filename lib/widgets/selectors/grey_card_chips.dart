@@ -277,7 +277,7 @@ class GreyCardChips extends StatelessWidget {
                                             borderRadius: BorderRadius.circular(
                                               ResponsiveUtils.borderRadius(
                                                 context,
-                                                ResponsiveBorderRadius.xl,
+                                                ResponsiveBorderRadius.xxl,
                                               ),
                                             ),
                                             gradient:

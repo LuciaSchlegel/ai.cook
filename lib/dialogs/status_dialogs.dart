@@ -1,7 +1,6 @@
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
-
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 // Solo dejamos la validación, eliminando showErrorDialog para centralizar el diálogo de error en widgets/error_dialog.dart
 
 void showValidationErrorDialog(BuildContext context, List<String> errors) {
@@ -11,21 +10,27 @@ void showValidationErrorDialog(BuildContext context, List<String> errors) {
     builder: (BuildContext context) {
       return AlertDialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(DialogConstants.radiusMD),
+          borderRadius: BorderRadius.circular(
+            ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.md),
+          ),
         ),
         title: Row(
           children: [
             Icon(
               Icons.warning_amber_rounded,
               color: Colors.amber[700],
-              size: DialogConstants.iconSizeLG,
+              size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
             ),
             const SizedBox(width: 8),
-            const Text(
+            Text(
               'Missing Information',
               style: TextStyle(
-                fontSize: DialogConstants.fontSizeLG,
-                fontWeight: FontWeight.w600,
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.lg,
+                ),
+                fontWeight: AppFontWeights.semiBold,
+                fontFamily: 'Inter',
               ),
             ),
           ],
@@ -34,36 +39,56 @@ void showValidationErrorDialog(BuildContext context, List<String> errors) {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Please complete the following:',
               style: TextStyle(
-                fontSize: DialogConstants.fontSizeMD,
-                fontWeight: FontWeight.w500,
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.md,
+                ),
+                fontWeight: AppFontWeights.medium,
                 color: Colors.black87,
               ),
             ),
-            const SizedBox(height: DialogConstants.spacingSM),
-            ...errors.map((error) => buildValidationItem(error)),
+            SizedBox(
+              height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            ),
+            ...errors.map((error) => buildValidationItem(context, error)),
           ],
         ),
         actions: [
           TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(DialogConstants.radiusSM),
+                borderRadius: BorderRadius.circular(
+                  ResponsiveUtils.borderRadius(
+                    context,
+                    ResponsiveBorderRadius.sm,
+                  ),
+                ),
               ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: DialogConstants.spacingMD,
-                vertical: DialogConstants.spacingSM,
+              padding: EdgeInsets.symmetric(
+                horizontal: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.md,
+                ),
+                vertical: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.sm,
+                ),
               ),
             ),
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text(
+            child: Text(
               'OK',
               style: TextStyle(
-                fontSize: DialogConstants.fontSizeMD,
-                fontWeight: FontWeight.w500,
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.md,
+                ),
+                fontWeight: AppFontWeights.medium,
                 color: AppColors.orange,
+                fontFamily: 'Inter',
               ),
             ),
           ),
@@ -73,25 +98,26 @@ void showValidationErrorDialog(BuildContext context, List<String> errors) {
   );
 }
 
-Widget buildValidationItem(String text) {
+Widget buildValidationItem(BuildContext context, String text) {
   return Padding(
-    padding: const EdgeInsets.only(
-      left: DialogConstants.spacingSM,
-      bottom: DialogConstants.spacingSM,
+    padding: EdgeInsets.only(
+      left: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+      bottom: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
     ),
     child: Row(
       children: [
         Icon(
           Icons.error_outline,
-          size: DialogConstants.iconSizeSM,
+          size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.sm),
           color: Colors.red[700],
         ),
-        const SizedBox(width: DialogConstants.spacingSM),
+        SizedBox(width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm)),
         Text(
           text,
-          style: const TextStyle(
-            fontSize: DialogConstants.fontSizeSM,
+          style: TextStyle(
+            fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.sm),
             color: Colors.black87,
+            fontFamily: 'Inter',
           ),
         ),
       ],

@@ -1,4 +1,3 @@
-import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_recom_header.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_empty.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_error.dart';
@@ -9,6 +8,7 @@ import 'package:ai_cook_project/widgets/loader/skeleton_loader.dart';
 import 'package:ai_cook_project/models/recipe_tag_model.dart';
 import 'package:ai_cook_project/providers/ai_recommendations_provider.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,10 +43,7 @@ class BuildDialog extends StatelessWidget {
             // Enhanced dialog title with gradient
             const AiRecomHeader(),
             SizedBox(
-              height: DialogConstants.adaptiveSpacing(
-                context,
-                DialogConstants.spacingMD,
-              ),
+              height: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
             ),
 
             // AI Recommendation Form Section
@@ -59,10 +56,7 @@ class BuildDialog extends StatelessWidget {
               onDifficultyChanged: onDifficultyChanged,
             ),
             SizedBox(
-              height: DialogConstants.adaptiveSpacing(
-                context,
-                DialogConstants.spacingMD,
-              ),
+              height: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
             ),
 
             // Show loading, error, or recommendations based on provider state
@@ -76,10 +70,7 @@ class BuildDialog extends StatelessWidget {
               _buildEmptyContent(),
 
             SizedBox(
-              height: DialogConstants.adaptiveSpacing(
-                context,
-                DialogConstants.spacingMD,
-              ),
+              height: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
             ),
 
             // Generate/Regenerate recommendations button - Enhanced
@@ -92,7 +83,10 @@ class BuildDialog extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.button.withValues(alpha: 0.15),
-                    blurRadius: 12,
+                    blurRadius: ResponsiveUtils.spacing(
+                      context,
+                      ResponsiveSpacing.sm,
+                    ),
                     offset: const Offset(0, 4),
                     spreadRadius: 0,
                   ),

@@ -1,9 +1,10 @@
-import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/details_container.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/image_clip.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/recipe_details.dart';
 import 'package:ai_cook_project/models/ai_response_model.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_ov_card.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/material.dart';
 
 class AIReadyToCookCard extends StatelessWidget {
@@ -25,21 +26,29 @@ class AIReadyToCookCard extends StatelessWidget {
     final recipe = viewModel.recipe;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: DialogConstants.spacingSM,
-        vertical: DialogConstants.spacingXS,
+      padding: EdgeInsets.symmetric(
+        horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+        vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
       ),
       child: GestureDetector(
         onTap: () => _showRecipeDetail(context),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(DialogConstants.radiusMD),
-            border: Border.all(
-              color: DialogConstants.readyCardBorder,
-              width: 2.5,
+            borderRadius: BorderRadius.circular(
+              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.md),
             ),
-            boxShadow: DialogConstants.mediumShadow,
+            border: Border.all(color: AppColors.mutedGreen, width: 2.5),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.mutedGreen.withValues(alpha: 0.15),
+                blurRadius: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.sm,
+                ),
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

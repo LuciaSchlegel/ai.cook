@@ -3,6 +3,7 @@ import 'package:ai_cook_project/models/recipe_tag_model.dart';
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_image.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_ov_card.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:ai_cook_project/widgets/selectors/chips_dropd_card.dart';
 import 'package:ai_cook_project/widgets/status/loading_indicator.dart';
 import 'package:ai_cook_project/widgets/utils/screen_header.dart';
@@ -14,6 +15,7 @@ import '../../providers/resource_provider.dart';
 import '../../providers/ingredients_provider.dart';
 import 'logic/recipes_logic.dart';
 import '../../theme.dart';
+import '../../utils/responsive_utils.dart';
 
 class RecipesScreen extends StatefulWidget {
   final VoidCallback? onProfileTap;
@@ -106,7 +108,6 @@ class _RecipesScreenState extends State<RecipesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
     final resourceProvider = Provider.of<ResourceProvider>(context);
     final tagNames = resourceProvider.recipeTags.map((t) => t.name).toList();
 
@@ -127,27 +128,16 @@ class _RecipesScreenState extends State<RecipesScreen> {
               confirmDropdownOnDone:
                   true, // Enable confirm-on-done for better UX
               onDropdownChanged: (value) {
-                print('🔍 DEBUG: ChipsDropdownCard onDropdownChanged called');
-                print('🔍 DEBUG: Received value: $value');
-                print('🔍 DEBUG: Current selectedFilter: $selectedFilter');
-
                 if (value != null) {
-                  print('🔍 DEBUG: Setting new selectedFilter: $value');
                   setState(() {
                     selectedFilter = value;
                   });
-                  print('🔍 DEBUG: Calling _applyFiltersDebounced');
                   _applyFiltersDebounced();
-                } else {
-                  print('🔍 DEBUG: Value is null, not updating');
-                }
+                } else {}
               },
               chipsItems: tagNames,
               chipsSelectedItems: selectedTags.map((t) => t.name).toList(),
               onChipsSelected: (selectedTagNames) {
-                print(
-                  '🔍 DEBUG: onChipsSelected called with: $selectedTagNames',
-                );
                 setState(() {
                   selectedTags =
                       resourceProvider.recipeTags
@@ -167,12 +157,20 @@ class _RecipesScreenState extends State<RecipesScreen> {
                         children: [
                           Text(
                             'Error: ${recipesProvider.error}',
-                            style: const TextStyle(color: Colors.red),
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontFamily: 'Inter',
+                            ),
                           ),
-                          const SizedBox(height: 16),
+                          const ResponsiveSpacingWidget.vertical(
+                            ResponsiveSpacing.sm,
+                          ),
                           ElevatedButton(
                             onPressed: () => recipesProvider.getRecipes(),
-                            child: const Text('Retry'),
+                            child: Text(
+                              'Retry',
+                              style: TextStyle(fontFamily: 'Inter'),
+                            ),
                           ),
                         ],
                       ),
@@ -186,12 +184,17 @@ class _RecipesScreenState extends State<RecipesScreen> {
                         children: [
                           const LoadingIndicator(),
                           if (recipesProvider.loadingMessage != null) ...[
-                            const SizedBox(height: 16),
+                            const ResponsiveSpacingWidget.vertical(
+                              ResponsiveSpacing.sm,
+                            ),
                             Text(
                               recipesProvider.loadingMessage!,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontFamily: 'Inter',
-                                fontSize: 14,
+                                fontSize: ResponsiveUtils.fontSize(
+                                  context,
+                                  ResponsiveFontSize.sm,
+                                ),
                                 color: AppColors.mutedGreen,
                               ),
                               textAlign: TextAlign.center,
@@ -205,12 +208,15 @@ class _RecipesScreenState extends State<RecipesScreen> {
                   final recipes = recipesProvider.recipes;
 
                   if (recipes.isEmpty) {
-                    return const Center(
+                    return Center(
                       child: Text(
                         'No recipes found',
                         style: TextStyle(
                           fontFamily: 'Casta',
-                          fontSize: 28,
+                          fontSize: ResponsiveUtils.fontSize(
+                            context,
+                            ResponsiveFontSize.xl,
+                          ),
                           fontWeight: FontWeight.w600,
                           color: AppColors.white,
                         ),
@@ -221,13 +227,22 @@ class _RecipesScreenState extends State<RecipesScreen> {
 
                   return ListView.builder(
                     padding: EdgeInsets.symmetric(
-                      horizontal: screenHeight * 0.025,
-                      vertical: screenHeight * 0.01,
+                      horizontal: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.sm,
+                      ),
+                      vertical: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.xs,
+                      ),
                     ),
                     itemCount: recipes.length,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 10.0),
+                        padding: ResponsiveUtils.padding(
+                          context,
+                          ResponsiveSpacing.xxs,
+                        ),
                         child: _ContainerRecipeCard(
                           key: ValueKey(recipes[index].id),
                           recipe: recipes[index],
@@ -304,23 +319,23 @@ class _ContainerRecipeCardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final width = size.width * 0.24;
-    final height = size.width * 0.24;
-
     return Card(
-      elevation: 2,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(18)),
+      elevation: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(
+            ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xl),
+          ),
+        ),
       ),
       color: AppColors.white.withValues(alpha: 0.95),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            RecipeImage(imageUrl: recipe.image, width: width, height: height),
-            const SizedBox(width: 16),
+            RecipeImage(imageUrl: recipe.image),
+            const ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.md),
             Expanded(
               child: _ContainerRecipeDetails(
                 recipe: recipe,
@@ -353,76 +368,175 @@ class _ContainerRecipeDetails extends StatelessWidget {
       children: [
         Text(
           recipe.name,
-          style: const TextStyle(
-            fontFamily: 'Casta',
-            letterSpacing: 1.2,
-            fontSize: 20,
+          style: TextStyle(
+            fontFamily: 'Melodrama',
+            letterSpacing: 1.8,
+            fontSize:
+                ResponsiveUtils.fontSize(context, ResponsiveFontSize.xl) * 1.1,
             height: 1.1,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppFontWeights.semiBold,
             color: AppColors.button,
           ),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
-        const SizedBox(height: 4),
-        _ContainerDetailRow(
-          label: 'Est. time: ',
-          value: recipe.cookingTime ?? "N/A",
-        ),
-        _ContainerDetailRow(
-          label: 'Difficulty: ',
-          value: recipe.difficulty ?? "N/A",
-        ),
-        _ContainerDetailRow(
-          label: 'Ingredients: ',
-          value: ingredientsStatusText,
-          valueColor:
-              warning
-                  ? AppColors.orange
-                  : (ingredientsStatusText.contains('missing')
-                      ? AppColors.orange
-                      : AppColors.mutedGreen),
+        const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
+        _RecipeInfoChips(
+          recipe: recipe,
+          ingredientsStatusText: ingredientsStatusText,
+          warning: warning,
         ),
       ],
     );
   }
 }
 
-class _ContainerDetailRow extends StatelessWidget {
-  final String label;
-  final String value;
-  final Color? valueColor;
+/// Elegant chips displaying recipe information with descriptive icons
+class _RecipeInfoChips extends StatelessWidget {
+  final Recipe recipe;
+  final String ingredientsStatusText;
+  final bool warning;
 
-  const _ContainerDetailRow({
-    required this.label,
-    required this.value,
-    this.valueColor = AppColors.button,
+  const _RecipeInfoChips({
+    required this.recipe,
+    required this.ingredientsStatusText,
+    this.warning = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 13,
-            color: AppColors.mutedGreen,
-            fontFamily: 'Inter',
-          ),
-        ),
-        Expanded(
-          child: Text(
-            value,
-            style: TextStyle(
-              fontSize: 13,
-              color: valueColor,
-              fontFamily: 'Inter',
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        return Wrap(
+          spacing: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+          runSpacing: ResponsiveUtils.spacing(context, ResponsiveSpacing.xxs),
+          children: [
+            _InfoChip(
+              icon: Icons.access_time_rounded,
+              label: recipe.cookingTime ?? "N/A",
+              backgroundColor: AppColors.mutedGreen.withValues(alpha: 0.1),
+              iconColor: AppColors.mutedGreen,
+              textColor: AppColors.mutedGreen,
             ),
-            overflow: TextOverflow.ellipsis,
+            _InfoChip(
+              icon: _getDifficultyIcon(recipe.difficulty),
+              label: recipe.difficulty ?? "N/A",
+              backgroundColor: AppColors.lightYellow.withValues(alpha: 0.08),
+              iconColor: AppColors.background,
+              textColor: AppColors.background,
+            ),
+            _InfoChip(
+              icon:
+                  ingredientsStatusText.contains('missing')
+                      ? Icons.inventory_2_outlined
+                      : Icons.check_circle_outline_rounded,
+              label: ingredientsStatusText,
+              backgroundColor: _getIngredientsChipColor().withValues(
+                alpha: 0.1,
+              ),
+              iconColor: _getIngredientsChipColor(),
+              textColor: _getIngredientsChipColor(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  IconData _getDifficultyIcon(String? difficulty) {
+    switch (difficulty?.toLowerCase()) {
+      case 'easy':
+        return Icons.sentiment_very_satisfied_rounded;
+      case 'medium':
+        return Icons.sentiment_satisfied_rounded;
+      case 'hard':
+        return Icons.sentiment_neutral_rounded;
+      default:
+        return Icons.help_outline_rounded;
+    }
+  }
+
+  Color _getIngredientsChipColor() {
+    if (warning) return AppColors.orange;
+    return ingredientsStatusText.contains('missing')
+        ? AppColors.orange
+        : AppColors.mutedGreen;
+  }
+}
+
+/// Individual info chip component with icon and text
+class _InfoChip extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color backgroundColor;
+  final Color iconColor;
+  final Color textColor;
+
+  const _InfoChip({
+    required this.icon,
+    required this.label,
+    required this.backgroundColor,
+    required this.iconColor,
+    required this.textColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        final chipPadding = switch (deviceType) {
+          DeviceType.iPhone => EdgeInsets.symmetric(
+            horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+            vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.xxs),
           ),
-        ),
-      ],
+          DeviceType.iPadMini => EdgeInsets.symmetric(
+            horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+          ),
+          DeviceType.iPadPro => EdgeInsets.symmetric(
+            horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+          ),
+        };
+
+        return Container(
+          padding: chipPadding,
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            borderRadius: BorderRadius.circular(
+              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.lg),
+            ),
+            border: Border.all(
+              color: iconColor.withValues(alpha: 0.2),
+              width: 0.5,
+            ),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                icon,
+                size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.sm),
+                color: iconColor,
+              ),
+              ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.xxs),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(
+                    context,
+                    ResponsiveFontSize.xs,
+                  ),
+                  color: textColor,
+                  fontFamily: 'Inter',
+                  fontWeight: AppFontWeights.medium,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

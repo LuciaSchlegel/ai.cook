@@ -1,4 +1,3 @@
-import 'package:ai_cook_project/dialogs/ai_recommendations/constants/dialog_constants.dart';
 import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/cupertino.dart';
@@ -106,7 +105,18 @@ class DropdownSelector extends StatelessWidget {
                             ? AppColors.button.withValues(alpha: 0.1)
                             : AppColors.button.withValues(alpha: 0.2),
                   ),
-                  boxShadow: isDisabled ? null : DialogConstants.lightShadow,
+                  boxShadow:
+                      isDisabled
+                          ? null
+                          : [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.06),
+                              blurRadius: ResponsiveUtils.spacing(
+                                context,
+                                ResponsiveSpacing.md,
+                              ),
+                            ),
+                          ],
                 ),
                 padding: EdgeInsets.symmetric(
                   horizontal: ResponsiveUtils.spacing(

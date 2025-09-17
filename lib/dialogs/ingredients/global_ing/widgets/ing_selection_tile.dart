@@ -138,13 +138,13 @@ class IngredientSelectionTile extends StatelessWidget {
                         ResponsiveText(
                           ingredient.name,
                           color: AppColors.button,
-                          fontFamily: 'Casta',
+                          fontFamily: 'Melodrama',
                           fontSize: ResponsiveUtils.fontSize(
                             context,
-                            ResponsiveFontSize.xl,
+                            ResponsiveFontSize.xxl,
                           ),
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 0.2,
+                          fontWeight: AppFontWeights.semiBold,
+                          letterSpacing: 1.8,
                         ),
                         const ResponsiveSpacingWidget.vertical(
                           ResponsiveSpacing.xxs,
@@ -152,11 +152,12 @@ class IngredientSelectionTile extends StatelessWidget {
                         ResponsiveText(
                           ingredient.category?.name ?? '',
                           color: AppColors.mutedGreen.withValues(alpha: 0.85),
+                          fontFamily: 'Inter',
                           fontSize: ResponsiveUtils.fontSize(
                             context,
                             ResponsiveFontSize.sm,
                           ),
-                          fontWeight: FontWeight.w400,
+                          fontWeight: AppFontWeights.medium,
                         ),
                       ],
                     ),
@@ -173,7 +174,8 @@ class IngredientSelectionTile extends StatelessWidget {
                       child: ResponsiveText(
                         '$quantity ${unit.abbreviation}',
                         color: AppColors.mutedGreen,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppFontWeights.bold,
+                        fontFamily: 'Inter',
                         fontSize: ResponsiveUtils.fontSize(
                           context,
                           ResponsiveFontSize.sm,

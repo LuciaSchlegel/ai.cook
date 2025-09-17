@@ -204,12 +204,13 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
       // Quantity section
       ResponsiveText(
         'Enter Quantity',
-        fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl),
-        fontFamily: 'Casta',
+        fontSize:
+            ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) * 1.2,
+        fontFamily: 'Melodrama',
         decoration: TextDecoration.none,
-        fontWeight: FontWeight.bold,
+        fontWeight: AppFontWeights.semiBold,
         color: AppColors.button,
-        letterSpacing: 0.5,
+        letterSpacing: 1.8,
       ),
       ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
 
@@ -252,12 +253,13 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
       // Unit section
       ResponsiveText(
         'Select Unit',
-        fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl),
+        fontSize:
+            ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) * 1.2,
         decoration: TextDecoration.none,
-        fontFamily: 'Casta',
-        fontWeight: FontWeight.bold,
+        fontFamily: 'Melodrama',
+        fontWeight: AppFontWeights.semiBold,
         color: AppColors.button,
-        letterSpacing: 0.5,
+        letterSpacing: 1.8,
       ),
       ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
 
@@ -303,8 +305,9 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
                                 context,
                                 ResponsiveFontSize.lg,
                               ),
+                              fontFamily: 'Inter',
                               color: AppColors.button.withValues(alpha: 0.9),
-                              fontWeight: FontWeight.w500,
+                              fontWeight: AppFontWeights.medium,
                             ),
                           ),
                         )
@@ -336,7 +339,9 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
             color:
                 _isQuantityValid
                     ? AppColors.mutedGreen
-                    : AppColors.button.withValues(alpha: 0.3), // Disabled color
+                    : AppColors.mutedGreen.withValues(
+                      alpha: 0.4,
+                    ), // Disabled color
             borderRadius: BorderRadius.circular(
               ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.md),
             ),
@@ -363,7 +368,8 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
           child: ResponsiveText(
             'Confirm',
             fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.lg),
-            fontWeight: FontWeight.w600,
+            fontWeight: AppFontWeights.semiBold,
+            fontFamily: 'Inter',
             color:
                 _isQuantityValid
                     ? AppColors.white

@@ -194,6 +194,11 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                         ),
                       ),
               child: SingleChildScrollView(
+                padding:
+                    deviceType == DeviceType.iPadPro ||
+                            deviceType == DeviceType.iPadMini
+                        ? ResponsiveUtils.padding(context, ResponsiveSpacing.md)
+                        : EdgeInsets.zero,
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
                 physics: const BouncingScrollPhysics(),
@@ -230,16 +235,19 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                       ),
                     ResponsiveText(
                       widget.ingredient == null
-                          ? 'Add Ingredient'
-                          : 'Edit Ingredient',
-                      fontSize: ResponsiveUtils.fontSize(
-                        context,
-                        ResponsiveFontSize.title,
-                      ),
-                      fontFamily: 'Casta',
-                      fontWeight: FontWeight.bold,
+                          ? 'ADD INGREDIENT'
+                          : 'EDIT INGREDIENT',
+                      fontSize:
+                          ResponsiveUtils.fontSize(
+                            context,
+                            ResponsiveFontSize.title,
+                          ) *
+                          1.2,
+                      fontFamily: 'Melodrama',
+                      fontWeight: AppFontWeights.semiBold,
                       color: AppColors.button,
                       textAlign: TextAlign.center,
+                      letterSpacing: 1.8,
                     ),
                     const ResponsiveSpacingWidget.vertical(
                       ResponsiveSpacing.lg,
@@ -350,13 +358,12 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                             ),
                       ),
                     ),
-                    // Add safe area padding at bottom + keyboard padding
+                    // Add bottom safe area padding inside the modal
                     SizedBox(
                       height:
-                          ResponsiveUtils.getScrollBottomPadding(context) +
-                          (widget.isPopup
+                          widget.isPopup
                               ? 0
-                              : MediaQuery.of(context).viewInsets.bottom * 0.1),
+                              : MediaQuery.of(context).padding.bottom,
                     ),
                   ],
                 ),
