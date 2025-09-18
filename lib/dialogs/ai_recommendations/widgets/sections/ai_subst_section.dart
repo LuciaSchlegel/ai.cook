@@ -88,7 +88,7 @@ class AISubstitutionsSection extends StatelessWidget {
               Expanded(
                 child: Text(
                   'Smart Substitutions',
-                  style: TextStyle(
+                  style: AppTextStyles.melodrama(
                     fontSize:
                         ResponsiveUtils.fontSize(
                           context,
@@ -96,7 +96,6 @@ class AISubstitutionsSection extends StatelessWidget {
                         ) *
                         1.2,
                     fontWeight: AppFontWeights.semiBold,
-                    fontFamily: 'Melodrama',
                     color: AppColors.button,
                     letterSpacing: 1.3,
                     height: 1.4,
@@ -175,13 +174,14 @@ class AISubstitutionsSection extends StatelessWidget {
               children: [
                 Text(
                   substitution.original,
-                  style: TextStyle(
+                  style: AppTextStyles.melodrama(
                     fontSize: ResponsiveUtils.fontSize(
                       context,
                       ResponsiveFontSize.lg,
                     ),
                     fontWeight: AppFontWeights.semiBold,
-                    fontFamily: 'Melodrama',
+                    letterSpacing: 1.8,
+                    height: 1.4,
                     color: AppColors.button,
                   ),
                 ),
@@ -193,13 +193,12 @@ class AISubstitutionsSection extends StatelessWidget {
                 ),
                 Text(
                   substitution.alternatives.join(', '),
-                  style: TextStyle(
+                  style: AppTextStyles.inter(
                     fontSize: ResponsiveUtils.fontSize(
                       context,
                       ResponsiveFontSize.sm,
                     ),
                     fontWeight: AppFontWeights.regular,
-                    fontFamily: 'Inter',
                     letterSpacing: 0.2,
                     height: 1.4,
                     color: AppColors.button.withValues(alpha: 0.8),
@@ -246,7 +245,7 @@ class AISubstitutionsSection extends StatelessWidget {
                 ResponsiveFontSize.lg,
               ),
               fontWeight: AppFontWeights.semiBold,
-              fontFamily: 'Melodrama',
+              fontFamily: 'Compagnon',
               color: AppColors.button,
               letterSpacing: 1.3,
               height: 1.4,

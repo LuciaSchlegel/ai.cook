@@ -1,6 +1,8 @@
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/image_clip_ovcard.dart';
 import 'package:ai_cook_project/models/recipe_model.dart';
-import 'package:ai_cook_project/screens/recipes/widgets/recipe_image.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_title.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/cupertino.dart';
 
 class RecipeHeader extends StatelessWidget {
@@ -12,13 +14,16 @@ class RecipeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10),
-      child: Row(
+      padding: EdgeInsets.only(
+        top: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+      ),
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          RecipeImage(imageUrl: recipe.image),
-          Expanded(child: RecipeTitle(name: recipe.name)),
+          RecipeTitle(name: recipe.name),
+          ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
+          ImageClipOvCard(imageUrl: recipe.image ?? ''),
         ],
       ),
     );

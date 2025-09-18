@@ -205,12 +205,12 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
       ResponsiveText(
         'Enter Quantity',
         fontSize:
-            ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) * 1.2,
-        fontFamily: 'Melodrama',
+            ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) * 1.4,
+        fontFamily: AppFontFamilies.primary,
         decoration: TextDecoration.none,
-        fontWeight: AppFontWeights.semiBold,
         color: AppColors.button,
-        letterSpacing: 1.8,
+        letterSpacing: 0.2,
+        height: 1.5,
       ),
       ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
 
@@ -254,12 +254,12 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
       ResponsiveText(
         'Select Unit',
         fontSize:
-            ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) * 1.2,
+            ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) * 1.4,
         decoration: TextDecoration.none,
-        fontFamily: 'Melodrama',
-        fontWeight: AppFontWeights.semiBold,
+        fontFamily: AppFontFamilies.primary,
         color: AppColors.button,
-        letterSpacing: 1.8,
+        letterSpacing: 0.2,
+        height: 1.5,
       ),
       ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
 

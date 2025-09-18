@@ -62,18 +62,21 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ResponsiveText(
+                  Text(
                     'ADD INGREDIENTS',
-                    fontSize:
-                        ResponsiveUtils.fontSize(
-                          context,
-                          ResponsiveFontSize.title,
-                        ) *
-                        1.2,
-                    fontWeight: AppFontWeights.semiBold,
-                    fontFamily: 'Melodrama',
-                    color: AppColors.button,
-                    letterSpacing: 1.8,
+                    style: TextStyle(
+                      fontSize:
+                          ResponsiveUtils.fontSize(
+                            context,
+                            ResponsiveFontSize.title,
+                          ) *
+                          1.4,
+                      fontWeight: AppFontWeights.regular,
+                      fontFamily: AppFontFamilies.primary,
+                      color: AppColors.button,
+                      letterSpacing: 0.2,
+                      height: 1.4,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),

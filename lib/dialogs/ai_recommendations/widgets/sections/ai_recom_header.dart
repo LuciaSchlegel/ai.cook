@@ -52,12 +52,11 @@ class AiRecomHeader extends StatelessWidget {
                 ).createShader(bounds),
             child: Text(
               'What would you like to cook today?',
-              style: TextStyle(
+              style: AppTextStyles.melodrama(
                 fontSize:
                     ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) *
                     1.2,
                 fontWeight: AppFontWeights.semiBold,
-                fontFamily: 'Melodrama',
                 color: AppColors.white,
                 letterSpacing: 1.8,
                 height: 1.4,

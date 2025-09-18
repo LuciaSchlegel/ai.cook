@@ -1,7 +1,9 @@
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/widgets/utils/screen_header.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 
 class SettingsScreen extends StatefulWidget {
   final VoidCallback? onProfileTap;
@@ -42,7 +44,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16.0),
+                padding: ResponsiveUtils.padding(context, ResponsiveSpacing.lg),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -83,7 +85,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ]),
 
-                    const SizedBox(height: 35),
+                    ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
                     _buildSectionHeader('AI & Recipes'),
                     _buildIOSGroupCard([
                       _buildIOSSwitchTile(
@@ -117,7 +119,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ]),
 
-                    const SizedBox(height: 35),
+                    ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
                     _buildSectionHeader('Account'),
                     _buildIOSGroupCard([
                       _buildIOSNavigationTile(
@@ -142,7 +144,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ]),
 
-                    const SizedBox(height: 35),
+                    ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
                     _buildSectionHeader('Support'),
                     _buildIOSGroupCard([
                       _buildIOSNavigationTile(
@@ -167,9 +169,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ]),
 
-                    const SizedBox(height: 35),
+                    ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
                     _buildIOSGroupCard([_buildIOSLogoutTile()]),
-                    const SizedBox(height: 20),
+                    ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
                   ],
                 ),
               ),
@@ -182,11 +184,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget _buildSectionHeader(String title) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0, left: 16.0),
+      padding: ResponsiveUtils.padding(context, ResponsiveSpacing.sm),
       child: Text(
         title.toUpperCase(),
         style: TextStyle(
-          fontSize: 13,
+          fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.xs),
           fontWeight: FontWeight.w600,
           color: AppColors.white.withValues(alpha: 0.6),
           letterSpacing: 0.5,
@@ -200,7 +202,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.mutedGreen, width: 1),
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(28),
+        borderRadius: BorderRadius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xxl),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.06),
@@ -211,7 +215,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: ResponsiveUtils.padding(context, ResponsiveSpacing.xxs),
         child: Column(children: children),
       ),
     );
@@ -240,34 +244,62 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 : null,
         borderRadius:
             isFirst && isLast
-                ? BorderRadius.circular(10)
+                ? BorderRadius.circular(
+                  ResponsiveUtils.borderRadius(
+                    context,
+                    ResponsiveBorderRadius.xs,
+                  ),
+                )
                 : isFirst
-                ? const BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
+                ? BorderRadius.only(
+                  topLeft: Radius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.xs,
+                    ),
+                  ),
+                  topRight: Radius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.xs,
+                    ),
+                  ),
                 )
                 : isLast
-                ? const BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10),
+                ? BorderRadius.only(
+                  bottomLeft: Radius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.xs,
+                    ),
+                  ),
+                  bottomRight: Radius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.xs,
+                    ),
+                  ),
                 )
                 : null,
       ),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+        contentPadding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
         leading: Container(
-          width: 29,
-          height: 29,
+          width: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
+          height: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
           decoration: BoxDecoration(
             color: AppColors.orange,
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(
+              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xs),
+            ),
           ),
           child: Icon(icon, color: Colors.white, size: 18),
         ),
         title: Text(
           title,
-          style: const TextStyle(
-            fontSize: 17,
+          style: TextStyle(
+            fontFamily: AppFontFamilies.inter,
+            fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.md),
             fontWeight: FontWeight.w400,
             color: Colors.black,
           ),
@@ -276,7 +308,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
             subtitle.isNotEmpty
                 ? Text(
                   subtitle,
-                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.xs,
+                    ),
+                    color: Colors.grey[600],
+                    fontFamily: AppFontFamilies.inter,
+                  ),
                 )
                 : null,
         trailing: Switch.adaptive(
@@ -326,21 +365,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 : null,
       ),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+        contentPadding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
         leading: Container(
-          width: 29,
-          height: 29,
+          width: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
+          height: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
           decoration: BoxDecoration(
             color: AppColors.orange,
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(
+              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xs),
+            ),
           ),
           child: Icon(icon, color: Colors.white, size: 18),
         ),
         title: Text(
           title,
-          style: const TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w400,
+          style: TextStyle(
+            fontFamily: AppFontFamilies.inter,
+            fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.md),
+            fontWeight: FontWeight.w500,
             color: Colors.black,
           ),
         ),
@@ -348,7 +390,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
             subtitle.isNotEmpty
                 ? Text(
                   subtitle,
-                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.xs,
+                    ),
+                    color: Colors.grey[600],
+                    fontFamily: AppFontFamilies.inter,
+                  ),
                 )
                 : null,
         trailing: Row(
@@ -356,10 +405,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: [
             Text(
               value,
-              style: TextStyle(fontSize: 17, color: Colors.grey[500]),
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.md,
+                ),
+                color: Colors.grey[500],
+                fontFamily: AppFontFamilies.inter,
+              ),
             ),
             const SizedBox(width: 8),
-            Icon(Icons.chevron_right, color: Colors.grey[400], size: 20),
+            Icon(
+              Icons.chevron_right,
+              color: Colors.grey[400],
+              size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.sm),
+            ),
           ],
         ),
         onTap: () => _showIOSPicker(title, options, value, onChanged),
@@ -389,35 +450,63 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 : null,
         borderRadius:
             isFirst && isLast
-                ? BorderRadius.circular(10)
+                ? BorderRadius.circular(
+                  ResponsiveUtils.borderRadius(
+                    context,
+                    ResponsiveBorderRadius.xs,
+                  ),
+                )
                 : isFirst
-                ? const BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
+                ? BorderRadius.only(
+                  topLeft: Radius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.xs,
+                    ),
+                  ),
+                  topRight: Radius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.xs,
+                    ),
+                  ),
                 )
                 : isLast
-                ? const BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10),
+                ? BorderRadius.only(
+                  bottomLeft: Radius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.xs,
+                    ),
+                  ),
+                  bottomRight: Radius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.xs,
+                    ),
+                  ),
                 )
                 : null,
       ),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+        contentPadding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
         leading: Container(
-          width: 29,
-          height: 29,
+          width: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
+          height: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
           decoration: BoxDecoration(
             color: AppColors.orange,
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(
+              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xs),
+            ),
           ),
           child: Icon(icon, color: Colors.white, size: 18),
         ),
         title: Text(
           title,
-          style: const TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w400,
+          style: TextStyle(
+            fontFamily: AppFontFamilies.inter,
+            fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.md),
+            fontWeight: FontWeight.w500,
             color: Colors.black,
           ),
         ),
@@ -425,10 +514,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
             subtitle.isNotEmpty
                 ? Text(
                   subtitle,
-                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.xs,
+                    ),
+                    color: Colors.grey[600],
+                    fontFamily: AppFontFamilies.inter,
+                  ),
                 )
                 : null,
-        trailing: Icon(Icons.chevron_right, color: Colors.grey[400], size: 20),
+        trailing: Icon(
+          Icons.chevron_right,
+          color: Colors.grey[400],
+          size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.sm),
+        ),
         onTap: onTap,
       ),
     );
@@ -436,17 +536,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget _buildIOSLogoutTile() {
     return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(
+            ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xs),
+          ),
+        ),
       ),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-        title: const Text(
+        contentPadding: ResponsiveUtils.padding(context, ResponsiveSpacing.xxs),
+        title: Text(
           'Sign Out',
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w400,
+            fontFamily: AppFontFamilies.inter,
+            fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.md),
+            fontWeight: FontWeight.w500,
             color: Colors.red,
           ),
         ),
@@ -469,8 +574,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: overlayContext,
       builder:
           (BuildContext context) => Container(
-            height: 260,
-            padding: const EdgeInsets.only(top: 6.0),
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.xxl),
+            padding: ResponsiveUtils.padding(context, ResponsiveSpacing.sm),
             margin: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
@@ -478,8 +583,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Column(
               children: [
                 Container(
-                  height: 44,
-                  decoration: const BoxDecoration(
+                  height: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.lg,
+                  ),
+                  decoration: BoxDecoration(
                     color: CupertinoColors.white,
                     border: Border(
                       bottom: BorderSide(
@@ -492,32 +600,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CupertinoButton(
-                        padding: const EdgeInsets.only(left: 16),
+                        padding: ResponsiveUtils.padding(
+                          context,
+                          ResponsiveSpacing.sm,
+                        ),
                         child: Text(
                           'Cancel',
                           style: TextStyle(
                             color: AppColors.mutedGreen,
-                            fontSize: 16,
+                            fontSize: ResponsiveUtils.fontSize(
+                              context,
+                              ResponsiveFontSize.md,
+                            ),
                           ),
                         ),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                       Text(
                         title,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                           color: Colors.black,
                         ),
                       ),
                       CupertinoButton(
-                        padding: const EdgeInsets.only(right: 16),
+                        padding: ResponsiveUtils.padding(
+                          context,
+                          ResponsiveSpacing.sm,
+                        ),
                         child: Text(
                           'Done',
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             color: AppColors.mutedGreen,
-                            fontSize: 16,
+                            fontSize: ResponsiveUtils.fontSize(
+                              context,
+                              ResponsiveFontSize.md,
+                            ),
                           ),
                         ),
                         onPressed: () => Navigator.of(context).pop(),
@@ -543,9 +663,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               (item) => Center(
                                 child: Text(
                                   item,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: AppColors.button,
-                                    fontSize: 16,
+                                    fontSize: ResponsiveUtils.fontSize(
+                                      context,
+                                      ResponsiveFontSize.md,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -606,12 +729,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(height: 16),
+                ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
                 Text(
                   '$feature is currently under development and will be available in a future update.',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppColors.black,
-                    fontSize: 16,
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.md,
+                    ),
                     height: 1.4,
                   ),
                   textAlign: TextAlign.center,
@@ -621,7 +747,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             actions: [
               CupertinoDialogAction(
                 onPressed: () => Navigator.of(dialogContext).pop(),
-                child: const Text(
+                child: Text(
                   'OK',
                   style: TextStyle(
                     color: AppColors.orange,
@@ -645,35 +771,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
               color: AppColors.orange,
               size: 40,
             ),
-            content: const Column(
+            content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(height: 16),
+                ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
                 Text(
                   'AI Cook',
                   style: TextStyle(
                     color: AppColors.black,
-                    fontSize: 20,
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.md,
+                    ),
                     fontWeight: FontWeight.w600,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 8),
+                ResponsiveSpacingWidget.vertical(ResponsiveSpacing.xs),
                 Text(
                   'Version 1.0.0',
                   style: TextStyle(
                     color: AppColors.black,
-                    fontSize: 16,
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.md,
+                    ),
                     height: 1.4,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 8),
+                ResponsiveSpacingWidget.vertical(ResponsiveSpacing.xs),
                 Text(
                   'Your AI-powered cooking companion for discovering delicious recipes and managing your kitchen.',
                   style: TextStyle(
                     color: AppColors.black,
-                    fontSize: 14,
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.md,
+                    ),
                     height: 1.4,
                   ),
                   textAlign: TextAlign.center,
@@ -683,7 +818,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             actions: [
               CupertinoDialogAction(
                 onPressed: () => Navigator.of(dialogContext).pop(),
-                child: const Text(
+                child: Text(
                   'Close',
                   style: TextStyle(
                     color: AppColors.orange,
@@ -707,15 +842,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
               color: Colors.red,
               size: 40,
             ),
-            content: const Column(
+            content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(height: 16),
+                ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
                 Text(
                   'Are you sure you want to sign out of your account?',
                   style: TextStyle(
                     color: AppColors.black,
-                    fontSize: 16,
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.md,
+                    ),
                     height: 1.4,
                   ),
                   textAlign: TextAlign.center,
@@ -725,7 +863,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             actions: [
               CupertinoDialogAction(
                 onPressed: () => Navigator.of(dialogContext).pop(),
-                child: const Text(
+                child: Text(
                   'Cancel',
                   style: TextStyle(
                     color: AppColors.button,
@@ -741,7 +879,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     widget.onLogoutTap!();
                   }
                 },
-                child: const Text(
+                child: Text(
                   'Sign Out',
                   style: TextStyle(
                     color: Colors.red,

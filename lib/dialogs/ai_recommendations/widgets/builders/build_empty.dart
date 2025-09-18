@@ -98,7 +98,7 @@ class BuildEmpty extends StatelessWidget {
                       ResponsiveFontSize.xxl,
                     ),
                     fontWeight: AppFontWeights.semiBold,
-                    fontFamily: 'Melodrama',
+                    fontFamily: 'Compagnon',
                     color: AppColors.button,
                     letterSpacing: 0.3,
                     height: 1.4,

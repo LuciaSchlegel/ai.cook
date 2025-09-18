@@ -99,7 +99,7 @@ class ErrorBuild extends StatelessWidget {
                   // Title
                   Text(
                     'AI Chef Unavailable',
-                    style: MelodramaTextStyles.semiBold(
+                    style: CompagnonTextStyles.semiBold(
                       fontSize: ResponsiveUtils.fontSize(
                         context,
                         ResponsiveFontSize.lg,
@@ -117,7 +117,7 @@ class ErrorBuild extends StatelessWidget {
                   // Error message
                   Text(
                     error,
-                    style: MelodramaTextStyles.regular(
+                    style: CompagnonTextStyles.regular(
                       fontSize: ResponsiveUtils.fontSize(
                         context,
                         ResponsiveFontSize.sm,

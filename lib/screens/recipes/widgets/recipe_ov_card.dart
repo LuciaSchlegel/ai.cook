@@ -87,7 +87,7 @@ class _RecipeOverviewCardState extends State<RecipeOverviewCard>
 
         // Responsive card dimensions
         final cardHeight = switch (deviceType) {
-          DeviceType.iPhone => size.height * 0.85,
+          DeviceType.iPhone => size.height * 0.88,
           DeviceType.iPadMini => size.height * 0.80,
           DeviceType.iPadPro => size.height * 0.90,
         };
@@ -140,12 +140,15 @@ class _RecipeOverviewCardState extends State<RecipeOverviewCard>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          ResponsiveSpacingWidget.vertical(
+                            ResponsiveSpacing.sm,
+                          ),
                           RecipeHeader(
                             recipe: widget.recipe,
                             onClose: () => Navigator.pop(context),
                           ),
                           ResponsiveSpacingWidget.vertical(
-                            ResponsiveSpacing.md,
+                            ResponsiveSpacing.sm,
                           ),
                           RecipeTags(
                             tags:
@@ -154,7 +157,7 @@ class _RecipeOverviewCardState extends State<RecipeOverviewCard>
                                     .toList(),
                           ),
                           ResponsiveSpacingWidget.vertical(
-                            ResponsiveSpacing.md,
+                            ResponsiveSpacing.sm,
                           ),
                           Expanded(
                             child: Consumer<IngredientsProvider>(

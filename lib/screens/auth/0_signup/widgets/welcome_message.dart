@@ -11,7 +11,7 @@ class WelcomeMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Get responsive height for the welcome message container
     final containerHeight =
-        ResponsiveUtils.spacing(context, ResponsiveSpacing.xxl) * 3;
+        ResponsiveUtils.spacing(context, ResponsiveSpacing.xxl) * 4;
 
     return ResponsiveBuilder(
       builder: (context, deviceType) {
@@ -26,7 +26,7 @@ class WelcomeMessage extends StatelessWidget {
                       ResponsiveFontSize.title2,
                     ) *
                     1.02,
-                fontFamily: 'Melodrama',
+                fontFamily: 'Compagnon',
                 color: Colors.white,
                 fontWeight: AppFontWeights.medium,
                 letterSpacing: 1.2,

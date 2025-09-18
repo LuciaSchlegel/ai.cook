@@ -34,7 +34,7 @@ class AIAlmostReadyCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(
-              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.lg),
+              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xl),
             ),
             border: Border.all(
               color:

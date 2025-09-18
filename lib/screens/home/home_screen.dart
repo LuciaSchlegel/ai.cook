@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Text(
                                 'Welcome,',
                                 style: TextStyle(
-                                  fontFamily: 'Melodrama',
+                                  fontFamily: AppFontFamilies.secondary,
                                   fontSize:
                                       ResponsiveUtils.fontSize(
                                         context,
@@ -76,9 +76,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ) *
                                       1.3,
                                   color: Colors.white,
-                                  height: 1.1,
-                                  fontWeight: AppFontWeights.medium,
-                                  letterSpacing: 1.3,
+                                  fontWeight: AppFontWeights.regular,
+                                  height: 1.2,
+                                  letterSpacing: 1.8,
                                 ),
                               ),
                               Consumer<UserProvider>(
@@ -106,7 +106,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               name,
                                               key: ValueKey(name),
                                               style: TextStyle(
-                                                fontFamily: 'Melodrama',
+                                                fontFamily:
+                                                    AppFontFamilies.secondary,
                                                 fontSize:
                                                     ResponsiveUtils.fontSize(
                                                       context,
@@ -114,10 +115,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     ) *
                                                     1.3,
                                                 color: Colors.white,
-                                                height: 1.1,
                                                 fontWeight:
-                                                    AppFontWeights.medium,
-                                                letterSpacing: 1.3,
+                                                    AppFontWeights.light,
+                                                height: 1.2,
+                                                letterSpacing: 1.8,
                                               ),
                                             ),
                                   );

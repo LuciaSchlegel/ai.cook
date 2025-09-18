@@ -286,17 +286,19 @@ class _MainFloatingButtonState extends State<MainFloatingButton>
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            ResponsiveText(
+                                            Text(
                                               'Lucia Schlegel',
-                                              fontSize:
-                                                  ResponsiveUtils.fontSize(
-                                                    context,
-                                                    ResponsiveFontSize.xl,
-                                                  ),
-                                              fontWeight: AppFontWeights.medium,
-                                              color: AppColors.black,
-                                              letterSpacing: -0.3,
-                                              fontFamily: 'Melodrama',
+                                              style: AppTextStyles.inter(
+                                                fontSize:
+                                                    ResponsiveUtils.fontSize(
+                                                      context,
+                                                      ResponsiveFontSize.xl,
+                                                    ),
+                                                fontWeight:
+                                                    AppFontWeights.regular,
+                                                color: AppColors.black,
+                                                letterSpacing: -0.3,
+                                              ),
                                             ),
                                             ResponsiveSpacingWidget.vertical(
                                               ResponsiveSpacing.xxs,

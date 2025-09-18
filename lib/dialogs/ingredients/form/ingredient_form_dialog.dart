@@ -196,21 +196,24 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                           ),
                         ),
                       ),
-                    ResponsiveText(
+                    Text(
                       widget.ingredient == null
                           ? 'ADD INGREDIENT'
                           : 'EDIT INGREDIENT',
-                      fontSize:
-                          ResponsiveUtils.fontSize(
-                            context,
-                            ResponsiveFontSize.title,
-                          ) *
-                          1.2,
-                      fontFamily: 'Melodrama',
-                      fontWeight: AppFontWeights.semiBold,
-                      color: AppColors.button,
+                      style: TextStyle(
+                        fontSize:
+                            ResponsiveUtils.fontSize(
+                              context,
+                              ResponsiveFontSize.title,
+                            ) *
+                            1.3,
+                        fontFamily: AppFontFamilies.primary,
+                        fontWeight: AppFontWeights.regular,
+                        letterSpacing: 0.2,
+                        height: 1.5,
+                        color: AppColors.button,
+                      ),
                       textAlign: TextAlign.center,
-                      letterSpacing: 1.8,
                     ),
                     const ResponsiveSpacingWidget.vertical(
                       ResponsiveSpacing.lg,

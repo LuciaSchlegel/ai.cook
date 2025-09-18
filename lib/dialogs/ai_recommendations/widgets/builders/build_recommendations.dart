@@ -35,6 +35,10 @@ class RecommendationsBuilder extends StatelessWidget {
                   'Welcome back 👋 Pantry is ready 🧺. Say the vibe—fast ⏱️, vegan 🌱, or high‑protein 💪—and I’ll serve up recipes you’ll love 🍳✨',
             ),
 
+            SizedBox(
+              height: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+            ),
+
             _buildRecipeCards(
               context,
               recommendation.readyToCook,

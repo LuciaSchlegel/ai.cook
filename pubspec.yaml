@@ -94,14 +94,25 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
+    # Compagnon font family with proper weight variants
+    - family: Compagnon
+      fonts:
+        - asset: assets/fonts/Compagnon-Light.otf
+        - asset: assets/fonts/Compagnon-Roman.otf
+        - asset: assets/fonts/Compagnon-Medium.otf
+        - asset: assets/fonts/Compagnon-Bold.otf
+        - asset: assets/fonts/Compagnon-LightItalic.otf
+          style: italic
+    
+    # Melodrama font family with proper weight variants  
     - family: Melodrama
       fonts:
         - asset: assets/fonts/Melodrama-Light.otf
         - asset: assets/fonts/Melodrama-Regular.otf
         - asset: assets/fonts/Melodrama-Medium.otf
-        - asset: assets/fonts/Melodrama-SemiBold.otf
+        - asset: assets/fonts/Melodrama-Semibold.otf
         - asset: assets/fonts/Melodrama-Bold.otf
-
+  
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

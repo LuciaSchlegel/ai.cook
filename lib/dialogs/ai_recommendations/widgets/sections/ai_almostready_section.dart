@@ -88,7 +88,7 @@ class AIAlmostReadySection extends StatelessWidget {
               Expanded(
                 child: Text(
                   'Almost Ready Recipes',
-                  style: MelodramaTextStyles.bold(
+                  style: CompagnonTextStyles.bold(
                     fontSize: ResponsiveUtils.fontSize(
                       context,
                       ResponsiveFontSize.lg,
@@ -119,7 +119,7 @@ class AIAlmostReadySection extends StatelessWidget {
                       children: [
                         Text(
                           recipe.title,
-                          style: MelodramaTextStyles.bold(
+                          style: CompagnonTextStyles.bold(
                             fontSize: ResponsiveUtils.fontSize(
                               context,
                               ResponsiveFontSize.md,
@@ -135,7 +135,7 @@ class AIAlmostReadySection extends StatelessWidget {
                         ),
                         Text(
                           recipe.description,
-                          style: MelodramaTextStyles.regular(
+                          style: CompagnonTextStyles.regular(
                             fontSize: ResponsiveUtils.fontSize(
                               context,
                               ResponsiveFontSize.sm,
@@ -152,7 +152,7 @@ class AIAlmostReadySection extends StatelessWidget {
                         ),
                         Text(
                           'Missing: ${recipe.missingIngredients.join(', ')}',
-                          style: MelodramaTextStyles.medium(
+                          style: CompagnonTextStyles.medium(
                             fontSize: ResponsiveUtils.fontSize(
                               context,
                               ResponsiveFontSize.sm,
@@ -168,7 +168,7 @@ class AIAlmostReadySection extends StatelessWidget {
                         ),
                         Text(
                           '${recipe.timeMinutes} | ${recipe.difficulty}',
-                          style: MelodramaTextStyles.regular(
+                          style: CompagnonTextStyles.regular(
                             fontSize: ResponsiveUtils.fontSize(
                               context,
                               ResponsiveFontSize.sm,

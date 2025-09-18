@@ -30,7 +30,7 @@ class RecipeGlanceCard extends StatelessWidget {
         };
 
         final cardHeight = switch (deviceType) {
-          DeviceType.iPhone => size.height * 0.52,
+          DeviceType.iPhone => size.height * 0.58,
           DeviceType.iPadMini => size.height * 0.48,
           DeviceType.iPadPro => size.height * 0.45,
         };
@@ -92,17 +92,17 @@ class RecipeGlanceCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       'Quick Overview',
-                      style: TextStyle(
+                      style: AppTextStyles.inter(
                         fontSize:
                             ResponsiveUtils.fontSize(
                               context,
-                              ResponsiveFontSize.xxl,
+                              ResponsiveFontSize.xl,
                             ) *
-                            1,
-                        fontWeight: AppFontWeights.medium,
+                            1.2,
+                        fontWeight: AppFontWeights.regular,
                         letterSpacing: 0.2,
                         color: AppColors.button,
-                        fontFamily: 'Inter',
+                        height: 1.2,
                       ),
                     ),
                   ),
@@ -245,14 +245,14 @@ class _GlanceInfoChip extends StatelessWidget {
               ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.xs),
               Text(
                 label,
-                style: TextStyle(
+                style: AppTextStyles.inter(
                   fontSize: ResponsiveUtils.fontSize(
                     context,
                     ResponsiveFontSize.sm,
                   ),
                   color: textColor,
-                  fontFamily: 'Inter',
-                  fontWeight: AppFontWeights.semiBold,
+                  fontWeight: AppFontWeights.medium,
+                  height: 1.2,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
