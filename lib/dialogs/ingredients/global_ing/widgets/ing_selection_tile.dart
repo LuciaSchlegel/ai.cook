@@ -135,16 +135,17 @@ class IngredientSelectionTile extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ResponsiveText(
+                        Text(
                           ingredient.name,
-                          color: AppColors.button,
-                          fontFamily: 'Melodrama',
-                          fontSize: ResponsiveUtils.fontSize(
-                            context,
-                            ResponsiveFontSize.xxl,
+                          style: AppTextStyles.casta(
+                            color: AppColors.button,
+                            fontWeight: AppFontWeights.semiBold,
+                            fontSize: ResponsiveUtils.fontSize(
+                              context,
+                              ResponsiveFontSize.xxl,
+                            ),
+                            letterSpacing: 1.8,
                           ),
-                          fontWeight: AppFontWeights.semiBold,
-                          letterSpacing: 1.8,
                         ),
                         const ResponsiveSpacingWidget.vertical(
                           ResponsiveSpacing.xxs,

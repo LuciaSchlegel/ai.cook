@@ -234,19 +234,20 @@ class IngredientListView extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                ResponsiveText(
+                                Text(
                                   userIng.ingredient?.name ??
                                       userIng.customIngredient?.name ??
                                       '',
-                                  color: AppColors.button,
-                                  fontFamily: 'Melodrama',
-                                  fontSize: ResponsiveUtils.fontSize(
-                                    context,
-                                    ResponsiveFontSize.xxl,
+                                  style: AppTextStyles.casta(
+                                    color: AppColors.button,
+                                    fontSize: ResponsiveUtils.fontSize(
+                                      context,
+                                      ResponsiveFontSize.xxl,
+                                    ),
+                                    height: 1.1,
+                                    letterSpacing: 1.7,
+                                    fontWeight: AppFontWeights.bold,
                                   ),
-                                  height: 1.1,
-                                  letterSpacing: 1.7,
-                                  fontWeight: AppFontWeights.medium,
                                 ),
                                 SizedBox(
                                   height: ResponsiveUtils.spacing(

@@ -94,6 +94,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
+    - family: Casta
+      fonts:
+        - asset: assets/fonts/Casta-Thin.otf
     # Compagnon font family with proper weight variants
     - family: Compagnon
       fonts:

@@ -93,17 +93,17 @@ class AIShoppingSuggestionsSection extends StatelessWidget {
               Expanded(
                 child: Text(
                   'Smart Shopping Tips',
-                  style: AppTextStyles.melodrama(
+                  style: AppTextStyles.casta(
                     fontSize:
                         ResponsiveUtils.fontSize(
                           context,
                           ResponsiveFontSize.xl,
                         ) *
-                        1.2,
-                    fontWeight: AppFontWeights.semiBold,
+                        1.4,
+                    fontWeight: AppFontWeights.bold,
                     color: AppColors.button,
                     letterSpacing: 1.3,
-                    height: 1.4,
+                    height: 1.2,
                   ),
                 ),
               ),
@@ -174,15 +174,15 @@ class AIShoppingSuggestionsSection extends StatelessWidget {
               children: [
                 Text(
                   suggestion.name,
-                  style: AppTextStyles.melodrama(
+                  style: AppTextStyles.casta(
                     fontSize: ResponsiveUtils.fontSize(
                       context,
-                      ResponsiveFontSize.lg,
+                      ResponsiveFontSize.xl,
                     ),
-                    fontWeight: AppFontWeights.semiBold,
+                    fontWeight: AppFontWeights.bold,
                     color: AppColors.button,
                     letterSpacing: 1.8,
-                    height: 1.4,
+                    height: 1.2,
                   ),
                 ),
                 SizedBox(

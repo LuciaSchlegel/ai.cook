@@ -31,6 +31,7 @@ class AppFontWeights {
 // Centralized font family management
 class AppFontFamilies {
   static const compagnon = 'Compagnon';
+  static const casta = 'Casta';
   static const melodrama = 'Melodrama';
   static const inter = 'Inter'; // System font fallback
 
@@ -47,6 +48,22 @@ class AppFontFamilies {
 // Simplified TextStyle factory - let Flutter handle font weights automatically
 class AppTextStyles {
   // === COMPAGNON STYLES (Primary - UI Elements) ===
+  static TextStyle casta({
+    FontWeight? fontWeight,
+    double? fontSize,
+    Color? color,
+    double? height,
+    double? letterSpacing,
+    TextDecoration? decoration,
+  }) => TextStyle(
+    fontFamily: AppFontFamilies.casta,
+    fontWeight: fontWeight ?? AppFontWeights.regular,
+    fontSize: fontSize,
+    color: color,
+    height: height,
+    letterSpacing: letterSpacing,
+    decoration: decoration,
+  );
   static TextStyle compagnon({
     FontWeight? fontWeight,
     double? fontSize,
@@ -246,17 +263,17 @@ final ThemeData appTheme = ThemeData(
 
   textTheme: TextTheme(
     // Display styles (largest) - Use Melodrama for impact
-    displayLarge: AppTextStyles.melodrama(
+    displayLarge: AppTextStyles.casta(
       fontWeight: AppFontWeights.bold,
       fontSize: 57,
       color: AppColors.white,
     ),
-    displayMedium: AppTextStyles.melodrama(
+    displayMedium: AppTextStyles.casta(
       fontWeight: AppFontWeights.bold,
       fontSize: 45,
       color: AppColors.white,
     ),
-    displaySmall: AppTextStyles.melodrama(
+    displaySmall: AppTextStyles.casta(
       fontWeight: AppFontWeights.bold,
       fontSize: 36,
       color: AppColors.white,

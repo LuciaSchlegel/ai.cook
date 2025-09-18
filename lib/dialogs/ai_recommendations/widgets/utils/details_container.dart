@@ -52,17 +52,16 @@ class DetailsContainer extends StatelessWidget {
               children: [
                 Text(
                   viewModel.recipe.name,
-                  style: TextStyle(
+                  style: AppTextStyles.casta(
                     fontSize:
                         ResponsiveUtils.fontSize(
                           context,
                           ResponsiveFontSize.xl,
                         ) *
-                        1.1,
+                        1.2,
                     fontWeight: AppFontWeights.semiBold,
-                    fontFamily: 'Melodrama',
                     letterSpacing: 1.4,
-                    height: 1.4,
+                    height: 1.2,
                     color: AppColors.button,
                   ),
                 ),

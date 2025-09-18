@@ -36,7 +36,7 @@ class AiRecomHeader extends StatelessWidget {
                     .white, // Changed from mutedGreen to white for visibility
           ),
         ),
-        SizedBox(width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm)),
+        SizedBox(width: ResponsiveUtils.spacing(context, ResponsiveSpacing.md)),
         Expanded(
           child: ShaderMask(
             shaderCallback:
@@ -52,14 +52,14 @@ class AiRecomHeader extends StatelessWidget {
                 ).createShader(bounds),
             child: Text(
               'What would you like to cook today?',
-              style: AppTextStyles.melodrama(
+              style: AppTextStyles.casta(
                 fontSize:
                     ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) *
-                    1.2,
-                fontWeight: AppFontWeights.semiBold,
+                    1.3,
+                fontWeight: AppFontWeights.bold,
                 color: AppColors.white,
-                letterSpacing: 1.8,
-                height: 1.4,
+                letterSpacing: 1.7,
+                height: 1.2,
               ),
             ),
           ),

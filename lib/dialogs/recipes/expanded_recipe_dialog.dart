@@ -194,17 +194,18 @@ class _ExpandedHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            child: ResponsiveText(
+            child: Text(
               recipe.name,
-              fontSize: ResponsiveUtils.fontSize(
-                context,
-                ResponsiveFontSize.title2,
+              style: AppTextStyles.casta(
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.title2,
+                ),
+                fontWeight: AppFontWeights.semiBold,
+                color: AppColors.button,
+                letterSpacing: 1.7,
+                height: 1.2,
               ),
-              fontWeight: AppFontWeights.semiBold,
-              color: AppColors.button,
-              fontFamily: 'Melodrama',
-              letterSpacing: 1.8,
-              height: 1.4,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -333,16 +334,18 @@ class _InstructionsSection extends StatelessWidget {
             ),
             ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.sm),
             Expanded(
-              child: ResponsiveText(
+              child: Text(
                 'Cooking Steps',
-                fontSize: ResponsiveUtils.fontSize(
-                  context,
-                  ResponsiveFontSize.title,
+                style: AppTextStyles.casta(
+                  fontSize: ResponsiveUtils.fontSize(
+                    context,
+                    ResponsiveFontSize.title,
+                  ),
+                  fontWeight: AppFontWeights.semiBold,
+                  color: AppColors.button,
+                  letterSpacing: 1.2,
+                  height: 1.2,
                 ),
-                fontWeight: AppFontWeights.semiBold,
-                color: AppColors.button,
-                fontFamily: 'Melodrama',
-                letterSpacing: 1.2,
               ),
             ),
             // Step count badge

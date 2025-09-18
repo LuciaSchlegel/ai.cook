@@ -92,11 +92,11 @@ class RecipeTitle extends StatelessWidget {
     // Get base font size from responsive system
     final baseFontSize = switch (deviceType) {
       DeviceType.iPhone =>
-        ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) * 1.3,
+        ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) * 1.4,
       DeviceType.iPadMini =>
-        ResponsiveUtils.fontSize(context, ResponsiveFontSize.display) * 1.3,
-      DeviceType.iPadPro =>
         ResponsiveUtils.fontSize(context, ResponsiveFontSize.display) * 1.5,
+      DeviceType.iPadPro =>
+        ResponsiveUtils.fontSize(context, ResponsiveFontSize.display) * 1.6,
     };
 
     // Apply scaling for long words
@@ -111,11 +111,11 @@ class RecipeTitle extends StatelessWidget {
       DeviceType.iPadPro => 1.8,
     };
 
-    return AppTextStyles.melodrama(
+    return AppTextStyles.casta(
       fontSize: finalFontSize,
       height: 1.1,
       letterSpacing: letterSpacing,
-      fontWeight: AppFontWeights.semiBold,
+      fontWeight: AppFontWeights.bold,
       color: AppColors.button,
     );
   }

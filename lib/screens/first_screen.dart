@@ -23,20 +23,24 @@ class FirstScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Logo
-                  ResponsiveText(
+                  Text(
                     'ai.cook',
-                    fontSize:
-                        deviceType == DeviceType.iPadPro
-                            ? ResponsiveUtils.fontSize(
-                              context,
-                              ResponsiveFontSize.display3,
-                            )
-                            : ResponsiveUtils.fontSize(
-                              context,
-                              ResponsiveFontSize.display2,
-                            ),
-                    color: AppColors.white,
-                    fontWeight: AppFontWeights.medium,
+                    style: AppTextStyles.casta(
+                      fontSize:
+                          deviceType == DeviceType.iPadPro
+                              ? ResponsiveUtils.fontSize(
+                                context,
+                                ResponsiveFontSize.display3,
+                              )
+                              : ResponsiveUtils.fontSize(
+                                context,
+                                ResponsiveFontSize.display2,
+                              ),
+                      color: AppColors.white,
+                      fontWeight: AppFontWeights.medium,
+                      letterSpacing: 0.8,
+                      height: 1.4,
+                    ),
                   ),
                   const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
 

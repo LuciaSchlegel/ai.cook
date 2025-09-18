@@ -198,18 +198,17 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                       ),
                     Text(
                       widget.ingredient == null
-                          ? 'ADD INGREDIENT'
-                          : 'EDIT INGREDIENT',
-                      style: TextStyle(
+                          ? 'add ingredient'
+                          : 'Edit ingredient',
+                      style: AppTextStyles.casta(
                         fontSize:
                             ResponsiveUtils.fontSize(
                               context,
                               ResponsiveFontSize.title,
                             ) *
                             1.3,
-                        fontFamily: AppFontFamilies.primary,
-                        fontWeight: AppFontWeights.regular,
-                        letterSpacing: 0.2,
+                        fontWeight: AppFontWeights.semiBold,
+                        letterSpacing: 3.8,
                         height: 1.5,
                         color: AppColors.button,
                       ),

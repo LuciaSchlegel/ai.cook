@@ -63,19 +63,18 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'ADD INGREDIENTS',
-                    style: TextStyle(
+                    'Add ingredients',
+                    style: AppTextStyles.casta(
                       fontSize:
                           ResponsiveUtils.fontSize(
                             context,
                             ResponsiveFontSize.title,
                           ) *
                           1.4,
-                      fontWeight: AppFontWeights.regular,
-                      fontFamily: AppFontFamilies.primary,
+                      fontWeight: AppFontWeights.semiBold,
                       color: AppColors.button,
-                      letterSpacing: 0.2,
-                      height: 1.4,
+                      letterSpacing: 3.8,
+                      height: 1.8,
                     ),
                     textAlign: TextAlign.center,
                   ),

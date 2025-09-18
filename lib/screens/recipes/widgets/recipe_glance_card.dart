@@ -92,15 +92,15 @@ class RecipeGlanceCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       'Quick Overview',
-                      style: AppTextStyles.inter(
+                      style: AppTextStyles.casta(
                         fontSize:
                             ResponsiveUtils.fontSize(
                               context,
-                              ResponsiveFontSize.xl,
+                              ResponsiveFontSize.xxl,
                             ) *
                             1.2,
-                        fontWeight: AppFontWeights.regular,
-                        letterSpacing: 0.2,
+                        fontWeight: AppFontWeights.semiBold,
+                        letterSpacing: 0.4,
                         color: AppColors.button,
                         height: 1.2,
                       ),

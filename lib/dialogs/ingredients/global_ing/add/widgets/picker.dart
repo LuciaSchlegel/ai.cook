@@ -202,15 +202,18 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
         ),
 
       // Quantity section
-      ResponsiveText(
+      Text(
         'Enter Quantity',
-        fontSize:
-            ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) * 1.4,
-        fontFamily: AppFontFamilies.primary,
-        decoration: TextDecoration.none,
-        color: AppColors.button,
-        letterSpacing: 0.2,
-        height: 1.5,
+        style: AppTextStyles.casta(
+          decoration: TextDecoration.none,
+          fontSize:
+              ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) * 1.4,
+          color: AppColors.button,
+          fontWeight: AppFontWeights.semiBold,
+          letterSpacing: 3.8,
+          height: 1.5,
+        ),
+        textAlign: TextAlign.center,
       ),
       ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
 
@@ -251,15 +254,18 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
       ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
 
       // Unit section
-      ResponsiveText(
+      Text(
         'Select Unit',
-        fontSize:
-            ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) * 1.4,
-        decoration: TextDecoration.none,
-        fontFamily: AppFontFamilies.primary,
-        color: AppColors.button,
-        letterSpacing: 0.2,
-        height: 1.5,
+        style: AppTextStyles.casta(
+          decoration: TextDecoration.none,
+          fontSize:
+              ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) * 1.3,
+          color: AppColors.button,
+          fontWeight: AppFontWeights.semiBold,
+          letterSpacing: 3.8,
+          height: 1.5,
+        ),
+        textAlign: TextAlign.center,
       ),
       ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
 

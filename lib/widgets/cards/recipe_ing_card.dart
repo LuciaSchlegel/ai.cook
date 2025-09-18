@@ -55,11 +55,11 @@ class RecipeIngCard extends StatelessWidget {
               const ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.sm),
               Text(
                 'Ingredients',
-                style: AppTextStyles.inter(
+                style: AppTextStyles.casta(
                   fontSize:
                       ResponsiveUtils.fontSize(context, ResponsiveFontSize.lg) *
-                      1.1,
-                  fontWeight: AppFontWeights.regular,
+                      1.2,
+                  fontWeight: AppFontWeights.semiBold,
                   color: AppColors.button,
                   letterSpacing: 0.2,
                 ),
@@ -398,15 +398,16 @@ class _IngredientRow extends StatelessWidget {
                   const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
                   Text(
                     ingredient.ingredient.name,
-                    style: TextStyle(
+                    style: AppTextStyles.casta(
                       color: AppColors.black,
-                      fontSize: ResponsiveUtils.fontSize(
-                        context,
-                        ResponsiveFontSize.xxl,
-                      ),
+                      fontSize:
+                          ResponsiveUtils.fontSize(
+                            context,
+                            ResponsiveFontSize.xxl,
+                          ) *
+                          1.2,
                       fontWeight: AppFontWeights.semiBold,
                       letterSpacing: 1.8,
-                      fontFamily: 'Melodrama',
                     ),
                     textAlign: TextAlign.center,
                   ),

@@ -127,19 +127,23 @@ class CustomIngLayout extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ResponsiveText(
+                    Text(
                       isEditing
-                          ? 'EDIT CUSTOM INGREDIENT'
-                          : 'ADD CUSTOM INGREDIENT',
-                      fontSize: ResponsiveUtils.fontSize(
-                        context,
-                        ResponsiveFontSize.title2,
+                          ? 'Edit custom ingredient'
+                          : 'Add custom ingredient',
+                      style: AppTextStyles.casta(
+                        fontSize:
+                            ResponsiveUtils.fontSize(
+                              context,
+                              ResponsiveFontSize.title,
+                            ) *
+                            1.4,
+                        fontWeight: AppFontWeights.semiBold,
+                        color: AppColors.button,
+                        letterSpacing: 3.8,
+                        height: 1.4,
                       ),
-                      fontFamily: AppFontFamilies.primary,
-                      color: AppColors.button,
                       textAlign: TextAlign.center,
-                      letterSpacing: 0.2,
-                      height: 1.5,
                     ),
                     const ResponsiveSpacingWidget.vertical(
                       ResponsiveSpacing.lg,
