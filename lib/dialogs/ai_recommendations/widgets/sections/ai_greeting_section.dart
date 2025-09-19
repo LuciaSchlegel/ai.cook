@@ -81,12 +81,14 @@ class AIGreetingSection extends StatelessWidget {
               style: TextStyle(
                 fontSize: ResponsiveUtils.fontSize(
                   context,
-                  ResponsiveFontSize.sm,
+                  ResponsiveFontSize.md,
                 ),
-                fontWeight: AppFontWeights.medium,
                 fontFamily: 'Inter',
+                fontWeight: AppFontWeights.medium,
                 color: AppColors.button,
+                letterSpacing: 0.2,
                 height: 1.4,
+                fontStyle: FontStyle.italic,
               ),
             ),
           ),

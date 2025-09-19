@@ -92,12 +92,12 @@ class AISubstitutionsSection extends StatelessWidget {
                     fontSize:
                         ResponsiveUtils.fontSize(
                           context,
-                          ResponsiveFontSize.xl,
+                          ResponsiveFontSize.title,
                         ) *
-                        1.4,
+                        1.1,
                     fontWeight: AppFontWeights.bold,
                     color: AppColors.button,
-                    letterSpacing: 1.3,
+                    letterSpacing: 0.8,
                     height: 1.2,
                   ),
                 ),

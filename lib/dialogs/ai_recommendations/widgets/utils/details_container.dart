@@ -56,11 +56,11 @@ class DetailsContainer extends StatelessWidget {
                     fontSize:
                         ResponsiveUtils.fontSize(
                           context,
-                          ResponsiveFontSize.xl,
+                          ResponsiveFontSize.title,
                         ) *
                         1.2,
                     fontWeight: AppFontWeights.semiBold,
-                    letterSpacing: 1.4,
+                    letterSpacing: 0.8,
                     height: 1.2,
                     color: AppColors.button,
                   ),
@@ -75,7 +75,7 @@ class DetailsContainer extends StatelessWidget {
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(
                       context,
-                      ResponsiveFontSize.xs,
+                      ResponsiveFontSize.sm,
                     ),
                     fontWeight: AppFontWeights.medium,
                     fontFamily: 'Inter',

@@ -24,8 +24,8 @@ class FirstScreen extends StatelessWidget {
                 children: [
                   // Logo
                   Text(
-                    'ai.cook',
-                    style: AppTextStyles.casta(
+                    'ai.Cook',
+                    style: AppTextStyles.melodrama(
                       fontSize:
                           deviceType == DeviceType.iPadPro
                               ? ResponsiveUtils.fontSize(

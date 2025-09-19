@@ -197,13 +197,15 @@ class _ExpandedHeader extends StatelessWidget {
             child: Text(
               recipe.name,
               style: AppTextStyles.casta(
-                fontSize: ResponsiveUtils.fontSize(
-                  context,
-                  ResponsiveFontSize.title2,
-                ),
+                fontSize:
+                    ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.title,
+                    ) *
+                    1.5,
                 fontWeight: AppFontWeights.semiBold,
                 color: AppColors.button,
-                letterSpacing: 1.7,
+                letterSpacing: 0.8,
                 height: 1.2,
               ),
               maxLines: 2,
@@ -343,7 +345,7 @@ class _InstructionsSection extends StatelessWidget {
                   ),
                   fontWeight: AppFontWeights.semiBold,
                   color: AppColors.button,
-                  letterSpacing: 1.2,
+                  letterSpacing: 0.8,
                   height: 1.2,
                 ),
               ),

@@ -14,6 +14,27 @@ class AppColors {
     end: Alignment.bottomRight,
   );
 
+  static const gradientMutedGreen = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF809076), Color.fromARGB(255, 230, 239, 225)],
+  );
+
+  static const gradientYellow = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFFF8D794), Color.fromARGB(255, 255, 240, 211)],
+  );
+
+  static const gradientLightBlue = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      Color.fromARGB(255, 208, 231, 255),
+      Color.fromARGB(255, 129, 168, 216),
+    ],
+  );
+
   static Color withOpacity(Color color, double opacity) {
     return color.withValues(alpha: opacity);
   }

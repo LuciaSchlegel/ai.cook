@@ -92,11 +92,11 @@ class RecipeTitle extends StatelessWidget {
     // Get base font size from responsive system
     final baseFontSize = switch (deviceType) {
       DeviceType.iPhone =>
-        ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) * 1.4,
+        ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) * 1.6,
       DeviceType.iPadMini =>
-        ResponsiveUtils.fontSize(context, ResponsiveFontSize.display) * 1.5,
-      DeviceType.iPadPro =>
         ResponsiveUtils.fontSize(context, ResponsiveFontSize.display) * 1.6,
+      DeviceType.iPadPro =>
+        ResponsiveUtils.fontSize(context, ResponsiveFontSize.display) * 1.8,
     };
 
     // Apply scaling for long words

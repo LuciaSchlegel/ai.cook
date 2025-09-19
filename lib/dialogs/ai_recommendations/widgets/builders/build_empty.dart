@@ -92,16 +92,17 @@ class BuildEmpty extends StatelessWidget {
                 // Title
                 Text(
                   'AI Chef Ready',
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(
-                      context,
-                      ResponsiveFontSize.xxl,
-                    ),
+                  style: AppTextStyles.casta(
+                    fontSize:
+                        ResponsiveUtils.fontSize(
+                          context,
+                          ResponsiveFontSize.title,
+                        ) *
+                        1.2,
                     fontWeight: AppFontWeights.semiBold,
-                    fontFamily: 'Compagnon',
                     color: AppColors.button,
-                    letterSpacing: 0.3,
-                    height: 1.4,
+                    letterSpacing: 0.8,
+                    height: 1.2,
                   ),
                 ),
                 SizedBox(

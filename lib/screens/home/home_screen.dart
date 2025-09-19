@@ -68,17 +68,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               Text(
                                 'Welcome,',
                                 style: TextStyle(
-                                  fontFamily: AppFontFamilies.secondary,
+                                  fontFamily: AppFontFamilies.casta,
                                   fontSize:
                                       ResponsiveUtils.fontSize(
                                         context,
                                         ResponsiveFontSize.title2,
                                       ) *
-                                      1.3,
+                                      1.5,
                                   color: Colors.white,
-                                  fontWeight: AppFontWeights.regular,
-                                  height: 1.2,
-                                  letterSpacing: 1.8,
+                                  fontWeight: AppFontWeights.bold,
+                                  height: 1,
+                                  letterSpacing: 0.8,
                                 ),
                               ),
                               Consumer<UserProvider>(
@@ -107,18 +107,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                               key: ValueKey(name),
                                               style: TextStyle(
                                                 fontFamily:
-                                                    AppFontFamilies.secondary,
+                                                    AppFontFamilies.casta,
                                                 fontSize:
                                                     ResponsiveUtils.fontSize(
                                                       context,
                                                       ResponsiveFontSize.title2,
                                                     ) *
-                                                    1.3,
+                                                    1.5,
                                                 color: Colors.white,
-                                                fontWeight:
-                                                    AppFontWeights.light,
-                                                height: 1.2,
-                                                letterSpacing: 1.8,
+                                                fontWeight: AppFontWeights.bold,
+                                                height: 1,
+                                                letterSpacing: 0.8,
                                               ),
                                             ),
                                   );
@@ -139,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(height: size.height * 0.04),
                     const SocialCarousel(),
                     SizedBox(height: size.height * 0.04),
-                    const IngredientsCard(),
+                    const ShoppingRemindersCard(),
                     SizedBox(height: size.height * 0.04),
                   ],
                 ),

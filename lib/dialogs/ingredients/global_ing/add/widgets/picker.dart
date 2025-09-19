@@ -210,12 +210,12 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
               ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) * 1.4,
           color: AppColors.button,
           fontWeight: AppFontWeights.semiBold,
-          letterSpacing: 3.8,
+          letterSpacing: 0.8,
           height: 1.5,
         ),
         textAlign: TextAlign.center,
       ),
-      ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
+      ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
 
       Container(
         padding: EdgeInsets.symmetric(
@@ -262,12 +262,12 @@ class _QuantityUnitPickerState extends State<QuantityUnitPicker> {
               ResponsiveUtils.fontSize(context, ResponsiveFontSize.xxl) * 1.3,
           color: AppColors.button,
           fontWeight: AppFontWeights.semiBold,
-          letterSpacing: 3.8,
+          letterSpacing: 0.8,
           height: 1.5,
         ),
         textAlign: TextAlign.center,
       ),
-      ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
+      ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
 
       // Responsive picker container
       Container(

@@ -70,10 +70,10 @@ class _AddGlobalIngDialogState extends State<AddGlobalIngDialog> {
                             context,
                             ResponsiveFontSize.title,
                           ) *
-                          1.4,
+                          1.5,
                       fontWeight: AppFontWeights.semiBold,
                       color: AppColors.button,
-                      letterSpacing: 3.8,
+                      letterSpacing: 0.8,
                       height: 1.8,
                     ),
                     textAlign: TextAlign.center,

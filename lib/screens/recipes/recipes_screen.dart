@@ -369,9 +369,11 @@ class _ContainerRecipeDetails extends StatelessWidget {
         Text(
           recipe.name,
           style: AppTextStyles.casta(
-            letterSpacing: 1.7,
-            fontSize:
-                ResponsiveUtils.fontSize(context, ResponsiveFontSize.xl) * 1.2,
+            letterSpacing: 0.8,
+            fontSize: ResponsiveUtils.fontSize(
+              context,
+              ResponsiveFontSize.title,
+            ),
             height: 1.1,
             fontWeight: AppFontWeights.bold,
             color: AppColors.button,

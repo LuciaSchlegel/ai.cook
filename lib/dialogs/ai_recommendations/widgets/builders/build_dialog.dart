@@ -151,6 +151,9 @@ class BuildDialog extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(
+              height: ResponsiveUtils.spacing(context, ResponsiveSpacing.xl),
+            ),
           ],
         );
       },
