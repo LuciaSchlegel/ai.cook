@@ -59,9 +59,17 @@ class ShoppingRemindersCard extends StatelessWidget {
               children: [
                 const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
                 Container(
+                  height:
+                      ResponsiveUtils.spacing(context, ResponsiveSpacing.xxl) *
+                      10,
                   decoration: BoxDecoration(
                     gradient: AppColors.gradientOrange,
-                    borderRadius: BorderRadius.circular(24),
+                    borderRadius: BorderRadius.circular(
+                      ResponsiveUtils.borderRadius(
+                        context,
+                        ResponsiveBorderRadius.xxl,
+                      ),
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.gradientOrange.colors[0].withValues(
@@ -128,9 +136,20 @@ class ShoppingRemindersCard extends StatelessWidget {
 
                         // Items Container
                         Container(
+                          height:
+                              ResponsiveUtils.spacing(
+                                context,
+                                ResponsiveSpacing.xxl,
+                              ) *
+                              7.2,
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(
+                              ResponsiveUtils.borderRadius(
+                                context,
+                                ResponsiveBorderRadius.xl,
+                              ),
+                            ),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withValues(alpha: 0.08),
@@ -164,7 +183,12 @@ class ShoppingRemindersCard extends StatelessWidget {
                                     color: AppColors.gradientOrange.colors[0]
                                         .withValues(alpha: 0.1)
                                         .withValues(alpha: 0.1),
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: BorderRadius.circular(
+                                      ResponsiveUtils.borderRadius(
+                                        context,
+                                        ResponsiveBorderRadius.lg,
+                                      ),
+                                    ),
                                   ),
                                   child: Text(
                                     '${_shoppingReminders.length} items to buy',
@@ -189,9 +213,9 @@ class ShoppingRemindersCard extends StatelessWidget {
                                     maxHeight:
                                         ResponsiveUtils.spacing(
                                           context,
-                                          ResponsiveSpacing.xxl,
+                                          ResponsiveSpacing.xl,
                                         ) *
-                                        3.5,
+                                        7.8,
                                   ),
                                   child: ListView.separated(
                                     shrinkWrap: true,

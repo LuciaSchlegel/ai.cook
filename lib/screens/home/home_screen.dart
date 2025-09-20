@@ -1,5 +1,6 @@
 import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:ai_cook_project/widgets/cards/ingredients_card.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:ai_cook_project/widgets/utils/social_widget.dart';
 import 'package:ai_cook_project/widgets/cards/weekly_card.dart';
 import 'package:flutter/material.dart';
@@ -56,12 +57,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Padding(
                       padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.05,
+                        horizontal: ResponsiveUtils.spacing(
+                          context,
+                          ResponsiveSpacing.lg,
+                        ),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: size.height * 0.02),
+                          const ResponsiveSpacingWidget.vertical(
+                            ResponsiveSpacing.lg,
+                          ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -103,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                             )
                                             : Text(
-                                              name,
+                                              "Lucia",
                                               key: ValueKey(name),
                                               style: TextStyle(
                                                 fontFamily:
@@ -125,21 +131,31 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(height: size.height * 0.03),
+                          const ResponsiveSpacingWidget.vertical(
+                            ResponsiveSpacing.xl,
+                          ),
                           const Divider(
                             color: Color.fromRGBO(238, 238, 238, 0.498),
                             thickness: 1,
                           ),
-                          SizedBox(height: size.height * 0.03),
+                          const ResponsiveSpacingWidget.vertical(
+                            ResponsiveSpacing.xl,
+                          ),
                           const Center(child: WeeklyCard()),
                         ],
                       ),
                     ),
-                    SizedBox(height: size.height * 0.04),
-                    const SocialCarousel(),
-                    SizedBox(height: size.height * 0.04),
+                    const ResponsiveSpacingWidget.vertical(
+                      ResponsiveSpacing.xl,
+                    ),
                     const ShoppingRemindersCard(),
-                    SizedBox(height: size.height * 0.04),
+                    const ResponsiveSpacingWidget.vertical(
+                      ResponsiveSpacing.xxl,
+                    ),
+                    const SocialCarousel(),
+                    const ResponsiveSpacingWidget.vertical(
+                      ResponsiveSpacing.xxl,
+                    ),
                   ],
                 ),
               ),

@@ -1,7 +1,6 @@
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 class ErrorBuild extends StatelessWidget {
   final String error;
