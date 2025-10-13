@@ -1,5 +1,6 @@
 import 'package:ai_cook_project/models/ai_response_model.dart';
 import 'package:flutter/material.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 
 class ImageClip extends StatelessWidget {
   final CombinedRecipeViewModel viewModel;
@@ -11,12 +12,16 @@ class ImageClip extends StatelessWidget {
     final imageUrl = viewModel.recipe.image;
     if (imageUrl == null || imageUrl.isEmpty) return const SizedBox.shrink();
     return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(16),
-        topRight: Radius.circular(16),
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.lg),
+        ),
+        topRight: Radius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.lg),
+        ),
       ),
       child: Container(
-        height: 120,
+        height: ResponsiveUtils.spacing(context, ResponsiveSpacing.xxl) * 2.8,
         width: double.infinity,
         decoration: BoxDecoration(color: Colors.grey[200]),
         child: Image.network(

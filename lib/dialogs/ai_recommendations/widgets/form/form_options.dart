@@ -1,4 +1,5 @@
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:ai_cook_project/widgets/selectors/dropdown_selector.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -26,36 +27,76 @@ class FormOptions extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Max Cooking Time (minutes)',
+                'Max Cooking Time',
                 style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
+                  fontSize: ResponsiveUtils.fontSize(
+                    context,
+                    ResponsiveFontSize.sm,
+                  ),
+                  fontWeight: AppFontWeights.semiBold,
+                  fontFamily: 'Inter',
                   color: AppColors.button.withValues(alpha: 0.9),
                   letterSpacing: 0.2,
+                  height: 1.4,
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(
+                height: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+              ),
               Container(
-                height: 48,
+                height:
+                    ResponsiveUtils.spacing(context, ResponsiveSpacing.xl) +
+                    ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
                 decoration: BoxDecoration(
                   color: CupertinoColors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.button.withValues(alpha: 0.2)),
+                  borderRadius: BorderRadius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.md,
+                    ),
+                  ),
+                  border: Border.all(
+                    color: AppColors.button.withValues(alpha: 0.2),
+                    width: 1,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.button.withValues(alpha: 0.03),
+                      blurRadius: ResponsiveUtils.spacing(
+                        context,
+                        ResponsiveSpacing.xs,
+                      ),
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
                 ),
                 child: CupertinoTextField(
                   controller: maxTimeController,
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.next,
-                  placeholder: 'e.g. 30',
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
+                  placeholder: 'e.g. 30min',
+                  padding: ResponsiveUtils.padding(
+                    context,
+                    ResponsiveSpacing.sm,
                   ),
                   placeholderStyle: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.md,
+                    ),
+                    fontWeight: AppFontWeights.regular,
+                    fontFamily: 'Inter',
                     color: AppColors.button.withValues(alpha: 0.5),
-                    fontSize: 16,
                   ),
-                  style: const TextStyle(color: AppColors.button, fontSize: 16),
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.md,
+                    ),
+                    fontWeight: AppFontWeights.regular,
+                    fontFamily: 'Inter',
+                    color: AppColors.button,
+                  ),
                   decoration: null,
                   cursorColor: AppColors.mutedGreen,
                   onSubmitted: (_) {
@@ -67,7 +108,7 @@ class FormOptions extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(width: 16),
+        SizedBox(width: ResponsiveUtils.spacing(context, ResponsiveSpacing.md)),
 
         // Difficulty Selector
         Expanded(
@@ -77,15 +118,24 @@ class FormOptions extends StatelessWidget {
               Text(
                 'Preferred Difficulty',
                 style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
+                  fontSize: ResponsiveUtils.fontSize(
+                    context,
+                    ResponsiveFontSize.sm,
+                  ),
+                  fontWeight: AppFontWeights.semiBold,
+                  fontFamily: 'Inter',
                   color: AppColors.button.withValues(alpha: 0.9),
                   letterSpacing: 0.2,
+                  height: 1.4,
                 ),
               ),
-              const SizedBox(height: 8),
               SizedBox(
-                height: 48,
+                height: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+              ),
+              SizedBox(
+                height:
+                    ResponsiveUtils.spacing(context, ResponsiveSpacing.xl) +
+                    ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
                 child: DropdownSelector(
                   value: selectedDifficulty,
                   items: ['Easy', 'Medium', 'Hard'],

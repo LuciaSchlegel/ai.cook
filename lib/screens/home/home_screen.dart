@@ -1,4 +1,6 @@
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:ai_cook_project/widgets/cards/ingredients_card.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:ai_cook_project/widgets/utils/social_widget.dart';
 import 'package:ai_cook_project/widgets/cards/weekly_card.dart';
 import 'package:flutter/material.dart';
@@ -39,84 +41,126 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ScreenHeader(
-                onProfileTap: widget.onProfileTap ?? () {},
-                onFeedTap: widget.onFeedTap ?? () {},
-                onLogoutTap: widget.onLogoutTap ?? () {},
-                currentIndex: -1,
-              ),
-              SizedBox(height: size.height * 0.03),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+        child: Column(
+          children: [
+            ScreenHeader(
+              onProfileTap: widget.onProfileTap ?? () {},
+              onFeedTap: widget.onFeedTap ?? () {},
+              onLogoutTap: widget.onLogoutTap ?? () {},
+              currentIndex: -1,
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: size.height * 0.02),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Welcome,',
-                          style: TextStyle(
-                            fontFamily: 'Casta',
-                            fontSize: 48,
-                            color: Colors.white,
-                            height: 1.1,
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: ResponsiveUtils.spacing(
+                          context,
+                          ResponsiveSpacing.lg,
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const ResponsiveSpacingWidget.vertical(
+                            ResponsiveSpacing.lg,
                           ),
-                        ),
-                        Consumer<UserProvider>(
-                          builder: (context, userProvider, _) {
-                            final name = userProvider.user?.name;
-                            final isLoading = userProvider.isLoading;
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Welcome,',
+                                style: TextStyle(
+                                  fontFamily: AppFontFamilies.casta,
+                                  fontSize:
+                                      ResponsiveUtils.fontSize(
+                                        context,
+                                        ResponsiveFontSize.title2,
+                                      ) *
+                                      1.5,
+                                  color: Colors.white,
+                                  fontWeight: AppFontWeights.bold,
+                                  height: 1,
+                                  letterSpacing: 0.8,
+                                ),
+                              ),
+                              Consumer<UserProvider>(
+                                builder: (context, userProvider, _) {
+                                  final name = userProvider.user?.name;
+                                  final isLoading = userProvider.isLoading;
 
-                            return AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 500),
-                              transitionBuilder: (child, animation) {
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: child,
-                                );
-                              },
-                              child:
-                                  isLoading || name == null
-                                      ? const SizedBox(height: 48)
-                                      : Text(
-                                        name,
-                                        key: ValueKey(name),
-                                        style: const TextStyle(
-                                          fontFamily: 'Casta',
-                                          fontSize: 48,
-                                          color: Colors.white,
-                                          height: 1.1,
-                                        ),
-                                      ),
-                            );
-                          },
-                        ),
-                      ],
+                                  return AnimatedSwitcher(
+                                    duration: const Duration(milliseconds: 500),
+                                    transitionBuilder: (child, animation) {
+                                      return FadeTransition(
+                                        opacity: animation,
+                                        child: child,
+                                      );
+                                    },
+                                    child:
+                                        isLoading || name == null
+                                            ? SizedBox(
+                                              height: ResponsiveUtils.spacing(
+                                                context,
+                                                ResponsiveSpacing.xxl,
+                                              ),
+                                            )
+                                            : Text(
+                                              "Lucia",
+                                              key: ValueKey(name),
+                                              style: TextStyle(
+                                                fontFamily:
+                                                    AppFontFamilies.casta,
+                                                fontSize:
+                                                    ResponsiveUtils.fontSize(
+                                                      context,
+                                                      ResponsiveFontSize.title2,
+                                                    ) *
+                                                    1.5,
+                                                color: Colors.white,
+                                                fontWeight: AppFontWeights.bold,
+                                                height: 1,
+                                                letterSpacing: 0.8,
+                                              ),
+                                            ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                          const ResponsiveSpacingWidget.vertical(
+                            ResponsiveSpacing.xl,
+                          ),
+                          const Divider(
+                            color: Color.fromRGBO(238, 238, 238, 0.498),
+                            thickness: 1,
+                          ),
+                          const ResponsiveSpacingWidget.vertical(
+                            ResponsiveSpacing.xl,
+                          ),
+                          const Center(child: WeeklyCard()),
+                        ],
+                      ),
                     ),
-                    SizedBox(height: size.height * 0.03),
-                    const Divider(
-                      color: Color.fromRGBO(238, 238, 238, 0.498),
-                      thickness: 1,
+                    const ResponsiveSpacingWidget.vertical(
+                      ResponsiveSpacing.xl,
                     ),
-                    SizedBox(height: size.height * 0.03),
-                    const Center(child: WeeklyCard()),
+                    const ShoppingRemindersCard(),
+                    const ResponsiveSpacingWidget.vertical(
+                      ResponsiveSpacing.xxl,
+                    ),
+                    const SocialCarousel(),
+                    const ResponsiveSpacingWidget.vertical(
+                      ResponsiveSpacing.xxl,
+                    ),
                   ],
                 ),
               ),
-              SizedBox(height: size.height * 0.04),
-              const SocialCarousel(),
-              SizedBox(height: size.height * 0.04),
-              const IngredientsCard(),
-              SizedBox(height: size.height * 0.04),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

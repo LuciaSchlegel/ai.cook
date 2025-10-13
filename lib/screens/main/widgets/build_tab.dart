@@ -1,4 +1,6 @@
 import 'package:ai_cook_project/screens/main/helpers/tabs.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,16 +21,20 @@ class TabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color =
-        isActive ? AppColors.orange : const Color.fromARGB(255, 123, 123, 123);
+    // Consistent font size using responsive system
+    final fontSize = ResponsiveUtils.fontSize(context, ResponsiveFontSize.xs);
 
     final iconSize = isActive ? (icon.activeSize ?? icon.size) : icon.size;
+    final color =
+        isActive ? AppColors.orange : const Color.fromARGB(255, 123, 123, 123);
     final iconColor =
         isActive ? (icon.activeColor ?? color) : (icon.inactiveColor ?? color);
 
+    // Consistent spacing between icon and text
+    final iconTextSpacing = ResponsiveSpacing.xxs;
+
     Widget iconWidget;
     if (icon.svgAsset != null) {
-      // Handle SVG asset
       iconWidget = SvgPicture.asset(
         icon.svgAsset!,
         width: iconSize,
@@ -36,50 +42,67 @@ class TabItem extends StatelessWidget {
         colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
       );
     } else {
-      // Handle Flutter icon
       iconWidget = Icon(icon.icon, size: iconSize, color: iconColor);
     }
 
     return InkWell(
       onTap: onTap,
       splashColor: Colors.transparent,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            decoration:
-                isActive && icon.activeShadowRadius != null
-                    ? BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color:
-                              icon.activeShadowColor ??
-                              iconColor.withOpacity(0.3),
-                          blurRadius: icon.activeShadowRadius!,
-                          spreadRadius: 0,
-                        ),
-                      ],
-                    )
-                    : null,
-            child: iconWidget,
-          ),
-          const SizedBox(height: 4),
-          Flexible(
-            child: Text(
-              label,
-              style: TextStyle(
-                color: color,
-                fontSize: 11,
-                fontWeight: FontWeight.w500,
-              ),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              textAlign: TextAlign.center,
+      borderRadius: BorderRadius.circular(
+        ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.md),
+      ),
+      child: Container(
+        // Use full available height with consistent padding
+        height: double.infinity,
+        padding: ResponsiveUtils.verticalPadding(context, ResponsiveSpacing.xs),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Icono con shadow condicional
+            Container(
+              decoration:
+                  isActive && icon.activeShadowRadius != null
+                      ? BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color:
+                                icon.activeShadowColor ??
+                                iconColor.withValues(alpha: 0.3),
+                            blurRadius: icon.activeShadowRadius!,
+                            spreadRadius: 0,
+                          ),
+                        ],
+                      )
+                      : null,
+              child: iconWidget,
             ),
-          ),
-        ],
+
+            // Spacing responsivo
+            ResponsiveSpacingWidget.vertical(iconTextSpacing),
+
+            // Responsive text with consistent styling
+            Flexible(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    color: color,
+                    fontSize: fontSize,
+                    fontWeight: AppFontWeights.medium,
+                    fontFamily: 'Inter',
+                    height: 1.0,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

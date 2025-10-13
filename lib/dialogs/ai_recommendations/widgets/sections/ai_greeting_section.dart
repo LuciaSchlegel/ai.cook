@@ -1,5 +1,6 @@
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 
 class AIGreetingSection extends StatelessWidget {
   final String greeting;
@@ -11,20 +12,32 @@ class AIGreetingSection extends StatelessWidget {
     if (greeting.isEmpty) return const SizedBox.shrink();
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      padding: const EdgeInsets.all(20),
+      margin: EdgeInsets.only(
+        bottom: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+      ),
+      padding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.lightYellow.withValues(alpha: 0.1),
-            AppColors.mutedGreen.withValues(alpha: 0.05),
+            AppColors.white,
+            AppColors.mutedGreen.withValues(alpha: 0.03),
           ],
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.lg),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.mutedGreen.withValues(alpha: 0.08),
+            blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            offset: const Offset(0, 2),
+            spreadRadius: 0,
+          ),
+        ],
         border: Border.all(
-          color: AppColors.mutedGreen.withValues(alpha: 0.1),
+          color: AppColors.mutedGreen.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -32,32 +45,50 @@ class AIGreetingSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 28,
-            height: 28,
+            width: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
+            height: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.mutedGreen.withValues(alpha: 0.2),
-                  AppColors.lightYellow.withValues(alpha: 0.3),
-                ],
+              color: AppColors.mutedGreen,
+              borderRadius: BorderRadius.circular(
+                ResponsiveUtils.borderRadius(
+                  context,
+                  ResponsiveBorderRadius.md,
+                ),
               ),
-              borderRadius: BorderRadius.circular(14),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.mutedGreen.withValues(alpha: 0.2),
+                  blurRadius: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.xs,
+                  ),
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
             child: Icon(
               CupertinoIcons.person_fill,
-              size: 16,
-              color: AppColors.mutedGreen,
+              size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
+              color: AppColors.white,
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(
+            width: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+          ),
           Expanded(
             child: Text(
               greeting,
               style: TextStyle(
-                fontSize: 15,
-                height: 1.5,
-                color: AppColors.button.withValues(alpha: 0.85),
-                fontWeight: FontWeight.w400,
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.md,
+                ),
+                fontFamily: 'Inter',
+                fontWeight: AppFontWeights.medium,
+                color: AppColors.button,
+                letterSpacing: 0.2,
+                height: 1.4,
+                fontStyle: FontStyle.italic,
               ),
             ),
           ),

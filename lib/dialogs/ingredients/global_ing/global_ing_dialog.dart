@@ -2,6 +2,7 @@ import 'package:ai_cook_project/dialogs/ingredients/global_ing/widgets/scroller.
 import 'package:ai_cook_project/models/user_ing.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:ai_cook_project/widgets/utils/safe_constrained_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -135,12 +136,16 @@ Future<void> showGlobalIngredientsDialog(BuildContext context) async {
                                   Navigator.pop(context);
                                 }
                                 : null,
-                        child: const Text(
+                        child: Text(
                           'Add Selected',
                           style: TextStyle(
+                            fontFamily: 'Inter',
                             color: AppColors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                            fontSize: ResponsiveUtils.fontSize(
+                              context,
+                              ResponsiveFontSize.md,
+                            ),
+                            fontWeight: AppFontWeights.semiBold,
                           ),
                         ),
                       ),

@@ -1,7 +1,9 @@
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/widgets/utils/screen_header.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 
 class SettingsScreen extends StatefulWidget {
   final VoidCallback? onProfileTap;
@@ -21,7 +23,6 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _notificationsEnabled = true;
-  bool _darkModeEnabled = false;
   bool _aiRecommendationsEnabled = true;
   bool _autoSaveRecipes = true;
   String _selectedLanguage = 'English';
@@ -42,135 +43,45 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildSectionHeader('General'),
-                    _buildIOSGroupCard([
-                      _buildIOSSwitchTile(
-                        'Notifications',
-                        'Receive cooking reminders and updates',
-                        Icons.notifications_outlined,
-                        _notificationsEnabled,
-                        (value) =>
-                            setState(() => _notificationsEnabled = value),
-                        isFirst: true,
-                      ),
-                      _buildIOSSwitchTile(
-                        'Dark Mode',
-                        'Switch to dark theme',
-                        Icons.dark_mode_outlined,
-                        _darkModeEnabled,
-                        (value) => setState(() => _darkModeEnabled = value),
-                      ),
-                      _buildIOSDropdownTile(
-                        'Language',
-                        'Select your preferred language',
-                        Icons.language_outlined,
-                        _selectedLanguage,
-                        ['English', 'Spanish', 'French', 'German', 'Italian'],
-                        (value) => setState(() => _selectedLanguage = value!),
-                      ),
-                      _buildIOSDropdownTile(
-                        'Units',
-                        'Measurement system preference',
-                        Icons.straighten_outlined,
-                        _selectedUnits,
-                        ['Metric', 'Imperial'],
-                        (value) => setState(() => _selectedUnits = value!),
-                        isLast: true,
-                      ),
-                    ]),
+                padding: EdgeInsets.symmetric(
+                  horizontal:
+                      ResponsiveUtils.isIPad(context)
+                          ? ResponsiveUtils.spacing(
+                            context,
+                            ResponsiveSpacing.xxl,
+                          )
+                          : ResponsiveUtils.spacing(
+                            context,
+                            ResponsiveSpacing.lg,
+                          ),
+                  vertical: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.lg,
+                  ),
+                ),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth:
+                        ResponsiveUtils.isIPad(context) ? 600 : double.infinity,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Main Title
+                      _buildMainTitle(context),
+                      ResponsiveSpacingWidget.vertical(ResponsiveSpacing.xl),
 
-                    const SizedBox(height: 35),
-                    _buildSectionHeader('AI & Recipes'),
-                    _buildIOSGroupCard([
-                      _buildIOSSwitchTile(
-                        'AI Recommendations',
-                        'Get personalized recipe suggestions',
-                        Icons.auto_awesome_outlined,
-                        _aiRecommendationsEnabled,
-                        (value) =>
-                            setState(() => _aiRecommendationsEnabled = value),
-                        isFirst: true,
-                      ),
-                      _buildIOSSwitchTile(
-                        'Auto-save Recipes',
-                        'Automatically save recipes you view',
-                        Icons.bookmark_outline,
-                        _autoSaveRecipes,
-                        (value) => setState(() => _autoSaveRecipes = value),
-                      ),
-                      _buildIOSNavigationTile(
-                        'Dietary Preferences',
-                        'Set allergies and dietary restrictions',
-                        Icons.restaurant_menu_outlined,
-                        () => _showDietaryPreferences(),
-                      ),
-                      _buildIOSNavigationTile(
-                        'Cooking Skills',
-                        'Set your cooking experience level',
-                        Icons.local_dining_outlined,
-                        () => _showCookingSkills(),
-                        isLast: true,
-                      ),
-                    ]),
+                      // Main Settings Card
+                      _buildMainSettingsCard(context),
 
-                    const SizedBox(height: 35),
-                    _buildSectionHeader('Account'),
-                    _buildIOSGroupCard([
-                      _buildIOSNavigationTile(
-                        'Profile Settings',
-                        'Manage your profile information',
-                        Icons.person_outline,
-                        () => _navigateToProfile(),
-                        isFirst: true,
-                      ),
-                      _buildIOSNavigationTile(
-                        'Privacy & Security',
-                        'Control your data and privacy settings',
-                        Icons.security_outlined,
-                        () => _showPrivacySettings(),
-                      ),
-                      _buildIOSNavigationTile(
-                        'Data & Storage',
-                        'Manage app data and storage',
-                        Icons.storage_outlined,
-                        () => _showDataSettings(),
-                        isLast: true,
-                      ),
-                    ]),
+                      ResponsiveSpacingWidget.vertical(ResponsiveSpacing.xl),
 
-                    const SizedBox(height: 35),
-                    _buildSectionHeader('Support'),
-                    _buildIOSGroupCard([
-                      _buildIOSNavigationTile(
-                        'Help & FAQ',
-                        'Get help and find answers',
-                        Icons.help_outline,
-                        () => _showHelp(),
-                        isFirst: true,
-                      ),
-                      _buildIOSNavigationTile(
-                        'Contact Support',
-                        'Get in touch with our team',
-                        Icons.support_agent_outlined,
-                        () => _contactSupport(),
-                      ),
-                      _buildIOSNavigationTile(
-                        'About',
-                        'App version and information',
-                        Icons.info_outline,
-                        () => _showAbout(),
-                        isLast: true,
-                      ),
-                    ]),
+                      // Logout Section (separate from main card)
+                      _buildLogoutSection(context),
 
-                    const SizedBox(height: 35),
-                    _buildIOSGroupCard([_buildIOSLogoutTile()]),
-                    const SizedBox(height: 20),
-                  ],
+                      ResponsiveSpacingWidget.vertical(ResponsiveSpacing.xl),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -180,278 +91,603 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildSectionHeader(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0, left: 16.0),
-      child: Text(
-        title.toUpperCase(),
-        style: TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w600,
-          color: AppColors.white.withValues(alpha: 0.6),
-          letterSpacing: 0.5,
+  Widget _buildMainTitle(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Settings',
+          style: AppTextStyles.casta(
+            fontSize:
+                ResponsiveUtils.fontSize(context, ResponsiveFontSize.title2) *
+                1.2,
+            fontWeight: AppFontWeights.bold,
+            color: AppColors.white,
+            letterSpacing: -0.5,
+          ),
         ),
-      ),
+        ResponsiveSpacingWidget.vertical(ResponsiveSpacing.xxs),
+        Text(
+          'Customize your cooking experience',
+          style: AppTextStyles.inter(
+            fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.lg),
+            fontWeight: AppFontWeights.regular,
+            color: AppColors.white,
+            height: 1,
+          ),
+        ),
+      ],
     );
   }
 
-  Widget _buildIOSGroupCard(List<Widget> children) {
+  Widget _buildMainSettingsCard(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.mutedGreen, width: 1),
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(28),
+        borderRadius: BorderRadius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xxxl),
+        ),
+        border: Border.all(
+          color: AppColors.mutedGreen.withValues(alpha: 0.3),
+          width: 1,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
-            blurRadius: 1,
-            offset: const Offset(0, 2),
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            offset: const Offset(0, 4),
             spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: AppColors.mutedGreen.withValues(alpha: 0.05),
+            blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+            offset: const Offset(0, 16),
+            spreadRadius: -8,
           ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(children: children),
-      ),
-    );
-  }
-
-  Widget _buildIOSSwitchTile(
-    String title,
-    String subtitle,
-    IconData icon,
-    bool value,
-    ValueChanged<bool> onChanged, {
-    bool isFirst = false,
-    bool isLast = false,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        border:
-            !isLast
-                ? Border(
-                  bottom: BorderSide(
-                    color: Colors.grey.withValues(alpha: 0.3),
-                    width: 0.5,
-                  ),
-                )
-                : null,
-        borderRadius:
-            isFirst && isLast
-                ? BorderRadius.circular(10)
-                : isFirst
-                ? const BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                )
-                : isLast
-                ? const BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10),
-                )
-                : null,
-      ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-        leading: Container(
-          width: 29,
-          height: 29,
-          decoration: BoxDecoration(
-            color: AppColors.orange,
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: Icon(icon, color: Colors.white, size: 18),
-        ),
-        title: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w400,
-            color: Colors.black,
-          ),
-        ),
-        subtitle:
-            subtitle.isNotEmpty
-                ? Text(
-                  subtitle,
-                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                )
-                : null,
-        trailing: Switch.adaptive(
-          value: value,
-          onChanged: onChanged,
-          activeColor: AppColors.orange,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildIOSDropdownTile(
-    String title,
-    String subtitle,
-    IconData icon,
-    String value,
-    List<String> options,
-    ValueChanged<String?> onChanged, {
-    bool isFirst = false,
-    bool isLast = false,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        border:
-            !isLast
-                ? Border(
-                  bottom: BorderSide(
-                    color: Colors.grey.withValues(alpha: 0.3),
-                    width: 0.5,
-                  ),
-                )
-                : null,
-        borderRadius:
-            isFirst && isLast
-                ? BorderRadius.circular(10)
-                : isFirst
-                ? const BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                )
-                : isLast
-                ? const BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10),
-                )
-                : null,
-      ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-        leading: Container(
-          width: 29,
-          height: 29,
-          decoration: BoxDecoration(
-            color: AppColors.orange,
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: Icon(icon, color: Colors.white, size: 18),
-        ),
-        title: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w400,
-            color: Colors.black,
-          ),
-        ),
-        subtitle:
-            subtitle.isNotEmpty
-                ? Text(
-                  subtitle,
-                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                )
-                : null,
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              value,
-              style: TextStyle(fontSize: 17, color: Colors.grey[500]),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // General Section
+          _buildSectionInCard(context, 'General', Icons.settings_outlined, [
+            _buildSettingsTile(
+              context,
+              title: 'Notifications',
+              subtitle: 'Receive cooking reminders and updates',
+              icon: Icons.notifications_outlined,
+              trailing: _buildSwitch(
+                _notificationsEnabled,
+                (value) => setState(() => _notificationsEnabled = value),
+              ),
+              isFirst: true,
             ),
-            const SizedBox(width: 8),
-            Icon(Icons.chevron_right, color: Colors.grey[400], size: 20),
-          ],
-        ),
-        onTap: () => _showIOSPicker(title, options, value, onChanged),
+            _buildSettingsTile(
+              context,
+              title: 'Language',
+              subtitle: 'Select your preferred language',
+              icon: Icons.language_outlined,
+              trailing: _buildDropdownTrailing(_selectedLanguage),
+              onTap: () => _showLanguagePicker(),
+            ),
+            _buildSettingsTile(
+              context,
+              title: 'Units',
+              subtitle: 'Measurement system preference',
+              icon: Icons.straighten_outlined,
+              trailing: _buildDropdownTrailing(_selectedUnits),
+              onTap: () => _showUnitsPicker(),
+              isLast: true,
+            ),
+          ], isFirst: true),
+
+          // AI & Recipes Section
+          _buildSectionInCard(
+            context,
+            'AI & Recipes',
+            Icons.auto_awesome_outlined,
+            [
+              _buildSettingsTile(
+                context,
+                title: 'AI Recommendations',
+                subtitle: 'Get personalized recipe suggestions',
+                icon: Icons.psychology_outlined,
+                trailing: _buildSwitch(
+                  _aiRecommendationsEnabled,
+                  (value) => setState(() => _aiRecommendationsEnabled = value),
+                ),
+                isFirst: true,
+              ),
+              _buildSettingsTile(
+                context,
+                title: 'Auto-save Recipes',
+                subtitle: 'Automatically save recipes you view',
+                icon: Icons.bookmark_outline,
+                trailing: _buildSwitch(
+                  _autoSaveRecipes,
+                  (value) => setState(() => _autoSaveRecipes = value),
+                ),
+              ),
+              _buildSettingsTile(
+                context,
+                title: 'Dietary Preferences',
+                subtitle: 'Set allergies and dietary restrictions',
+                icon: Icons.restaurant_menu_outlined,
+                trailing: _buildChevron(),
+                onTap: () => _showDietaryPreferences(),
+              ),
+              _buildSettingsTile(
+                context,
+                title: 'Cooking Skills',
+                subtitle: 'Set your cooking experience level',
+                icon: Icons.local_dining_outlined,
+                trailing: _buildChevron(),
+                onTap: () => _showCookingSkills(),
+                isLast: true,
+              ),
+            ],
+          ),
+
+          // Account Section
+          _buildSectionInCard(context, 'Account', Icons.person_outline, [
+            _buildSettingsTile(
+              context,
+              title: 'Profile Settings',
+              subtitle: 'Manage your profile information',
+              icon: Icons.account_circle_outlined,
+              trailing: _buildChevron(),
+              onTap: () => _navigateToProfile(),
+              isFirst: true,
+            ),
+            _buildSettingsTile(
+              context,
+              title: 'Privacy & Security',
+              subtitle: 'Control your data and privacy settings',
+              icon: Icons.security_outlined,
+              trailing: _buildChevron(),
+              onTap: () => _showPrivacySettings(),
+            ),
+            _buildSettingsTile(
+              context,
+              title: 'Data & Storage',
+              subtitle: 'Manage app data and storage',
+              icon: Icons.storage_outlined,
+              trailing: _buildChevron(),
+              onTap: () => _showDataSettings(),
+              isLast: true,
+            ),
+          ]),
+
+          // Support Section
+          _buildSectionInCard(context, 'Support', Icons.help_outline, [
+            _buildSettingsTile(
+              context,
+              title: 'Help & FAQ',
+              subtitle: 'Get help and find answers',
+              icon: Icons.quiz_outlined,
+              trailing: _buildChevron(),
+              onTap: () => _showHelp(),
+              isFirst: true,
+            ),
+            _buildSettingsTile(
+              context,
+              title: 'Contact Support',
+              subtitle: 'Get in touch with our team',
+              icon: Icons.support_agent_outlined,
+              trailing: _buildChevron(),
+              onTap: () => _contactSupport(),
+            ),
+            _buildSettingsTile(
+              context,
+              title: 'About',
+              subtitle: 'App version and information',
+              icon: Icons.info_outline,
+              trailing: _buildChevron(),
+              onTap: () => _showAbout(),
+              isLast: true,
+            ),
+          ], isLast: true),
+        ],
       ),
     );
   }
 
-  Widget _buildIOSNavigationTile(
+  Widget _buildSectionInCard(
+    BuildContext context,
     String title,
-    String subtitle,
+    IconData sectionIcon,
+    List<Widget> children, {
+    bool isFirst = false,
+    bool isLast = false,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (isFirst)
+          SizedBox(
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.xl),
+          )
+        else
+          ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
+
+        _buildSectionHeader(context, title, sectionIcon),
+        ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
+
+        // Settings items without individual cards
+        Column(children: children),
+
+        if (!isLast) ...[
+          ResponsiveSpacingWidget.vertical(ResponsiveSpacing.lg),
+          // Section divider
+          Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: ResponsiveUtils.spacing(
+                context,
+                ResponsiveSpacing.lg,
+              ),
+            ),
+            height: 1,
+            color: AppColors.mutedGreen.withValues(alpha: 0.1),
+          ),
+        ] else
+          SizedBox(
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.lg),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildSectionHeader(
+    BuildContext context,
+    String title,
     IconData icon,
-    VoidCallback onTap, {
+  ) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.lg),
+        vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: EdgeInsets.all(
+              ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.button.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(
+                ResponsiveUtils.borderRadius(
+                  context,
+                  ResponsiveBorderRadius.sm,
+                ),
+              ),
+            ),
+            child: Icon(
+              icon,
+              size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.sm),
+              color: AppColors.button,
+            ),
+          ),
+          SizedBox(
+            width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+          ),
+          Text(
+            title,
+            style: AppTextStyles.inter(
+              fontSize: ResponsiveUtils.fontSize(
+                context,
+                ResponsiveFontSize.xl,
+              ),
+              fontWeight: AppFontWeights.regular,
+              color: AppColors.button,
+              letterSpacing: 0.3,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSettingsTile(
+    BuildContext context, {
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required Widget trailing,
+    VoidCallback? onTap,
     bool isFirst = false,
     bool isLast = false,
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.transparent,
         border:
             !isLast
                 ? Border(
                   bottom: BorderSide(
-                    color: Colors.grey.withValues(alpha: 0.3),
+                    color: AppColors.mutedGreen.withValues(alpha: 0.1),
                     width: 0.5,
                   ),
                 )
                 : null,
         borderRadius:
             isFirst && isLast
-                ? BorderRadius.circular(10)
+                ? BorderRadius.circular(
+                  ResponsiveUtils.borderRadius(
+                    context,
+                    ResponsiveBorderRadius.xl,
+                  ),
+                )
                 : isFirst
-                ? const BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
+                ? BorderRadius.only(
+                  topLeft: Radius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.xl,
+                    ),
+                  ),
+                  topRight: Radius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.xl,
+                    ),
+                  ),
                 )
                 : isLast
-                ? const BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10),
+                ? BorderRadius.only(
+                  bottomLeft: Radius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.xl,
+                    ),
+                  ),
+                  bottomRight: Radius.circular(
+                    ResponsiveUtils.borderRadius(
+                      context,
+                      ResponsiveBorderRadius.xl,
+                    ),
+                  ),
                 )
                 : null,
       ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-        leading: Container(
-          width: 29,
-          height: 29,
-          decoration: BoxDecoration(
-            color: AppColors.orange,
-            borderRadius: BorderRadius.circular(6),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(
+            ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xl),
           ),
-          child: Icon(icon, color: Colors.white, size: 18),
-        ),
-        title: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w400,
-            color: Colors.black,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: ResponsiveUtils.spacing(
+                context,
+                ResponsiveSpacing.lg,
+              ),
+              vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+            ),
+            child: Row(
+              children: [
+                _buildIconContainer(context, icon),
+                SizedBox(
+                  width: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: AppTextStyles.inter(
+                          fontSize: ResponsiveUtils.fontSize(
+                            context,
+                            ResponsiveFontSize.md,
+                          ),
+                          fontWeight: AppFontWeights.regular,
+                          color: AppColors.button,
+                          height: 1.2,
+                        ),
+                      ),
+                      if (subtitle.isNotEmpty) ...[
+                        SizedBox(
+                          height: ResponsiveUtils.spacing(
+                            context,
+                            ResponsiveSpacing.xs,
+                          ),
+                        ),
+                        Text(
+                          subtitle,
+                          style: AppTextStyles.inter(
+                            fontSize: ResponsiveUtils.fontSize(
+                              context,
+                              ResponsiveFontSize.sm,
+                            ),
+                            fontWeight: AppFontWeights.medium,
+                            color: AppColors.mutedGreen,
+                            height: 1.3,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+                ),
+                trailing,
+              ],
+            ),
           ),
         ),
-        subtitle:
-            subtitle.isNotEmpty
-                ? Text(
-                  subtitle,
-                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                )
-                : null,
-        trailing: Icon(Icons.chevron_right, color: Colors.grey[400], size: 20),
-        onTap: onTap,
       ),
     );
   }
 
-  Widget _buildIOSLogoutTile() {
+  Widget _buildIconContainer(BuildContext context, IconData icon) {
     return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
+      width: ResponsiveUtils.iconSize(context, ResponsiveIconSize.xl),
+      height: ResponsiveUtils.iconSize(context, ResponsiveIconSize.xl),
+      decoration: BoxDecoration(
+        gradient: AppColors.gradientOrange,
+        borderRadius: BorderRadius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.sm),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.orange.withValues(alpha: 0.3),
+            blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-        title: const Text(
-          'Sign Out',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w400,
-            color: Colors.red,
+      child: Icon(
+        icon,
+        color: AppColors.white,
+        size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
+      ),
+    );
+  }
+
+  Widget _buildSwitch(bool value, ValueChanged<bool> onChanged) {
+    return Switch.adaptive(
+      value: value,
+      onChanged: onChanged,
+      activeColor: AppColors.orange,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    );
+  }
+
+  Widget _buildDropdownTrailing(String value) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          value,
+          style: AppTextStyles.inter(
+            fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.md),
+            fontWeight: AppFontWeights.regular,
+            color: AppColors.mutedGreen,
           ),
         ),
-        onTap: () => _showLogoutDialog(),
+        SizedBox(width: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs)),
+        Icon(
+          Icons.chevron_right,
+          color: AppColors.mutedGreen.withValues(alpha: 0.6),
+          size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildChevron() {
+    return Icon(
+      Icons.chevron_right,
+      color: AppColors.mutedGreen.withValues(alpha: 0.6),
+      size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
+    );
+  }
+
+  Widget _buildLogoutSection(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xxxl) *
+              1.8,
+        ),
+        border: Border.all(color: Colors.red.withValues(alpha: 0.2), width: 1),
       ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => _showLogoutDialog(),
+          borderRadius: BorderRadius.circular(
+            ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xxxl) *
+                1.8,
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: ResponsiveUtils.spacing(
+                context,
+                ResponsiveSpacing.xl,
+              ),
+              vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.lg),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: ResponsiveUtils.iconSize(
+                    context,
+                    ResponsiveIconSize.xl,
+                  ),
+                  height: ResponsiveUtils.iconSize(
+                    context,
+                    ResponsiveIconSize.xl,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.red.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(
+                      ResponsiveUtils.borderRadius(
+                        context,
+                        ResponsiveBorderRadius.sm,
+                      ),
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.logout_outlined,
+                    color: Colors.red,
+                    size: ResponsiveUtils.iconSize(
+                      context,
+                      ResponsiveIconSize.md,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+                ),
+                Expanded(
+                  child: Text(
+                    'Sign Out',
+                    style: AppTextStyles.inter(
+                      fontSize: ResponsiveUtils.fontSize(
+                        context,
+                        ResponsiveFontSize.md,
+                      ),
+                      fontWeight: AppFontWeights.semiBold,
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+                Icon(
+                  Icons.chevron_right,
+                  color: Colors.red.withValues(alpha: 0.6),
+                  size: ResponsiveUtils.iconSize(
+                    context,
+                    ResponsiveIconSize.md,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Picker methods
+  void _showLanguagePicker() {
+    _showIOSPicker(
+      'Language',
+      ['English', 'Spanish', 'French', 'German', 'Italian'],
+      _selectedLanguage,
+      (value) => setState(() => _selectedLanguage = value!),
+    );
+  }
+
+  void _showUnitsPicker() {
+    _showIOSPicker(
+      'Units',
+      ['Metric', 'Imperial'],
+      _selectedUnits,
+      (value) => setState(() => _selectedUnits = value!),
     );
   }
 
@@ -461,29 +697,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
     String currentValue,
     ValueChanged<String?> onChanged,
   ) {
-    final overlayContext =
-        Navigator.of(context, rootNavigator: true).overlay!.context;
     final int initialItem = options.indexOf(currentValue);
 
     showCupertinoModalPopup<void>(
-      context: overlayContext,
+      context: context,
       builder:
           (BuildContext context) => Container(
-            height: 260,
-            padding: const EdgeInsets.only(top: 6.0),
+            height: 300,
+            padding: const EdgeInsets.only(top: 16),
             margin: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
-            color: CupertinoColors.white,
+            color: CupertinoColors.systemBackground.resolveFrom(context),
             child: Column(
               children: [
                 Container(
                   height: 44,
-                  decoration: const BoxDecoration(
-                    color: CupertinoColors.white,
+                  decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
-                        color: CupertinoColors.systemGrey4,
+                        color: CupertinoColors.separator.resolveFrom(context),
                         width: 0.5,
                       ),
                     ),
@@ -492,13 +725,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CupertinoButton(
-                        padding: const EdgeInsets.only(left: 16),
                         child: Text(
                           'Cancel',
-                          style: TextStyle(
-                            color: AppColors.mutedGreen,
-                            fontSize: 16,
-                          ),
+                          style: TextStyle(color: AppColors.mutedGreen),
                         ),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
@@ -507,17 +736,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: Colors.black,
                         ),
                       ),
                       CupertinoButton(
-                        padding: const EdgeInsets.only(right: 16),
                         child: Text(
                           'Done',
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            color: AppColors.mutedGreen,
-                            fontSize: 16,
+                            color: AppColors.orange,
                           ),
                         ),
                         onPressed: () => Navigator.of(context).pop(),
@@ -527,7 +753,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 Expanded(
                   child: CupertinoPicker(
-                    magnification: 1.22,
+                    magnification: 1.2,
                     squeeze: 1.2,
                     useMagnifier: true,
                     itemExtent: 32.0,
@@ -543,7 +769,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               (item) => Center(
                                 child: Text(
                                   item,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: AppColors.button,
                                     fontSize: 16,
                                   ),
@@ -559,15 +785,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  // Placeholder methods for navigation and actions
-  void _showDietaryPreferences() {
-    _showComingSoonDialog('Dietary Preferences');
-  }
-
-  void _showCookingSkills() {
-    _showComingSoonDialog('Cooking Skills');
-  }
-
+  // Navigation and action methods (keeping your existing implementations)
+  void _showDietaryPreferences() =>
+      _showComingSoonDialog('Dietary Preferences');
+  void _showCookingSkills() => _showComingSoonDialog('Cooking Skills');
   void _navigateToProfile() {
     if (widget.onProfileTap != null) {
       widget.onProfileTap!();
@@ -576,21 +797,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  void _showPrivacySettings() {
-    _showComingSoonDialog('Privacy & Security');
-  }
-
-  void _showDataSettings() {
-    _showComingSoonDialog('Data & Storage');
-  }
-
-  void _showHelp() {
-    _showComingSoonDialog('Help & FAQ');
-  }
-
-  void _contactSupport() {
-    _showComingSoonDialog('Contact Support');
-  }
+  void _showPrivacySettings() => _showComingSoonDialog('Privacy & Security');
+  void _showDataSettings() => _showComingSoonDialog('Data & Storage');
+  void _showHelp() => _showComingSoonDialog('Help & FAQ');
+  void _contactSupport() => _showComingSoonDialog('Contact Support');
 
   void _showComingSoonDialog(String feature) {
     showDialog(
@@ -653,7 +863,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   'AI Cook',
                   style: TextStyle(
                     color: AppColors.black,
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.w600,
                   ),
                   textAlign: TextAlign.center,
@@ -673,7 +883,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   'Your AI-powered cooking companion for discovering delicious recipes and managing your kitchen.',
                   style: TextStyle(
                     color: AppColors.black,
-                    fontSize: 14,
+                    fontSize: 16,
                     height: 1.4,
                   ),
                   textAlign: TextAlign.center,

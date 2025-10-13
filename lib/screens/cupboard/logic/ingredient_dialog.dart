@@ -32,8 +32,7 @@ Future<void> showIngredientDialog({
     userIng = updated;
   }
 
-  final dialogs = IngredientDialogs();
-  await dialogs.showIngredientDialog(
+  await showResponsiveIngredientDialog(
     context: context,
     categories: resourceProvider.categories,
     ingredients:
@@ -63,7 +62,8 @@ Future<void> showIngredientDialog({
             await ingredientsProvider.removeUserIngredient(ingToDelete);
             onChanged();
             if (context.mounted) {
-              Navigator.pop(context); // Cierra el formulario de edición
+              Navigator.pop(context); // Close delete confirmation dialog
+              Navigator.pop(context); // Close ingredient form dialog
             }
           },
         );

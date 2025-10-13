@@ -1,4 +1,7 @@
 import 'package:ai_cook_project/models/ai_response_model.dart';
+import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/material.dart';
 
 class DetailsContainer extends StatelessWidget {
@@ -42,20 +45,27 @@ class DetailsContainer extends StatelessWidget {
                     : Colors.red,
             size: 20,
           ),
-          const SizedBox(width: 8),
+          const ResponsiveSpacingWidget.horizontal(ResponsiveSpacing.sm),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   viewModel.recipe.name,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                  style: AppTextStyles.casta(
+                    fontSize:
+                        ResponsiveUtils.fontSize(
+                          context,
+                          ResponsiveFontSize.title,
+                        ) *
+                        1.2,
+                    fontWeight: AppFontWeights.semiBold,
+                    letterSpacing: 0.8,
+                    height: 1.2,
+                    color: AppColors.button,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 Text(
                   viewModel.missingCount == 0
                       ? 'Ready to cook!'
@@ -63,14 +73,20 @@ class DetailsContainer extends StatelessWidget {
                       ? '🛒 Need 1 ingredient'
                       : '🛒 Need `${viewModel.missingCount}` ingredients',
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.sm,
+                    ),
+                    fontWeight: AppFontWeights.medium,
+                    fontFamily: 'Inter',
+                    letterSpacing: 0.2,
+                    height: 1.4,
                     color:
                         viewModel.missingCount == 0
                             ? Colors.green.shade700
                             : viewModel.missingCount == 1
                             ? Colors.orange.shade700
                             : Colors.red.shade700,
-                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ],

@@ -1,5 +1,7 @@
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 
 class SwipeIndicator extends StatefulWidget {
   const SwipeIndicator({super.key});
@@ -52,26 +54,46 @@ class _SwipeIndicatorState extends State<SwipeIndicator>
     return Positioned(
       left: 0,
       right: 0,
-      bottom: 20,
+      bottom: ResponsiveUtils.spacing(context, ResponsiveSpacing.lg),
       child: SlideTransition(
         position: _slideAnimation,
         child: FadeTransition(
           opacity: _fadeAnimation,
           child: Center(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: EdgeInsets.symmetric(
+                horizontal: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.md,
+                ),
+                vertical: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.sm,
+                ),
+              ),
               decoration: BoxDecoration(
-                color: AppColors.button.withOpacity(0.98),
-                borderRadius: BorderRadius.circular(20),
+                color: AppColors.button.withValues(alpha: 0.98),
+                borderRadius: BorderRadius.circular(
+                  ResponsiveUtils.borderRadius(
+                    context,
+                    ResponsiveBorderRadius.xxl,
+                  ),
+                ),
                 border: Border.all(
-                  color: AppColors.mutedGreen.withOpacity(0.2),
+                  color: AppColors.mutedGreen.withValues(alpha: 0.2),
                   width: 1,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.black.withOpacity(0.1),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
+                    color: AppColors.black.withValues(alpha: 0.1),
+                    blurRadius: ResponsiveUtils.spacing(
+                      context,
+                      ResponsiveSpacing.xs,
+                    ),
+                    offset: Offset(
+                      0,
+                      ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+                    ),
                   ),
                 ],
               ),
@@ -80,18 +102,26 @@ class _SwipeIndicatorState extends State<SwipeIndicator>
                 children: [
                   Icon(
                     CupertinoIcons.chevron_up,
-                    size: 16,
+                    size: ResponsiveUtils.iconSize(
+                      context,
+                      ResponsiveIconSize.sm,
+                    ),
                     color: AppColors.white,
                   ),
-                  const SizedBox(width: 6),
+                  const ResponsiveSpacingWidget.horizontal(
+                    ResponsiveSpacing.xs,
+                  ),
                   Text(
                     'Swipe up for details',
                     style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
+                      fontSize: ResponsiveUtils.fontSize(
+                        context,
+                        ResponsiveFontSize.sm,
+                      ),
+                      fontWeight: AppFontWeights.medium,
                       color: AppColors.white,
                       fontFamily: 'Inter',
-                      letterSpacing: 0.3,
+                      letterSpacing: 0.2,
                     ),
                   ),
                 ],

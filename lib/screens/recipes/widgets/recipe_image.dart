@@ -1,37 +1,42 @@
 import 'package:ai_cook_project/theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 
 class RecipeImage extends StatelessWidget {
   final String? imageUrl;
-  final double height;
-  final double width;
 
-  const RecipeImage({
-    this.imageUrl,
-    super.key,
-    required this.height,
-    required this.width,
-  });
+  const RecipeImage({this.imageUrl, super.key});
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(18),
+      borderRadius: BorderRadius.circular(
+        ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xl),
+      ),
       child:
           imageUrl != null && imageUrl!.isNotEmpty
               ? CachedNetworkImage(
                 imageUrl: imageUrl!,
                 fit: BoxFit.cover,
-                width: width,
-                height: height,
+                width:
+                    ResponsiveUtils.spacing(context, ResponsiveSpacing.xxl) *
+                    3.5,
+                height:
+                    ResponsiveUtils.spacing(context, ResponsiveSpacing.xxl) *
+                    3.5,
                 placeholder:
                     (context, url) => const CupertinoActivityIndicator(),
                 errorWidget:
-                    (context, url, error) => const Icon(
+                    (context, url, error) => Icon(
                       CupertinoIcons.photo,
                       color: AppColors.button,
-                      size: 40,
+                      size:
+                          ResponsiveUtils.iconSize(
+                            context,
+                            ResponsiveIconSize.xxl,
+                          ) *
+                          3.5,
                     ),
                 fadeInDuration: const Duration(milliseconds: 0),
               )
@@ -46,13 +51,13 @@ class _PlaceholderImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 80,
-      height: 80,
-      color: AppColors.mutedGreen.withOpacity(0.2),
-      child: const Icon(
+      width: ResponsiveUtils.spacing(context, ResponsiveSpacing.xxl) * 3.5,
+      height: ResponsiveUtils.spacing(context, ResponsiveSpacing.xxl) * 3.5,
+      color: AppColors.mutedGreen.withValues(alpha: 0.2),
+      child: Icon(
         CupertinoIcons.photo,
         color: AppColors.button,
-        size: 40,
+        size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.xxl) * 3.5,
       ),
     );
   }

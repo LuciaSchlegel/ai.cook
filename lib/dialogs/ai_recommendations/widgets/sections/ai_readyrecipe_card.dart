@@ -3,6 +3,8 @@ import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/image_c
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/recipe_details.dart';
 import 'package:ai_cook_project/models/ai_response_model.dart';
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_ov_card.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/material.dart';
 
 class AIReadyToCookCard extends StatelessWidget {
@@ -24,19 +26,28 @@ class AIReadyToCookCard extends StatelessWidget {
     final recipe = viewModel.recipe;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: EdgeInsets.symmetric(
+        horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+        vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+      ),
       child: GestureDetector(
         onTap: () => _showRecipeDetail(context),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.green, width: 2),
+            borderRadius: BorderRadius.circular(
+              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xl),
+            ),
+            border: Border.all(color: AppColors.mutedGreen, width: 2),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 8,
+                color: AppColors.mutedGreen.withValues(alpha: 0.12),
+                blurRadius: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.sm,
+                ),
                 offset: const Offset(0, 2),
+                spreadRadius: 0,
               ),
             ],
           ),

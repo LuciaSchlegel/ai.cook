@@ -11,6 +11,8 @@ import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/unit.dart';
 import 'package:provider/provider.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 
 class IngredientFormDialog extends StatefulWidget {
   final Ingredient? ingredient;
@@ -30,6 +32,7 @@ class IngredientFormDialog extends StatefulWidget {
   )
   onSave;
   final Function()? onDelete;
+  final bool isPopup; // New parameter to detect popup mode
 
   const IngredientFormDialog({
     super.key,
@@ -40,6 +43,7 @@ class IngredientFormDialog extends StatefulWidget {
     required this.categories,
     required this.onSave,
     this.onDelete,
+    this.isPopup = false, // Default to false for backward compatibility
   });
 
   @override
@@ -102,6 +106,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
       tags: _selectedTags,
       quantity: _quantityController.text,
       unit: _selectedUnit,
+      isEditing: widget.ingredient != null || widget.customIngredient != null,
     );
   }
 
@@ -109,111 +114,188 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
   Widget build(BuildContext context) {
     final resourceProvider = Provider.of<ResourceProvider>(context);
     final availableUnits = resourceProvider.units;
+    final showDragHandle =
+        !widget.isPopup; // Only show drag handle for bottom sheet
 
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Container(
-        padding: EdgeInsets.fromLTRB(
-          24,
-          16,
-          24,
-          MediaQuery.of(context).viewInsets.bottom + 24,
-        ),
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-          // No shadow at all
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.only(bottom: 24),
-                decoration: BoxDecoration(
-                  color: AppColors.button.withOpacity(0.15), // softer
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              Text(
-                widget.ingredient == null
-                    ? 'Add Ingredient'
-                    : 'Edit Ingredient',
-                style: const TextStyle(
-                  fontSize: 30,
-                  fontFamily: 'Casta',
-                  color: AppColors.button,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.2,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 28),
-              IngredientNameField(name: _nameController.text),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: CupertinoColors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppColors.button.withOpacity(
-                            0.12,
-                          ), // lighter border
-                          width: 1,
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        return GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Container(
+            padding: EdgeInsets.all(
+              ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+            ),
+            decoration:
+                widget.isPopup
+                    ? BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(
+                        ResponsiveUtils.borderRadius(
+                          context,
+                          ResponsiveBorderRadius.lg,
                         ),
                       ),
-                      child: QuantityField(controller: _quantityController),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: CupertinoColors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppColors.button.withOpacity(
-                            0.12,
-                          ), // lighter border
-                          width: 1,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.button.withValues(alpha: 0.1),
+                          blurRadius: 20,
+                          offset: const Offset(0, 10),
+                        ),
+                      ],
+                    )
+                    : null, // No decoration for bottom sheet - handled by wrapper
+            child: ClipRRect(
+              borderRadius:
+                  widget.isPopup
+                      ? BorderRadius.circular(
+                        ResponsiveUtils.borderRadius(
+                          context,
+                          ResponsiveBorderRadius.lg,
+                        ),
+                      )
+                      : BorderRadius.zero, // No clipping for bottom sheet
+              child: SingleChildScrollView(
+                padding:
+                    deviceType == DeviceType.iPadPro ||
+                            deviceType == DeviceType.iPadMini
+                        ? ResponsiveUtils.padding(context, ResponsiveSpacing.md)
+                        : EdgeInsets.zero,
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Drag handle (only for bottom sheet)
+                    if (showDragHandle)
+                      Container(
+                        width: ResponsiveUtils.spacing(
+                          context,
+                          ResponsiveSpacing.xxl,
+                        ),
+                        height: ResponsiveUtils.spacing(
+                          context,
+                          ResponsiveSpacing.xxs,
+                        ),
+                        margin: EdgeInsets.only(
+                          bottom: ResponsiveUtils.spacing(
+                            context,
+                            ResponsiveSpacing.lg,
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.button.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(
+                            ResponsiveUtils.borderRadius(
+                              context,
+                              ResponsiveBorderRadius.sm,
+                            ),
+                          ),
                         ),
                       ),
-                      child: UnitSelectorButton(
-                        selectedUnit: _selectedUnit,
-                        units: availableUnits,
-                        onUnitSelected: (unit) {
-                          setState(() {
-                            _selectedUnit = unit;
-                          });
-                        },
+                    Text(
+                      widget.ingredient == null
+                          ? 'Add ingredient'
+                          : 'Edit ingredient',
+                      style: AppTextStyles.casta(
+                        fontSize:
+                            ResponsiveUtils.fontSize(
+                              context,
+                              ResponsiveFontSize.title,
+                            ) *
+                            1.5,
+                        fontWeight: AppFontWeights.semiBold,
+                        letterSpacing: 0.8,
+                        height: 1.2,
+                        color: AppColors.button,
                       ),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 36),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: FormActionButtons(
-                  isValid: _validateForm(),
-                  onDelete: widget.onDelete,
-                  isEditing:
-                      widget.ingredient != null ||
-                      widget.customIngredient != null,
-                  onCancel: () => Navigator.pop(context),
-                  onSave:
-                      () => IngredientFormUtils.handleSave(
-                        validateForm: _validateForm,
+                    const ResponsiveSpacingWidget.vertical(
+                      ResponsiveSpacing.lg,
+                    ),
+                    IngredientNameField(name: _nameController.text),
+                    const ResponsiveSpacingWidget.vertical(
+                      ResponsiveSpacing.xxs,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ResponsiveContainer(
+                            backgroundColor: CupertinoColors.white,
+                            borderRadius: ResponsiveBorderRadius.sm,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: AppColors.button.withValues(
+                                    alpha: 0.12,
+                                  ),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  ResponsiveUtils.borderRadius(
+                                    context,
+                                    ResponsiveBorderRadius.sm,
+                                  ),
+                                ),
+                              ),
+                              child: QuantityField(
+                                controller: _quantityController,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const ResponsiveSpacingWidget.horizontal(
+                          ResponsiveSpacing.sm,
+                        ),
+                        Expanded(
+                          child: ResponsiveContainer(
+                            backgroundColor: CupertinoColors.white,
+                            borderRadius: ResponsiveBorderRadius.sm,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: AppColors.button.withValues(
+                                    alpha: 0.12,
+                                  ),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  ResponsiveUtils.borderRadius(
+                                    context,
+                                    ResponsiveBorderRadius.sm,
+                                  ),
+                                ),
+                              ),
+                              child: UnitSelectorButton(
+                                selectedUnit: _selectedUnit,
+                                units: availableUnits,
+                                onUnitSelected: (unit) {
+                                  setState(() {
+                                    _selectedUnit = unit;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const ResponsiveSpacingWidget.vertical(
+                      ResponsiveSpacing.md,
+                    ),
+                    ResponsiveContainer(
+                      borderRadius: ResponsiveBorderRadius.md,
+                      child: FormActionButtons(
+                        isValid: _validateForm(),
+                        onDelete: widget.onDelete,
+                        isEditing:
+                            widget.ingredient != null ||
+                            widget.customIngredient != null,
+                        onCancel: () => Navigator.pop(context),
                         onSave:
                             () => IngredientFormUtils.handleSave(
                               validateForm: _validateForm,
@@ -239,15 +321,22 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
                               },
                               closeDialog: () => Navigator.pop(context),
                             ),
-                        closeDialog: () => Navigator.pop(context),
                       ),
+                    ),
+                    // Add bottom safe area padding inside the modal
+                    SizedBox(
+                      height:
+                          widget.isPopup
+                              ? 0
+                              : MediaQuery.of(context).padding.bottom,
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 16),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

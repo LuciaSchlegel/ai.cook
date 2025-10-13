@@ -1,6 +1,6 @@
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 
 class AiRecomHeader extends StatelessWidget {
   const AiRecomHeader({super.key});
@@ -9,34 +9,33 @@ class AiRecomHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(
-          width: 44,
-          height: 44,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                AppColors.mutedGreen.withValues(alpha: 0.2),
-                AppColors.lightYellow.withValues(alpha: 0.3),
-              ],
-            ),
-            borderRadius: BorderRadius.circular(14),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.mutedGreen.withValues(alpha: 0.15),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Icon(
-            CupertinoIcons.sparkles,
-            size: 24,
-            color: AppColors.mutedGreen,
-          ),
-        ),
-        const SizedBox(width: 16),
+        // Container(
+        //   width: ResponsiveUtils.iconSize(context, ResponsiveIconSize.xl),
+        //   height: ResponsiveUtils.iconSize(context, ResponsiveIconSize.xl),
+        //   decoration: BoxDecoration(
+        //     color: AppColors.mutedGreen,
+        //     borderRadius: BorderRadius.circular(
+        //       ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.md),
+        //     ),
+        //     boxShadow: [
+        //       BoxShadow(
+        //         color: AppColors.mutedGreen.withValues(alpha: 0.15),
+        //         blurRadius: ResponsiveUtils.spacing(
+        //           context,
+        //           ResponsiveSpacing.sm,
+        //         ),
+        //         offset: const Offset(0, 4),
+        //       ),
+        //     ],
+        //   ),
+        //   child: Icon(
+        //     CupertinoIcons.sparkles,
+        //     size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
+        //     color:
+        //         AppColors
+        //             .white, // Changed from mutedGreen to white for visibility
+        //   ),
+        // ),
         Expanded(
           child: ShaderMask(
             shaderCallback:
@@ -50,14 +49,21 @@ class AiRecomHeader extends StatelessWidget {
                   ],
                   stops: const [0.0, 0.5, 1.0],
                 ).createShader(bounds),
-            child: const Text(
-              'AI Recipe Recommendations',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
-                letterSpacing: 0.5,
+            child: Text(
+              'What would you like to cook today?',
+              style: AppTextStyles.casta(
+                fontSize:
+                    ResponsiveUtils.fontSize(
+                      context,
+                      ResponsiveFontSize.title,
+                    ) *
+                    1.4,
+                fontWeight: AppFontWeights.bold,
+                color: AppColors.white,
+                letterSpacing: 0.8,
+                height: 1.2,
               ),
+              textAlign: TextAlign.center,
             ),
           ),
         ),

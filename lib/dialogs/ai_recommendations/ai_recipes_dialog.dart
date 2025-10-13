@@ -3,8 +3,9 @@ import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/ai_dialog_sca
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_dialog.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/close_button.dart';
 import 'package:ai_cook_project/models/recipe_tag_model.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 
 class AiRecipesDialog extends StatefulWidget {
   final VoidCallback onToggle;
@@ -109,108 +110,134 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
 
   @override
   Widget build(BuildContext context) {
-    return AiDialogScaffold(
-      isOpen: widget.isOpen,
-      controller: _controller,
-      apertureAnimation: _apertureAnimation,
-      contentOpacityAnimation: _contentOpacityAnimation,
-      contentScaleAnimation: _contentScaleAnimation,
-      onClose: _handleClose,
-      scrollContentBuilder: (scrollController) {
-        final mq = MediaQuery.of(context);
-        final safeHeight = mq.size.height - mq.padding.top - mq.padding.bottom;
-        final maxH = safeHeight * 0.9; // o 0.88–0.95 según diseño
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        return AiDialogScaffold(
+          isOpen: widget.isOpen,
+          controller: _controller,
+          apertureAnimation: _apertureAnimation,
+          contentOpacityAnimation: _contentOpacityAnimation,
+          contentScaleAnimation: _contentScaleAnimation,
+          onClose: _handleClose,
+          scrollContentBuilder: (scrollController) {
+            final mq = MediaQuery.of(context);
+            final safeHeight =
+                mq.size.height - mq.padding.top - mq.padding.bottom;
+            final maxH =
+                safeHeight *
+                ResponsiveUtils.getDialogMaxHeightMultiplier(context);
 
-        return SafeArea(
-          // evita notch y home indicator
-          top: true,
-          bottom: true,
-          child: AnimatedPadding(
-            // sube el contenido con teclado
-            duration: const Duration(milliseconds: 180),
-            curve: Curves.easeOut,
-            padding: EdgeInsets.only(bottom: mq.viewInsets.bottom),
-            child: Center(
-              // centra y limita alto máx
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: maxH),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: CupertinoColors.white,
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(30),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.primary.withValues(alpha: 0.08),
-                        blurRadius: 32,
-                        offset: const Offset(0, -8),
+            return SafeArea(
+              // Handle top safe area (notch/status bar) but let bottom be handled by scroll content
+              top: true,
+              bottom: false, // Let scroll content handle bottom safe area
+              child: AnimatedPadding(
+                // sube el contenido con teclado
+                duration: const Duration(milliseconds: 180),
+                curve: Curves.easeOut,
+                padding: EdgeInsets.only(bottom: mq.viewInsets.bottom),
+                child: Center(
+                  // centra y limita alto máx
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: maxH),
+                    child: Container(
+                      decoration: ResponsiveUtils.getDialogContainerDecoration(
+                        context,
                       ),
-                      BoxShadow(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.secondary.withValues(alpha: 0.04),
-                        blurRadius: 16,
-                        offset: const Offset(0, -4),
-                        spreadRadius: 2,
-                      ),
-                    ],
-                  ),
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () => FocusScope.of(context).unfocus(),
-                    child: CustomScrollView(
-                      controller: scrollController,
-                      physics: const ClampingScrollPhysics(),
-                      slivers: [
-                        // Close button positioned absolutely over scrollable content
-                        SliverToBoxAdapter(
-                          child: Stack(
-                            children: [
-                              const SizedBox(
-                                height: 55,
-                              ), // Space for close button
-                              Positioned(
-                                top: 16,
-                                right: 16,
-                                child: CloseButtonExt(
-                                  handleClose: _handleClose,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        // Main dialog content
-                        SliverPadding(
-                          padding: const EdgeInsets.all(20),
-                          sliver: SliverToBoxAdapter(
-                            child: BuildDialog(
-                              selectedTags: _selectedTags,
-                              onTagSelectionChanged: (tags) {
-                                setState(() => _selectedTags = tags);
-                              },
-                              maxTimeController: _maxTimeController,
-                              preferencesController: _preferencesController,
-                              selectedDifficulty: _selectedDifficulty,
-                              onDifficultyChanged: (value) {
-                                setState(() => _selectedDifficulty = value);
-                              },
-                              generateAiRecommendations:
-                                  _generateAIRecommendations,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(
+                            ResponsiveUtils.borderRadius(
+                              context,
+                              ResponsiveBorderRadius.xl,
                             ),
                           ),
                         ),
-                        // Add extra space at bottom for better scrolling
-                        const SliverToBoxAdapter(child: SizedBox(height: 20)),
-                      ],
+                        child: Column(
+                          children: [
+                            // Fixed header with close button (non-scrollable)
+                            SizedBox(
+                              height: ResponsiveUtils.getDialogTopPadding(
+                                context,
+                              ),
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                    top: ResponsiveUtils.spacing(
+                                      context,
+                                      ResponsiveSpacing.sm,
+                                    ),
+                                    right: ResponsiveUtils.spacing(
+                                      context,
+                                      ResponsiveSpacing.sm,
+                                    ),
+                                    child: CloseButtonExt(
+                                      handleClose: _handleClose,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Scrollable content area
+                            Expanded(
+                              child: GestureDetector(
+                                behavior: HitTestBehavior.translucent,
+                                onTap: () => FocusScope.of(context).unfocus(),
+                                child: CustomScrollView(
+                                  controller: scrollController,
+                                  physics: const ClampingScrollPhysics(),
+                                  slivers: [
+                                    // Main dialog content
+                                    SliverPadding(
+                                      padding: ResponsiveUtils.padding(
+                                        context,
+                                        ResponsiveSpacing.md,
+                                      ),
+                                      sliver: SliverToBoxAdapter(
+                                        child: BuildDialog(
+                                          selectedTags: _selectedTags,
+                                          onTagSelectionChanged: (tags) {
+                                            setState(
+                                              () => _selectedTags = tags,
+                                            );
+                                          },
+                                          maxTimeController: _maxTimeController,
+                                          preferencesController:
+                                              _preferencesController,
+                                          selectedDifficulty:
+                                              _selectedDifficulty,
+                                          onDifficultyChanged: (value) {
+                                            setState(
+                                              () => _selectedDifficulty = value,
+                                            );
+                                          },
+                                          generateAiRecommendations:
+                                              _generateAIRecommendations,
+                                        ),
+                                      ),
+                                    ),
+                                    // Add safe area padding at bottom for proper scrolling
+                                    SliverToBoxAdapter(
+                                      child: SizedBox(
+                                        height:
+                                            ResponsiveUtils.getScrollBottomPadding(
+                                              context,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );

@@ -1,6 +1,7 @@
 import 'dart:math' as math;
-
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:ai_cook_project/widgets/clippers/optimized_aperture_clipper.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/material.dart';
 
 class AiDialogScaffold extends StatelessWidget {
@@ -25,63 +26,73 @@ class AiDialogScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: controller,
-      builder: (context, child) {
-        if (!isOpen && controller.value == 0.0) {
-          return const SizedBox.shrink();
-        }
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        return AnimatedBuilder(
+          animation: controller,
+          builder: (context, child) {
+            if (!isOpen && controller.value == 0.0) {
+              return const SizedBox.shrink();
+            }
 
-        final size = MediaQuery.of(context).size;
-        final maxRadius = math.sqrt(
-          size.width * size.width + size.height * size.height,
-        );
+            final size = MediaQuery.of(context).size;
+            final maxRadius = math.sqrt(
+              size.width * size.width + size.height * size.height,
+            );
 
-        return Material(
-          type: MaterialType.transparency,
-          child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: Colors.black54.withValues(alpha: controller.value * 0.5),
-            child: Stack(
-              children: [
-                GestureDetector(
-                  onTap: onClose,
-                  child: Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    color: Colors.transparent,
-                  ),
-                ),
-                ClipPath(
-                  clipper: OptimizedApertureClipper(
-                    progress: apertureAnimation.value,
-                    maxRadius: maxRadius,
-                  ),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: double.infinity,
-                    child: DraggableScrollableSheet(
-                      initialChildSize: 0.85,
-                      minChildSize: 0.4,
-                      maxChildSize: 0.95,
-                      snap: true,
-                      snapSizes: const [0.4, 0.7, 0.95],
-                      builder: (context, scrollController) {
-                        return Transform.scale(
-                          scale: contentScaleAnimation.value,
-                          child: Opacity(
-                            opacity: contentOpacityAnimation.value,
-                            child: scrollContentBuilder(scrollController),
-                          ),
-                        );
-                      },
+            return Material(
+              type: MaterialType.transparency,
+              child: Container(
+                width: double.infinity,
+                height: double.infinity,
+                color: Colors.black54.withValues(alpha: controller.value * 0.5),
+                child: Stack(
+                  children: [
+                    GestureDetector(
+                      onTap: onClose,
+                      child: Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        color: Colors.transparent,
+                      ),
                     ),
-                  ),
+                    ClipPath(
+                      clipper: OptimizedApertureClipper(
+                        progress: apertureAnimation.value,
+                        maxRadius: maxRadius,
+                      ),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: DraggableScrollableSheet(
+                          initialChildSize:
+                              ResponsiveUtils.getModalConfig(
+                                context,
+                              ).initialSize,
+                          minChildSize:
+                              ResponsiveUtils.getModalConfig(context).minSize,
+                          maxChildSize:
+                              ResponsiveUtils.getModalConfig(context).maxSize,
+                          snap: true,
+                          snapSizes:
+                              ResponsiveUtils.getModalConfig(context).snapSizes,
+                          builder: (context, scrollController) {
+                            return Transform.scale(
+                              scale: contentScaleAnimation.value,
+                              child: Opacity(
+                                opacity: contentOpacityAnimation.value,
+                                child: scrollContentBuilder(scrollController),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
       },
     );

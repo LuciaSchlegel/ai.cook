@@ -1,4 +1,5 @@
 import 'package:ai_cook_project/screens/recipes/widgets/recipe_image.dart';
+import 'package:ai_cook_project/utils/modal_utils.dart';
 import 'package:flutter/material.dart';
 import '../../../models/recipe_model.dart';
 import '../../../models/user_ing.dart';
@@ -21,11 +22,9 @@ class RecipeCard extends StatefulWidget {
 
 class _RecipeCardState extends State<RecipeCard> {
   void _showRecipeDetail(BuildContext context) {
-    showModalBottomSheet(
+    ModalUtils.showKeyboardAwareModalBottomSheet(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => RecipeOverviewCard(recipe: widget.recipe),
+      child: RecipeOverviewCard(recipe: widget.recipe),
     );
   }
 
@@ -73,9 +72,6 @@ class _RecipeCardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final width = size.width * 0.24;
-    final height = size.width * 0.24;
     final unitWarnings = recipe.getUnitWarnings(userIngredients);
     final missingIngredients = recipe.getMissingIngredients(userIngredients);
     return Card(
@@ -89,7 +85,7 @@ class _RecipeCardContent extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            RecipeImage(imageUrl: recipe.image, width: width, height: height),
+            RecipeImage(imageUrl: recipe.image),
             const SizedBox(width: 16),
             Expanded(
               child: _RecipeDetails(

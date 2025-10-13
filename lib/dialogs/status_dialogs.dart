@@ -1,6 +1,6 @@
 import 'package:ai_cook_project/theme.dart';
 import 'package:flutter/material.dart';
-
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 // Solo dejamos la validación, eliminando showErrorDialog para centralizar el diálogo de error en widgets/error_dialog.dart
 
 void showValidationErrorDialog(BuildContext context, List<String> errors) {
@@ -9,18 +9,29 @@ void showValidationErrorDialog(BuildContext context, List<String> errors) {
     useRootNavigator: true,
     builder: (BuildContext context) {
       return AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.md),
+          ),
+        ),
         title: Row(
           children: [
             Icon(
               Icons.warning_amber_rounded,
               color: Colors.amber[700],
-              size: 28,
+              size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
             ),
             const SizedBox(width: 8),
-            const Text(
+            Text(
               'Missing Information',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.lg,
+                ),
+                fontWeight: AppFontWeights.semiBold,
+                fontFamily: 'Inter',
+              ),
             ),
           ],
         ),
@@ -28,33 +39,56 @@ void showValidationErrorDialog(BuildContext context, List<String> errors) {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Please complete the following:',
               style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.md,
+                ),
+                fontWeight: AppFontWeights.medium,
                 color: Colors.black87,
               ),
             ),
-            const SizedBox(height: 12),
-            ...errors.map((error) => buildValidationItem(error)),
+            SizedBox(
+              height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            ),
+            ...errors.map((error) => buildValidationItem(context, error)),
           ],
         ),
         actions: [
           TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(
+                  ResponsiveUtils.borderRadius(
+                    context,
+                    ResponsiveBorderRadius.sm,
+                  ),
+                ),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: EdgeInsets.symmetric(
+                horizontal: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.md,
+                ),
+                vertical: ResponsiveUtils.spacing(
+                  context,
+                  ResponsiveSpacing.sm,
+                ),
+              ),
             ),
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text(
+            child: Text(
               'OK',
               style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.md,
+                ),
+                fontWeight: AppFontWeights.medium,
                 color: AppColors.orange,
+                fontFamily: 'Inter',
               ),
             ),
           ),
@@ -64,14 +98,28 @@ void showValidationErrorDialog(BuildContext context, List<String> errors) {
   );
 }
 
-Widget buildValidationItem(String text) {
+Widget buildValidationItem(BuildContext context, String text) {
   return Padding(
-    padding: const EdgeInsets.only(left: 8, bottom: 8),
+    padding: EdgeInsets.only(
+      left: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+      bottom: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+    ),
     child: Row(
       children: [
-        Icon(Icons.error_outline, size: 16, color: Colors.red[700]),
-        const SizedBox(width: 8),
-        Text(text, style: const TextStyle(fontSize: 14, color: Colors.black87)),
+        Icon(
+          Icons.error_outline,
+          size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.sm),
+          color: Colors.red[700],
+        ),
+        SizedBox(width: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm)),
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: ResponsiveUtils.fontSize(context, ResponsiveFontSize.sm),
+            color: Colors.black87,
+            fontFamily: 'Inter',
+          ),
+        ),
       ],
     ),
   );

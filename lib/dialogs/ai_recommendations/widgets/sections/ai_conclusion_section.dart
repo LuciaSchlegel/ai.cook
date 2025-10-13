@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:ai_cook_project/theme.dart';
 
 class AIConclusionSection extends StatelessWidget {
@@ -14,19 +15,29 @@ class AIConclusionSection extends StatelessWidget {
             : 'Happy cooking! Let me know if you need any help with these recipes! 👨‍🍳✨';
 
     return Container(
-      padding: const EdgeInsets.all(20),
+      margin: EdgeInsets.only(
+        bottom: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+      ),
+      padding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            AppColors.lightYellow.withValues(alpha: 0.08),
-            AppColors.mutedGreen.withValues(alpha: 0.05),
-          ],
+          colors: [AppColors.white, AppColors.orange.withValues(alpha: 0.03)],
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.lg),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.orange.withValues(alpha: 0.08),
+            blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            offset: const Offset(0, 2),
+            spreadRadius: 0,
+          ),
+        ],
         border: Border.all(
-          color: AppColors.mutedGreen.withValues(alpha: 0.1),
+          color: AppColors.orange.withValues(alpha: 0.15),
           width: 1,
         ),
       ),
@@ -34,34 +45,52 @@ class AIConclusionSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 28,
-            height: 28,
+            width: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
+            height: ResponsiveUtils.iconSize(context, ResponsiveIconSize.lg),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  AppColors.mutedGreen.withValues(alpha: 0.2),
-                  AppColors.lightYellow.withValues(alpha: 0.3),
-                ],
+                colors: [AppColors.orange, AppColors.lightYellow],
               ),
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(
+                ResponsiveUtils.borderRadius(
+                  context,
+                  ResponsiveBorderRadius.md,
+                ),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.orange.withValues(alpha: 0.2),
+                  blurRadius: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.xs,
+                  ),
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
             child: Icon(
               CupertinoIcons.heart_fill,
-              size: 16,
-              color: AppColors.mutedGreen,
+              size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
+              color: AppColors.white,
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(
+            width: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+          ),
           Expanded(
             child: Text(
               displayText,
               style: TextStyle(
-                fontSize: 15,
-                height: 1.5,
-                color: AppColors.button.withValues(alpha: 0.85),
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.italic,
-              ),
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.md,
+                ),
+                fontWeight: AppFontWeights.medium,
+                fontFamily: 'Inter',
+                color: AppColors.button,
+                letterSpacing: 0.2,
+                height: 1.4,
+              ).copyWith(fontStyle: FontStyle.italic),
             ),
           ),
         ],

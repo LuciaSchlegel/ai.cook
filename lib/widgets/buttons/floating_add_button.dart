@@ -1,4 +1,6 @@
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/material.dart';
 
 class FloatingAddButton extends StatelessWidget {
@@ -15,15 +17,20 @@ class FloatingAddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).padding.bottom + 16,
+        bottom: ResponsiveUtils.spacing(context, ResponsiveSpacing.lg),
       ),
       child: FloatingActionButton(
         heroTag: heroTag,
         onPressed: onPressed,
-        backgroundColor: AppColors.button.withOpacity(0.9),
+        backgroundColor: AppColors.button.withValues(alpha: 0.9),
         elevation: 2,
         shape: const CircleBorder(),
-        child: const Icon(Icons.add, color: AppColors.white),
+        child: const ResponsiveIcon(
+          Icons.add,
+          null,
+          color: AppColors.white,
+          size: ResponsiveIconSize.lg,
+        ),
       ),
     );
   }

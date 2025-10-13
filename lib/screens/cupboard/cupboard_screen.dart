@@ -1,4 +1,4 @@
-import 'package:ai_cook_project/dialogs/ingredients/global_ing/add/add_global_ing_dialog.dart';
+import 'package:ai_cook_project/dialogs/ingredients/ingredient_dialogs.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/screens/cupboard/logic/ingredient_dialog.dart';
@@ -67,11 +67,10 @@ class _CupboardScreenState extends State<CupboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
     final resourceProvider = Provider.of<ResourceProvider>(context);
     final ingredientsProvider = Provider.of<IngredientsProvider>(context);
     void openAddIngredientDialog() {
-      showDialog(context: context, builder: (_) => const AddGlobalIngDialog());
+      showResponsiveAddGlobalIngDialog(context);
     }
 
     final categories = [
@@ -93,10 +92,10 @@ class _CupboardScreenState extends State<CupboardScreen> {
               onLogoutTap: widget.onLogoutTap ?? () {},
               currentIndex: 0,
             ),
-            SizedBox(height: screenHeight * 0.03),
             ChipsDropdownCard(
               dropdownValue: _selectedCategory,
               dropdownItems: categories,
+              // Note: confirmDropdownOnDone = false (default) for instant local filtering
               onDropdownChanged: (value) {
                 if (value != null) {
                   setState(() => _selectedCategory = value);
@@ -115,7 +114,6 @@ class _CupboardScreenState extends State<CupboardScreen> {
                 builder: (context, ingredientsProvider, _) {
                   if (!ingredientsProvider.isInitialized) {
                     return const LoadingIndicator(
-                      size: 24.0,
                       message: 'Loading ingredients...',
                     );
                   }

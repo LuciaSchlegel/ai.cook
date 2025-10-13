@@ -1,5 +1,6 @@
 // widgets/navigation_text_link.dart
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/material.dart';
 
 class NavigationTextLink extends StatelessWidget {
@@ -23,9 +24,13 @@ class NavigationTextLink extends StatelessWidget {
           label,
           style:
               style ??
-              const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
+              TextStyle(
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.sm,
+                ),
+                fontWeight: AppFontWeights.medium,
+                fontFamily: 'Inter',
                 color: AppColors.button,
               ),
         ),

@@ -1,3 +1,5 @@
+import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ai_cook_project/theme.dart';
@@ -14,23 +16,23 @@ void showErrorDialog(
     barrierDismissible: true,
     builder:
         (BuildContext dialogContext) => CupertinoAlertDialog(
-          title: const Icon(
+          title: Icon(
             CupertinoIcons.exclamationmark_triangle_fill,
             color: AppColors.orange,
-            size: 40,
+            size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.xxl),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(height: 16),
-              Text(
+              const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.sm),
+              ResponsiveText(
                 message,
-                style: const TextStyle(
-                  color: AppColors.black,
-                  fontSize: 16,
-                  height: 1.4,
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.md,
                 ),
-                textAlign: TextAlign.center,
+                fontWeight: FontWeight.w400,
+                fontFamily: 'Inter',
               ),
             ],
           ),
@@ -46,22 +48,28 @@ void showErrorDialog(
                     onResetPassword,
                   );
                 },
-                child: const Text(
+                child: ResponsiveText(
                   "Reset password",
-                  style: TextStyle(
-                    color: AppColors.orange,
-                    fontWeight: FontWeight.w600,
+                  fontSize: ResponsiveUtils.fontSize(
+                    context,
+                    ResponsiveFontSize.md,
                   ),
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.orange,
+                  fontFamily: 'Inter',
                 ),
               ),
             CupertinoDialogAction(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: const Text(
+              child: ResponsiveText(
                 "OK",
-                style: TextStyle(
-                  color: AppColors.button,
-                  fontWeight: FontWeight.w500,
+                fontSize: ResponsiveUtils.fontSize(
+                  context,
+                  ResponsiveFontSize.sm,
                 ),
+                fontWeight: FontWeight.w500,
+                color: AppColors.button,
+                fontFamily: 'Inter',
               ),
             ),
           ],

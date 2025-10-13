@@ -6,6 +6,7 @@ import 'package:ai_cook_project/providers/resource_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ai_cook_project/models/ingredient_model.dart';
 import 'package:ai_cook_project/models/unit.dart';
+import 'package:ai_cook_project/utils/text_utils.dart';
 import 'package:provider/provider.dart';
 
 class CustomIngFormDialog extends StatefulWidget {
@@ -26,6 +27,7 @@ class CustomIngFormDialog extends StatefulWidget {
   )
   onSave;
   final Function()? onDelete;
+  final bool isPopup; // New parameter to detect popup mode
 
   const CustomIngFormDialog({
     super.key,
@@ -36,6 +38,7 @@ class CustomIngFormDialog extends StatefulWidget {
     required this.categories,
     required this.onSave,
     this.onDelete,
+    this.isPopup = false, // Default to false for backward compatibility
   });
 
   @override
@@ -105,6 +108,7 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
       quantity: quantity,
       selectedTags: _selectedTags.toList(),
       unitName: _selectedUnit.name,
+      isEditing: widget.customIngredient != null,
     );
   }
 
@@ -119,7 +123,7 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
     final tagNames = _selectedTags.map((tag) => tag.toLowerCase()).toSet();
 
     widget.onSave(
-      _nameController.text,
+      TextUtils.capitalizeFirstLetter(_nameController.text),
       _selectedCategory,
       tagNames.contains('vegan'),
       tagNames.contains('vegetarian'),
@@ -170,6 +174,7 @@ class _CustomIngFormDialogState extends State<CustomIngFormDialog> {
       onDelete: widget.onDelete,
       isFormValid: _validateForm(),
       resourceProvider: resourceProvider,
+      isPopup: widget.isPopup, // Pass popup mode
     );
   }
 }
