@@ -1,9 +1,5 @@
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_almostrecipe_card.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_greeting_section.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_readyrecipe_card.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_conclusion_section.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_shoppingsuggest_section.dart';
-import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_subst_section.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/recipe_finder.dart';
 import 'package:ai_cook_project/models/ai_response_model.dart';
 import 'package:ai_cook_project/theme.dart';
@@ -30,11 +26,10 @@ class RecommendationsBuilder extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Greeting
-            AIGreetingSection(
-              greeting:
-                  'Welcome back 👋 Pantry is ready 🧺. Say the vibe—fast ⏱️, vegan 🌱, or high‑protein 💪—and I’ll serve up recipes you’ll love 🍳✨',
-            ),
-
+            // AIGreetingSection(
+            //   greeting:
+            //       'Welcome back 👋 Pantry is ready 🧺. Say the vibe—fast ⏱️, vegan 🌱, or high‑protein 💪—and I’ll serve up recipes you’ll love 🍳✨',
+            // ),
             SizedBox(
               height: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
             ),
@@ -53,20 +48,20 @@ class RecommendationsBuilder extends StatelessWidget {
             // AIAlmostReadySection(content: recommendation.almostReady),
 
             // Shopping suggestions
-            AIShoppingSuggestionsSection(
-              suggestions: recommendation.shoppingSuggestions,
-            ),
+            // AIShoppingSuggestionsSection(
+            //   suggestions: recommendation.shoppingSuggestions,
+            // ),
 
-            // Substitutions
-            AISubstitutionsSection(
-              substitutions: recommendation.possibleSubstitutions,
-            ),
+            // // Substitutions
+            // AISubstitutionsSection(
+            //   substitutions: recommendation.possibleSubstitutions,
+            // ),
 
-            // Conclusion
-            AIConclusionSection(
-              conclusion:
-                  'Bon appétit 😋 I’m here if you want tweaks or another round ✨',
-            ),
+            // // Conclusion
+            // AIConclusionSection(
+            //   conclusion:
+            //       'Bon appétit 😋 I’m here if you want tweaks or another round ✨',
+            // ),
           ],
         ),
       ],

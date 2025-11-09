@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'dart:convert';
 import '../models/ai_response_model.dart';
 import '../models/recipe_tag_model.dart';
-import '../services/llm_recommendations.service.dart';
+import '../services/llm_recommendations.service.dart' show AIRecommendationService, NoIngredientsException, UnauthorizedException;
 
 class AIRecommendationsProvider extends ChangeNotifier {
   final AIRecommendationService _service = AIRecommendationService();
@@ -21,78 +21,39 @@ class AIRecommendationsProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
 
+  // Prewarm the Foundation Models on iOS to reduce first-generation latency
+  Future<void> prewarmModel() async {
+    if (!Platform.isIOS) return;
+
+    try {
+      debugPrint('🔥 Prewarming Foundation Models...');
+      await platform.invokeMethod('prewarmModel');
+      debugPrint('✅ Model prewarmed successfully');
+    } catch (e) {
+      debugPrint('⚠️ Prewarm failed (non-critical): $e');
+      // Non-critical - generation will still work
+    }
+  }
+
   Future<void> generateRecommendations({
     required String userId,
     required List<RecipeTag> preferredTags,
     int? maxCookingTimeMinutes,
     String? preferredDifficulty,
-    String? userPreferences,
     Map<String, bool>? dietaryRestrictions,
-    int numberOfRecipes = 3,
   }) async {
     _setLoading(true);
     _clearError();
 
     try {
-      // Step 1: Fetch recipes from backend
-      final responseData = await _service.fetchRecipesForAI(
+      debugPrint('🆕 Generating recommendations with pre-computed data');
+      await _generateCleanApproach(
         userId: userId,
         preferredTags: preferredTags,
         maxCookingTimeMinutes: maxCookingTimeMinutes,
         preferredDifficulty: preferredDifficulty,
-        userPreferences: userPreferences,
         dietaryRestrictions: dietaryRestrictions,
-        numberOfRecipes: numberOfRecipes,
       );
-
-      debugPrint('✅ Backend data received');
-      debugPrint('   - Recipes: ${responseData['recipes']?.length ?? 0}');
-      debugPrint(
-        '   - User ingredients: ${responseData['userContext']?['availableIngredients']?.length ?? 0}',
-      );
-
-      // Step 2: Try Foundation Models on iOS
-      if (Platform.isIOS) {
-        try {
-          debugPrint('🍎 Attempting Foundation Models (iOS)...');
-
-          final result = await platform
-              .invokeMethod<String>('generateRecommendations', {
-                'recipes': responseData['recipes'],
-                'userContext': responseData['userContext'],
-              });
-
-          if (result != null && result.isNotEmpty) {
-            final resultData = json.decode(result);
-            _currentRecommendation = StructuredAIRecommendation.fromJson(
-              resultData,
-            );
-
-            debugPrint('✅ Foundation Models success!');
-            debugPrint(
-              '🍽️ Ready to cook: ${_currentRecommendation!.readyToCook.length}',
-            );
-            debugPrint(
-              '🛒 Almost ready: ${_currentRecommendation!.almostReady.length}',
-            );
-
-            notifyListeners();
-            return;
-          }
-        } on PlatformException catch (e) {
-          debugPrint('⚠️ Foundation Models error: ${e.message}');
-          debugPrint('   Code: ${e.code}');
-          debugPrint('   Details: ${e.details}');
-          // Fall through to API
-        } catch (e) {
-          debugPrint('⚠️ Foundation Models failed: $e');
-          // Fall through to API
-        }
-      }
-
-      // Step 3: Fallback to API
-      debugPrint('🌐 Using API fallback...');
-      await _generateViaAPI(responseData);
     } on NoIngredientsException catch (e) {
       _setError(e.toString());
     } on UnauthorizedException catch (e) {
@@ -103,6 +64,67 @@ class AIRecommendationsProvider extends ChangeNotifier {
     } finally {
       _setLoading(false);
     }
+  }
+
+  Future<void> _generateCleanApproach({
+    required String userId,
+    required List<RecipeTag> preferredTags,
+    int? maxCookingTimeMinutes,
+    String? preferredDifficulty,
+    Map<String, bool>? dietaryRestrictions,
+  }) async {
+    // Step 1: Fetch PRE-COMPUTED recipes from backend
+    final responseData = await _service.fetchStructuredRecipesForAI(
+      userId: userId,
+      preferredTags: preferredTags,
+      maxCookingTimeMinutes: maxCookingTimeMinutes,
+      preferredDifficulty: preferredDifficulty,
+      dietaryRestrictions: dietaryRestrictions,
+    );
+
+    debugPrint('✅ Backend pre-computed data received');
+    debugPrint('   - Ready to Cook: ${responseData['readyToCook']?.length ?? 0}');
+    debugPrint('   - Almost Ready: ${responseData['almostReady']?.length ?? 0}');
+
+    // Step 2: Try Foundation Models on iOS (clean enrichment)
+    if (Platform.isIOS) {
+      try {
+        debugPrint('🍎 Attempting Foundation Models (CLEAN approach)...');
+
+        final result = await platform
+            .invokeMethod<String>('generateRecommendationsClean', responseData);
+
+        if (result != null && result.isNotEmpty) {
+          final resultData = json.decode(result);
+          _currentRecommendation = StructuredAIRecommendation.fromJson(
+            resultData,
+          );
+
+          debugPrint('✅ Foundation Models success! (CLEAN)');
+          debugPrint(
+            '🍽️ Ready to cook: ${_currentRecommendation!.readyToCook.length}',
+          );
+          debugPrint(
+            '🛒 Almost ready: ${_currentRecommendation!.almostReady.length}',
+          );
+
+          notifyListeners();
+          return;
+        }
+      } on PlatformException catch (e) {
+        debugPrint('⚠️ Foundation Models error (clean): ${e.message}');
+        debugPrint('   Code: ${e.code}');
+        debugPrint('   Details: ${e.details}');
+        // Fall through to API
+      } catch (e) {
+        debugPrint('⚠️ Foundation Models failed (clean): $e');
+        // Fall through to API
+      }
+    }
+
+    // Step 3: Fallback to API
+    debugPrint('🌐 Using API fallback...');
+    await _generateViaAPI(responseData);
   }
 
   Future<void> _generateViaAPI(Map<String, dynamic> backendData) async {

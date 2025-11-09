@@ -6,25 +6,21 @@ import 'package:ai_cook_project/models/recipe_tag_model.dart';
 class AIRecommendationService {
   final String baseUrl = 'http://127.0.0.1:3000';
 
-  Future<Map<String, dynamic>> fetchRecipesForAI({
+  /// NEW CLEAN APPROACH: Backend pre-computes everything
+  Future<Map<String, dynamic>> fetchStructuredRecipesForAI({
     required String userId,
     required List<RecipeTag> preferredTags,
     int? maxCookingTimeMinutes,
     String? preferredDifficulty,
-    String? userPreferences,
     Map<String, bool>? dietaryRestrictions,
-    int numberOfRecipes = 3,
   }) async {
-    final url = '$baseUrl/ai-recommendations/$userId/for-llm';
+    final url = '$baseUrl/ai-recommendations/$userId/for-llm-clean';
 
-    print('🌐 Fetching recipes for AI from: $url');
+    print('🌐 Fetching STRUCTURED recipes from: $url');
     print('📊 Preferences:');
     print('   - Tags: ${preferredTags.map((t) => t.name).join(", ")}');
     print('   - Max time: ${maxCookingTimeMinutes ?? "unlimited"}min');
     print('   - Difficulty: ${preferredDifficulty ?? "any"}');
-    print(
-      '   - Dietary: ${dietaryRestrictions?.entries.where((e) => e.value).map((e) => e.key).join(", ") ?? "none"}',
-    );
 
     final requestBody = {
       'preferredTags': preferredTags.map((t) => t.name).toList(),
@@ -32,9 +28,6 @@ class AIRecommendationService {
         'maxCookingTimeMinutes': maxCookingTimeMinutes,
       if (preferredDifficulty != null)
         'preferredDifficulty': preferredDifficulty,
-      if (userPreferences != null && userPreferences.isNotEmpty)
-        'userPreferences': userPreferences,
-      'numberOfRecipes': numberOfRecipes,
       'dietaryRestrictions':
           dietaryRestrictions ??
           {
@@ -58,10 +51,8 @@ class AIRecommendationService {
         final data = json.decode(response.body) as Map<String, dynamic>;
 
         print('✅ Success!');
-        print('   - Recipes: ${data['recipes']?.length ?? 0}');
-        print(
-          '   - User ingredients: ${data['metadata']?['totalUserIngredients'] ?? 0}',
-        );
+        print('   - Ready to Cook: ${data['readyToCook']?.length ?? 0}');
+        print('   - Almost Ready: ${data['almostReady']?.length ?? 0}');
 
         return data;
       } else if (response.statusCode == 400) {
@@ -78,7 +69,7 @@ class AIRecommendationService {
         throw Exception('Server error: ${response.statusCode}');
       }
     } catch (e) {
-      print('❌ Error fetching recipes for AI: $e');
+      print('❌ Error fetching structured recipes: $e');
       rethrow;
     }
   }

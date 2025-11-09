@@ -10,15 +10,16 @@ import UIKit
 import Foundation
 
 class FoundationModelsChannel {
-    
-    private var recipesGenerator: RecipesGenerator?
-    
+
+    private var recipesGeneratorClean: RecipesGeneratorClean?
+    private var chatAssistant: ChatAssistantGenerator?
+
     func registerWith(controller: FlutterViewController) {
         let channel = FlutterMethodChannel(
             name: "ai.cook/foundation_models",
             binaryMessenger: controller.binaryMessenger
         )
-        
+
         channel.setMethodCallHandler { [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) in
             guard let self = self else {
                 result(FlutterError(
@@ -28,16 +29,31 @@ class FoundationModelsChannel {
                 ))
                 return
             }
-            
+
             switch call.method {
-            case "generateRecommendations":
+            case "generateRecommendationsClean":
                 Task {
-                    await self.handleGenerateRecommendations(call: call, result: result)
+                    await self.handleGenerateRecommendationsClean(call: call, result: result)
                 }
 
             case "prewarmModel":
                 Task {
-                    await self.handlePrewarmModel(call: call, result: result)
+                    await self.handlePrewarmModel(result: result)
+                }
+
+            case "chatSendMessage":
+                Task {
+                    await self.handleChatSendMessage(call: call, result: result)
+                }
+
+            case "chatPrewarm":
+                Task {
+                    await self.handleChatPrewarm(result: result)
+                }
+
+            case "chatClearHistory":
+                Task {
+                    await self.handleChatClearHistory(result: result)
                 }
 
             case "cleanup":
@@ -49,110 +65,105 @@ class FoundationModelsChannel {
                 result(FlutterMethodNotImplemented)
             }
         }
-        
+
         print("✅ Foundation Models channel registered")
     }
-    
+
     @MainActor
-    private func handleGenerateRecommendations(
+    private func handleGenerateRecommendationsClean(
         call: FlutterMethodCall,
         result: @escaping FlutterResult
     ) async {
         guard let args = call.arguments as? [String: Any],
-              let recipesData = args["recipes"] as? [[String: Any]],
+              let readyToCookData = args["readyToCook"] as? [[String: Any]],
+              let almostReadyData = args["almostReady"] as? [[String: Any]],
               let userContextData = args["userContext"] as? [String: Any] else {
-            print("❌ Invalid arguments received")
+            print("❌ Invalid arguments for clean approach")
             result(FlutterError(
                 code: "INVALID_ARGUMENTS",
-                message: "Invalid arguments: expected recipes and userContext",
+                message: "Invalid arguments: expected readyToCook, almostReady, and userContext",
                 details: nil
             ))
             return
         }
-        
-        // Initialize generator if needed (on main actor)
-        if recipesGenerator == nil {
-            recipesGenerator = RecipesGenerator()
+
+        // Initialize clean generator if needed
+        if recipesGeneratorClean == nil {
+            recipesGeneratorClean = RecipesGeneratorClean()
         }
-        
-        guard let generator = recipesGenerator else {
+
+        guard let generator = recipesGeneratorClean else {
             result(FlutterError(
                 code: "INITIALIZATION_ERROR",
-                message: "Failed to initialize recipes generator",
+                message: "Failed to initialize clean recipes generator",
                 details: nil
             ))
             return
         }
-        
-        print("📱 Received request from Flutter:")
-        print("   - Recipes: \(recipesData.count)")
-        print("   - User context keys: \(userContextData.keys.joined(separator: ", "))")
-        
+
+        print("📱 Received CLEAN request from Flutter:")
+        print("   - Ready to Cook: \(readyToCookData.count)")
+        print("   - Almost Ready: \(almostReadyData.count)")
+
         do {
-            // Parse recipes
-            let recipesJsonData = try JSONSerialization.data(withJSONObject: recipesData)
-            let recipes = try JSONDecoder().decode([RecipeForAI].self, from: recipesJsonData)
-            
-            print("✅ Parsed \(recipes.count) recipes")
-            
-            // Parse user context
-            let contextJsonData = try JSONSerialization.data(withJSONObject: userContextData)
-            let userContext = try JSONDecoder().decode(UserContextForAI.self, from: contextJsonData)
-            
-            print("✅ Parsed user context:")
-            print("   - Available ingredients: \(userContext.availableIngredients.count)")
-            print("   - Preferred tags: \(userContext.preferences.tags.joined(separator: ", "))")
-            
-            // Generate recommendations using Foundation Models
-            print("🤖 Starting Foundation Models generation...")
+            // Parse the pre-computed data
+            let preComputedDataDict: [String: Any] = [
+                "readyToCook": readyToCookData,
+                "almostReady": almostReadyData,
+                "userContext": userContextData
+            ]
+
+            let preComputedJsonData = try JSONSerialization.data(withJSONObject: preComputedDataDict)
+            let preComputedData = try JSONDecoder().decode(PreComputedData.self, from: preComputedJsonData)
+
+            print("✅ Parsed pre-computed data")
+
+            // Enrich recipes with AI-generated language
+            print("🤖 Starting AI enrichment (language generation only)...")
             let startTime = Date()
-            
-            await generator.generateRecommendations(
-                recipes: recipes,
-                userContext: userContext
-            )
-            
+
+            await generator.enrichRecipes(preComputedData: preComputedData)
+
             let elapsed = Date().timeIntervalSince(startTime)
-            print("⏱️ Generation took \(String(format: "%.2f", elapsed))s")
-            
+            print("⏱️ Enrichment took \(String(format: "%.2f", elapsed))s")
+
             // Check for errors
             if let error = generator.error {
-                print("❌ Generation error: \(error.localizedDescription)")
+                print("❌ Enrichment error: \(error.localizedDescription)")
                 result(FlutterError(
                     code: "GENERATION_ERROR",
-                    message: "Failed to generate: \(error.localizedDescription)",
+                    message: "Failed to enrich: \(error.localizedDescription)",
                     details: nil
                 ))
                 return
             }
-            
-            // Get recommendations
-            guard let recommendations = generator.recommendations else {
-                print("❌ No recommendations generated")
+
+            // Get enriched recommendations
+            guard let enriched = generator.enrichedRecommendations else {
+                print("❌ No enriched recommendations generated")
                 result(FlutterError(
                     code: "NO_RESULTS",
-                    message: "No recommendations generated",
+                    message: "No enriched recommendations generated",
                     details: nil
                 ))
                 return
             }
-            
-            print("✅ Generated recommendations:")
-            print("   - Ready to cook: \(recommendations.readyToCook.count)")
-            print("   - Almost ready: \(recommendations.almostReady.count)")
-            print("   - Shopping suggestions: \(recommendations.shoppingList.count)")
 
-            // Enrich with full recipe data and convert to Flutter format
-            let flutterFormat = try enrichForFlutter(
-                recommendations: recommendations,
-                recipes: recipes
+            print("✅ Generated enriched recommendations:")
+            print("   - Ready to cook: \(enriched.readyToCook.count)")
+            print("   - Almost ready: \(enriched.almostReady.count)")
+
+            // Combine pre-computed data with AI enrichments
+            let flutterFormat = try buildCleanResponse(
+                preComputedData: preComputedData,
+                enrichments: enriched
             )
 
             let resultString = String(data: flutterFormat, encoding: .utf8)
 
-            print("📤 Sending result back to Flutter")
+            print("📤 Sending enriched result back to Flutter")
             result(resultString)
-            
+
         } catch let decodingError as DecodingError {
             print("❌ Decoding error: \(decodingError)")
             result(FlutterError(
@@ -169,65 +180,166 @@ class FoundationModelsChannel {
             ))
         }
     }
-    
+
+    /// Build response combining pre-computed data with AI enrichments
+    private func buildCleanResponse(
+        preComputedData: PreComputedData,
+        enrichments: EnrichedRecommendations
+    ) throws -> Data {
+        // Create lookup for enrichments by recipe ID
+        let readyEnrichments = Dictionary(uniqueKeysWithValues: enrichments.readyToCook.map { ($0.recipeId, $0) })
+        let almostEnrichments = Dictionary(uniqueKeysWithValues: enrichments.almostReady.map { ($0.recipeId, $0) })
+
+        func enrichRecipe(_ recipe: PreComputedRecipe, _ enrichment: RecipeEnrichment?) -> [String: Any] {
+            return [
+                "id": recipe.id,
+                "title": recipe.name,
+                "time_minutes": extractTimeMinutes(from: recipe.cookingTime),
+                "difficulty": recipe.difficulty,
+                "tags": recipe.tags,
+                "match_score": recipe.matchScore,
+                "description": enrichment?.reasoning ?? "Great recipe match!",
+                "ingredients": recipe.matchingIngredients.map { ["name": $0, "quantity": ""] },
+                "steps": enrichment?.cookingTips ?? [],
+                "missing_ingredients": recipe.missingIngredients,
+                "recipe_substitutions": enrichment?.substitutions.map { sub in
+                    return [
+                        "original": sub.original,
+                        "alternatives": sub.alternatives
+                    ]
+                } ?? []
+            ]
+        }
+
+        let flutterData: [String: Any] = [
+            "ready_to_cook": preComputedData.readyToCook.map { recipe in
+                enrichRecipe(recipe, readyEnrichments[recipe.id])
+            },
+            "almost_ready": preComputedData.almostReady.map { recipe in
+                enrichRecipe(recipe, almostEnrichments[recipe.id])
+            },
+            "shopping_suggestions": [],  // Not used in clean approach
+            "possible_substitutions": []  // Already in recipe-specific substitutions
+        ]
+
+        return try JSONSerialization.data(withJSONObject: flutterData, options: [.prettyPrinted])
+    }
+
     @MainActor
-    private func handlePrewarmModel(
-        call: FlutterMethodCall,
-        result: @escaping FlutterResult
-    ) async {
-        guard let args = call.arguments as? [String: Any],
-              let userContextData = args["userContext"] as? [String: Any] else {
+    private func handlePrewarmModel(result: @escaping FlutterResult) async {
+        print("🔥 Prewarm model requested")
+
+        // Initialize clean generator if needed
+        if recipesGeneratorClean == nil {
+            recipesGeneratorClean = RecipesGeneratorClean()
+        }
+
+        guard let generator = recipesGeneratorClean else {
             result(FlutterError(
-                code: "INVALID_ARGUMENTS",
-                message: "Invalid arguments for prewarm",
+                code: "INITIALIZATION_ERROR",
+                message: "Failed to initialize generator",
                 details: nil
             ))
             return
         }
 
-        do {
-            let contextJsonData = try JSONSerialization.data(withJSONObject: userContextData)
-            let userContext = try JSONDecoder().decode(UserContextForAI.self, from: contextJsonData)
+        // Call prewarm (it runs asynchronously, so we return immediately)
+        generator.prewarmModel()
 
-            // Initialize generator if needed (on main actor)
-            if recipesGenerator == nil {
-                recipesGenerator = RecipesGenerator()
-            }
+        result(true)
+    }
 
-            guard let generator = recipesGenerator else {
-                result(FlutterError(
-                    code: "INITIALIZATION_ERROR",
-                    message: "Failed to initialize recipes generator",
-                    details: nil
-                ))
-                return
-            }
+    // MARK: - Chat Assistant Handlers
 
-            print("🔥 Prewarming model...")
-            generator.prewarmModel(sampleContext: userContext)
-            print("✅ Model prewarmed")
-
-            result(true)
-
-        } catch {
+    @MainActor
+    private func handleChatSendMessage(call: FlutterMethodCall, result: @escaping FlutterResult) async {
+        guard let args = call.arguments as? [String: Any],
+              let message = args["message"] as? String else {
+            print("❌ Invalid arguments for chat send message")
             result(FlutterError(
-                code: "PREWARM_ERROR",
-                message: "Failed to prewarm: \(error.localizedDescription)",
+                code: "INVALID_ARGUMENTS",
+                message: "Expected 'message' parameter",
                 details: nil
             ))
+            return
         }
+
+        // Initialize chat assistant if needed
+        if chatAssistant == nil {
+            chatAssistant = ChatAssistantGenerator()
+        }
+
+        guard let assistant = chatAssistant else {
+            result(FlutterError(
+                code: "INITIALIZATION_ERROR",
+                message: "Failed to initialize chat assistant",
+                details: nil
+            ))
+            return
+        }
+
+        print("💬 Processing chat message: \(message)")
+
+        // Send message and get response
+        let response = await assistant.sendMessage(message)
+
+        print("✅ Chat response generated")
+        result(response)
+    }
+
+    @MainActor
+    private func handleChatPrewarm(result: @escaping FlutterResult) async {
+        print("🔥 Chat prewarm requested")
+
+        // Initialize chat assistant if needed
+        if chatAssistant == nil {
+            chatAssistant = ChatAssistantGenerator()
+        }
+
+        guard let assistant = chatAssistant else {
+            result(FlutterError(
+                code: "INITIALIZATION_ERROR",
+                message: "Failed to initialize chat assistant",
+                details: nil
+            ))
+            return
+        }
+
+        // Call prewarm (runs asynchronously)
+        assistant.prewarmModel()
+
+        result(true)
+    }
+
+    @MainActor
+    private func handleChatClearHistory(result: @escaping FlutterResult) async {
+        print("🧹 Clearing chat history...")
+
+        guard let assistant = chatAssistant else {
+            // No assistant initialized, nothing to clear
+            result(true)
+            return
+        }
+
+        assistant.clearHistory()
+        result(true)
     }
 
     @MainActor
     private func handleCleanup(result: @escaping FlutterResult) async {
         print("🧹 Cleaning up Foundation Models resources...")
 
-        if let generator = recipesGenerator {
-            generator.cleanup()
+        if let cleanGenerator = recipesGeneratorClean {
+            cleanGenerator.cleanup()
         }
 
-        // Release the generator instance to free memory
-        recipesGenerator = nil
+        if let assistant = chatAssistant {
+            assistant.cleanup()
+        }
+
+        // Release instances to free memory
+        recipesGeneratorClean = nil
+        chatAssistant = nil
 
         print("✅ Cleanup complete")
         result(true)

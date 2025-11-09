@@ -3,9 +3,11 @@ import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/ai_dialog_sca
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_dialog.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/utils/close_button.dart';
 import 'package:ai_cook_project/models/recipe_tag_model.dart';
+import 'package:ai_cook_project/providers/ai_recommendations_provider.dart';
 import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ai_cook_project/widgets/responsive/responsive_builder.dart';
+import 'package:provider/provider.dart';
 
 class AiRecipesDialog extends StatefulWidget {
   final VoidCallback onToggle;
@@ -63,8 +65,15 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
       ),
     );
 
+    // Prewarm the Foundation Models to reduce first-generation latency
+    final aiProvider = Provider.of<AIRecommendationsProvider>(
+      context,
+      listen: false,
+    );
+
     if (widget.isOpen) {
       _controller.forward();
+      aiProvider.prewarmModel();
     }
   }
 
@@ -75,6 +84,7 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
     if (widget.isOpen != oldWidget.isOpen) {
       if (widget.isOpen) {
         _controller.forward();
+
         if (!_hasGeneratedRecommendations) {
           _generateAIRecommendations();
           _hasGeneratedRecommendations = true;
@@ -82,6 +92,13 @@ class _AiRecipesDialogState extends State<AiRecipesDialog>
       } else {
         _controller.reverse();
         _hasGeneratedRecommendations = false;
+
+        // Clear previous recommendations when dialog closes
+        final aiProvider = Provider.of<AIRecommendationsProvider>(
+          context,
+          listen: false,
+        );
+        aiProvider.clearAll();
       }
     }
   }

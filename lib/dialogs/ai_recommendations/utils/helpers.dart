@@ -23,10 +23,5 @@ void generateAIRecommendationsHelper({
     preferredTags: selectedTags,
     maxCookingTimeMinutes: maxTime,
     preferredDifficulty: selectedDifficulty,
-    userPreferences:
-        preferencesController.text.trim().isEmpty
-            ? null
-            : preferencesController.text.trim(),
-    numberOfRecipes: 5,
   );
 }

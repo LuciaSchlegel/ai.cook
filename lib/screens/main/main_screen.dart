@@ -5,6 +5,7 @@ import 'package:ai_cook_project/providers/user_provider.dart';
 import 'package:ai_cook_project/screens/home/home_screen.dart';
 import 'package:ai_cook_project/screens/main/services/initializer.dart';
 import 'package:ai_cook_project/screens/main/widgets/bottom_app_bar.dart';
+import 'package:ai_cook_project/services/apple_intelligence_permission.dart';
 import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/widgets/ai_agent/floating_chat_window.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,10 @@ class _MainScreenState extends State<MainScreen> {
         await ingredientsProvider.initializeIngredients();
         await resourceProvider.initializeResources();
         await userProvider.getUser();
+        if (!mounted) return;
+
+        // Show Apple Intelligence permission dialog on first launch
+        await AppleIntelligencePermission.showPermissionDialogIfNeeded(context);
         if (!mounted) return;
 
         MainScreenInit.updateSearchScreen(

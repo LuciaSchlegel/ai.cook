@@ -9,33 +9,6 @@ class AiRecomHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        // Container(
-        //   width: ResponsiveUtils.iconSize(context, ResponsiveIconSize.xl),
-        //   height: ResponsiveUtils.iconSize(context, ResponsiveIconSize.xl),
-        //   decoration: BoxDecoration(
-        //     color: AppColors.mutedGreen,
-        //     borderRadius: BorderRadius.circular(
-        //       ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.md),
-        //     ),
-        //     boxShadow: [
-        //       BoxShadow(
-        //         color: AppColors.mutedGreen.withValues(alpha: 0.15),
-        //         blurRadius: ResponsiveUtils.spacing(
-        //           context,
-        //           ResponsiveSpacing.sm,
-        //         ),
-        //         offset: const Offset(0, 4),
-        //       ),
-        //     ],
-        //   ),
-        //   child: Icon(
-        //     CupertinoIcons.sparkles,
-        //     size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.md),
-        //     color:
-        //         AppColors
-        //             .white, // Changed from mutedGreen to white for visibility
-        //   ),
-        // ),
         Expanded(
           child: ShaderMask(
             shaderCallback:

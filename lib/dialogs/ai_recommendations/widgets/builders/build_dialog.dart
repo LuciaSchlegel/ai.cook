@@ -4,8 +4,8 @@ import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/buil
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_no_results.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_form_section.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_recommendations.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_streaming.dart';
 import 'package:ai_cook_project/models/ai_response_model.dart';
-import 'package:ai_cook_project/widgets/loader/skeleton_loader.dart';
 import 'package:ai_cook_project/models/recipe_tag_model.dart';
 import 'package:ai_cook_project/providers/ai_recommendations_provider.dart';
 import 'package:ai_cook_project/theme.dart';
@@ -62,7 +62,7 @@ class BuildDialog extends StatelessWidget {
 
             // Show loading, error, or recommendations based on provider state
             if (aiProvider.isLoading)
-              _buildLoadingContent()
+              const BuildStreaming()
             else if (aiProvider.error != null)
               _buildErrorContent(aiProvider.error!)
             else if (aiProvider.currentRecommendation != null)
@@ -160,10 +160,6 @@ class BuildDialog extends StatelessWidget {
       },
     );
   }
-}
-
-Widget _buildLoadingContent() {
-  return const SkeletonLoader();
 }
 
 Widget _buildErrorContent(String error) {
