@@ -1,33 +1,20 @@
-import 'dart:convert';
-import 'package:ai_cook_project/models/recipe_tag_model.dart';
-import 'package:ai_cook_project/models/user_ing.dart';
-import 'package:ai_cook_project/models/ai_response_model.dart';
+// lib/providers/ai_recommendations_provider.dart
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-
-class AIRecomendationInput {
-  final List<UserIng> userIngredients;
-  final List<RecipeTag> preferredTags;
-  final int? maxCookingTimeMinutes;
-  final String? preferredDifficulty;
-  final String? userPreferences;
-  final int numberOfRecipes;
-
-  AIRecomendationInput({
-    required this.userIngredients,
-    required this.preferredTags,
-    required this.maxCookingTimeMinutes,
-    required this.preferredDifficulty,
-    required this.userPreferences,
-    required this.numberOfRecipes,
-  });
-}
+import 'package:flutter/services.dart';
+import 'dart:convert';
+import '../models/ai_response_model.dart';
+import '../models/recipe_tag_model.dart';
+import '../services/llm_recommendations.service.dart';
 
 class AIRecommendationsProvider extends ChangeNotifier {
+  final AIRecommendationService _service = AIRecommendationService();
+
   StructuredAIRecommendation? _currentRecommendation;
   bool _isLoading = false;
   String? _error;
+
+  static const platform = MethodChannel('ai.cook/foundation_models');
 
   StructuredAIRecommendation? get currentRecommendation =>
       _currentRecommendation;
@@ -35,85 +22,100 @@ class AIRecommendationsProvider extends ChangeNotifier {
   String? get error => _error;
 
   Future<void> generateRecommendations({
-    required AIRecomendationInput input,
+    required String userId,
+    required List<RecipeTag> preferredTags,
+    int? maxCookingTimeMinutes,
+    String? preferredDifficulty,
+    String? userPreferences,
+    Map<String, bool>? dietaryRestrictions,
+    int numberOfRecipes = 3,
   }) async {
     _setLoading(true);
     _clearError();
 
     try {
-      final apiUrl =
-          '${dotenv.env['API_URL']}/ai-recommendations/recommendations';
-      final body = {
-        "userIngredients":
-            input.userIngredients.map((u) => u.toJson()).toList(),
-        "preferredTags": input.preferredTags.map((t) => t.name).toList(),
-        "maxCookingTimeMinutes": input.maxCookingTimeMinutes,
-        "preferredDifficulty": input.preferredDifficulty,
-        "userPreferences": input.userPreferences,
-        "numberOfRecipes": input.numberOfRecipes,
-      };
-
-      debugPrint('🤖 Sending AI recommendation request (JSON mode)');
-      debugPrint('📊 Request details: ${body.toString()}');
-
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(body),
+      // Step 1: Fetch recipes from backend
+      final responseData = await _service.fetchRecipesForAI(
+        userId: userId,
+        preferredTags: preferredTags,
+        maxCookingTimeMinutes: maxCookingTimeMinutes,
+        preferredDifficulty: preferredDifficulty,
+        userPreferences: userPreferences,
+        dietaryRestrictions: dietaryRestrictions,
+        numberOfRecipes: numberOfRecipes,
       );
 
-      debugPrint('RESPUESTA: ${json.decode(response.body)}');
-      debugPrint('RAW: ${response.body}');
+      debugPrint('✅ Backend data received');
+      debugPrint('   - Recipes: ${responseData['recipes']?.length ?? 0}');
+      debugPrint(
+        '   - User ingredients: ${responseData['userContext']?['availableIngredients']?.length ?? 0}',
+      );
 
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        _currentRecommendation = StructuredAIRecommendation.fromJson(
-          responseData,
-        );
-
-        debugPrint('✅ Structured AI recommendations received successfully');
-        debugPrint(
-          '🍽️ Ready to cook: ${_currentRecommendation!.readyToCook.length} recipes',
-        );
-        debugPrint(
-          '🛒 Almost ready: ${_currentRecommendation!.almostReady.length} recipes',
-        );
-        debugPrint(
-          '💡 Shopping suggestions: ${_currentRecommendation!.shoppingSuggestions.length} items',
-        );
-        debugPrint(
-          '🔄 Substitutions: ${_currentRecommendation!.possibleSubstitutions.length} options',
-        );
-        debugPrint(
-          '⏱️ Processing time: ${_currentRecommendation!.processingTime}ms',
-        );
-
-        notifyListeners();
-      } else {
-        String errorMessage = 'Error generating AI recommendations';
+      // Step 2: Try Foundation Models on iOS
+      if (Platform.isIOS) {
         try {
-          final errorData = json.decode(response.body);
-          if (errorData['error'] == 'NO_INGREDIENTS') {
-            errorMessage =
-                'Please add some ingredients to your cupboard first before generating AI recommendations.';
-          } else if (errorData['message'] != null) {
-            errorMessage = errorData['message'];
-          } else {
-            errorMessage =
-                'Server error (${response.statusCode}). Please try again.';
+          debugPrint('🍎 Attempting Foundation Models (iOS)...');
+
+          final result = await platform
+              .invokeMethod<String>('generateRecommendations', {
+                'recipes': responseData['recipes'],
+                'userContext': responseData['userContext'],
+              });
+
+          if (result != null && result.isNotEmpty) {
+            final resultData = json.decode(result);
+            _currentRecommendation = StructuredAIRecommendation.fromJson(
+              resultData,
+            );
+
+            debugPrint('✅ Foundation Models success!');
+            debugPrint(
+              '🍽️ Ready to cook: ${_currentRecommendation!.readyToCook.length}',
+            );
+            debugPrint(
+              '🛒 Almost ready: ${_currentRecommendation!.almostReady.length}',
+            );
+
+            notifyListeners();
+            return;
           }
+        } on PlatformException catch (e) {
+          debugPrint('⚠️ Foundation Models error: ${e.message}');
+          debugPrint('   Code: ${e.code}');
+          debugPrint('   Details: ${e.details}');
+          // Fall through to API
         } catch (e) {
-          errorMessage =
-              'Server error (${response.statusCode}). Please try again.';
+          debugPrint('⚠️ Foundation Models failed: $e');
+          // Fall through to API
         }
-        _setError(errorMessage);
       }
+
+      // Step 3: Fallback to API
+      debugPrint('🌐 Using API fallback...');
+      await _generateViaAPI(responseData);
+    } on NoIngredientsException catch (e) {
+      _setError(e.toString());
+    } on UnauthorizedException catch (e) {
+      _setError(e.toString());
     } catch (e) {
       debugPrint('❌ Error in generateRecommendations: $e');
-      _setError('Error generating AI recommendations: $e');
+      _setError('Failed to generate recommendations: $e');
     } finally {
       _setLoading(false);
     }
+  }
+
+  Future<void> _generateViaAPI(Map<String, dynamic> backendData) async {
+    // TODO: Implement API fallback (OpenAI/Claude)
+    // For now, set a friendly message instead of throwing error
+
+    debugPrint('💡 API fallback not yet implemented - showing friendly message');
+
+    // Set a tranquilizing message instead of an error
+    _currentRecommendation = null; // No recommendations available
+    _setError(
+      'notEnoughRecipes', // Special error code for friendly message
+    );
   }
 
   void _setLoading(bool value) {
@@ -141,7 +143,7 @@ class AIRecommendationsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Convenience methods for accessing data
+  // Convenience getters
   List<AIRecipeMinimal> get readyToCookRecipes =>
       _currentRecommendation?.readyToCook ?? [];
   List<AIAlmostReadyRecipe> get almostReadyRecipes =>

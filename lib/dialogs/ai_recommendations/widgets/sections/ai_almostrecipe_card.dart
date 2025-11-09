@@ -37,20 +37,17 @@ class AIAlmostReadyCard extends StatelessWidget {
               ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xl),
             ),
             border: Border.all(
-              color:
-                  viewModel.missingCount == 1
-                      ? AppColors.orange
-                      : AppColors.orange.withValues(alpha: 0.4),
-              width: 2,
+              color: AppColors.orange,
+              width: 2.5,
             ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.orange.withValues(alpha: 0.12),
+                color: AppColors.orange.withValues(alpha: 0.15),
                 blurRadius: ResponsiveUtils.spacing(
                   context,
-                  ResponsiveSpacing.sm,
+                  ResponsiveSpacing.md,
                 ),
-                offset: const Offset(0, 2),
+                offset: const Offset(0, 3),
                 spreadRadius: 0,
               ),
             ],

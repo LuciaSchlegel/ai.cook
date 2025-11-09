@@ -88,6 +88,14 @@ Widget _buildRecipeCards(
         return CombinedRecipeViewModel(
           recipe: recipe,
           description: aiRecipe.description,
+          matchScore: aiRecipe.matchScore,
+          missingIngredients:
+              aiRecipe.missingIngredients
+                  .map((name) => MissingIngredientInfo(name: name))
+                  .toList(),
+          missingCount: aiRecipe.missingIngredients.length,
+          recipeSubstitutions: aiRecipe.recipeSubstitutions,
+          cookingTips: aiRecipe.steps,
         );
       }).toList();
 
@@ -100,11 +108,14 @@ Widget _buildRecipeCards(
         return CombinedRecipeViewModel(
           recipe: recipe,
           description: aiRecipe.description,
+          matchScore: aiRecipe.matchScore,
           missingIngredients:
               aiRecipe.missingIngredients
                   .map((name) => MissingIngredientInfo(name: name))
                   .toList(),
           missingCount: aiRecipe.missingIngredients.length,
+          recipeSubstitutions: aiRecipe.recipeSubstitutions,
+          cookingTips: aiRecipe.steps,
         );
       }).toList();
 

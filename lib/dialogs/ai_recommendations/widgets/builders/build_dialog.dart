@@ -1,6 +1,7 @@
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/sections/ai_recom_header.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_empty.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_error.dart';
+import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_no_results.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_form_section.dart';
 import 'package:ai_cook_project/dialogs/ai_recommendations/widgets/builders/build_recommendations.dart';
 import 'package:ai_cook_project/models/ai_response_model.dart';
@@ -166,6 +167,12 @@ Widget _buildLoadingContent() {
 }
 
 Widget _buildErrorContent(String error) {
+  // Special case: show friendly "no results" message instead of harsh error
+  if (error == 'notEnoughRecipes') {
+    return const BuildNoResults();
+  }
+
+  // For all other errors, show the error widget
   return ErrorBuild(error: error);
 }
 

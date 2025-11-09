@@ -119,13 +119,18 @@ class RecipeDetails extends StatelessWidget {
                   ),
                   const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.xs),
                   ...missingIngredients!.map((missing) {
+                    // Build display text based on available data
+                    final displayText = missing.quantity != null
+                        ? '• ${missing.name} (${missing.quantity} ${missing.unit ?? 'units'})'
+                        : '• ${missing.name}';
+
                     return Padding(
                       padding: ResponsiveUtils.padding(
                         context,
                         ResponsiveSpacing.xs,
                       ),
                       child: Text(
-                        '• ${missing.name} (${missing.quantity ?? ''} ${missing.unit ?? 'units'})',
+                        displayText,
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(
                             context,
@@ -136,6 +141,72 @@ class RecipeDetails extends StatelessWidget {
                           letterSpacing: 0.2,
                           height: 1,
                           color: Colors.grey.shade600,
+                        ),
+                      ),
+                    );
+                  }),
+                ],
+              ),
+            ),
+          ],
+
+          // AI Cooking Tips section (expandable)
+          if (viewModel.cookingTips.isNotEmpty) ...[
+            const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
+            _CookingTipsExpansionTile(cookingTips: viewModel.cookingTips),
+          ],
+
+          // Recipe-specific substitutions section
+          if (viewModel.recipeSubstitutions.isNotEmpty) ...[
+            const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.md),
+            Container(
+              padding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
+              decoration: BoxDecoration(
+                color: Colors.orange.shade50,
+                borderRadius: BorderRadius.circular(
+                  ResponsiveUtils.borderRadius(
+                    context,
+                    ResponsiveBorderRadius.md,
+                  ),
+                ),
+                border: Border.all(color: Colors.orange.shade200),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '🔄 Suggested substitutions:',
+                    style: TextStyle(
+                      fontSize: ResponsiveUtils.fontSize(
+                        context,
+                        ResponsiveFontSize.xs,
+                      ),
+                      fontWeight: AppFontWeights.bold,
+                      fontFamily: 'Inter',
+                      letterSpacing: 0.2,
+                      height: 1,
+                      color: Colors.orange.shade800,
+                    ),
+                  ),
+                  const ResponsiveSpacingWidget.vertical(ResponsiveSpacing.xs),
+                  ...viewModel.recipeSubstitutions.map((sub) {
+                    return Padding(
+                      padding: ResponsiveUtils.padding(
+                        context,
+                        ResponsiveSpacing.xs,
+                      ),
+                      child: Text(
+                        '• ${sub.original} → ${sub.alternatives.join(", ")}',
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(
+                            context,
+                            ResponsiveFontSize.xs,
+                          ),
+                          fontWeight: AppFontWeights.medium,
+                          fontFamily: 'Inter',
+                          letterSpacing: 0.2,
+                          height: 1,
+                          color: Colors.orange.shade700,
                         ),
                       ),
                     );
@@ -195,6 +266,122 @@ class RecipeDetails extends StatelessWidget {
             ),
           ],
         ],
+      ),
+    );
+  }
+}
+
+// Expandable widget for AI cooking tips
+class _CookingTipsExpansionTile extends StatefulWidget {
+  final List<String> cookingTips;
+
+  const _CookingTipsExpansionTile({required this.cookingTips});
+
+  @override
+  State<_CookingTipsExpansionTile> createState() =>
+      _CookingTipsExpansionTileState();
+}
+
+class _CookingTipsExpansionTileState extends State<_CookingTipsExpansionTile> {
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.blue.shade50,
+        borderRadius: BorderRadius.circular(
+          ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.md),
+        ),
+        border: Border.all(color: Colors.blue.shade200),
+      ),
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ExpansionTile(
+          initiallyExpanded: false,
+          tilePadding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
+          childrenPadding: EdgeInsets.only(
+            left: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+            right: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+            bottom: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+          ),
+          onExpansionChanged: (expanded) {
+            setState(() {
+              _isExpanded = expanded;
+            });
+          },
+          title: Row(
+            children: [
+              Icon(
+                Icons.lightbulb_outline,
+                size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.sm),
+                color: Colors.blue.shade800,
+              ),
+              SizedBox(
+                width: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+              ),
+              Text(
+                'AI Cooking Tips (${widget.cookingTips.length})',
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(
+                    context,
+                    ResponsiveFontSize.xs,
+                  ),
+                  fontWeight: AppFontWeights.bold,
+                  fontFamily: 'Inter',
+                  letterSpacing: 0.2,
+                  color: Colors.blue.shade800,
+                ),
+              ),
+            ],
+          ),
+          trailing: Icon(
+            _isExpanded ? Icons.expand_less : Icons.expand_more,
+            color: Colors.blue.shade800,
+          ),
+          children: widget.cookingTips.asMap().entries.map((entry) {
+            return Padding(
+              padding: ResponsiveUtils.padding(
+                context,
+                ResponsiveSpacing.xs,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${entry.key + 1}. ',
+                    style: TextStyle(
+                      fontSize: ResponsiveUtils.fontSize(
+                        context,
+                        ResponsiveFontSize.xs,
+                      ),
+                      fontWeight: AppFontWeights.semiBold,
+                      fontFamily: 'Inter',
+                      letterSpacing: 0.2,
+                      color: Colors.blue.shade700,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      entry.value,
+                      style: TextStyle(
+                        fontSize: ResponsiveUtils.fontSize(
+                          context,
+                          ResponsiveFontSize.xs,
+                        ),
+                        fontWeight: AppFontWeights.medium,
+                        fontFamily: 'Inter',
+                        letterSpacing: 0.2,
+                        height: 1.4,
+                        color: Colors.blue.shade700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+        ),
       ),
     );
   }

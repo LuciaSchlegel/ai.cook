@@ -21,8 +21,11 @@ class AIRecipeMinimal {
   final String difficulty;
   final List<String> tags;
   final String description;
+  final int matchScore;
   final List<IngredientQuantity> ingredients;
   final List<String> steps;
+  final List<String> missingIngredients;
+  final List<AISubstitution> recipeSubstitutions;
 
   AIRecipeMinimal({
     required this.id,
@@ -31,8 +34,11 @@ class AIRecipeMinimal {
     required this.difficulty,
     required this.tags,
     required this.description,
+    this.matchScore = 0,
     required this.ingredients,
     required this.steps,
+    this.missingIngredients = const [],
+    this.recipeSubstitutions = const [],
   });
 
   factory AIRecipeMinimal.fromJson(Map<String, dynamic> json) {
@@ -45,6 +51,7 @@ class AIRecipeMinimal {
           ((json['tags'] as List?)?.map((e) => e.toString()).toList()) ??
           const [],
       description: (json['description'] ?? '').toString(),
+      matchScore: _asInt(json['match_score']),
       ingredients:
           ((json['ingredients'] as List?)
               ?.map(
@@ -56,6 +63,20 @@ class AIRecipeMinimal {
           const [],
       steps:
           ((json['steps'] as List?)?.map((e) => e.toString()).toList()) ??
+          const [],
+      missingIngredients:
+          ((json['missing_ingredients'] as List?)
+              ?.map((e) => e.toString())
+              .toList()) ??
+          const [],
+      recipeSubstitutions:
+          ((json['recipe_substitutions'] as List?)
+              ?.map(
+                (item) => AISubstitution.fromJson(
+                  (item as Map?)?.cast<String, dynamic>() ?? const {},
+                ),
+              )
+              .toList()) ??
           const [],
     );
   }
@@ -79,8 +100,11 @@ class AIAlmostReadyRecipe {
   final int id;
   final String title;
   final String description;
+  final int matchScore;
   final List<String> missingIngredients;
   final List<AIShoppingSuggestion> shoppingSuggestions;
+  final List<AISubstitution> recipeSubstitutions;
+  final List<String> steps;
   final int timeMinutes;
   final String difficulty;
   final List<String> tags;
@@ -89,8 +113,11 @@ class AIAlmostReadyRecipe {
     required this.id,
     required this.title,
     required this.description,
+    this.matchScore = 0,
     required this.missingIngredients,
     required this.shoppingSuggestions,
+    this.recipeSubstitutions = const [],
+    this.steps = const [],
     required this.timeMinutes,
     required this.difficulty,
     required this.tags,
@@ -101,6 +128,7 @@ class AIAlmostReadyRecipe {
       id: _asInt(json['id']),
       title: (json['title'] ?? '').toString(),
       description: (json['description'] ?? '').toString(),
+      matchScore: _asInt(json['match_score']),
       timeMinutes: _asInt(json['time_minutes']),
       difficulty: (json['difficulty'] ?? '').toString(),
       tags:
@@ -119,6 +147,18 @@ class AIAlmostReadyRecipe {
                 ),
               )
               .toList()) ??
+          const [],
+      recipeSubstitutions:
+          ((json['recipe_substitutions'] as List?)
+              ?.map(
+                (item) => AISubstitution.fromJson(
+                  (item as Map?)?.cast<String, dynamic>() ?? const {},
+                ),
+              )
+              .toList()) ??
+          const [],
+      steps:
+          ((json['steps'] as List?)?.map((e) => e.toString()).toList()) ??
           const [],
     );
   }
@@ -226,13 +266,19 @@ class CombinedRecipeViewModel {
   final Recipe recipe;
   final String? description;
   final int missingCount;
+  final int matchScore;
   final List<MissingIngredientInfo>? missingIngredients;
+  final List<AISubstitution> recipeSubstitutions;
+  final List<String> cookingTips;
 
   const CombinedRecipeViewModel({
     required this.recipe,
     this.description,
     this.missingCount = 0,
+    this.matchScore = 0,
     this.missingIngredients,
+    this.recipeSubstitutions = const [],
+    this.cookingTips = const [],
   });
 }
 

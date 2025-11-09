@@ -38,15 +38,20 @@ class AIReadyToCookCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(
               ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xl),
             ),
-            border: Border.all(color: AppColors.mutedGreen, width: 2),
+            border: Border.all(
+              color: viewModel.missingCount == 0
+                  ? AppColors.mutedGreen
+                  : AppColors.mutedGreen.withValues(alpha: 0.6),
+              width: 2.5,
+            ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.mutedGreen.withValues(alpha: 0.12),
+                color: AppColors.mutedGreen.withValues(alpha: 0.15),
                 blurRadius: ResponsiveUtils.spacing(
                   context,
-                  ResponsiveSpacing.sm,
+                  ResponsiveSpacing.md,
                 ),
-                offset: const Offset(0, 2),
+                offset: const Offset(0, 3),
                 spreadRadius: 0,
               ),
             ],

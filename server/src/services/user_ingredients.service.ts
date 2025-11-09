@@ -67,7 +67,8 @@ export async function addUserIngredientService({
 }
 
 // LISTAR INGREDIENTES DE LA ALACENA DEL USUARIO
-export async function getUserIngredientsService(uid: string) {
+export class UserIngredientsService {
+  async getUserIngredients(uid: string) {
   return await UserIngredientRepository.find({
     where: { user: { uid } },
     relations: {
@@ -81,6 +82,7 @@ export async function getUserIngredientsService(uid: string) {
       unit: true
     }
   });
+  }
 }
 
 // ACTUALIZAR INGREDIENTE DEL USUARIO (opcional)

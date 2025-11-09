@@ -4,3 +4,7 @@ build
 .env
 node_modules/
 datasets/
+.idea/
+.vscode/
+.venv/
+.dart_tool/

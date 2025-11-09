@@ -4,7 +4,8 @@ import { Recipe } from "../entities/Recipe";
 import { RecipeRepository } from "../repositories/recipe.repository";
 import { RecipeFilterService } from "./recipe_filter.service";
 
-export const getRecipesService = async (): Promise<Recipe[]> => {
+export class RecipeService {
+  async getRecipes(): Promise<Recipe[]> {
   return await RecipeRepository.find({
     relations: {
       ingredients: {
@@ -15,7 +16,8 @@ export const getRecipesService = async (): Promise<Recipe[]> => {
       createdByUser: true,
     },
   });
-};
+  }
+}
 
 export const getMissingIngredientsByRecipeService = async (
   serializedRecipes: RecipeDto[],
