@@ -1,9 +1,11 @@
-import { NextFunction, RequestHandler, Request, Response } from "express";
+import { Request } from "express";
 import {
   getRecipeStepsService,
   searchExternalRecipesService,
   searchExtRecipesByIngService,
 } from "../services/api.service";
+import { controllerWrapper } from "../helpers/controllerWrapper";
+import { BadRequestError } from "../types/AppError";
 
 export interface RecipeSearchParams {
   query?: string;
@@ -30,92 +32,88 @@ export interface GetRecipeParams {
 }
 
 export interface IngRecipeSearchParams {
-  ingredients?: string,
-  number?: number, 
+  ingredients?: string;
+  number?: number;
 }
 
-type ControllerFunction = (req: Request) => Promise<any>;
+export const searchExternalRecipesController = controllerWrapper(
+  async (req: Request) => {
+    const {
+      query,
+      cuisine,
+      diet,
+      intolerances,
+      includeIngredients,
+      excludeIngredients,
+      type,
+      maxReadyTime,
+      number,
+      minCalories,
+      maxCalories,
+      minProtein,
+      maxProtein,
+      minCarbs,
+      maxCarbs,
+      minFat,
+      maxFat,
+    } = req.query as Partial<RecipeSearchParams>;
 
-const controllerWrapper = (handler: ControllerFunction): RequestHandler => {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const result = await handler(req);
-      res.status(200).json(result);
-    } catch (error) {
-      next(error);
-    }
-  };
-};
+    const params: RecipeSearchParams = {
+      query,
+      cuisine,
+      diet,
+      intolerances,
+      includeIngredients,
+      excludeIngredients,
+      type,
+      maxReadyTime: maxReadyTime ? Number(maxReadyTime) : undefined,
+      number: number ? Number(number) : 10,
+      minCalories: isNaN(Number(minCalories)) ? undefined : Number(minCalories),
+      maxCalories: isNaN(Number(maxCalories)) ? undefined : Number(maxCalories),
+      minProtein: isNaN(Number(minProtein)) ? undefined : Number(minProtein),
+      maxProtein: isNaN(Number(maxProtein)) ? undefined : Number(maxProtein),
+      minCarbs: isNaN(Number(minCarbs)) ? undefined : Number(minCarbs),
+      maxCarbs: isNaN(Number(maxCarbs)) ? undefined : Number(maxCarbs),
+      minFat: isNaN(Number(minFat)) ? undefined : Number(minFat),
+      maxFat: isNaN(Number(maxFat)) ? undefined : Number(maxFat),
+    };
 
-export const searchExternalRecipesController = controllerWrapper(async (req) => {
-  const {
-    query,
-    cuisine,
-    diet,
-    intolerances,
-    includeIngredients,
-    excludeIngredients,
-    type,
-    maxReadyTime,
-    number,
-    minCalories,
-    maxCalories,
-    minProtein,
-    maxProtein,
-    minCarbs,
-    maxCarbs,
-    minFat,
-    maxFat,
-  } = req.query as Partial<RecipeSearchParams>;
+    const cleanedParams = Object.fromEntries(
+      Object.entries(params).filter(([_, v]) => v !== undefined && v !== "")
+    );
 
-  const params: RecipeSearchParams = {
-    query,
-    cuisine,
-    diet,
-    intolerances,
-    includeIngredients,
-    excludeIngredients,
-    type,
-    maxReadyTime: maxReadyTime ? Number(maxReadyTime) : undefined,
-    number: number ? Number(number) : 10,
-    minCalories: isNaN(Number(minCalories)) ? undefined : Number(minCalories),
-    maxCalories: isNaN(Number(maxCalories)) ? undefined : Number(maxCalories),
-    minProtein: isNaN(Number(minProtein)) ? undefined : Number(minProtein),
-    maxProtein: isNaN(Number(maxProtein)) ? undefined : Number(maxProtein),
-    minCarbs: isNaN(Number(minCarbs)) ? undefined : Number(minCarbs),
-    maxCarbs: isNaN(Number(maxCarbs)) ? undefined : Number(maxCarbs),
-    minFat: isNaN(Number(minFat)) ? undefined : Number(minFat),
-    maxFat: isNaN(Number(maxFat)) ? undefined : Number(maxFat),
-  };
+    return searchExternalRecipesService(cleanedParams);
+  },
+  {}
+);
 
-  const cleanedParams = Object.fromEntries(
-    Object.entries(params).filter(([_, v]) => v !== undefined && v !== "")
-  );
+export const searchExtRecipesByIngController = controllerWrapper(
+  async (req: Request) => {
+    const { ingredients, number } = req.query;
+    const params = {
+      ingredients: ingredients ? ingredients : undefined,
+      number: number ? Number(number) : 10,
+    };
 
-  return await searchExternalRecipesService(cleanedParams);
-});
+    const cleanedParams = Object.fromEntries(
+      Object.entries(params).filter(([_, v]) => v !== undefined && v !== "")
+    );
 
-export const searchExtRecipesByIngController = controllerWrapper(async (req) => {
-  const { ingredients, number } = req.query;
-  const params = {
-    ingredients: ingredients ? ingredients : undefined,
-    number: number ? Number(number) : 10,
-  }
+    return searchExtRecipesByIngService(cleanedParams);
+  },
+  {}
+);
 
-  const cleanedParams = Object.fromEntries(
-    Object.entries(params).filter(([_, v]) => v !== undefined && v !== "")
-  );
+export const getRecipeStepsController = controllerWrapper(
+  async (req: Request) => {
+    const { recipeId } = req.params;
+    const id = Number(recipeId);
+    if (isNaN(id)) throw new BadRequestError("Invalid recipe ID.");
 
-  return await searchExtRecipesByIngService(cleanedParams);
-});
+    const result = await getRecipeStepsService({ recipeId: id });
+    if (!result) throw new BadRequestError("No steps found for this recipe.");
 
-export const getRecipeStepsController = controllerWrapper(async (req) => {
-  const { recipeId } = req.params;
-  const id = Number(recipeId);
-  if (isNaN(id)) throw new Error("Invalid recipe ID.");
-
-  const result = await getRecipeStepsService({ recipeId: id });
-  if (!result) throw new Error("No steps found for this recipe.");
-
-  return result;
-});
+    return result;
+  },
+  {}
+);

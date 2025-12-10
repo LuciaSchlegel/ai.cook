@@ -1,78 +1,74 @@
-import { Request, Response, NextFunction, RequestHandler } from "express";
+import { Request } from "express";
 import { BadRequestError } from "../types/AppError";
-import { seedIngredientsService, seedRecipesService, seedResourcesService, setAdminRoleService } from "../services/admin.service";
+import {
+  seedIngredientsService,
+  seedRecipesService,
+  seedResourcesService,
+  setAdminRoleService,
+} from "../services/admin.service";
+import { controllerWrapper } from "../helpers/controllerWrapper";
 
-type ControllerFunction = (req: Request) => Promise<any>;
+export const setAdminRoleController = controllerWrapper(
+  async (req: Request) => {
+    const { uid } = req.params;
+    if (!uid) throw new BadRequestError("User ID is required");
+    return setAdminRoleService(uid);
+  },
+  {}
+);
 
-const controllerWrapper = (handler: ControllerFunction): RequestHandler => {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const result = await handler(req);
-      res.status(200).json(result);
-    } catch (error) {
-      next(error);
-    }
-  };
-};
+export const seedResourcesController = controllerWrapper(
+  async (req: Request) => {
+    const { resourceType } = req.params;
+    const { resource } = req.body;
+    if (!resourceType) throw new BadRequestError("Resource type is required");
+    return seedResourcesService(resourceType, resource);
+  },
+  {}
+);
 
-export const setAdminRoleController = controllerWrapper(async (req) => {
-  const { uid } = req.params;
-  if (!uid) {
-    throw new BadRequestError("User ID is required");
-  }
-  return await setAdminRoleService(uid);
-});
+export const seedIngredientsController = controllerWrapper(
+  async (req: Request) => {
+    const { ingredient } = req.body;
+    if (!ingredient) throw new BadRequestError("Ingredient is required");
+    return seedIngredientsService(ingredient);
+  },
+  {}
+);
 
-export const seedResourcesController = controllerWrapper(async (req) => {
-  const { resourceType } = req.params;
-  const { resource } = req.body;
-  if (!resourceType) {
-    throw new BadRequestError("Resource type is required");
-  }
-  return await seedResourcesService(resourceType, resource);
-});
-
-export const seedIngredientsController = controllerWrapper(async (req) => {
-  const { ingredient } = req.body;
-  if (!ingredient) {
-    throw new BadRequestError("Ingredient is required");
-  }
-  return await seedIngredientsService(ingredient);
-});
-
-export const seedRecipesController = controllerWrapper(async (req) => {
+export const seedRecipesController = controllerWrapper(async (req: Request) => {
   const { recipes } = req.body;
-  if (!recipes) {
-    throw new BadRequestError("Recipe is required");
-  }
-  return await seedRecipesService(recipes);
-});
+  if (!recipes) throw new BadRequestError("Recipe is required");
+  return seedRecipesService(recipes);
+}, {});
 
-export const seedRecipesFromJsonController = controllerWrapper(async (req) => {
-  const { recipes, autoCreateIngredients = true } = req.body;
-  
-  if (!recipes || !Array.isArray(recipes)) {
-    throw new BadRequestError("Recipes array is required");
-  }
+export const seedRecipesFromJsonController = controllerWrapper(
+  async (req: Request) => {
+    const { recipes, autoCreateIngredients = true } = req.body;
 
-  // Convert recipes.json format to expected format
-  const convertedRecipes = recipes.map((recipe: any) => ({
-    name: recipe.name,
-    description: recipe.description,
-    steps: recipe.steps,
-    cookingTime: recipe.cookingTime,
-    difficulty: recipe.difficulty,
-    servings: recipe.servings,
-    image: recipe.image || '',
-    ingredients: recipe.ingredients.map((ing: any) => ({
-      name: ing.name,
-      quantity: ing.quantity,
-      unit: ing.unit,
-      additionalInfo: ing.additionalInfo,
-      relativeQuantity: ing.relativeQuantity
-    })),
-    tags: recipe.tags
-  }));
+    if (!recipes || !Array.isArray(recipes)) {
+      throw new BadRequestError("Recipes array is required");
+    }
 
-  return await seedRecipesService(convertedRecipes);
-});
+    const convertedRecipes = recipes.map((recipe: any) => ({
+      name: recipe.name,
+      description: recipe.description,
+      steps: recipe.steps,
+      cookingTime: recipe.cookingTime,
+      difficulty: recipe.difficulty,
+      servings: recipe.servings,
+      image: recipe.image || "",
+      ingredients: recipe.ingredients.map((ing: any) => ({
+        name: ing.name,
+        quantity: ing.quantity,
+        unit: ing.unit,
+        additionalInfo: ing.additionalInfo,
+        relativeQuantity: ing.relativeQuantity,
+      })),
+      tags: recipe.tags,
+    }));
+
+    return seedRecipesService(convertedRecipes);
+  },
+  {}
+);

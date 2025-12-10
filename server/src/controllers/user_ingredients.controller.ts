@@ -1,97 +1,81 @@
-import { NextFunction, Request, Response } from "express";
+import { Request } from "express";
 import { BadRequestError } from "../types/AppError";
-import { addUserIngredientService, getUserIngredientsService, removeUserIngredientService, updateUserIngredientService } from "../services/user_ingredients.service";
+import {
+  addUserIngredientService,
+  getUserIngredientsService,
+  removeUserIngredientService,
+  updateUserIngredientService,
+} from "../services/user_ingredients.service";
 import { UserIngredientOptimizedDto } from "../dtos/user_ing_optimized.dto";
-import { serialize } from "../helpers/serialize";
-import { toSnakeCaseDeep } from "../helpers/toSnakeCase";
+import { controllerWrapper } from "../helpers/controllerWrapper";
 import { toCamelCaseDeep } from "../helpers/toCamelCase";
 
-export async function getUserIngredientsController(req: Request, res: Response, next: NextFunction) {
-  const { uid } = req.params;
-  if (!uid) {
-    return next(new BadRequestError("User ID is required"));
-  }
-  try {
-    const ingredients = await getUserIngredientsService(uid);
-    const serialized = serialize(UserIngredientOptimizedDto, ingredients);
-    const response = toSnakeCaseDeep(serialized);
-    return res.status(200).json(response);
-  } catch (error) {
-    next(error);
-  }
-}
+export const getUserIngredientsController = controllerWrapper(
+  async (req: Request) => {
+    const { uid } = req.params;
+    if (!uid) throw new BadRequestError("User ID is required");
+    return getUserIngredientsService(uid);
+  },
+  { dto: UserIngredientOptimizedDto, toSnakeCase: true }
+);
 
-export async function addUserIngredientController(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { uid } = req.params;
-      const camelBody = toCamelCaseDeep(req.body);
-      const { ingredient, customIngredient, quantity, unit } = camelBody;
-  
-      if (!uid) return next(new BadRequestError("User ID is required"));
-      if (!ingredient?.id && !customIngredient?.id) {
-        return next(new BadRequestError("Either ingredient ID or custom ingredient ID is required"));
-      }
-      if (!quantity) return next(new BadRequestError("Quantity is required"));
-      if (!unit?.id) return next(new BadRequestError("Unit ID is required"));
-  
-      const newUserIngredient = await addUserIngredientService({
-        uid,
-        ingredientId: ingredient?.id,
-        customIngredientId: customIngredient?.id,
-        quantity,
-        unit: unit.id,  
-      });
-  
-      const serialized = serialize(UserIngredientOptimizedDto, newUserIngredient);
-      const response = toSnakeCaseDeep(serialized);
-  
-      return res.status(201).json(response);
-    } catch (error) {
-      next(error);
+export const addUserIngredientController = controllerWrapper(
+  async (req: Request) => {
+    const { uid } = req.params;
+    const camelBody = toCamelCaseDeep(req.body);
+    const { ingredient, customIngredient, quantity, unit } = camelBody;
+
+    if (!uid) throw new BadRequestError("User ID is required");
+    if (!ingredient?.id && !customIngredient?.id) {
+      throw new BadRequestError(
+        "Either ingredient ID or custom ingredient ID is required"
+      );
     }
-  }
+    if (!quantity) throw new BadRequestError("Quantity is required");
+    if (!unit?.id) throw new BadRequestError("Unit ID is required");
 
-export async function updateUserIngredientController(req: Request, res: Response, next: NextFunction) {
-    try {
-        const { uid } = req.params;
-        const { quantity, unit, id, custom_ingredient } = req.body;
-        if (!id) {
-            return next(new BadRequestError("User ingredient ID is required"));
-        }
+    return addUserIngredientService({
+      uid,
+      ingredientId: ingredient?.id,
+      customIngredientId: customIngredient?.id,
+      quantity,
+      unit: unit.id,
+    });
+  },
+  { dto: UserIngredientOptimizedDto, statusCode: 201, toSnakeCase: true }
+);
 
-        const updateData: any = {};
-        if (quantity) updateData.quantity = quantity;
-        if (unit) updateData.unit = unit;
-        if (custom_ingredient) updateData.customIngredient = toCamelCaseDeep(custom_ingredient);
+export const updateUserIngredientController = controllerWrapper(
+  async (req: Request) => {
+    const { uid } = req.params;
+    const { quantity, unit, id, custom_ingredient } = req.body;
 
-        if (Object.keys(updateData).length === 0) {
-            return next(new BadRequestError("No update data provided"));
-        }
+    if (!id) throw new BadRequestError("User ingredient ID is required");
 
-        const userIngredient = await updateUserIngredientService(uid, id, updateData);
-        
-        const serialized = serialize(UserIngredientOptimizedDto, userIngredient);
-        const response = toSnakeCaseDeep(serialized);
-        
-        return res.status(200).json(response);
-    } catch (error) {
-        next(error);
+    const updateData: any = {};
+    if (quantity) updateData.quantity = quantity;
+    if (unit) updateData.unit = unit;
+    if (custom_ingredient)
+      updateData.customIngredient = toCamelCaseDeep(custom_ingredient);
+
+    if (Object.keys(updateData).length === 0) {
+      throw new BadRequestError("No update data provided");
     }
-}
 
-export async function deleteUserIngredientController(req: Request, res: Response, next: NextFunction) {
-    try {
-        const { uid } = req.params;
-        const { id } = req.body;
-        if (!uid) {
-            return next(new BadRequestError("User ID is required"));
-        }
-        if (!id) {
-            return next(new BadRequestError("User ingredient ID is required"));
-        }
-        const userIngredient = await removeUserIngredientService(uid, id);
-        return res.status(200).json(userIngredient);
-    } catch (error) {
-        next(error);
-    }
-}
+    return updateUserIngredientService(uid, id, updateData);
+  },
+  { dto: UserIngredientOptimizedDto, toSnakeCase: true }
+);
+
+export const deleteUserIngredientController = controllerWrapper(
+  async (req: Request) => {
+    const { uid } = req.params;
+    const { id } = req.body;
+
+    if (!uid) throw new BadRequestError("User ID is required");
+    if (!id) throw new BadRequestError("User ingredient ID is required");
+
+    return removeUserIngredientService(uid, id);
+  },
+  { toSnakeCase: false } // gibt { success: true } zurück, kein DTO nötig
+);
