@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { BadRequestError } from "../types/AppError";
-import { addUserIngredientService, getUserIngredientsService, removeUserIngredientService, updateUserIngredientService } from "../services/user_ingredients.service";
+import { addUserIngredientService, removeUserIngredientService, updateUserIngredientService, UserIngredientsService } from "../services/user_ingredients.service";
 import { UserIngredientOptimizedDto } from "../dtos/user_ing_optimized.dto";
 import { serialize } from "../helpers/serialize";
 import { toSnakeCaseDeep } from "../helpers/toSnakeCase";
@@ -12,7 +12,8 @@ export async function getUserIngredientsController(req: Request, res: Response, 
     return next(new BadRequestError("User ID is required"));
   }
   try {
-    const ingredients = await getUserIngredientsService(uid);
+    const userIngredientsService = new UserIngredientsService();
+    const ingredients = await userIngredientsService.getUserIngredients(uid);
     const serialized = serialize(UserIngredientOptimizedDto, ingredients);
     const response = toSnakeCaseDeep(serialized);
     return res.status(200).json(response);

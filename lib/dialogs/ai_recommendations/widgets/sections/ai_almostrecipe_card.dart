@@ -7,63 +7,109 @@ import 'package:ai_cook_project/theme.dart';
 import 'package:ai_cook_project/utils/responsive_utils.dart';
 import 'package:flutter/material.dart';
 
-class AIAlmostReadyCard extends StatelessWidget {
+class AIAlmostReadyCard extends StatefulWidget {
   final CombinedRecipeViewModel viewModel;
 
   const AIAlmostReadyCard({super.key, required this.viewModel});
+
+  @override
+  State<AIAlmostReadyCard> createState() => _AIAlmostReadyCardState();
+}
+
+class _AIAlmostReadyCardState extends State<AIAlmostReadyCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeAnimation;
+  late Animation<Offset> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
+
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOut,
+    ));
+
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.1),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   void _showRecipeDetail(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => RecipeOverviewCard(recipe: viewModel.recipe),
+      builder: (context) => RecipeOverviewCard(recipe: widget.viewModel.recipe),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
-        vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
-      ),
-      child: GestureDetector(
-        onTap: () => _showRecipeDetail(context),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(
-              ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xl),
-            ),
-            border: Border.all(
-              color:
-                  viewModel.missingCount == 1
-                      ? AppColors.orange
-                      : AppColors.orange.withValues(alpha: 0.4),
-              width: 2,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.orange.withValues(alpha: 0.12),
-                blurRadius: ResponsiveUtils.spacing(
-                  context,
-                  ResponsiveSpacing.sm,
-                ),
-                offset: const Offset(0, 2),
-                spreadRadius: 0,
-              ),
-            ],
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: SlideTransition(
+        position: _slideAnimation,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+            vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (viewModel.recipe.image != null &&
-                  viewModel.recipe.image!.isNotEmpty)
-                ImageClip(viewModel: viewModel),
-              DetailsContainer(viewModel: viewModel),
-              RecipeDetails(viewModel: viewModel),
-            ],
+          child: GestureDetector(
+            onTap: () => _showRecipeDetail(context),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(
+                  ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xl),
+                ),
+                border: Border.all(
+                  color: AppColors.orange,
+                  width: 2.5,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.orange.withValues(alpha: 0.15),
+                    blurRadius: ResponsiveUtils.spacing(
+                      context,
+                      ResponsiveSpacing.md,
+                    ),
+                    offset: const Offset(0, 3),
+                    spreadRadius: 0,
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (widget.viewModel.recipe.image != null &&
+                      widget.viewModel.recipe.image!.isNotEmpty)
+                    ImageClip(viewModel: widget.viewModel),
+                  DetailsContainer(viewModel: widget.viewModel),
+                  RecipeDetails(viewModel: widget.viewModel),
+                ],
+              ),
+            ),
           ),
         ),
       ),

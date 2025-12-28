@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:ai_cook_project/widgets/ai_agent/chat_widget.dart';
 import 'package:ai_cook_project/theme.dart';
+import 'package:ai_cook_project/services/foundation_chat_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 
@@ -62,6 +64,8 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
 
     if (widget.isOpen) {
       _controller.forward();
+      // Prewarm the chat assistant for faster first response
+      FoundationChatService.prewarmChat();
     }
   }
 
@@ -71,8 +75,13 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
     if (widget.isOpen != oldWidget.isOpen) {
       if (widget.isOpen) {
         _controller.forward();
+        // Prewarm chat assistant when window opens
+        FoundationChatService.prewarmChat();
       } else {
         _controller.reverse();
+        // Clear history and messages when closing
+        FoundationChatService.clearHistory();
+        _chatWidgetKey.currentState?.clearMessages();
       }
     }
   }
@@ -80,11 +89,36 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
   @override
   void dispose() {
     _controller.dispose();
+    // Clean up Foundation Models resources
+    FoundationChatService.cleanup();
     super.dispose();
   }
 
   void _handleSendMessage(String message) async {
+    String? aiResponse;
+
+    // Try Foundation Models first on iOS
+    if (Platform.isIOS) {
+      try {
+        debugPrint('🍎 Attempting Foundation Models chat...');
+        aiResponse = await FoundationChatService.sendMessage(message);
+
+        if (aiResponse != null && aiResponse.isNotEmpty) {
+          debugPrint('✅ Foundation Models chat success!');
+          if (_chatWidgetKey.currentState != null) {
+            _chatWidgetKey.currentState!.receiveMessage(aiResponse);
+          }
+          return; // Success, no need for API fallback
+        }
+      } catch (e) {
+        debugPrint('⚠️ Foundation Models chat failed: $e');
+        // Fall through to API fallback
+      }
+    }
+
+    // Fallback to API (for non-iOS or if Foundation Models failed)
     try {
+      debugPrint('🌐 Using API fallback...');
       final response = await http
           .post(
             Uri.parse('http://172.20.10.14:3000/llm/talk'),
@@ -100,7 +134,7 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
 
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-        final aiResponse = responseData['response'] as String;
+        aiResponse = responseData['response'] as String;
         if (_chatWidgetKey.currentState != null) {
           _chatWidgetKey.currentState!.receiveMessage(aiResponse);
         }
@@ -112,6 +146,7 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
         }
       }
     } catch (error) {
+      debugPrint('❌ API fallback also failed: $error');
       if (_chatWidgetKey.currentState != null) {
         _chatWidgetKey.currentState!.receiveMessage(
           'Sorry, I encountered an error while processing your message. Please try again.',
@@ -361,7 +396,9 @@ class _FloatingChatWindowState extends State<FloatingChatWindow>
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  'powered by ChatGPT©',
+                  Platform.isIOS
+                      ? 'powered by Apple Intelligence'
+                      : 'powered by ChatGPT©',
                   style: TextStyle(
                     color: Colors.black.withOpacity(0.5),
                     fontSize: 10,

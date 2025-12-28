@@ -249,11 +249,14 @@ export const RecipeFilterService = {
         return false;
       }
 
-      // Verificar compatibilidad de unidades
-      const compatible = this._areUnitsCompatible(userIng.unit, ri.unit);
+      // Verificar compatibilidad de unidades (pass ingredient name for flexible matching)
+      const compatible = this._areUnitsCompatible(userIng.unit, ri.unit, ri.ingredient.name);
       console.log(`    🔗 Units compatible: ${compatible} (user: "${userIng.unit.abbreviation}" vs recipe: "${ri.unit.abbreviation}")`);
       if (!compatible) {
-        return false;
+        // For incompatible units, assume user has enough if they have the ingredient at all
+        // This is lenient for cooking purposes (e.g., garlic in cloves vs grams)
+        console.log(`    ⚠️ Units incompatible but allowing match - user has "${ri.ingredient.name}"`);
+        return true; // Allow ingredient match but skip quantity verification
       }
 
       // Verificar que tenga suficiente cantidad
@@ -335,7 +338,7 @@ export const RecipeFilterService = {
       if (!userIng.unit || !ri.unit) return true;
 
       // Para "Recommended", si las unidades no son compatibles, asumir que está bien
-      if (!this._areUnitsCompatible(userIng.unit, ri.unit)) {
+      if (!this._areUnitsCompatible(userIng.unit, ri.unit, ri.ingredient.name)) {
         console.log(`    🔄 Units not compatible for "${ri.ingredient.name}" - allowing for Recommended filter`);
         return true;
       }
@@ -724,13 +727,28 @@ export const RecipeFilterService = {
     return false;
   },
 
+  // Helper to check if an ingredient is commonly measured in different unit types
+  _isFlexibleIngredient(ingredientName: string): boolean {
+    const flexible = ingredientName?.toLowerCase() || '';
+
+    // Ingredients that can be reasonably measured in different units (count, weight, volume)
+    const flexibleIngredients = [
+      'garlic', 'ginger', 'onion', 'shallot', 'tomato', 'potato',
+      'carrot', 'pepper', 'chile', 'chili', 'lemon', 'lime', 'orange',
+      'egg', 'butter', 'cheese', 'cream', 'milk', 'oil',
+      'salt', 'sugar', 'flour', 'rice', 'pasta', 'noodle'
+    ];
+
+    return flexibleIngredients.some(item => flexible.includes(item));
+  },
+
   // Funciones auxiliares para conversión de unidades
-  _areUnitsCompatible(unit1: any, unit2: any): boolean {
+  _areUnitsCompatible(unit1: any, unit2: any, ingredientName?: string): boolean {
     const unit1Type = unit1.type?.toLowerCase();
     const unit2Type = unit2.type?.toLowerCase();
     const unit1Abbr = unit1.abbreviation?.toLowerCase();
     const unit2Abbr = unit2.abbreviation?.toLowerCase();
-    
+
     if (this.DEBUG_MODE) console.log(`      🔍 Checking compatibility: "${unit1Abbr}" (${unit1Type}) vs "${unit2Abbr}" (${unit2Type})`);
 
     // First try type-based compatibility (preferred method)
@@ -790,13 +808,24 @@ export const RecipeFilterService = {
       console.log(`      ✅ Common seasoning units are compatible for cooking flexibility`);
       return true;
     }
-    
-    console.log(`      ❌ Units are not compatible`);
-    console.log(`      📝 Weight units: ${weightUnits.join(', ')}`);
-    console.log(`      📝 Volume units: ${volumeUnits.join(', ')}`);
-    console.log(`      📝 Count units: ${countUnits.join(', ')}`);
-    console.log(`      📝 Measure units: ${measureUnits.join(', ')}`);
-    console.log(`      📝 Container units: ${containerUnits.join(', ')}`);
+
+    // Cooking flexibility: For common ingredients, allow cross-unit type matching
+    // e.g., garlic in cloves vs grams, onions in units vs kg
+    if (ingredientName && this._isFlexibleIngredient(ingredientName)) {
+      const isWeightCount = (weightUnits.includes(unit1Abbr) && countUnits.includes(unit2Abbr)) ||
+                            (countUnits.includes(unit1Abbr) && weightUnits.includes(unit2Abbr));
+      const isVolumeCount = (volumeUnits.includes(unit1Abbr) && countUnits.includes(unit2Abbr)) ||
+                            (countUnits.includes(unit1Abbr) && volumeUnits.includes(unit2Abbr));
+      const isWeightVolume = (weightUnits.includes(unit1Abbr) && volumeUnits.includes(unit2Abbr)) ||
+                             (volumeUnits.includes(unit1Abbr) && weightUnits.includes(unit2Abbr));
+
+      if (isWeightCount || isVolumeCount || isWeightVolume) {
+        console.log(`      ✅ Cooking flexibility: "${ingredientName}" allows ${unit1Abbr} ↔ ${unit2Abbr} compatibility`);
+        return true;
+      }
+    }
+
+    if (this.DEBUG_MODE) console.log(`      ⚠️ Units not strictly compatible - will allow ingredient match but skip quantity check`);
     return false;
   },
 

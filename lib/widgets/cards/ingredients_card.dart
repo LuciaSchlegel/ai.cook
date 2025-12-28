@@ -61,13 +61,13 @@ class ShoppingRemindersCard extends StatelessWidget {
                 Container(
                   height:
                       ResponsiveUtils.spacing(context, ResponsiveSpacing.xxl) *
-                      10,
+                      11,
                   decoration: BoxDecoration(
                     gradient: AppColors.gradientOrange,
                     borderRadius: BorderRadius.circular(
                       ResponsiveUtils.borderRadius(
                         context,
-                        ResponsiveBorderRadius.xxl,
+                        ResponsiveBorderRadius.xxxl,
                       ),
                     ),
                     boxShadow: [
@@ -91,41 +91,54 @@ class ShoppingRemindersCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              padding: EdgeInsets.all(
-                                ResponsiveUtils.spacing(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: ResponsiveUtils.spacing(
                                   context,
-                                  ResponsiveSpacing.xs,
+                                  ResponsiveSpacing.md,
+                                ),
+                                vertical: ResponsiveUtils.spacing(
+                                  context,
+                                  ResponsiveSpacing.xxxs,
                                 ),
                               ),
                               decoration: BoxDecoration(
                                 color: Colors.white.withValues(alpha: 0.2),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Icon(
-                                Icons.shopping_bag_outlined,
-                                color: Colors.white,
-                                size: ResponsiveUtils.iconSize(
-                                  context,
-                                  ResponsiveIconSize.lg,
+                                borderRadius: BorderRadius.circular(
+                                  ResponsiveUtils.borderRadius(
+                                    context,
+                                    ResponsiveBorderRadius.xxl,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const ResponsiveSpacingWidget.horizontal(
-                              ResponsiveSpacing.sm,
-                            ),
-                            Text(
-                              'Shopping List',
-                              style: AppTextStyles.casta(
-                                fontSize:
-                                    ResponsiveUtils.fontSize(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.shopping_bag_outlined,
+                                    color: Colors.white,
+                                    size: ResponsiveUtils.iconSize(
                                       context,
-                                      ResponsiveFontSize.xxl,
-                                    ) *
-                                    1.4,
-                                fontWeight: AppFontWeights.bold,
-                                color: Colors.white,
+                                      ResponsiveIconSize.xl,
+                                    ),
+                                  ),
+                                  const ResponsiveSpacingWidget.horizontal(
+                                    ResponsiveSpacing.md,
+                                  ),
+                                  Text(
+                                    'Shopping List',
+                                    style: AppTextStyles.casta(
+                                      fontSize:
+                                          ResponsiveUtils.fontSize(
+                                            context,
+                                            ResponsiveFontSize.xxl,
+                                          ) *
+                                          1.4,
+                                      fontWeight: AppFontWeights.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           ],
                         ),
@@ -141,7 +154,7 @@ class ShoppingRemindersCard extends StatelessWidget {
                                 context,
                                 ResponsiveSpacing.xxl,
                               ) *
-                              7.2,
+                              8.4,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(
@@ -162,7 +175,7 @@ class ShoppingRemindersCard extends StatelessWidget {
                             padding: EdgeInsets.all(
                               ResponsiveUtils.spacing(
                                 context,
-                                ResponsiveSpacing.md,
+                                ResponsiveSpacing.lg,
                               ),
                             ),
                             child: Column(
@@ -172,7 +185,7 @@ class ShoppingRemindersCard extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(
                                     horizontal: ResponsiveUtils.spacing(
                                       context,
-                                      ResponsiveSpacing.sm,
+                                      ResponsiveSpacing.md,
                                     ),
                                     vertical: ResponsiveUtils.spacing(
                                       context,
@@ -215,7 +228,7 @@ class ShoppingRemindersCard extends StatelessWidget {
                                           context,
                                           ResponsiveSpacing.xl,
                                         ) *
-                                        7.8,
+                                        8.8,
                                   ),
                                   child: ListView.separated(
                                     shrinkWrap: true,

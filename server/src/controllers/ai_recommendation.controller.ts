@@ -1,5 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
-import { getRecipesService } from "../services/recipe.service";
+import { RecipeService } from "../services/recipe.service";
 import { RecipeDto } from "../dtos/recipe.dto";
 import { serialize } from "../helpers/serialize";
 import { AIRecommendationService } from "../services/ai_recommendation.service";
@@ -81,7 +81,7 @@ export const generateAIRecommendationsController = controllerWrapper(async (req)
     }
 
     // Obtener todas las recetas
-    const allRecipes = await getRecipesService();
+    const allRecipes = await new RecipeService().getRecipes();
     const serializedRecipes = serialize(RecipeDto, allRecipes) as RecipeDto[];
 
     console.log('🤖 Generating AI recommendations with:', {

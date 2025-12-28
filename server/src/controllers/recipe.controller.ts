@@ -1,5 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
-import { getMissingIngredientsByRecipeService, getRecipesService } from "../services/recipe.service";
+import { getMissingIngredientsByRecipeService, RecipeService } from "../services/recipe.service";
 import { RecipeDto } from "../dtos/recipe.dto";
 import { serialize } from "../helpers/serialize";
 import { RecipeFilterService } from "../services/recipe_filter.service";
@@ -36,13 +36,15 @@ const controllerWrapper = (handler: ControllerFunction): RequestHandler => {
 };
 
 export const getRecipesController = controllerWrapper(async () => {
-  const recipes = await getRecipesService();
+  const recipeService = new RecipeService();
+  const recipes = await recipeService.getRecipes();
   return serialize(RecipeDto, recipes);
 });
 
 export const getMissingIngredientsController = controllerWrapper(async (req) => {
   try {
-    const recipes = await getRecipesService();
+    const recipeService = new RecipeService();
+    const recipes = await recipeService.getRecipes();
     const serializedRecipes = serialize(RecipeDto, recipes) as RecipeDto[]
     const serializedUserIng = serialize(
       UserIngredientOptimizedDto,
@@ -95,7 +97,8 @@ export const filterRecipesController = controllerWrapper(async (req) => {
       throw errorResponse;
     }
 
-    const allRecipes = await getRecipesService();
+    const recipeService = new RecipeService();
+    const allRecipes = await recipeService.getRecipes();
     const serializedRecipes = serialize(RecipeDto, allRecipes) as RecipeDto[];
 
     const filterString = dto.filter === RecipeFilterEnum.RECOMMENDED

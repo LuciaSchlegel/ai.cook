@@ -63,6 +63,15 @@ class ChatWidgetState extends State<ChatWidget> {
     }
   }
 
+  void clearMessages() {
+    if (mounted) {
+      setState(() {
+        _messages.clear();
+        _isTyping = false;
+      });
+    }
+  }
+
   void _scrollToBottom() {
     // Use a more reliable method for scrolling to bottom
     WidgetsBinding.instance.addPostFrameCallback((_) {

@@ -28,7 +28,6 @@ void main() {
     isGlutenFree: true,
     isLactoseFree: true,
     category: null,
-    tags: [],
   );
 
   final rice = Ingredient(
@@ -39,7 +38,6 @@ void main() {
     isGlutenFree: true,
     isLactoseFree: true,
     category: null,
-    tags: [],
   );
 
   final tofu = Ingredient(
@@ -50,7 +48,6 @@ void main() {
     isGlutenFree: true,
     isLactoseFree: true,
     category: null,
-    tags: [],
   );
 
   // User ingredients (base)
