@@ -1,23 +1,23 @@
 [
     {
-        "name": "Fruits",
+        "name": "Fruits"
     },
     {
-        "name": "Vegetables",
+        "name": "Vegetables"
     },
     {
-        "name": "Meat",
+        "name": "Meat"
     },
     {
-        "name": "Fish",
+        "name": "Fish"
     },
     {
-        "name": "Grains",
+        "name": "Grains"
     },
     {
-        "name": "Dairies",
+        "name": "Dairies"
     },
     {
-        "name": "Groceries",
-    },
+        "name": "Groceries"
+    }
 ]

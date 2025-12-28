@@ -23,13 +23,13 @@ export const AppDataSource = new DataSource({
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT || '5432'),
   username: process.env.DB_USERNAME || 'luciaschlegel',
-  password: process.env.DB_PASSWORD ,
-  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'aiCook',
   entities: [ User, Ingredient, Recipe, Event, UserIngredient, Attribute, DietaryTag, Subscription, RecipeIngredient, Category, RecipeTag, CustomIngredient, Unit, ExternalRecipe ],
-  synchronize: true, // True solo para desarrollo (genera tablas automáticamente)
+  synchronize: true,
   logging: false,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  // ssl: {
+  //   rejectUnauthorized: false,
+  // },
   //dropSchema: true,  if you want to reset the db content 
 });

@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: aicook_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USERNAME:-aicook_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-aicook_password}
+      POSTGRES_DB: ${DB_NAME:-aiCook}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-aicook_user} -d ${DB_NAME:-aiCook}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Uncomment to run the backend in Docker as well
+  # backend:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: aicook_backend
+  #   restart: unless-stopped
+  #   environment:
+  #     DB_HOST: postgres
+  #     DB_PORT: 5432
+  #     DB_USERNAME: ${DB_USERNAME:-aicook_user}
+  #     DB_PASSWORD: ${DB_PASSWORD:-aicook_password}
+  #     DB_NAME: ${DB_NAME:-aiCook}
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+
+volumes:
+  postgres_data:
