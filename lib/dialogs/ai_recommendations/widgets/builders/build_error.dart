@@ -10,12 +10,10 @@ class ErrorBuild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height:
-          ResponsiveUtils.spacing(context, ResponsiveSpacing.xxl) * 4 +
-          ResponsiveUtils.spacing(context, ResponsiveSpacing.xl),
       margin: EdgeInsets.symmetric(
         vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
       ),
+      padding: ResponsiveUtils.padding(context, ResponsiveSpacing.lg),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(
@@ -23,114 +21,71 @@ class ErrorBuild extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.orange.withValues(alpha: 0.08),
+            color: AppColors.button.withValues(alpha: 0.04),
             blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
             offset: const Offset(0, 2),
-            spreadRadius: 0,
           ),
         ],
         border: Border.all(
-          color: AppColors.orange.withValues(alpha: 0.2),
+          color: AppColors.button.withValues(alpha: 0.08),
           width: 1,
         ),
       ),
-      child: Stack(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          // Subtle gradient background
           Container(
+            width:
+                ResponsiveUtils.iconSize(context, ResponsiveIconSize.xxl) +
+                ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+            height:
+                ResponsiveUtils.iconSize(context, ResponsiveIconSize.xxl) +
+                ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(
-                ResponsiveUtils.borderRadius(
-                  context,
-                  ResponsiveBorderRadius.lg,
-                ),
-              ),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  AppColors.orange.withValues(alpha: 0.03),
-                  AppColors.lightYellow.withValues(alpha: 0.03),
-                ],
-              ),
+              color: AppColors.orange.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              CupertinoIcons.exclamationmark_triangle,
+              size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.xl),
+              color: AppColors.orange,
             ),
           ),
-          // Main content
-          Center(
-            child: Padding(
-              padding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Error icon
-                  Container(
-                    width:
-                        ResponsiveUtils.iconSize(
-                          context,
-                          ResponsiveIconSize.xxl,
-                        ) +
-                        ResponsiveUtils.spacing(context, ResponsiveSpacing.lg),
-                    height:
-                        ResponsiveUtils.iconSize(
-                          context,
-                          ResponsiveIconSize.xxl,
-                        ) +
-                        ResponsiveUtils.spacing(context, ResponsiveSpacing.lg),
-                    decoration: BoxDecoration(
-                      color: AppColors.orange.withValues(alpha: 0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      CupertinoIcons.exclamationmark_triangle,
-                      size: ResponsiveUtils.iconSize(
-                        context,
-                        ResponsiveIconSize.xl,
-                      ),
-                      color: AppColors.orange,
-                    ),
-                  ),
-                  SizedBox(
-                    height: ResponsiveUtils.spacing(
-                      context,
-                      ResponsiveSpacing.md,
-                    ),
-                  ),
-                  // Title
-                  Text(
-                    'AI Chef Unavailable',
-                    style: CompagnonTextStyles.semiBold(
-                      fontSize: ResponsiveUtils.fontSize(
-                        context,
-                        ResponsiveFontSize.lg,
-                      ),
-                      color: AppColors.button,
-                    ).copyWith(letterSpacing: 0.3),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: ResponsiveUtils.spacing(
-                      context,
-                      ResponsiveSpacing.sm,
-                    ),
-                  ),
-                  // Error message
-                  Text(
-                    error,
-                    style: CompagnonTextStyles.regular(
-                      fontSize: ResponsiveUtils.fontSize(
-                        context,
-                        ResponsiveFontSize.sm,
-                      ),
-                      color: AppColors.button.withValues(alpha: 0.7),
-                      height: 1.4,
-                    ).copyWith(letterSpacing: 0.1),
-                    textAlign: TextAlign.center,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+          SizedBox(
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+          ),
+          Text(
+            'Something Went Wrong',
+            style: AppTextStyles.casta(
+              fontSize: ResponsiveUtils.fontSize(
+                context,
+                ResponsiveFontSize.title,
               ),
+              fontWeight: AppFontWeights.semiBold,
+              color: AppColors.button,
+              letterSpacing: 0.4,
+              height: 1.2,
             ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+          ),
+          Text(
+            error,
+            style: AppTextStyles.inter(
+              fontSize: ResponsiveUtils.fontSize(
+                context,
+                ResponsiveFontSize.sm,
+              ),
+              fontWeight: AppFontWeights.regular,
+              color: AppColors.button.withValues(alpha: 0.5),
+              letterSpacing: 0.2,
+              height: 1.5,
+            ),
+            textAlign: TextAlign.center,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),

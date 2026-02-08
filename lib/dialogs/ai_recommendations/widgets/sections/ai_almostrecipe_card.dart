@@ -84,12 +84,12 @@ class _AIAlmostReadyCardState extends State<AIAlmostReadyCard>
                   ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xl),
                 ),
                 border: Border.all(
-                  color: AppColors.orange,
-                  width: 2.5,
+                  color: AppColors.button.withValues(alpha: 0.1),
+                  width: 1,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.orange.withValues(alpha: 0.15),
+                    color: AppColors.button.withValues(alpha: 0.06),
                     blurRadius: ResponsiveUtils.spacing(
                       context,
                       ResponsiveSpacing.md,

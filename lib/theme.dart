@@ -8,6 +8,11 @@ class AppColors {
   static const button = Color(0xFF111A19);
   static const mutedGreen = Color(0xFF809076);
   static const lightYellow = Color(0xFFF8D794);
+  static const gradientBackground = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF2D4A40), Color(0xFF223530)],
+  );
   static const gradientOrange = LinearGradient(
     colors: [Color(0xFFBB6830), Color(0xFFF8D794)],
     begin: Alignment.topLeft,
@@ -33,6 +38,29 @@ class AppColors {
       Color.fromARGB(255, 208, 231, 255),
       Color.fromARGB(255, 129, 168, 216),
     ],
+  );
+
+  // Blue accent for Unit Converter feature
+  static const blueAccent = Color(0xFF5B7DB1);
+
+  // Blue gradient for Unit Converter
+  static const gradientBlue = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF5B7DB1), Color(0xFF8BA8D4)],
+  );
+
+  // Earthy rose for Smart Shopping feature
+  static const earthyRose = Color(0xFFB07A5C);
+
+  // Cupertino system blue for AI features
+  static const systemBlue = Color(0xFF007AFF);
+
+  // Earthy rose gradient for Smart Shopping
+  static const gradientEarthyRose = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFFB07A5C), Color(0xFFD4A88A)],
   );
 
   static Color withOpacity(Color color, double opacity) {

@@ -11,6 +11,7 @@ class BuildNoResults extends StatelessWidget {
       margin: EdgeInsets.symmetric(
         vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
       ),
+      padding: ResponsiveUtils.padding(context, ResponsiveSpacing.lg),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(
@@ -18,183 +19,130 @@ class BuildNoResults extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.mutedGreen.withValues(alpha: 0.06),
+            color: AppColors.button.withValues(alpha: 0.04),
             blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
             offset: const Offset(0, 2),
-            spreadRadius: 0,
           ),
         ],
         border: Border.all(
-          color: AppColors.mutedGreen.withValues(alpha: 0.15),
+          color: AppColors.button.withValues(alpha: 0.08),
           width: 1,
         ),
       ),
-      child: Stack(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          // Subtle gradient background
           Container(
+            width:
+                ResponsiveUtils.iconSize(context, ResponsiveIconSize.xxl) +
+                ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+            height:
+                ResponsiveUtils.iconSize(context, ResponsiveIconSize.xxl) +
+                ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
             decoration: BoxDecoration(
+              color: AppColors.button.withValues(alpha: 0.06),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              CupertinoIcons.sparkles,
+              size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.xl),
+              color: AppColors.button.withValues(alpha: 0.35),
+            ),
+          ),
+          SizedBox(
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+          ),
+          Text(
+            'No Perfect Matches Yet',
+            style: AppTextStyles.casta(
+              fontSize: ResponsiveUtils.fontSize(
+                context,
+                ResponsiveFontSize.title,
+              ),
+              fontWeight: AppFontWeights.semiBold,
+              color: AppColors.button,
+              letterSpacing: 0.4,
+              height: 1.2,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
+          ),
+          Text(
+            "We couldn't find recipes matching your preferences.",
+            style: AppTextStyles.inter(
+              fontSize: ResponsiveUtils.fontSize(
+                context,
+                ResponsiveFontSize.sm,
+              ),
+              fontWeight: AppFontWeights.regular,
+              color: AppColors.button.withValues(alpha: 0.5),
+              letterSpacing: 0.2,
+              height: 1.5,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
+          ),
+          Container(
+            padding: ResponsiveUtils.padding(context, ResponsiveSpacing.md),
+            decoration: BoxDecoration(
+              color: AppColors.lightYellow.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(
                 ResponsiveUtils.borderRadius(
                   context,
-                  ResponsiveBorderRadius.lg,
+                  ResponsiveBorderRadius.md,
                 ),
               ),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  AppColors.mutedGreen.withValues(alpha: 0.03),
-                  AppColors.lightYellow.withValues(alpha: 0.02),
-                ],
+              border: Border.all(
+                color: AppColors.orange.withValues(alpha: 0.15),
+                width: 1,
               ),
             ),
-          ),
-          // Main content
-          Padding(
-            padding: ResponsiveUtils.padding(context, ResponsiveSpacing.lg),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Icon with background
-                Container(
-                  width:
-                      ResponsiveUtils.iconSize(
+                Row(
+                  children: [
+                    Icon(
+                      CupertinoIcons.lightbulb,
+                      size: ResponsiveUtils.iconSize(
                         context,
-                        ResponsiveIconSize.xxl,
-                      ) +
-                      ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
-                  height:
-                      ResponsiveUtils.iconSize(
-                        context,
-                        ResponsiveIconSize.xxl,
-                      ) +
-                      ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
-                  decoration: BoxDecoration(
-                    color: AppColors.mutedGreen.withValues(alpha: 0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    CupertinoIcons.sparkles,
-                    size: ResponsiveUtils.iconSize(
-                      context,
-                      ResponsiveIconSize.xl,
+                        ResponsiveIconSize.sm,
+                      ),
+                      color: AppColors.orange,
                     ),
-                    color: AppColors.mutedGreen,
-                  ),
-                ),
-                SizedBox(
-                  height: ResponsiveUtils.spacing(
-                    context,
-                    ResponsiveSpacing.md,
-                  ),
-                ),
-                // Friendly title
-                Text(
-                  'No Perfect Matches Yet',
-                  style: AppTextStyles.casta(
-                    fontSize:
-                        ResponsiveUtils.fontSize(
-                          context,
-                          ResponsiveFontSize.title,
-                        ) *
-                        1.1,
-                    fontWeight: AppFontWeights.semiBold,
-                    color: AppColors.button,
-                    letterSpacing: 0.6,
-                    height: 1.2,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: ResponsiveUtils.spacing(
-                    context,
-                    ResponsiveSpacing.md,
-                  ),
-                ),
-                // Friendly message
-                Text(
-                  "We couldn't find recipes that match all your preferences right now.",
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(
-                      context,
-                      ResponsiveFontSize.md,
-                    ),
-                    color: AppColors.button.withValues(alpha: 0.75),
-                    height: 1.5,
-                    fontWeight: AppFontWeights.medium,
-                    fontFamily: 'Inter',
-                    letterSpacing: 0.2,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: ResponsiveUtils.spacing(
-                    context,
-                    ResponsiveSpacing.md,
-                  ),
-                ),
-                // Helpful suggestions
-                Container(
-                  padding: ResponsiveUtils.padding(
-                    context,
-                    ResponsiveSpacing.md,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.lightYellow.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(
-                      ResponsiveUtils.borderRadius(
+                    SizedBox(
+                      width: ResponsiveUtils.spacing(
                         context,
-                        ResponsiveBorderRadius.md,
+                        ResponsiveSpacing.xs,
                       ),
                     ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            CupertinoIcons.lightbulb,
-                            size: ResponsiveUtils.iconSize(
-                              context,
-                              ResponsiveIconSize.sm,
-                            ),
-                            color: AppColors.button.withValues(alpha: 0.7),
-                          ),
-                          SizedBox(
-                            width: ResponsiveUtils.spacing(
-                              context,
-                              ResponsiveSpacing.xs,
-                            ),
-                          ),
-                          Text(
-                            'Try this:',
-                            style: TextStyle(
-                              fontSize: ResponsiveUtils.fontSize(
-                                context,
-                                ResponsiveFontSize.sm,
-                              ),
-                              fontWeight: AppFontWeights.semiBold,
-                              fontFamily: 'Inter',
-                              color: AppColors.button.withValues(alpha: 0.8),
-                              letterSpacing: 0.2,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: ResponsiveUtils.spacing(
+                    Text(
+                      'Try this:',
+                      style: AppTextStyles.inter(
+                        fontSize: ResponsiveUtils.fontSize(
                           context,
-                          ResponsiveSpacing.sm,
+                          ResponsiveFontSize.sm,
                         ),
+                        fontWeight: AppFontWeights.semiBold,
+                        color: AppColors.button.withValues(alpha: 0.7),
+                        letterSpacing: 0.2,
                       ),
-                      _buildSuggestion(context, 'Relax time or difficulty constraints'),
-                      _buildSuggestion(context, 'Try different cuisine tags'),
-                      _buildSuggestion(context, 'Browse all available recipes'),
-                    ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: ResponsiveUtils.spacing(
+                    context,
+                    ResponsiveSpacing.sm,
                   ),
                 ),
+                _buildSuggestion(context, 'Relax time or difficulty constraints'),
+                _buildSuggestion(context, 'Try different cuisine tags'),
+                _buildSuggestion(context, 'Add more items to your pantry'),
               ],
             ),
           ),
@@ -219,24 +167,25 @@ class BuildNoResults extends StatelessWidget {
               width: 4,
               height: 4,
               decoration: BoxDecoration(
-                color: AppColors.button.withValues(alpha: 0.5),
+                color: AppColors.button.withValues(alpha: 0.4),
                 shape: BoxShape.circle,
               ),
             ),
           ),
-          SizedBox(width: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs)),
+          SizedBox(
+            width: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
+          ),
           Expanded(
             child: Text(
               text,
-              style: TextStyle(
+              style: AppTextStyles.inter(
                 fontSize: ResponsiveUtils.fontSize(
                   context,
                   ResponsiveFontSize.sm,
                 ),
-                fontFamily: 'Inter',
-                color: AppColors.button.withValues(alpha: 0.7),
+                fontWeight: AppFontWeights.regular,
+                color: AppColors.button.withValues(alpha: 0.6),
                 height: 1.4,
-                letterSpacing: 0.1,
               ),
             ),
           ),

@@ -50,6 +50,13 @@ const BASIC_UNITS = [
     { name: 'package', abbreviation: 'pkg', type: 'container' }
 ];
 
+const BASIC_DIETARY_TAGS = [
+    { name: 'Vegan' },
+    { name: 'Vegetarian' },
+    { name: 'Gluten-Free' },
+    { name: 'Lactose-Free' },
+];
+
 const BASIC_RECIPE_TAGS = [
     { name: 'Italian' },
     { name: 'American' },
@@ -121,6 +128,10 @@ async function seedBasicEntities() {
         await seedResourcesService('units', BASIC_UNITS);
         console.log(`✅ Created ${BASIC_UNITS.length} units`);
 
+        console.log('🥗 Seeding dietary tags...');
+        await seedResourcesService('dietary_tags', BASIC_DIETARY_TAGS);
+        console.log(`✅ Created ${BASIC_DIETARY_TAGS.length} dietary tags`);
+
         console.log('🏷️ Seeding recipe tags...');
         await seedResourcesService('recipe_tags', BASIC_RECIPE_TAGS);
         console.log(`✅ Created ${BASIC_RECIPE_TAGS.length} recipe tags`);
@@ -129,6 +140,7 @@ async function seedBasicEntities() {
         console.log('\n📋 Summary:');
         console.log(`   • Categories: ${BASIC_CATEGORIES.length}`);
         console.log(`   • Units: ${BASIC_UNITS.length}`);
+        console.log(`   • Dietary Tags: ${BASIC_DIETARY_TAGS.length}`);
         console.log(`   • Recipe Tags: ${BASIC_RECIPE_TAGS.length}`);
         console.log('\nℹ️ You can now proceed to seed recipes using the recipe seeding script.');
 

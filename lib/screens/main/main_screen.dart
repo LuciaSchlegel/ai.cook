@@ -1,4 +1,4 @@
-import 'package:ai_cook_project/dialogs/ai_recommendations/ai_recipes_dialog.dart';
+import 'package:ai_cook_project/dialogs/ai_assistant/ai_assistant_dialog.dart';
 import 'package:ai_cook_project/providers/ingredients_provider.dart';
 import 'package:ai_cook_project/providers/resource_provider.dart';
 import 'package:ai_cook_project/providers/user_provider.dart';
@@ -7,7 +7,6 @@ import 'package:ai_cook_project/screens/main/services/initializer.dart';
 import 'package:ai_cook_project/screens/main/widgets/bottom_app_bar.dart';
 import 'package:ai_cook_project/services/apple_intelligence_permission.dart';
 import 'package:ai_cook_project/theme.dart';
-import 'package:ai_cook_project/widgets/ai_agent/floating_chat_window.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ai_cook_project/screens/cupboard/cupboard_screen.dart';
@@ -114,66 +113,55 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          _currentIndex == -1
+    return Stack(
+      children: [
+        Scaffold(
+          backgroundColor: AppColors.background,
+          body: _currentIndex == -1
               ? HomeScreen(
-                onProfileTap: _onProfileTap,
-                onFeedTap: _onFeedTap,
-                onLogoutTap: _onLogoutTap,
-              )
+                  onProfileTap: _onProfileTap,
+                  onFeedTap: _onFeedTap,
+                  onLogoutTap: _onLogoutTap,
+                )
               : _currentIndex == 0
               ? CupboardScreen(
-                isActive: true,
-                onProfileTap: _onProfileTap,
-                onFeedTap: _onFeedTap,
-                onLogoutTap: _onLogoutTap,
-              )
+                  isActive: true,
+                  onProfileTap: _onProfileTap,
+                  onFeedTap: _onFeedTap,
+                  onLogoutTap: _onLogoutTap,
+                )
               : _currentIndex == 1
               ? RecipesScreen(
-                onProfileTap: _onProfileTap,
-                onFeedTap: _onFeedTap,
-                onLogoutTap: _onLogoutTap,
-              )
+                  onProfileTap: _onProfileTap,
+                  onFeedTap: _onFeedTap,
+                  onLogoutTap: _onLogoutTap,
+                )
               : _currentIndex == 2
               ? CalendarScreen(
-                onProfileTap: _onProfileTap,
-                onFeedTap: _onFeedTap,
-                onLogoutTap: _onLogoutTap,
-              )
+                  onProfileTap: _onProfileTap,
+                  onFeedTap: _onFeedTap,
+                  onLogoutTap: _onLogoutTap,
+                )
               : _currentIndex == 3
               ? SettingsScreen(
-                onProfileTap: _onProfileTap,
-                onFeedTap: _onFeedTap,
-                onLogoutTap: _onLogoutTap,
-              )
+                  onProfileTap: _onProfileTap,
+                  onFeedTap: _onFeedTap,
+                  onLogoutTap: _onLogoutTap,
+                )
               : const SizedBox(),
-          if (_isAiWindowOpen && _currentIndex != 1)
-            Positioned.fill(
-              child: IgnorePointer(
-                ignoring: !_isAiWindowOpen,
-                child: FloatingChatWindow(
-                  isOpen: _isAiWindowOpen,
-                  onClose: _toggleAiWindow,
-                ),
-              ),
-            ),
-          if (_isAiWindowOpen && _currentIndex == 1)
-            AiRecipesDialog(
-              onToggle: _toggleAiWindow, // Dialog calls this to close
-              isOpen: _isAiWindowOpen, // Dialog reacts to this state
-            ), //aqui implementaremos la nueva vista de ai en recipes
-        ],
-      ),
-      bottomNavigationBar: NavBarBuilder(
-        currentIndex: _currentIndex,
-        onTabTapped: _onTabTapped,
-        toggleAiWindow: _toggleAiWindow,
-        isAiWindowOpen: _isAiWindowOpen,
-      ),
+          bottomNavigationBar: NavBarBuilder(
+            currentIndex: _currentIndex,
+            onTabTapped: _onTabTapped,
+            toggleAiWindow: _toggleAiWindow,
+            isAiWindowOpen: _isAiWindowOpen,
+          ),
+        ),
+        if (_isAiWindowOpen)
+          AiAssistantDialog(
+            onToggle: _toggleAiWindow,
+            isOpen: _isAiWindowOpen,
+          ),
+      ],
     );
   }
 }

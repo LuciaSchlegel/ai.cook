@@ -18,14 +18,14 @@ class BuildEmpty extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.mutedGreen.withValues(alpha: 0.05),
+            color: AppColors.button.withValues(alpha: 0.05),
             blurRadius: ResponsiveUtils.spacing(context, ResponsiveSpacing.sm),
             offset: const Offset(0, 2),
             spreadRadius: 0,
           ),
         ],
         border: Border.all(
-          color: AppColors.mutedGreen.withValues(alpha: 0.1),
+          color: AppColors.button.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -45,7 +45,7 @@ class BuildEmpty extends StatelessWidget {
                 end: Alignment.bottomCenter,
                 colors: [
                   AppColors.lightYellow.withValues(alpha: 0.02),
-                  AppColors.mutedGreen.withValues(alpha: 0.02),
+                  AppColors.button.withValues(alpha: 0.02),
                 ],
               ),
             ),
@@ -71,7 +71,7 @@ class BuildEmpty extends StatelessWidget {
                       ) +
                       ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
                   decoration: BoxDecoration(
-                    color: AppColors.mutedGreen.withValues(alpha: 0.08),
+                    color: AppColors.button.withValues(alpha: 0.08),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -80,7 +80,7 @@ class BuildEmpty extends StatelessWidget {
                       context,
                       ResponsiveIconSize.xl,
                     ),
-                    color: AppColors.mutedGreen,
+                    color: AppColors.button,
                   ),
                 ),
                 SizedBox(

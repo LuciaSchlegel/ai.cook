@@ -35,16 +35,8 @@ class DetailsContainer extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            viewModel.missingCount == 0
-                ? AppColors.mutedGreen.withValues(alpha: 0.08)
-                : viewModel.missingCount <= 2
-                ? AppColors.orange.withValues(alpha: 0.08)
-                : AppColors.button.withValues(alpha: 0.05),
-            viewModel.missingCount == 0
-                ? AppColors.lightYellow.withValues(alpha: 0.05)
-                : viewModel.missingCount <= 2
-                ? AppColors.lightYellow.withValues(alpha: 0.05)
-                : Colors.grey.withValues(alpha: 0.03),
+            AppColors.button.withValues(alpha: 0.04),
+            AppColors.lightYellow.withValues(alpha: 0.03),
           ],
         ),
         borderRadius:
@@ -157,10 +149,10 @@ class DetailsContainer extends StatelessWidget {
                     : Icons.add_shopping_cart_rounded,
                 color:
                     viewModel.missingCount == 0
-                        ? AppColors.mutedGreen
+                        ? AppColors.button.withValues(alpha: 0.6)
                         : viewModel.missingCount <= 2
-                        ? AppColors.orange
-                        : AppColors.button.withValues(alpha: 0.6),
+                        ? AppColors.button.withValues(alpha: 0.5)
+                        : AppColors.button.withValues(alpha: 0.4),
                 size: ResponsiveUtils.iconSize(context, ResponsiveIconSize.sm),
               ),
               const SizedBox(width: 8),
@@ -182,10 +174,10 @@ class DetailsContainer extends StatelessWidget {
                     height: 1.4,
                     color:
                         viewModel.missingCount == 0
-                            ? AppColors.mutedGreen
+                            ? AppColors.button.withValues(alpha: 0.7)
                             : viewModel.missingCount <= 2
-                            ? AppColors.orange
-                            : AppColors.button.withValues(alpha: 0.7),
+                            ? AppColors.button.withValues(alpha: 0.6)
+                            : AppColors.button.withValues(alpha: 0.5),
                   ),
                 ),
               ),

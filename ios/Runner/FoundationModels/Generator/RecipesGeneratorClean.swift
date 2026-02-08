@@ -66,30 +66,52 @@ struct EnrichedRecommendations {
 final class RecipesGeneratorClean {
 
     var error: Error?
-    private var session: LanguageModelSession
+    private var session: LanguageModelSession?
 
     private(set) var enrichedRecommendations: EnrichedRecommendations?
     var isGenerating: Bool = false
 
-    init() {
-        // MUCH SIMPLER INSTRUCTIONS - AI just generates language
-        let instructions = Instructions {
-            """
-            You are a culinary advisor who provides personalized cooking advice.
-
-            Your job is simple: explain WHY each recipe matches the user and give helpful tips.
-
-            DO NOT select recipes, score recipes, or categorize them - that's already done.
-
-            For each recipe, provide:
-            1. reasoning: Explain WHY this recipe matches their situation (available ingredients, preferences, time)
-            2. cookingTips: 2-3 practical, actionable tips for cooking this dish
-            3. substitutions: Practical swaps for missing ingredients (if any)
-
-            Be warm, encouraging, and specific to THIS user's situation.
-            """
+    /// Check if Apple Intelligence is available on this device
+    static var isAvailable: Bool {
+        if #available(iOS 26.0, *) {
+            switch SystemLanguageModel.default.availability {
+            case .available:
+                return true
+            case .unavailable(let reason):
+                print("⚠️ Model unavailable: \(reason)")
+                return false
+            }
         }
-        self.session = LanguageModelSession(instructions: instructions)
+        return false
+    }
+
+    init() {
+        // Only initialize if available
+        guard RecipesGeneratorClean.isAvailable else {
+            print("⚠️ Apple Intelligence not available for RecipesGeneratorClean")
+            return
+        }
+
+        if #available(iOS 26.0, *) {
+            // MUCH SIMPLER INSTRUCTIONS - AI just generates language
+            let instructions = Instructions {
+                """
+                You are a culinary advisor who provides personalized cooking advice.
+
+                Your job is simple: explain WHY each recipe matches the user and give helpful tips.
+
+                DO NOT select recipes, score recipes, or categorize them - that's already done.
+
+                For each recipe, provide:
+                1. reasoning: Explain WHY this recipe matches their situation (available ingredients, preferences, time)
+                2. cookingTips: 2-3 practical, actionable tips for cooking this dish
+                3. substitutions: Practical swaps for missing ingredients (if any)
+
+                Be warm, encouraging, and specific to THIS user's situation.
+                """
+            }
+            self.session = LanguageModelSession(instructions: instructions)
+        }
     }
 
     func enrichRecipes(preComputedData: PreComputedData, isRetry: Bool = false) async {
@@ -102,7 +124,92 @@ final class RecipesGeneratorClean {
             return
         }
 
+        guard #available(iOS 26.0, *) else {
+            self.error = NSError(
+                domain: "RecipesGeneratorClean",
+                code: -2,
+                userInfo: [NSLocalizedDescriptionKey: "iOS 26+ required for Apple Intelligence"]
+            )
+            return
+        }
+
+        // Check model availability before each request
+        switch SystemLanguageModel.default.availability {
+        case .available:
+            break
+        case .unavailable(.deviceNotEligible):
+            self.error = NSError(
+                domain: "RecipesGeneratorClean",
+                code: -3,
+                userInfo: [NSLocalizedDescriptionKey: "This device is not eligible for Apple Intelligence. Apple Intelligence requires iPhone 15 Pro, iPhone 16, or newer."]
+            )
+            return
+        case .unavailable(.appleIntelligenceNotEnabled):
+            self.error = NSError(
+                domain: "RecipesGeneratorClean",
+                code: -3,
+                userInfo: [NSLocalizedDescriptionKey: "Apple Intelligence is not enabled. Please enable it in Settings > Apple Intelligence & Siri."]
+            )
+            return
+        case .unavailable(.modelNotReady):
+            self.error = NSError(
+                domain: "RecipesGeneratorClean",
+                code: -3,
+                userInfo: [NSLocalizedDescriptionKey: "Apple Intelligence model is still downloading or not ready. Please try again later."]
+            )
+            return
+        case .unavailable(let reason):
+            self.error = NSError(
+                domain: "RecipesGeneratorClean",
+                code: -3,
+                userInfo: [NSLocalizedDescriptionKey: "Apple Intelligence is unavailable: \(reason)"]
+            )
+            return
+        }
+
+        // Initialize or reinitialize session if needed
+        if self.session == nil {
+            let instructions = Instructions {
+                """
+                You are a culinary advisor who provides personalized cooking advice.
+
+                Your job is simple: explain WHY each recipe matches the user and give helpful tips.
+
+                DO NOT select recipes, score recipes, or categorize them - that's already done.
+
+                For each recipe, provide:
+                1. reasoning: Explain WHY this recipe matches their situation (available ingredients, preferences, time)
+                2. cookingTips: 2-3 practical, actionable tips for cooking this dish
+                3. substitutions: Practical swaps for missing ingredients (if any)
+
+                Be warm, encouraging, and specific to THIS user's situation.
+                """
+            }
+            self.session = LanguageModelSession(instructions: instructions)
+            print("🔄 Session initialized for recipe enrichment")
+        }
+
+        guard let session = self.session else {
+            self.error = NSError(
+                domain: "RecipesGeneratorClean",
+                code: -4,
+                userInfo: [NSLocalizedDescriptionKey: "Failed to initialize AI session"]
+            )
+            return
+        }
+
+        // Check if session is already responding
+        if session.isResponding {
+            self.error = NSError(
+                domain: "RecipesGeneratorClean",
+                code: -6,
+                userInfo: [NSLocalizedDescriptionKey: "A request is already in progress. Please wait."]
+            )
+            return
+        }
+
         isGenerating = true
+        error = nil
 
         do {
             let prompt = buildEnrichmentPrompt(preComputedData: preComputedData)
@@ -165,30 +272,133 @@ final class RecipesGeneratorClean {
                 print("==================================================")
             }
 
+        } catch let error as LanguageModelSession.GenerationError {
+            print("❌ Generation error: \(error)")
+
+            // Provide specific error messages based on error description
+            let errorDescription = error.localizedDescription.lowercased()
+            
+            // Check for context window errors
+            if errorDescription.contains("context") || errorDescription.contains("window") || errorDescription.contains("size") {
+                // Check if this is the first attempt and retry is possible
+                if !isRetry {
+                    print("⚠️ Context window exceeded - retrying with fewer recipes...")
+                    
+                    // Clean up session state
+                    if #available(iOS 26.0, *) {
+                        self.session = LanguageModelSession(instructions: Instructions {
+                            """
+                            You are a culinary advisor who provides personalized cooking advice.
+
+                            Your job is simple: explain WHY each recipe matches the user and give helpful tips.
+
+                            DO NOT select recipes, score recipes, or categorize them - that's already done.
+
+                            For each recipe, provide:
+                            1. reasoning: Explain WHY this recipe matches their situation (available ingredients, preferences, time)
+                            2. cookingTips: 2-3 practical, actionable tips for cooking this dish
+                            3. substitutions: Practical swaps for missing ingredients (if any)
+
+                            Be warm, encouraging, and specific to THIS user's situation.
+                            """
+                        })
+                    }
+
+                    // Reduce recipes by 1
+                    let reducedData = reduceRecipesByOne(preComputedData: preComputedData)
+
+                    if !reducedData.readyToCook.isEmpty || !reducedData.almostReady.isEmpty {
+                        print("🔄 Retrying with \(reducedData.readyToCook.count) ready + \(reducedData.almostReady.count) almost ready")
+
+                        // Retry with reduced data
+                        await enrichRecipes(preComputedData: reducedData, isRetry: true)
+                        return
+                    } else {
+                        print("❌ Cannot retry - no recipes remaining")
+                        let errorMessage = "Too many recipes to process at once."
+                        self.error = NSError(
+                            domain: "RecipesGeneratorClean",
+                            code: -5,
+                            userInfo: [NSLocalizedDescriptionKey: errorMessage]
+                        )
+                        isGenerating = false
+                        return
+                    }
+                } else {
+                    let errorMessage = "The request is too large. Try with fewer recipes."
+                    self.error = NSError(
+                        domain: "RecipesGeneratorClean",
+                        code: -5,
+                        userInfo: [NSLocalizedDescriptionKey: errorMessage]
+                    )
+                    isGenerating = false
+                    return
+                }
+            }
+            
+            // Check for unavailable errors
+            if errorDescription.contains("unavailable") || errorDescription.contains("not available") {
+                let errorMessage = "Apple Intelligence model is unavailable. Please check Settings > Apple Intelligence & Siri."
+                self.error = NSError(
+                    domain: "RecipesGeneratorClean",
+                    code: -5,
+                    userInfo: [NSLocalizedDescriptionKey: errorMessage]
+                )
+                isGenerating = false
+                return
+            }
+            
+            // Check for ModelManagerError in underlying errors
+            let nsError = error as NSError
+            if let underlyingErrors = nsError.userInfo[NSMultipleUnderlyingErrorsKey] as? [NSError] {
+                for underlyingError in underlyingErrors {
+                    print("   Underlying error: \(underlyingError)")
+                    if underlyingError.domain == "ModelManagerServices.ModelManagerError" {
+                        let errorMessage = "The AI model failed to initialize. This may be temporary - please try again in a few moments. If the problem persists, restart your device."
+                        self.error = NSError(
+                            domain: "RecipesGeneratorClean",
+                            code: -5,
+                            userInfo: [NSLocalizedDescriptionKey: errorMessage]
+                        )
+                        isGenerating = false
+                        return
+                    }
+                }
+            }
+            
+            // Default error message
+            let errorMessage = "Failed to enrich recipes: \(error.localizedDescription)"
+            self.error = NSError(
+                domain: "RecipesGeneratorClean",
+                code: -5,
+                userInfo: [NSLocalizedDescriptionKey: errorMessage]
+            )
         } catch {
-            print("❌ Error enriching recipes: \(error)")
+            print("❌ Unexpected error enriching recipes: \(error)")
 
             // Check if this is a context limit error and retry is possible
             if !isRetry && isContextLimitError(error) {
                 print("⚠️ Context window exceeded - retrying with fewer recipes...")
 
                 // Clean up session state
-                self.session = LanguageModelSession(instructions: Instructions {
-                    """
-                    You are a culinary advisor who provides personalized cooking advice.
+                if #available(iOS 26.0, *) {
+                    self.session = LanguageModelSession(instructions: Instructions {
+                        """
+                        You are a culinary advisor who provides personalized cooking advice.
 
-                    Your job is simple: explain WHY each recipe matches the user and give helpful tips.
+                        Your job is simple: explain WHY each recipe matches the user and give helpful tips.
 
-                    DO NOT select recipes, score recipes, or categorize them - that's already done.
+                        DO NOT select recipes, score recipes, or categorize them - that's already done.
 
-                    For each recipe, provide:
-                    1. reasoning: Explain WHY this recipe matches their situation (available ingredients, preferences, time)
-                    2. cookingTips: 2-3 practical, actionable tips for cooking this dish
-                    3. substitutions: Practical swaps for missing ingredients (if any)
+                        For each recipe, provide:
+                        1. reasoning: Explain WHY this recipe matches their situation (available ingredients, preferences, time)
+                        2. cookingTips: 2-3 practical, actionable tips for cooking this dish
+                        3. substitutions: Practical swaps for missing ingredients (if any)
 
-                    Be warm, encouraging, and specific to THIS user's situation.
-                    """
-                })
+                        Be warm, encouraging, and specific to THIS user's situation.
+                        """
+                    })
+                }
 
                 // Reduce recipes by 1
                 let reducedData = reduceRecipesByOne(preComputedData: preComputedData)
@@ -204,7 +414,29 @@ final class RecipesGeneratorClean {
                 }
             }
 
-            self.error = error
+            // Check for ModelManagerError in any error
+            let nsError = error as NSError
+            if let underlyingErrors = nsError.userInfo[NSMultipleUnderlyingErrorsKey] as? [NSError] {
+                for underlyingError in underlyingErrors {
+                    print("   Underlying error: \(underlyingError)")
+                    if underlyingError.domain == "ModelManagerServices.ModelManagerError" {
+                        let modelErrorMessage = "The AI model failed to initialize. This may be temporary - please try again in a few moments. If the problem persists, restart your device."
+                        self.error = NSError(
+                            domain: "RecipesGeneratorClean",
+                            code: -5,
+                            userInfo: [NSLocalizedDescriptionKey: modelErrorMessage]
+                        )
+                        isGenerating = false
+                        return
+                    }
+                }
+            }
+
+            self.error = NSError(
+                domain: "RecipesGeneratorClean",
+                code: -5,
+                userInfo: [NSLocalizedDescriptionKey: "Unexpected error: \(error.localizedDescription)"]
+            )
         }
 
         isGenerating = false
@@ -354,9 +586,50 @@ final class RecipesGeneratorClean {
     }
 
     func prewarmModel() {
-        Task {
+        guard #available(iOS 26.0, *) else {
+            print("⚠️ iOS 26+ required for Apple Intelligence")
+            return
+        }
+        
+        // Check availability
+        switch SystemLanguageModel.default.availability {
+        case .available:
+            break
+        case .unavailable(let reason):
+            print("⚠️ Cannot prewarm: Model unavailable - \(reason)")
+            return
+        }
+
+        Task { @MainActor in
             do {
-                print("🔥 Prewarming Foundation Models session...")
+                // Initialize session if needed
+                if self.session == nil {
+                    let instructions = Instructions {
+                        """
+                        You are a culinary advisor who provides personalized cooking advice.
+
+                        Your job is simple: explain WHY each recipe matches the user and give helpful tips.
+
+                        DO NOT select recipes, score recipes, or categorize them - that's already done.
+
+                        For each recipe, provide:
+                        1. reasoning: Explain WHY this recipe matches their situation (available ingredients, preferences, time)
+                        2. cookingTips: 2-3 practical, actionable tips for cooking this dish
+                        3. substitutions: Practical swaps for missing ingredients (if any)
+
+                        Be warm, encouraging, and specific to THIS user's situation.
+                        """
+                    }
+                    self.session = LanguageModelSession(instructions: instructions)
+                    print("🔄 Session initialized during prewarm")
+                }
+                
+                guard let session = self.session else {
+                    print("⚠️ Failed to initialize session for prewarming")
+                    return
+                }
+
+                print("🔥 Prewarming Recipes model...")
 
                 // Send a simple warm-up prompt to initialize the model
                 let warmupPrompt = "Ready to provide culinary advice."
@@ -366,10 +639,12 @@ final class RecipesGeneratorClean {
                     options: GenerationOptions(sampling: .greedy)
                 )
 
-                print("✅ Model prewarmed and ready")
+                print("✅ Recipes model prewarmed successfully")
             } catch {
-                print("⚠️ Prewarm failed (non-critical): \(error.localizedDescription)")
-                // Non-critical - will work fine even if prewarm fails
+                print("⚠️ Recipes prewarm failed (non-critical): \(error.localizedDescription)")
+                
+                // If prewarm fails, clear the session so it can be recreated on next use
+                self.session = nil
             }
         }
     }

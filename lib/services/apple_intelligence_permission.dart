@@ -21,23 +21,12 @@ class AppleIntelligencePermission {
 
   /// Show the Apple Intelligence permission dialog
   /// Returns true if shown, false if already shown or not iOS
+  /// Currently disabled — AI features use Claude API backend.
+  /// Re-enable when offering Foundation Models as an option.
   static Future<bool> showPermissionDialogIfNeeded(BuildContext context) async {
-    // Only show on iOS
-    if (!Platform.isIOS) return false;
-
-    // Check if already shown
-    final hasShown = await hasShownPermission();
-    if (hasShown) return false;
-
-    if (!context.mounted) return false;
-
-    // Show the dialog
-    await _showDialog(context);
-
-    // Mark as shown
-    await markAsShown();
-
-    return true;
+    // Disabled: AI features now use Claude API backend
+    // When Foundation Models toggle is added, re-enable this dialog
+    return false;
   }
 
   static Future<void> _showDialog(BuildContext context) async {

@@ -1,4 +1,5 @@
 import 'package:ai_cook_project/utils/responsive_utils.dart';
+import 'package:ai_cook_project/widgets/bottom_sheet/app_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ai_cook_project/theme.dart';
@@ -674,114 +675,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   // Picker methods
   void _showLanguagePicker() {
-    _showIOSPicker(
-      'Language',
-      ['English', 'Spanish', 'French', 'German', 'Italian'],
-      _selectedLanguage,
-      (value) => setState(() => _selectedLanguage = value!),
+    AppBottomSheet.showPicker<String>(
+      context: context,
+      items: const ['English', 'Spanish', 'French', 'German', 'Italian'],
+      selectedItem: _selectedLanguage,
+      displayText: (item) => item,
+      title: 'Language',
+      immediateCallback: true,
+      onItemChanged: (value) => setState(() => _selectedLanguage = value),
     );
   }
 
   void _showUnitsPicker() {
-    _showIOSPicker(
-      'Units',
-      ['Metric', 'Imperial'],
-      _selectedUnits,
-      (value) => setState(() => _selectedUnits = value!),
-    );
-  }
-
-  void _showIOSPicker(
-    String title,
-    List<String> options,
-    String currentValue,
-    ValueChanged<String?> onChanged,
-  ) {
-    final int initialItem = options.indexOf(currentValue);
-
-    showCupertinoModalPopup<void>(
+    AppBottomSheet.showPicker<String>(
       context: context,
-      builder:
-          (BuildContext context) => Container(
-            height: 300,
-            padding: const EdgeInsets.only(top: 16),
-            margin: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            color: CupertinoColors.systemBackground.resolveFrom(context),
-            child: Column(
-              children: [
-                Container(
-                  height: 44,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: CupertinoColors.separator.resolveFrom(context),
-                        width: 0.5,
-                      ),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CupertinoButton(
-                        child: Text(
-                          'Cancel',
-                          style: TextStyle(color: AppColors.mutedGreen),
-                        ),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      CupertinoButton(
-                        child: Text(
-                          'Done',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.orange,
-                          ),
-                        ),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: CupertinoPicker(
-                    magnification: 1.2,
-                    squeeze: 1.2,
-                    useMagnifier: true,
-                    itemExtent: 32.0,
-                    scrollController: FixedExtentScrollController(
-                      initialItem: initialItem != -1 ? initialItem : 0,
-                    ),
-                    onSelectedItemChanged: (int selectedItem) {
-                      onChanged(options[selectedItem]);
-                    },
-                    children:
-                        options
-                            .map(
-                              (item) => Center(
-                                child: Text(
-                                  item,
-                                  style: TextStyle(
-                                    color: AppColors.button,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                  ),
-                ),
-              ],
-            ),
-          ),
+      items: const ['Metric', 'Imperial'],
+      selectedItem: _selectedUnits,
+      displayText: (item) => item,
+      title: 'Units',
+      immediateCallback: true,
+      onItemChanged: (value) => setState(() => _selectedUnits = value),
     );
   }
 

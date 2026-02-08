@@ -75,16 +75,16 @@ class RecipeDetails extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  AppColors.mutedGreen.withValues(alpha: 0.1),
-                  AppColors.lightYellow.withValues(alpha: 0.1),
+                  AppColors.button.withValues(alpha: 0.05),
+                  AppColors.button.withValues(alpha: 0.03),
                 ],
               ),
               borderRadius: BorderRadius.circular(
                 ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.lg),
               ),
               border: Border.all(
-                color: AppColors.mutedGreen.withValues(alpha: 0.3),
-                width: 1.5,
+                color: AppColors.button.withValues(alpha: 0.1),
+                width: 1,
               ),
             ),
             child: Row(
@@ -93,7 +93,7 @@ class RecipeDetails extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                    color: AppColors.mutedGreen,
+                    color: AppColors.button.withValues(alpha: 0.85),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Icon(
@@ -117,7 +117,7 @@ class RecipeDetails extends StatelessWidget {
                           fontWeight: AppFontWeights.bold,
                           fontFamily: 'Inter',
                           letterSpacing: 0.5,
-                          color: AppColors.mutedGreen,
+                          color: AppColors.button.withValues(alpha: 0.7),
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -289,16 +289,16 @@ class RecipeDetails extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    AppColors.mutedGreen.withValues(alpha: 0.08),
-                    AppColors.lightYellow.withValues(alpha: 0.12),
+                    AppColors.button.withValues(alpha: 0.04),
+                    AppColors.button.withValues(alpha: 0.03),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(
                   ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.lg),
                 ),
                 border: Border.all(
-                  color: AppColors.mutedGreen.withValues(alpha: 0.3),
-                  width: 1.5,
+                  color: AppColors.button.withValues(alpha: 0.1),
+                  width: 1,
                 ),
               ),
               child: Column(
@@ -310,7 +310,7 @@ class RecipeDetails extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
-                          color: AppColors.mutedGreen,
+                          color: AppColors.button.withValues(alpha: 0.85),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Icon(
@@ -332,7 +332,7 @@ class RecipeDetails extends StatelessWidget {
                           fontWeight: AppFontWeights.bold,
                           fontFamily: 'Inter',
                           letterSpacing: 0.3,
-                          color: AppColors.mutedGreen,
+                          color: AppColors.button.withValues(alpha: 0.7),
                         ),
                       ),
                       const Spacer(),
@@ -342,7 +342,7 @@ class RecipeDetails extends StatelessWidget {
                           vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.xs),
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.mutedGreen,
+                          color: AppColors.button.withValues(alpha: 0.85),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
@@ -375,13 +375,13 @@ class RecipeDetails extends StatelessWidget {
                             margin: const EdgeInsets.only(top: 3),
                             padding: const EdgeInsets.all(4),
                             decoration: BoxDecoration(
-                              color: AppColors.mutedGreen.withValues(alpha: 0.15),
+                              color: AppColors.button.withValues(alpha: 0.08),
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Icon(
                               Icons.arrow_forward_rounded,
                               size: 14,
-                              color: AppColors.mutedGreen,
+                              color: AppColors.button.withValues(alpha: 0.5),
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -411,7 +411,7 @@ class RecipeDetails extends StatelessWidget {
                                   TextSpan(
                                     text: sub.alternatives.join(", "),
                                     style: TextStyle(
-                                      color: AppColors.mutedGreen,
+                                      color: AppColors.button.withValues(alpha: 0.7),
                                       fontWeight: AppFontWeights.semiBold,
                                     ),
                                   ),

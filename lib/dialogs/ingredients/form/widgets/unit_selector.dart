@@ -25,16 +25,15 @@ class UnitSelectorButton extends StatelessWidget {
         horizontal: ResponsiveUtils.spacing(context, ResponsiveSpacing.lg),
         vertical: ResponsiveUtils.spacing(context, ResponsiveSpacing.md),
       ),
-      onPressed: () {
-        showCupertinoModalPopup(
+      onPressed: () async {
+        final result = await showUnitPicker(
           context: context,
-          builder:
-              (_) => UnitPickerModal(
-                selectedUnit: selectedUnit,
-                units: units,
-                onSelected: onUnitSelected,
-              ),
+          units: units,
+          selectedUnit: selectedUnit,
         );
+        if (result != null) {
+          onUnitSelected(result);
+        }
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

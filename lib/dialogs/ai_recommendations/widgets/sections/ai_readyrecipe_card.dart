@@ -86,14 +86,12 @@ class _AIReadyToCookCardState extends State<AIReadyToCookCard>
                   ResponsiveUtils.borderRadius(context, ResponsiveBorderRadius.xl),
                 ),
                 border: Border.all(
-                  color: widget.viewModel.missingCount == 0
-                      ? AppColors.mutedGreen
-                      : AppColors.mutedGreen.withValues(alpha: 0.6),
-                  width: 2.5,
+                  color: AppColors.button.withValues(alpha: 0.1),
+                  width: 1,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.mutedGreen.withValues(alpha: 0.15),
+                    color: AppColors.button.withValues(alpha: 0.06),
                     blurRadius: ResponsiveUtils.spacing(
                       context,
                       ResponsiveSpacing.md,

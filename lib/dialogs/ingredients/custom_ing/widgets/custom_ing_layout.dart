@@ -174,16 +174,15 @@ class CustomIngLayout extends StatelessWidget {
                           context,
                           ResponsiveSpacing.sm,
                         ),
-                        onPressed: () {
-                          showCupertinoModalPopup(
+                        onPressed: () async {
+                          final result = await showCategoryPicker(
                             context: context,
-                            builder:
-                                (BuildContext context) => CategoryPickerModal(
-                                  categories: categories,
-                                  selectedCategory: selectedCategory,
-                                  onSelected: onCategoryChanged,
-                                ),
+                            categories: categories,
+                            selectedCategory: selectedCategory,
                           );
+                          if (result != null) {
+                            onCategoryChanged(result);
+                          }
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -274,16 +273,15 @@ class CustomIngLayout extends StatelessWidget {
                                 context,
                                 ResponsiveSpacing.sm,
                               ),
-                              onPressed: () {
-                                showCupertinoModalPopup(
+                              onPressed: () async {
+                                final result = await showUnitPicker(
                                   context: context,
-                                  builder:
-                                      (context) => UnitPickerModal(
-                                        selectedUnit: selectedUnit,
-                                        units: availableUnits,
-                                        onSelected: onUnitChanged,
-                                      ),
+                                  units: availableUnits,
+                                  selectedUnit: selectedUnit,
                                 );
+                                if (result != null) {
+                                  onUnitChanged(result);
+                                }
                               },
                               child: Row(
                                 mainAxisAlignment:

@@ -12,7 +12,9 @@ import Foundation
 class FoundationModelsChannel {
 
     private var recipesGeneratorClean: RecipesGeneratorClean?
-    private var chatAssistant: ChatAssistantGenerator?
+    private var substitutionsGenerator: SubstitutionsGenerator?
+    private var unitConverterGenerator: UnitConverterGenerator?
+    private var dietAdapterGenerator: DietAdapterGenerator?
 
     func registerWith(controller: FlutterViewController) {
         let channel = FlutterMethodChannel(
@@ -36,24 +38,24 @@ class FoundationModelsChannel {
                     await self.handleGenerateRecommendationsClean(call: call, result: result)
                 }
 
+            case "generateSubstitutions":
+                Task {
+                    await self.handleGenerateSubstitutions(call: call, result: result)
+                }
+
+            case "convertUnits":
+                Task {
+                    await self.handleConvertUnits(call: call, result: result)
+                }
+
+            case "adaptDiet":
+                Task {
+                    await self.handleAdaptDiet(call: call, result: result)
+                }
+
             case "prewarmModel":
                 Task {
                     await self.handlePrewarmModel(result: result)
-                }
-
-            case "chatSendMessage":
-                Task {
-                    await self.handleChatSendMessage(call: call, result: result)
-                }
-
-            case "chatPrewarm":
-                Task {
-                    await self.handleChatPrewarm(result: result)
-                }
-
-            case "chatClearHistory":
-                Task {
-                    await self.handleChatClearHistory(result: result)
                 }
 
             case "cleanup":
@@ -225,103 +227,317 @@ class FoundationModelsChannel {
         return try JSONSerialization.data(withJSONObject: flutterData, options: [.prettyPrinted])
     }
 
+    // MARK: - Substitutions Handler
+
+    @MainActor
+    private func handleGenerateSubstitutions(
+        call: FlutterMethodCall,
+        result: @escaping FlutterResult
+    ) async {
+        guard let args = call.arguments as? [String: Any],
+              let ingredient = args["ingredient"] as? String else {
+            print("❌ Invalid arguments for substitutions")
+            result(FlutterError(
+                code: "INVALID_ARGUMENTS",
+                message: "Expected 'ingredient' parameter",
+                details: nil
+            ))
+            return
+        }
+
+        // Initialize generator if needed
+        if substitutionsGenerator == nil {
+            substitutionsGenerator = SubstitutionsGenerator()
+        }
+
+        guard let generator = substitutionsGenerator else {
+            result(FlutterError(
+                code: "INITIALIZATION_ERROR",
+                message: "Failed to initialize substitutions generator",
+                details: nil
+            ))
+            return
+        }
+
+        print("🔄 Generating substitutions for: \(ingredient)")
+
+        // Parse optional context
+        var context: SubstitutionRequest.SubstitutionContext? = nil
+        if let contextData = args["context"] as? [String: Any] {
+            context = SubstitutionRequest.SubstitutionContext(
+                recipeName: contextData["recipeName"] as? String,
+                dietaryRestrictions: contextData["dietaryRestrictions"] as? [String],
+                availableIngredients: contextData["availableIngredients"] as? [String]
+            )
+        }
+
+        let request = SubstitutionRequest(ingredient: ingredient, context: context)
+
+        await generator.generateSubstitutions(request: request)
+
+        // Check for errors
+        if let error = generator.error {
+            print("❌ Substitution error: \(error.localizedDescription)")
+            result(FlutterError(
+                code: "GENERATION_ERROR",
+                message: "Failed to generate substitutions: \(error.localizedDescription)",
+                details: nil
+            ))
+            return
+        }
+
+        // Get result
+        guard let substitutionResult = generator.result else {
+            print("❌ No substitution result generated")
+            result(FlutterError(
+                code: "NO_RESULTS",
+                message: "No substitutions generated",
+                details: nil
+            ))
+            return
+        }
+
+        // Convert to Flutter format
+        let flutterData: [String: Any] = [
+            "original_ingredient": substitutionResult.originalIngredient,
+            "substitutes": substitutionResult.substitutes.map { sub in
+                return [
+                    "name": sub.name,
+                    "ratio": sub.ratio,
+                    "notes": sub.notes
+                ]
+            },
+            "tips": substitutionResult.tips
+        ]
+
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: flutterData, options: [.prettyPrinted])
+            let jsonString = String(data: jsonData, encoding: .utf8)
+            print("📤 Sending substitutions back to Flutter")
+            result(jsonString)
+        } catch {
+            result(FlutterError(
+                code: "SERIALIZATION_ERROR",
+                message: "Failed to serialize result: \(error.localizedDescription)",
+                details: nil
+            ))
+        }
+    }
+
+    // MARK: - Unit Converter Handler
+
+    @MainActor
+    private func handleConvertUnits(
+        call: FlutterMethodCall,
+        result: @escaping FlutterResult
+    ) async {
+        guard let args = call.arguments as? [String: Any],
+              let amount = args["amount"] as? String,
+              let fromUnit = args["fromUnit"] as? String else {
+            print("❌ Invalid arguments for unit conversion")
+            result(FlutterError(
+                code: "INVALID_ARGUMENTS",
+                message: "Expected 'amount' and 'fromUnit' parameters",
+                details: nil
+            ))
+            return
+        }
+
+        // Initialize generator if needed
+        if unitConverterGenerator == nil {
+            unitConverterGenerator = UnitConverterGenerator()
+        }
+
+        guard let generator = unitConverterGenerator else {
+            result(FlutterError(
+                code: "INITIALIZATION_ERROR",
+                message: "Failed to initialize unit converter generator",
+                details: nil
+            ))
+            return
+        }
+
+        print("⚖️ Converting: \(amount) \(fromUnit)")
+
+        // Parse optional parameters
+        let toUnit = args["toUnit"] as? String
+        let ingredient = args["ingredient"] as? String
+
+        let request = ConversionRequest(
+            amount: amount,
+            fromUnit: fromUnit,
+            toUnit: toUnit,
+            ingredient: ingredient
+        )
+
+        await generator.convert(request: request)
+
+        // Check for errors
+        if let error = generator.error {
+            print("❌ Conversion error: \(error.localizedDescription)")
+            result(FlutterError(
+                code: "GENERATION_ERROR",
+                message: "Failed to convert: \(error.localizedDescription)",
+                details: nil
+            ))
+            return
+        }
+
+        // Get result
+        guard let conversionResult = generator.result else {
+            print("❌ No conversion result generated")
+            result(FlutterError(
+                code: "NO_RESULTS",
+                message: "No conversions generated",
+                details: nil
+            ))
+            return
+        }
+
+        // Convert to Flutter format
+        let flutterData: [String: Any] = [
+            "original": conversionResult.original,
+            "conversions": conversionResult.conversions.map { conv in
+                return [
+                    "measurement": conv.measurement,
+                    "unit_type": conv.unitType
+                ]
+            },
+            "tip": conversionResult.tip
+        ]
+
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: flutterData, options: [.prettyPrinted])
+            let jsonString = String(data: jsonData, encoding: .utf8)
+            print("📤 Sending conversions back to Flutter")
+            result(jsonString)
+        } catch {
+            result(FlutterError(
+                code: "SERIALIZATION_ERROR",
+                message: "Failed to serialize result: \(error.localizedDescription)",
+                details: nil
+            ))
+        }
+    }
+
+    // MARK: - Diet Adapter Handler
+
+    @MainActor
+    private func handleAdaptDiet(
+        call: FlutterMethodCall,
+        result: @escaping FlutterResult
+    ) async {
+        guard let args = call.arguments as? [String: Any],
+              let recipeName = args["recipeName"] as? String,
+              let ingredients = args["ingredients"] as? [String],
+              let dietaryNeeds = args["dietaryNeeds"] as? [String] else {
+            print("❌ Invalid arguments for diet adaptation")
+            result(FlutterError(
+                code: "INVALID_ARGUMENTS",
+                message: "Expected 'recipeName', 'ingredients', and 'dietaryNeeds' parameters",
+                details: nil
+            ))
+            return
+        }
+
+        // Initialize generator if needed
+        if dietAdapterGenerator == nil {
+            dietAdapterGenerator = DietAdapterGenerator()
+        }
+
+        guard let generator = dietAdapterGenerator else {
+            result(FlutterError(
+                code: "INITIALIZATION_ERROR",
+                message: "Failed to initialize diet adapter generator",
+                details: nil
+            ))
+            return
+        }
+
+        print("🥗 Adapting recipe: \(recipeName) for \(dietaryNeeds.joined(separator: ", "))")
+
+        let request = DietAdaptationRequest(
+            recipeName: recipeName,
+            ingredients: ingredients,
+            dietaryNeeds: dietaryNeeds
+        )
+
+        await generator.adaptRecipe(request: request)
+
+        // Check for errors
+        if let error = generator.error {
+            print("❌ Diet adaptation error: \(error.localizedDescription)")
+            result(FlutterError(
+                code: "GENERATION_ERROR",
+                message: "Failed to adapt recipe: \(error.localizedDescription)",
+                details: nil
+            ))
+            return
+        }
+
+        // Get result
+        guard let adaptationResult = generator.result else {
+            print("❌ No adaptation result generated")
+            result(FlutterError(
+                code: "NO_RESULTS",
+                message: "No adaptations generated",
+                details: nil
+            ))
+            return
+        }
+
+        // Convert to Flutter format
+        let flutterData: [String: Any] = [
+            "original_recipe": adaptationResult.originalRecipe,
+            "dietary_needs": adaptationResult.dietaryNeeds,
+            "modifications": adaptationResult.modifications.map { mod in
+                return [
+                    "original": mod.original,
+                    "replacement": mod.replacement,
+                    "notes": mod.notes
+                ]
+            },
+            "tips": adaptationResult.tips
+        ]
+
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: flutterData, options: [.prettyPrinted])
+            let jsonString = String(data: jsonData, encoding: .utf8)
+            print("📤 Sending diet adaptations back to Flutter")
+            result(jsonString)
+        } catch {
+            result(FlutterError(
+                code: "SERIALIZATION_ERROR",
+                message: "Failed to serialize result: \(error.localizedDescription)",
+                details: nil
+            ))
+        }
+    }
+
     @MainActor
     private func handlePrewarmModel(result: @escaping FlutterResult) async {
         print("🔥 Prewarm model requested")
 
-        // Initialize clean generator if needed
+        // Initialize generators if needed
         if recipesGeneratorClean == nil {
             recipesGeneratorClean = RecipesGeneratorClean()
         }
-
-        guard let generator = recipesGeneratorClean else {
-            result(FlutterError(
-                code: "INITIALIZATION_ERROR",
-                message: "Failed to initialize generator",
-                details: nil
-            ))
-            return
+        if substitutionsGenerator == nil {
+            substitutionsGenerator = SubstitutionsGenerator()
+        }
+        if unitConverterGenerator == nil {
+            unitConverterGenerator = UnitConverterGenerator()
+        }
+        if dietAdapterGenerator == nil {
+            dietAdapterGenerator = DietAdapterGenerator()
         }
 
-        // Call prewarm (it runs asynchronously, so we return immediately)
-        generator.prewarmModel()
+        // Prewarm all generators
+        recipesGeneratorClean?.prewarmModel()
+        substitutionsGenerator?.prewarmModel()
+        unitConverterGenerator?.prewarmModel()
+        dietAdapterGenerator?.prewarmModel()
 
-        result(true)
-    }
-
-    // MARK: - Chat Assistant Handlers
-
-    @MainActor
-    private func handleChatSendMessage(call: FlutterMethodCall, result: @escaping FlutterResult) async {
-        guard let args = call.arguments as? [String: Any],
-              let message = args["message"] as? String else {
-            print("❌ Invalid arguments for chat send message")
-            result(FlutterError(
-                code: "INVALID_ARGUMENTS",
-                message: "Expected 'message' parameter",
-                details: nil
-            ))
-            return
-        }
-
-        // Initialize chat assistant if needed
-        if chatAssistant == nil {
-            chatAssistant = ChatAssistantGenerator()
-        }
-
-        guard let assistant = chatAssistant else {
-            result(FlutterError(
-                code: "INITIALIZATION_ERROR",
-                message: "Failed to initialize chat assistant",
-                details: nil
-            ))
-            return
-        }
-
-        print("💬 Processing chat message: \(message)")
-
-        // Send message and get response
-        let response = await assistant.sendMessage(message)
-
-        print("✅ Chat response generated")
-        result(response)
-    }
-
-    @MainActor
-    private func handleChatPrewarm(result: @escaping FlutterResult) async {
-        print("🔥 Chat prewarm requested")
-
-        // Initialize chat assistant if needed
-        if chatAssistant == nil {
-            chatAssistant = ChatAssistantGenerator()
-        }
-
-        guard let assistant = chatAssistant else {
-            result(FlutterError(
-                code: "INITIALIZATION_ERROR",
-                message: "Failed to initialize chat assistant",
-                details: nil
-            ))
-            return
-        }
-
-        // Call prewarm (runs asynchronously)
-        assistant.prewarmModel()
-
-        result(true)
-    }
-
-    @MainActor
-    private func handleChatClearHistory(result: @escaping FlutterResult) async {
-        print("🧹 Clearing chat history...")
-
-        guard let assistant = chatAssistant else {
-            // No assistant initialized, nothing to clear
-            result(true)
-            return
-        }
-
-        assistant.clearHistory()
         result(true)
     }
 
@@ -329,79 +545,19 @@ class FoundationModelsChannel {
     private func handleCleanup(result: @escaping FlutterResult) async {
         print("🧹 Cleaning up Foundation Models resources...")
 
-        if let cleanGenerator = recipesGeneratorClean {
-            cleanGenerator.cleanup()
-        }
-
-        if let assistant = chatAssistant {
-            assistant.cleanup()
-        }
+        recipesGeneratorClean?.cleanup()
+        substitutionsGenerator?.cleanup()
+        unitConverterGenerator?.cleanup()
+        dietAdapterGenerator?.cleanup()
 
         // Release instances to free memory
         recipesGeneratorClean = nil
-        chatAssistant = nil
+        substitutionsGenerator = nil
+        unitConverterGenerator = nil
+        dietAdapterGenerator = nil
 
         print("✅ Cleanup complete")
         result(true)
-    }
-
-    /// Enriches AI recommendations with full recipe data and converts to Flutter format
-    private func enrichForFlutter(
-        recommendations: AIRecommendations,
-        recipes: [RecipeForAI]
-    ) throws -> Data {
-        // Create lookup for fast access
-        let recipeLookup = Dictionary(uniqueKeysWithValues: recipes.map { ($0.id, $0) })
-
-        func enrichRecipe(_ rec: AIRecommendations.RecommendedRecipe) -> [String: Any]? {
-            guard let fullRecipe = recipeLookup[rec.recipeId] else {
-                print("⚠️ Skipping recipe \(rec.recipeId) - not found in dataset")
-                return nil
-            }
-
-            return [
-                "id": rec.recipeId,
-                "title": rec.recipeName,
-                "time_minutes": extractTimeMinutes(from: fullRecipe.cookingTime),
-                "difficulty": fullRecipe.difficulty,
-                "tags": fullRecipe.tags,
-                "description": rec.reasoning,
-                "match_score": rec.matchScore,
-                "ingredients": fullRecipe.ingredients.map { ing in
-                    return [
-                        "name": ing.name,
-                        "quantity": "\(ing.quantity) \(ing.unit)"
-                    ]
-                },
-                "steps": rec.cookingTips,
-                "missing_ingredients": rec.missingIngredients,
-                "recipe_substitutions": rec.suggestedSubstitutions.map { sub in
-                    return [
-                        "original": sub.original,
-                        "alternatives": sub.alternatives
-                    ]
-                }
-            ]
-        }
-
-        let flutterData: [String: Any] = [
-            "ready_to_cook": recommendations.readyToCook.compactMap(enrichRecipe),
-            "almost_ready": recommendations.almostReady.compactMap(enrichRecipe),
-            "shopping_suggestions": recommendations.shoppingList.map { item in
-                return [
-                    "name": item.name,
-                    "reason": item.reason
-                ]
-            },
-            "possible_substitutions": recommendations.possibleSubstitutions.map { sub in
-                return [
-                    "original": sub.original,
-                    "alternatives": sub.alternatives
-                ]
-            }
-        ]
-
-        return try JSONSerialization.data(withJSONObject: flutterData, options: [.prettyPrinted])
     }
 
     private func extractTimeMinutes(from timeString: String) -> Int {

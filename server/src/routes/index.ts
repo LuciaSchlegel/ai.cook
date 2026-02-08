@@ -10,6 +10,7 @@ import llmRouter from "./llm.router";
 import resourcesRouter from "./resources.router";
 import apiRouter from "./api.router";
 import aiRecommendationRouter from "./ai_recommendation.router";
+import aiAssistRouter from "./ai_assist.router";
 
 const router = Router();
 
@@ -24,5 +25,6 @@ router.use("/ingredients", ingredientsRouter);
 router.use("/recipes", recipesRouter);
 router.use("/llm", llmRouter); // LLM endpoints for AI integration
 router.use("/ai-recommendations", aiRecommendationRouter);
+router.use("/ai", aiAssistRouter);
 
 export default router;

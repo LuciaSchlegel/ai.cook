@@ -339,6 +339,12 @@ class ResponsiveUtils {
     return bottomSafeArea + additionalPadding;
   }
 
+  /// Get bottom padding for AI dialog content to clear the home indicator.
+  static double getAIDialogBottomPadding(BuildContext context) {
+    final bottomSafeArea = MediaQuery.of(context).padding.bottom;
+    return bottomSafeArea + spacing(context, ResponsiveSpacing.md);
+  }
+
   /// Get top safe area with additional padding for dialog content
   static double getDialogTopPadding(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -349,17 +355,6 @@ class ResponsiveUtils {
   }
 
   // ==================== DIALOG HELPERS ====================
-
-  /// Get dialog max height multiplier based on device type
-  static double getDialogMaxHeightMultiplier(BuildContext context) {
-    final deviceType = getDeviceType(context);
-
-    return switch (deviceType) {
-      DeviceType.iPhone => 0.9, // Use more space on iPhone
-      DeviceType.iPadMini => 0.85, // Slightly less on iPad Mini
-      DeviceType.iPadPro => 0.8, // More conservative on iPad Pro
-    };
-  }
 
   /// Get consistent dialog container decoration
   static BoxDecoration getDialogContainerDecoration(BuildContext context) {
